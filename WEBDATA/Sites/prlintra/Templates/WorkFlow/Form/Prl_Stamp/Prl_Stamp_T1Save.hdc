@@ -1,0 +1,119 @@
+;版本号：2014年3月份（此行不允许删除）
+[Permission]
+;判断FlowGid 是否为空
+LIMIT1=FlowGid
+LIMITDesc1=StringSize[,0]
+LIMITRemind1=对不起，您未指定流程信息！请从正确的路径进入
+
+;判断传入FlowGid 是否存在
+SQL1=select 1 from dual where ##IsNew## = '0' union select 1 from WF_Flow where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and ##IsNew## <> '0'
+Remind1=对不起，您指定的流程申请单没有找到<script>alert('对不起，您指定的流程申请单没有找到');window.close()</script>
+
+[Detail]
+;显示，查询得到的结果可以用于HDT显示，从SQL1～SQL20共支持20条
+;取出本流程模型信息
+SqlForCondition1=select wm.Code ModelCode, wm.Name ModelName,d.Name StepName from wf_Model wm,WF_Task_Define d where wm.EntGid = d.EntGid(+) and wm.EntGid = __ENTGID__ and wm.ModelGid = d.ModelGid(+) and wm.ModelGid = ##ModelGid## and lower(d.code(+)) = replace(lower(##Url##),'save')
+
+;定义流程备注
+SQLForCondition2=select '标题：' || ##Title## || '；日期：' || ##ApplyDate## TheMemo from dual
+
+SQLForCondition3=select '单号：'|| ##Num##|| '；' || ##TheMemo##  TheFlowMemo,'待修改 - ' || ##TheMemo## ModFlowMemo,'待审批 - 发起人：' || ##CurUsrName## ||'；' || ##TheMemo## AppFlowMemo from dual
+
+[AddtionalSQL]
+;操作，没有返回的结果，是在数据库中执行，由Insert, Update, Delete命令。从SQL1～SQL20共支持20条
+
+;TMod-修改本流程流程备注
+SQL1=update wf_flow set flownote = ##TheFlowMemo## where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and ##Stat## <> '终止' and ##IsNew## <> '0'
+
+;T1-插入本流程主表
+SQL2=insert into Wf_^^ModelCode^^ (EntGid,ModelGid,FlowGid,Num,LastUpdDate,Stat,FillUsrGid,FillUsrCode,FillUsrName,FillDeptGid,FillDeptCode,FillDeptName,Title,ApplyDate,Memo,T2Gid,T2Code,T2Name,Dtl1Sum,Dtl2Sum,Dtl3Sum,Dtl4Sum,Dtl5Sum)select __ENTGID__,##ModelGid##,##FlowGid##,##Num##,sysdate,##Stat##,__USRGID__,__USRCODE__,__USRNAME__,##FillDeptGid##,##FillDeptCode##,##FillDeptName##,##Title##,to_date(##ApplyDate##,'YYYY.MM.DD'),##Memo##,##T2Gid##,##T2Code##,##T2Name##,##Dtl1Sum##,##Dtl2Sum##,##Dtl3Sum##,##Dtl4Sum##,##Dtl5Sum## from dual where ##IsNew## = '0'
+
+;TMod-更新本流程主表信息，保存，提交
+SQL3=update Wf_^^ModelCode^^ set (LastUpdDate,Stat,FillUsrGid,FillUsrCode,FillUsrName,FillDeptGid,FillDeptCode,FillDeptName,Title,ApplyDate,Memo,T2Gid,T2Code,T2Name,Dtl1Sum,Dtl2Sum,Dtl3Sum,Dtl4Sum,Dtl5Sum) = (select sysdate,##Stat##,__USRGID__,__USRCODE__,__USRNAME__,##FillDeptGid##,##FillDeptCode##,##FillDeptName##,##Title##,to_date(##ApplyDate##,'YYYY.MM.DD'),##Memo##,##T2Gid##,##T2Code##,##T2Name##,##Dtl1Sum##,##Dtl2Sum##,##Dtl3Sum##,##Dtl4Sum##,##Dtl5Sum## from dual) where FlowGid = ##FlowGid## and EntGid = __ENTGID__ and ##Stat## <> '终止' and ##IsNew## <> '0'
+
+;更新本流程流程主表信息，终止
+SQL4=update Wf_^^ModelCode^^ set (LastUpdDate,Stat,EndMemo) = (select sysdate,##Stat##,##EndMemo## from dual) where FlowGid = ##FlowGid## and EntGid = __ENTGID__ and ##Stat## = '终止'
+
+;删除本流程中未审批的审批人
+SQL5=delete from Wf_^^ModelCode^^_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppDate is null and ##Stat## <> '终止'
+
+;插入本流程发起人信息
+SQL6=insert into Wf_^^ModelCode^^_App (EntGid,ModelGid,FlowGid,Gid,AppGid,AppCode,AppName,AppType,AppAssign,AppMemo,AppDate) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,10,##Stat##,'',sysdate from dual where ##Stat## <> '保存'
+
+;删除本流程全部附件信息
+SQL7=delete from Wf_^^ModelCode^^_Attach where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and ##Stat## <> '终止'
+
+;插入本流程明细信息
+SQL8=delete from Wf_^^ModelCode^^_Dtl where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and ##Stat## <> '终止'
+
+;--如果终止或作废后，存在对业务数据的回写，使用下列语句，并创建对应过程
+;--过程命名："Hdnet_doWF_模型代码"
+;--参数1：EntGid
+;--参数2：FlowGid
+;--参数3：状态（默认传入"终止"有效，可传入"作废"等，具体可在过种中配置）
+;--管理员作废时，也会调用此过程，默认传入"终止"
+;SQL10=call Hdnet_doWF_^^ModelCode^^(__ENTGID__,##FlowGid##,##Stat##)
+
+;插入本流程明细信息
+LoopSql1=insert into Wf_^^ModelCode^^_Dtl (EntGid,ModelGid,FlowGid,Gid,Line,Dtl1,Dtl2,Dtl3,Dtl4,Dtl5) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),##%Line%##,##%Dtl1%##, ##%Dtl2%##, ##%Dtl3%##, ##%Dtl4%##, ##%Dtl5%## from dual where ##Stat## <> '终止'
+
+;插入本流程附件信息
+AttachSqlAdd1=insert into Wf_^^ModelCode^^_Attach (EntGid,ModelGid,FlowGid,Gid,AttachTitle,AttachUrl,AttachSize) select __ENTGID__,##ModelGid## ,##FlowGid##,@@AttachID@@, @@FileName@@, @@FilePath@@,@@FileSize@@ from dual where ##Stat## <> '终止'
+
+[AddtionalSQLUseWhere]
+;显示，单条数据的查询，可以用于HDT显示，有select命令。从SQL1～SQL20共支持20条，同时会使用上面的[where]中的sql语句
+;示例
+Sql1=
+
+[Master]
+;显示，多条记录的查询，可在HDT页面中直接使用<HDLoop>显示，并能够提供翻页。
+SQL=
+Count=
+
+[DefaultWhere]
+;多条记录的查询的默认条件
+DefaultWhere=
+
+[Where]
+;多条记录的查询的条件，可以根据页面传入的变量组合成
+1=
+
+[GroupBy]
+;多条记录的查询的分组
+GroupBy=
+
+[DefaultOrderBy]
+;多条记录的查询的默认排序
+DefaultOrderBy=
+
+[OrderBy]
+;多条记录的查询的排序,支持多重排序排序的先后顺序由序号决定
+1=
+
+
+[Title]
+;页面的标题，从Text1～Text30共支持30条
+Text1=^^ModelName^^-^^StepName^^保存
+
+;保存附件控件名称
+AttachCtrl=selFileList_1
+;附件保存路径
+AttachPath=^^ModelCode^^
+
+;是否翻页：1是，0否
+ChangePage=0
+
+;写入数据库日志
+Log=
+
+;页面显示: 0:BodyPage;1:DetailPage;2:BlankPage
+PageKind=0
+
+;创建流程
+^^WFCreate^^1=WFFlowCreate(|^^TheFlowMemo^^ | ^^FlowGid^^)
+
+;提交，流转到下一步
+^^WF^^2=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T2 | T2Gid | and ##Stat## = '提交'| ^^AppFlowMemo^^)
+
+;终止，结束流程
+^^WF^^3=WFFlowFinish( ^^CurUrl^^ | and ##Stat## = '终止')

@@ -1,0 +1,246 @@
+<!--Js引入-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/DateControl.js)##"></script>
+<form name="frmDo" method="Post" action="">
+<h3 class="TitleBar" ><HDPrint Value=#ModeleAtype#>-><HDPrint Value=#ModeleName#></h3>
+<TABLE width="100%" class="ButtonBar" cellpadding=0 cellspacing=0>
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+     |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+      <A HREF="##HDNet_AppName##/MainPage?URL=&UsrGid=<HDPrint Value=#UsrGid#>"><FONT class="IconBack">　&nbsp;</FONT> 返回首页</A>
+    </TD>
+  </TR>
+</TABLE>
+<!--排序点击标题即可排序-用到的控件-->
+<INPUT TYPE="hidden" title="点击标题排序-记录上一次排序order by的值" name="selOrderBy" value="<HDPrint Value=#selOrderBy# Replace=#DBField2Input#>">
+<INPUT TYPE="hidden" title="点击标题排序-记录上一次排序是正序还是倒序" name="selOrderAsc" value="<HDPrint Value=#selOrderAsc# Replace=#DBField2Input#>">
+<INPUT TYPE="hidden" title="点击标题排序-记录上一次排序的字段" name="selOrderColumn" value="<HDPrint Value=#selOrderColumn# Replace=#DBField2Input#>">
+<INPUT TYPE="hidden" title="下载报表用到的控件" name="Rep_Download" value="">
+<input type="hidden" name="NotFirst" value="1">
+
+<table class="SearchBar" width="100%" cellspacing="0">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:15%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:15%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:15%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:15%">
+  <tr class="SearchTr" >
+    <td colspan="8"><b>搜索条件</b></td>
+  </tr>
+  <tr>
+    <td>ISF/ISCF/ISTF单号 ≈ </td>
+    <td><input type="Text" name="txt_Num" class="JQText" style="width:90%"></td>
+    <td>发起人 ≈ </td>
+    <td><input type="Text" name="txt_FillUsr" class="JQText" style="width:90%"></td>
+    <td>ISCF状态 = </td>
+    <td>
+      <select name="sel_ISCFStat" class="JQSelect" style="width:90%">
+        <option value="">--请选择--</option>
+        <option value=" is not null">已发起</option>
+        <option value=" is null">未发起</option>
+      </select>
+    </td>
+    <td>ISTF状态 = </td>
+    <td>
+      <select name="sel_ISTFStat" class="JQSelect" style="width:90%">
+        <option value="">--请选择--</option>
+        <option value=" is not null">已发起</option>
+        <option value=" is null">未发起</option>
+      </select>
+    </td>
+  </tr>
+  <tr >
+    <td colspan="4">
+     <a href="javascript:void(0)" onclick="JQExpand('tb_Search','font_Icon');" class="IconDown">　&nbsp;显示说明信息</a>（请进行相应的查询，找到您需要的信息）
+    </td>
+    <td colspan="4" align="right">
+      <INPUT TYPE="hidden" name="NotFirst" value="1">
+      <INPUT TYPE="submit" name="btnSearch" class="NormalSbt" value=" 查询 " >
+      <INPUT TYPE="reset" name="btnReset" class="NormalSbt" value=" 默认 ">
+      <INPUT TYPE="button" name="btnDownload" class="NormalSbt" value="下载Excel" onclick="return DownLoad()">
+    </td>
+  </tr>
+  <tr>
+    <td colspan="8" align="left">
+      <div id="tb_Search" style="display:none">
+        <li>≈:可进行模糊查询</li>
+        <li>时间格式：YYYY.MM.DD HH24:MI/YYYY.MM.DD</li>
+        <li>ISF 状态已完成，可发起ISCF,ISTF</li>
+        <li>ISF 已发起ISTF，不可以发起ISCF</li>
+        <li>ISF 已发起ISCF，不可以发起ISTF</li>
+      </div>
+    </td>
+  </tr>
+</table>
+<script language="javascript">
+  //数据提交后，对页面查询条件重新赋值
+  document.all.txt_Num.value = '<HDPrint value=#txt_Num# Replace=#DBField2Js#>';
+  document.all.txt_FillUsr.value = '<HDPrint value=#txt_FillUsr# Replace=#DBField2Js#>';
+  document.all.sel_ISCFStat.value = '<HDPrint value=#sel_ISCFStat# Replace=#DBField2Js#>';
+  document.all.sel_ISTFStat.value = '<HDPrint value=#sel_ISTFStat# Replace=#DBField2Js#>';
+  
+</script>
+<BR>
+<HDPageBar>
+<table class=ListBar width="100%" cellspacing="1">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <tr class="listtr">
+    <td colspan="5">ISF/ISCF单据</td>
+    <td colspan="3">ISCF单据</td>
+    <td colspan="3">ISTF单据</td>
+  </tr>
+  <tr class="listtr">
+    <td style="cursor:hand;" JQAsc="" JQColumn="v.ISFFlowType">类别</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="v.ISFNum">单号</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="v.ISFFillUsrName">发起人</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="v.ISFCreateDate">发起日期</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="v.ISFStatText">状态</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="v.ISCFNum">单号</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="v.ISCFFillUsrName">发起人</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="v.ISCFStat">状态</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="v.ISTFNum">单号</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="v.ISTFFillUsrName">发起人</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="v.ISTFStat">状态</td>
+  </tr>
+  <HDLoop>
+  <tr class="listtd" onmouseover="this.className='listtdfocus';" onmouseout="this.className='listtd'">
+    <td><HDPrint Value=#ISFFlowType#></td>
+    <td><a href="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ISFModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ISFModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#ISFFlowGid#>" target="_blank"><HDPrint Value=#ISFNum#></a></td>
+    <td><HDPrint Value=#ISFFillUsrName#></td>
+    <td><HDPrint Value=#ISFCreateDate#></td>
+    <td><HDPrint Value=#ISFStatText#></td>
+    <td>
+    <script language="javascript">
+    var ISFStat = '<HDPrint Value=#ISFStat# Replace=#DBField2Js#>';
+    var ISFFlowGid = '<HDPrint Value=#ISFFlowGid# Replace=#DBField2Js#>';
+    var ISCFFlowGid = '<HDPrint Value=#ISCFFlowGid# Replace=#DBField2Js#>';
+    var ISTFFlowGid = '<HDPrint Value=#ISTFFlowGid# Replace=#DBField2Js#>';
+    if (ISCFFlowGid != ''){
+      document.write('<a href="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ISCFModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ISCFModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#ISCFFlowGid#>" target="_blank"><HDPrint Value=#ISCFNum#></a>');
+    }
+    else if (ISFStat != '40' && ISTFFlowGid == ''){
+      document.write('<a href="##HDNet_AppName##/WFFlowPage?Url=Prl_ISCFV2_T1&UsrGid=<HDPrint Value=#UsrGid#>&ModelCode=Prl_ISCFV2&OldFlowGid=<HDPrint Value=#ISFFlowGid#>" target="_blank">发起ISCF</a>');
+    }
+    </script>
+    </td>
+    <td><HDPrint Value=#ISCFFillUsrName#></td>
+    <td>
+    <script language="javascript">
+    if (ISCFFlowGid != ''){
+      document.write('<HDPrint Value=#ISCFFstat#>:<HDPrint Value=#ISCFstat#>');
+    }
+    </script>
+    </td>
+    <td>
+    <script language="javascript">
+    if (ISTFFlowGid != ''){
+      document.write('<a href="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ISTFModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ISTFModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#ISTFFlowGid#>" target="_blank"><HDPrint Value=#ISTFNum#></a>');
+    }
+    else if (ISFStat != '40' && ISCFFlowGid == ''){
+      document.write('<a href="##HDNet_AppName##/WFFlowPage?Url=Prl_ISTF_T1&UsrGid=<HDPrint Value=#UsrGid#>&ModelCode=Prl_ISTF&OldFlowGid=<HDPrint Value=#ISFFlowGid#>" target="_blank">发起ISTF</a>');
+    }
+    </script></td>
+    <td><HDPrint Value=#ISTFFillUsrName#></td>
+    <td>
+    <script language="javascript">
+    if (ISTFFlowGid != ''){
+      document.write('<HDPrint Value=#ISTFFstat#>:<HDPrint Value=#ISTFstat#>');
+    }
+    </script>
+    </td>
+  </tr>
+  </HDLoop>
+</table>
+
+<SCRIPT LANGUAGE="JavaScript">
+  //下载Excel
+  function DownLoad(){
+    document.all.Rep_Download.value = '1';
+    //获取当前表单对象 
+    var JqObj = $("form[name=frmDo]");
+    //表单参数设定
+    JqObj.attr({
+      "action":'##HDNet_AppName##/__ExplainModule?Url=Prl_OISFDown&UsrGid=<HDPrint Value=#UsrGid#>',
+      "target":'_blank'
+    });
+    //表单提交
+    JqObj.submit();
+    //表单参数还原
+    JqObj.attr({
+      "action":'',
+      "target":'_self'
+    });
+    document.all.Rep_Download.value = '';
+    return true;
+  }
+  //函数：ready
+  //功能：document 加载完成后调用
+  $(function(){
+    //Td点击排序时事件
+    $("td[JQColumn]").click(function(){
+      //取出点击Td的参数
+
+      //JQColumn 字段名
+      var sJQColumn = $(this).attr("JQColumn");
+      //JQAsc 可不写，为空 或 desc
+      var sJQAsc = '';
+      if ($(this).attr("JQAsc") != null){
+        sJQAsc = $(this).attr("JQAsc");
+      }
+
+      //取出排序控件，并赋值
+      $("input[name=selOrderBy]").val(sJQColumn + ' ' + sJQAsc);
+
+      //保留本次点击参数
+      $("input[name=selOrderAsc]").val(sJQAsc);
+      $("input[name=selOrderColumn]").val(sJQColumn);
+
+      //获取当前表单对象 
+      var JqObj = $("form[name=frmDo]");
+      //表单参数设定
+      JqObj.attr({
+        "action":'',
+        "target":''
+      });
+      //表单提交
+      JqObj.submit();
+    });
+    //数据提交后，对数据提交前点击的排序Td列重新赋值
+    $("td[JQColumn]").each(function(){
+      var sJQColumn = $(this).attr("JQColumn");
+      var selOrderColumn = '<HDPrint Value=#selOrderColumn# Replace=#DBField2Js#>';
+      var selOrderAsc = '<HDPrint Value=#selOrderAsc# Replace=#DBField2Js#>';
+      if (sJQColumn == selOrderColumn){
+        //取出本Td的文本值，并重新赋值
+        var sText = $(this).text();
+        if (selOrderAsc == ''){
+          $(this).text(sText+"↑");
+          $(this).attr("JQAsc","desc");
+        }
+        else{
+          $(this).text(sText+"↓");
+          $(this).attr("JQAsc","");
+        }
+      }
+    });
+  });
+  </script>
+</form>

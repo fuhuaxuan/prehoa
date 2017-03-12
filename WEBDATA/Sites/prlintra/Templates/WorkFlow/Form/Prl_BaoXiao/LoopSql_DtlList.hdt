@@ -1,0 +1,7 @@
+<hdloop>
+  <tr class="listtd" valign="top">
+    <td>[<HDPrint Value=#PAcgCode#>]<HDPrint Value=#PAcgName#></td>
+    <td>[<HDPrint Value=#AcgCode#>]<HDPrint Value=#AcgName#></td>
+    <td align="center"><HDPrint Value=#ApplyFee#></td>
+  </tr>
+</hdloop>

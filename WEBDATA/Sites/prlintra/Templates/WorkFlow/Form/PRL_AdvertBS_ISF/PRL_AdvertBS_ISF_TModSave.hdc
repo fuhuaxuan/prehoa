@@ -1,0 +1,99 @@
+;版本号：2013年3月份（此行不允许删除）
+[Permission]
+LIMIT1=FlowGid
+LIMITDesc1=StringSize[,0]
+LIMITRemind1=您进入的路径不正确，请从正确的路径进入。
+
+SQL1=select 1 from WF_PRL_AdvertBS_ISF where EntGid = __ENTGID__ and FlowGid = ##FlowGid##
+Remind1=您指定的申请单没有找到。<script>alert('您指定的申请单没有找到。');window.close()</script>
+
+;判断WF_FLOW表中该流程是否在流转中的状态
+SQL2=select 1 from wf_Flow where EntGid=__ENTGID__ and FlowGid=##FlowGid## and Stat in ('1','2')
+Remind2=您指定的申请单目前不是审批阶段，不允许您再操作了。<script>alert('您指定的申请单目前不是审批阶段，不允许您再操作了。');window.close()</script>
+
+;判断WF_Task表中当前用户是否有该流程的待执行(stat=1)的任务
+SQL3=select 1 from wf_Task where EntGid=__ENTGID__ and FlowGid=##FlowGid## and ExecGid = __USRGID__ and stat=1
+Remind3=您暂时无法操作本页面，请与管理员联系！<script>alert('您暂时无法操作本页面，请与管理员联系！');window.close()</script>
+
+
+;检查判断的Sql语句，查不到结果是报错，从SQL1～SQL5，共可以写5句
+SQL4=select 1 from dual where ##wf_Stat## in( '10','15') union select 1 from hr_deptpost a,hr_emp b,v_usr v where a.EntGid = __ENTGID__ and b.EntGid = __ENTGID__ and v.EntGid = __ENTGID__ and a.deptGid = ##DeptGid## and b.gid = a.empgidex and v.gid = b.usrgid and a.atype=10 and b.usrgid is not null and ##wf_Stat## = '11'
+Remind4=对不起，下一步审批人部门经理未找到，请与管理员联系。<script>alert('对不起，下一步审批人部门经理未找到，请与管理员联系。');history.back()</script>
+[Master]
+[Detail]
+SqlForCondition1=select Code ModelCode, Name ModelName from wf_Model where ModelGid = ##ModelGid##
+
+SQLForCondition2=select '单号：' || ##Num## || chr(10) || chr(13) || '申请人：' || ##CurUsrName## || chr(10) || chr(13) || 'Date 日期：' || ##CreateDate1## || chr(10) || chr(13) || 'Serial No 编号：' || ##SerialNo## TheFlowMemo from dual
+
+SQLForCondition3=select 'Serial No 编号：' || ##SerialNo## ModFlowMemo from dual
+
+SQLForCondition4=select '申请人：' || ##CurUsrName##||';Serial No 编号：'||##SerialNo## AppFlowMemo from dual
+
+;鹏瑞利管辖部门的扩展性：10:部门经理(招商经理)；20:人事经理；30：财务经理；30：出纳；40：商场总经理；50：区域总监;71:资产经理 AssetManager
+SqlForCondition5=select b.usrgid AppGid,b.email ThisEmail from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##DeptGid## and b.gid = a.empgidex and atype=10 and b.usrgid is not null
+[Where]
+
+[DefaultWhere]
+DefaultWhere= 
+
+[OrderBy]
+1=
+
+[DefaultOrderBy]
+DefaultOrderBy=
+
+[GroupBy]
+
+[AddtionalSQL]
+;插入到流程主表
+SQL1=update Wf_^^ModelCode^^ set (LastUpdDate,Stat,SerialNo,Atype,Category,Categorytext,TenantLicensee ,TradingName,Address,ContactPerson ,Phone,Email,Fax,LeasePeriodBDate,LeasePeriodEDate,LeaseTermM,LeaseType,ConditionForExemption,RentalIncash,GTORent,SecurityDeposit,TotalSales,sOthers,GTO,PowerRate,GTORentFee,Remarks,Budget,PI,LeaseTermD,RentWay) = (select sysdate,##Wf_Stat##,##SerialNo##,##Atype##,##Category##,##Categorytext##,##TenantLicensee##,##TradingName##,##Address##,##ContactPerson##,##Phone##,##Email##,##Fax##,to_date(##LeasePeriodBDate##,'YYYY.MM.DD'),to_date(##LeasePeriodEDate##,'YYYY.MM.DD'),##LeaseTermM##,##LeaseType##,##ConditionForExemption##,##RentalIncash##,##GTORent##,##SecurityDeposit##,##TotalSales##,##sOthers##,##GTO##,##PowerRate##,##GTORentFee##,##Remarks##,##Budget##,##PI##,##LeaseTermD##,##RentWay## from dual) where FlowGid = ##FlowGid## and EntGid = __ENTGID__
+
+;删除附件信息
+SQL3=delete from Wf_^^ModelCode^^_Attach where EntGid = __ENTGID__ and FlowGid = ##FlowGid##
+
+;删除明细
+SQL4=delete from Wf_^^ModelCode^^_Dtl where EntGid = __ENTGID__ and FlowGid = ##FlowGid##
+
+;修改流程备注
+SQL5=update wf_flow set flownote = '^^TheFlowMemo^^' where EntGid = __ENTGID__ and FlowGid = ##FlowGid##
+
+;还原原有状态
+LoopSQL1=update prl_AdvertBS_GROUNDH set fstat = '未租' where fgid = ##%selGround%##
+
+;插入明细信息
+LoopSql2=insert into Wf_^^ModelCode^^_Dtl (EntGid,ModelGid,FlowGid,Gid,Line,GroundGid,SerialNo,LeaseTerm,UnitRate,Total,FundModelRate,Remark) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),##%Line%##,##%Gid%##,##%SerialNo%##,##%LeaseTerm%##,##%UnitRate%##,##%Total%##,##%FundModelRate%##,##%Remark%## from dual
+
+;更新地理位置状态
+LoopSql3=update prl_AdvertBS_GROUNDH set fstat = decode(##Wf_Stat##,'11','待租','未租') where fgid = ##%Gid%##
+
+;插入附件信息
+AttachSqlAdd1=insert into Wf_^^ModelCode^^_Attach (EntGid,ModelGid,FlowGid,Attach_Gid,Attach_Title,Attach_Url,Attach_Size) values( __ENTGID__,##ModelGid## ,##FlowGid##,@@AttachID@@, @@FileName@@, @@FilePath@@,@@FileSize@@)
+
+
+[Title]
+Text1=^^ModelName^^_修改保存
+Text2=
+Text3=
+Text4=
+Text5=
+AttachCtrl=selFileList
+AttachPath=^^ModelCode^^
+
+ChangePage=0
+Log=
+PageKind=0
+
+^^Wf_Run^^1=WFFlowRun( ^^ModelCode^^_TMod | ^^ModelCode^^_TA1 | AppGid | and ##Wf_Stat## = '11' | 待审批(^^AppFlowMemo^^))
+
+^^Wf_Run^^2=WFFlowFinish( ^^ModelCode^^_TMod | and ##Wf_Stat## = '15')
+[Link]
+URL1=
+URL2=
+URL3=
+URL4=
+URL5=
+URL6=
+URL7=
+URL8=
+URL9=
+URL10=

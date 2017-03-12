@@ -1,0 +1,68 @@
+;名称：报表hdc 模板
+;版本：201303
+[Permission]
+;可用于设置变量的默认值及一些限制条件。部分变量要求一进入页面就有恰当的值，例如：MASTER中WHERE关联条件中要用到的引自HDT的变量，需要一开始就赋予其默认值，否则其值为空，会报错
+
+[Detail]
+;可随意使用的变量，一般用于显示
+SQL1=
+
+[AddtionalSQL]
+;事前操作；对数据库的操作，可以创建表、更新记录、插入记录，从BeforeSql1～BeforeSql20共支持20条
+;仅仅对报表有用
+BeforeSql1=
+;事后操作AfterSQL,从AfterSQL1～AfterSQL20共支持20条
+AfterSQL1=
+
+[AddtionalSQLUseWhere]
+;显示，查询得到的结果可以用于HDT显示，从SQL1～SQL20共支持20条，同时会使用上面的[where]中的sql语句
+;示例
+Sql1=
+sql2=
+
+
+;如数据过多时，并第一次加载页面不显示页面 可在 where 条件 后加 上 and '^^NotFirst^^' = '1'
+[Master]
+;主查询语句，必写，分别为查询数据和记录条数，分别只能写一条语句
+SQL=select ac.LeftBudgutFee,pa.Code ACGCode,pa.NAME ACGName,pc.name CompanyName from PRL_ACG_COMPANY ac, PRL_ACG pa, PRL_COMPANY pc where ac.entgid = __ENTGID__ and pa.entgid = __ENTGID__ and pc.entgid = __ENTGID__ and ac.companygid = pc.gid and ac.ACGGid = pa.Gid
+
+Count=select Count(*) from PRL_ACG_COMPANY ac, PRL_ACG pa, PRL_COMPANY pc where ac.entgid = __ENTGID__ and pa.entgid = __ENTGID__ and pc.entgid = __ENTGID__ and ac.companygid = pc.gid and ac.ACGGid = pa.Gid
+
+[Where]
+;按需要关联在MASTER后面的查询条件，双井号引的是HDT中控件的名字，如果对应控件有VALUE，则该语句起作用，否则不起作用
+1=and pc.name like '%' || ##txtCompany## || '%' 
+2=and pa.Code like '%' || ##txtAcgCode## || '%'
+3=and pa.name like '%' || ##txtAcgName## || '%'
+
+[DefaultWhere]
+DefaultWhere=
+
+[OrderBy]
+;串在MASTER后面的排序语句
+1=##selOrderBy##
+
+[GroupBy]
+;串在MASTER后面的分组语句
+GroupBy=
+
+[DefaultOrderBy]
+;串在MASTER后面的默认排序语句
+DefaultOrderBy=pc.name,pa.Code,ac.LeftBudgutFee
+
+
+
+[Title]
+;用于设置页面显示功能
+;页面的标题,Title最多可以到Text30
+Text1=^^Rep_Name^^
+
+;页面显示: 0:BodyPage;1:DetailPage;2:BlankPage
+PageKind=2
+
+;是否翻页：1是，0否
+ChangePage=1
+
+;翻页时的每页记录数，如果没有的话，则取HDNet默认值20
+ChangePageRow=20
+
+;如果出现SQL错误，可在hdnet\webdata\system\syslog\下查看系统日志，查找错误

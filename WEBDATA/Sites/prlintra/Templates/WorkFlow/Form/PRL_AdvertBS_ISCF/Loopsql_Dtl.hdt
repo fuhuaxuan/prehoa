@@ -1,0 +1,18 @@
+<!--版本号：2013年3月份;此行不允许删除-->
+<HDLoop>
+<script>
+  var Obj = document.all.tb_Income;
+  var i = Obj.rows.length;
+    var iRow = Math.floor(Math.random() * (1 + 100000 - 1) + 1);
+    //调用公用函数，新增一行
+    Common_Tr_Add(Obj,'listtd','0',
+    '<HDPrint Value=#Line#>',
+    '<HDPrint Value=#SerialNo#>',
+    '<HDPrint Value=#LeaseTerm#>',
+    '<HDPrint Value=#AreaSize#>',
+    '<HDPrint Value=#UnitRate#>',
+    '<HDPrint Value=#Total#>',
+    '<HDPrint Value=#FundModelRate#>',
+    '<HDPrint Value=#Remark#>');
+</script>
+</HDLoop>

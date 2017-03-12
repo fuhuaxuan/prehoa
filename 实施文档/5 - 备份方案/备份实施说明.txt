@@ -1,0 +1,34 @@
+暂定服务器备份盘为F盘
+
+1.文件说明
+	dumpel.exe	文件调用程序
+	WriteFile.exe	写文件程序
+
+	将这二个文件放在服务器 f:\backup\script 目录下
+
+	Rar.exe	压缩程序
+	将此文件放置到服务器 c:\windows\system32 目录下
+
+2.备份脚本 Haiding_backup_daily.cmd 说明
+	Haiding_backup_daily.cmd 是进行日备份的脚本，其作用是将数据库的数据进行全量备份，WEB数据进行增量备份。
+
+	将这个文件放在服务器 f:\backup\script 目录下
+
+	文件中参数替换为正确数据，参数说明如下：
+	$$数据库用户名$$ ：数据库用户名，必须使用具有DBA权限的用户
+	$$数据库密码$$ ：数据库用户的密码，必须使用具有DBA权限的用户的密码
+	$$数据库服务名$$ ：数据库服务名
+	$$WEB目录物理地址$$ ：WEB目录物理地址
+
+3.备份脚本 Haiding_backup_full.cmd 说明
+	Haiding_backup_full.cmd 是进行全量备份的脚本，其作用是将数据库的数据进行全量备份，WEB数据进行全量备份。
+	将这个文件放在服务器 f:\backup\script 目录下
+	文件中参数替换为正确数据，参数说明如下：
+	$$数据库用户名$$ ：数据库用户名，必须使用具有DBA权限的用户
+	$$数据库密码$$ ：数据库用户的密码，必须使用具有DBA权限的用户的密码
+	$$数据库服务名$$ ：数据库服务名
+	$$WEB目录物理地址$$ ：WEB目录物理地址
+
+4.备份实施
+	在任务计划中增加一项任务，每天 00:05 执行 f:\backup\script\Haiding_backup_daily.cmd
+	在任务计划中增加一项任务，每月第一天 03:45 执行 f:\backup\script\Haiding_backup_full.cmd

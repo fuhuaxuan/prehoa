@@ -1,0 +1,21 @@
+<!--版本号：2013年3月份;此行不允许删除-->
+function AddAppTr(AppStyle, AppType, AppCode, AppName, AppStat, Memo, AppDate)
+{
+  var tb_Investor=document.getElementById(AppStyle+AppType);
+  var tr = tb_Investor.insertRow();
+
+  td = tr.insertCell();
+  td.insertAdjacentHTML('afterbegin','<b>'+AppName+'</b><BR>'+AppStat+'：'+Memo);
+  td.vAlign="top";
+  td.title='['+AppCode+']'
+
+  var tr = tb_Investor.insertRow();
+
+  td = tr.insertCell();
+  td.insertAdjacentHTML('afterbegin',AppDate);
+  td.vAlign="bottom";
+  td.align="right";
+}
+  <HDLoop>
+    AddAppTr('<HDPrint value=#AppStyle# Replace=#DBField2Js#>', '<HDPrint value=#AppType# Replace=#DBField2Js#>', '<HDPrint value=#AppCode# Replace=#DBField2Js#>', '<HDPrint value=#AppName# Replace=#DBField2Js#>', '<HDPrint value=#AppStat# Replace=#DBField2Js#>', '<HDPrint value=#AppMemo# Replace=#DBField2Js#>', '<HDPrint value=#AppDate# Replace=#DBField2Js#>')
+  </HDLoop>

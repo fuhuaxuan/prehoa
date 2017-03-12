@@ -1,0 +1,89 @@
+[Permission]
+LIMIT1=FlowGid
+LIMITDesc1=StringSize[,0]
+LIMITRemind1=您选择的流程数据有误，请返回重新选择！
+
+;判断是否有该条信息
+SQL1=select 1 from wf_Flow where EntGid=__ENTGID__ and FlowGid=##FlowGid##
+Remind1=您指定的[ISTF]没有找到！<script>alert('您指定的[ISTF]没有找到！');window.close()</script>
+
+;检查判断的Sql语句，查不到结果是报错，从SQL1～SQL5，共可以写5句
+SQL2=select 1 from dual where ##AppAssign## = '否决' union select 1 from v_WF_Model_App v where v.EntGid = __ENTGID__ and v.ModelGid = ##ModelGid## and lower(v.ModelCode) like '%' || lower('_TB2') and ##AppAssign## = '同意'
+Remind2=对不起，下一步审批人租赁部总监未设置，请与管理员联系。<script>alert('对不起，下一步审批人租赁部总监未设置，请与管理员联系。');history.back()</script>
+[Master]
+
+[Detail]
+;得到模型名称
+SqlForCondition1=select Code ModelCode, Name ModelName from wf_Model where ModelGid = ##ModelGid##
+
+;得到业务单据信息
+SQLForCondition2=select ##CurUsrName##||':'||##AppAssign##||' - 类别：' || decode(category,10,'Early Termination 提前终止',20,'Termination 到期终止',30,'Others 其他:'||categoryText) || '；租户：' || Lessee|| '；终止日期：' || Terminationdate AppFlowMemo,nvl(nvl(numa,0)+nvl(numb,0)+nvl(numc,0)+nvl(numd,0)+nvl(numg,0), 0) DataTotal from WF_^^ModelCode^^ where EntGid = __ENTGID__ and  FlowGid = ##FlowGid##
+
+;判断是否要跳过TB:sStep>80且TB2=TC3
+SqlForCondition6=select count(*) IsTB from dual where (select v.AppGid from v_WF_Model_App v where v.EntGid = __ENTGID__ and v.ModelGid = ##ModelGid## and lower(v.ModelCode) like '%' || lower('_TB2') and rownum <2) = (select v.AppGid from v_WF_Model_App v where v.EntGid = __ENTGID__ and v.ModelGid = ##ModelGid## and lower(v.ModelCode) like '%' || lower('_TC3') and rownum <2) and ##DataTotal## > 80000
+
+;取出流程信息，用于邮件
+SQL1=select decode(f.category,10,'Early Termination 提前终止',20,'Termination 到期终止',30,'Others 其他:'||f.categorytext) categoryText1,o.DEPT,o.Unit,o.area,o.tradename,o.trade,o.lessee,o.tradingname,o.address,o.contactor,o.phone,o.email,o.fax,o.leaseTermY,o.leaseTermM,o.leaseTermD,to_char(o.HandoverDate,'YYYY.MM.DD') HandoverDate,o.Related,o.Detail,o.Rate,to_char(o.contractDate1,'YYYY.MM.DD') contractDate1,to_char(o.contractdate2,'YYYY.MM.DD') contractdate2,o.freeRentY,o.freeRentM,o.freeRentD,o.fitoutM,o.fitoutD,to_char(o.fitoutdate1,'YYYY.MM.DD') fitoutdate1,to_char(o.contractdate2,'YYYY.MM.DD') fitoutdate2,f.* from WF_^^ModelCode^^ f,WF_prl_oisf o where f.EntGid = __ENTGID__ and f.EntGid = o.EntGid and f.FlowGid = ##FlowGid## and f.OldFlowGid = o.FlowGid
+
+;显示单位信息
+LoopSQL1=select * from wf_prl_oisf_ground where EntGid = __ENTGID__ and FlowGid = ##OldFlowGid## order by fNo
+LoopHDT1=Templates\WorkFlow\Form\^^ModelCode^^\LoopSql_UnitDtl.hdt
+LoopVAR1=UnitList
+
+;取出邮件
+;同意并下一步：取出下一步执行人Email
+LoopSQL2=select distinct hr.Email from v_Usr u, hr_emp hr where u.EntGid = __ENTGID__ and u.EntGid = hr.EntGid and u.gid = hr.usrgid and exists (select 1 from v_WF_Model_App o,v_org_usr v where o.EntGid = u.EntGid and o.EntGid = v.EntGid and o.ModelGid = ##ModelGid## and lower(o.Modelcode) like '%' || lower('_TB2') and o.AppGid = v.OrgGid and v.UsrGid = u.Gid) and ##AppAssign## = '同意' and ##IsTB## = '0' union select distinct hr.Email from v_Usr u, hr_emp hr where u.EntGid = __ENTGID__ and u.EntGid = hr.EntGid and u.gid = hr.usrgid and exists (select 1 from v_WF_Model_App o,v_org_usr v where o.EntGid = u.EntGid and o.EntGid = v.EntGid and o.ModelGid = ##ModelGid## and lower(o.Modelcode) like '%' || lower('_TC1') and o.AppGid = v.OrgGid and v.UsrGid = u.Gid) and ##AppAssign## = '同意' and ##IsTB## = '1'
+LoopHDT2=Templates\WorkFlow\Form\^^Modelcode^^\LoopSql_Email.hdt
+LoopVAR2=EmailList
+
+;select distinct v.Email from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype in (50) and ##AppAssign## = '同意'
+
+[Where]
+
+[DefaultWhere]
+DefaultWhere= 
+
+[OrderBy]
+1=
+
+[DefaultOrderBy]
+DefaultOrderBy=
+
+[GroupBy]
+
+[AddtionalSQL]
+;全部审批完成后更新流程主表
+Sql1=update WF_^^ModelCode^^ set (LastUpdDate,Stat) = (select sysdate,##AppAssign## from dual) where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## 
+
+;插入本流程中审批人一信息
+SQL2=insert into Wf_prl_oisf_App (EntGid,FlowGid,DtlGid,AppGid,AppCode,AppName,AppType,AppAssign,AppMemo,AppDate) select __ENTGID__,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,50,##AppAssign##, ##AppMemo##,sysdate from dual
+
+[Title]
+Text1=^^ModelName^^
+Text2=
+Text3=
+Text4=
+Text5=
+
+ChangePage=0
+
+;同意
+WF1=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TB2 | Null | and ##AppAssign## = '同意' and ##IsTB## = '0' |^^AppFlowMemo^^)
+
+;同意，满足条件，流转到下一步
+WF2=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TC1 | null | and ##AppAssign## = '同意' and ##IsTB## = '1' |^^AppFlowMemo^^)
+
+;否决，返回发起人
+WF3=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TMod | Null | and ##AppAssign## = '否决' |^^AppFlowMemo^^)
+
+[Link]
+URL1=
+URL2=
+URL3=
+URL4=
+URL5=
+URL6=
+URL7=
+URL8=
+URL9=
+URL10=

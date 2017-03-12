@@ -1,0 +1,121 @@
+[Permission]
+LIMIT1=Memo
+LIMITDesc1=StringSize[2000,]
+LIMITRemind1=备注不能超过2000汉字！
+
+LIMIT2=FlowGid
+LIMITDesc2=StringSize[,0]
+LIMITRemind2=您选择的流程数据有误，请返回重新选择！
+
+;判断是否有该条信息
+SQL1=select 1 from wf_PRL_ISF where EntGid=__ENTGID__ and FlowGid=##FlowGid##
+Remind1=您指定的[ISF]没有找到！<script>alert('您指定的[ISF]没有找到！');window.close()</script>
+
+;判断WF_FLOW表中该流程是否在流转中的状态
+SQL2=select 1 from wf_Flow where EntGid=__ENTGID__ and FlowGid=##FlowGid## and Stat in ('1','2')
+Remind2=您指定的[ISF]申请单目前不是审批阶段，不允许您再操作了。<script>alert('您指定的[ISF]申请单目前不是审批阶段，不允许您再操作了。');window.close()</script>
+
+;判断WF_Task表中当前用户是否有该流程的待执行(stat=1)的任务
+SQL3=select 1 from wf_Task where EntGid=__ENTGID__ and FlowGid=##FlowGid## and ExecGid = __USRGID__ and stat=1
+Remind3=您暂时无法操作本页面，请与管理员联系！<script>alert('您暂时无法操作本页面，请与管理员联系！');window.close()</script>
+
+;检查判断的Sql语句，查不到结果是报错，从SQL1～SQL5，共可以写5句
+SQL4=select 1 from dual where ##wf_Stat## in ('1','100') union select 1 from hr_deptpost a,hr_emp b,v_usr v where a.EntGid = __ENTGID__ and b.EntGid = __ENTGID__ and v.EntGid = __ENTGID__ and a.deptGid = ##DeptGid## and b.gid = a.empgidex and v.gid = b.usrgid and a.atype=10 and b.usrgid is not null and ##wf_Stat## = '10'
+Remind4=对不起，下一步审批人部门经理未找到，请与管理员联系。<script>alert('对不起，下一步审批人部门经理未找到，请与管理员联系。');history.back()</script>
+
+[Master]
+[Detail]
+SqlForCondition1=select Code ModelCode, Name ModelName from wf_Model where ModelGid = ##ModelGid##
+
+;得到业务单据信息
+SqlForCondition2=select '['||atype||']'||lessee flownote,sparam1,sparam2,sparam3,fillusrdeptgid,fillusrgid,unitgid from WF_^^ModelCode^^ where FlowGid = ##FlowGid##
+; --鹏瑞利管辖部门的扩展性：10:部门经理；20:行政经理；30：财务经理；31：出纳；40：商场总经理；50：区域总监；71:资产总监；
+;招商经理
+SqlForCondition3=select b.usrgid usrA1,b.email thisemail from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##DeptGid## and b.gid = a.empgidex and atype=10 and b.usrgid is not null
+
+
+;得到业务单据信息
+Sql1=select * from WF_^^ModelCode^^ where EntGid = __ENTGID__ and  FlowGid = ##FlowGid##
+
+;取出明细信息
+SQL4=select a.* from wf_^^ModelCode^^_dtl a where EntGid=__ENTGID__ and FlowGid = ##FlowGid## and yeartype = 1
+
+
+[Where]
+
+[DefaultWhere]
+DefaultWhere= 
+
+[OrderBy]
+1=
+
+[DefaultOrderBy]
+DefaultOrderBy=
+
+[GroupBy]
+
+[AddtionalSQL]
+;插入到流程主表
+SQL1= update Wf_^^ModelCode^^ set (Stat,DEPT,unit,area,trade,tradename,atype,category,categorytext,lessee,tradingname,address,contactor,phone,email,fax,leaseTermY,leaseTermM,leaseTermD,Related,HandoverDATE,contractDate1,contractdate2,detail,freeRentM,freeRentD,fitoutM,fitoutD,fitoutdate1,fitoutdate2,rate,collection,PMFD,PMFM,POSFeeD,POSFeeM,LegalFeeD,LegalFeeM,TotalFeeD,TotalFeeM,AGR,security,incash,BRCnew,BRCExist,BRCbudget,brcbudgettext,Memo,SDTopUp ,AdminFee,sPARAM1,sPARAM2,modarea,newarea,modareareason,modbud,newBRCbudget,unitgid,FitAllowance,TotalFee,OtherFeeName,OtherFee,OtherTotalFee) = (select ##wf_Stat##, ##DEPT##, ##unit##, ##area##, ##trade##,(select name from Tbusrange where code = ##trade##), ##atype##, ##category##, ##categorytext##, ##lessee##, ##tradingname##, ##address##, ##contactor##, ##phone##, ##email##, ##fax##, ##leaseTermY##, ##leaseTermM##, ##leaseTermD##, ##Related##, to_date(##HandoverDATE##,'yyyy.mm.dd'), to_date(##contractDate1##,'yyyy.mm.dd'), to_date(##contractdate2##,'yyyy.mm.dd'), ##detail##, ##freeRentM##, ##freeRentD##, ##fitoutM##, ##fitoutD##, to_date(##fitoutdate1##,'yyyy.mm.dd'), to_date(##fitoutdate2##,'yyyy.mm.dd'), ##rate##, ##collection##, ##PMFD##, ##PMFM##, ##POSFeeD##, ##POSFeeM##, ##LegalFeeD##, ##LegalFeeM##, ##TotalFeeD##, ##TotalFeeM##, ##AGR##, ##security##, ##incash##, ##BRCnew##, ##BRCExist##, ##BRCbudget##, ##brcbudgettext##, ##Memo##, ##sdtopup##, ##adminfee##,##BudgetRate##,##PM##,##modarea##,##newarea##,##modareareason##,##modbud##,##newBRCbudget##,##unitgid##,##FitAllowance##,##TotalFee##,##OtherFeeName##,##OtherFee##,##OtherTotalFee## from dual) where entgid = __ENTGID__ and flowgid = ##FlowGid## and ##wf_Stat## <> '100'
+
+;删除明细表
+sql2=delete from Wf_^^ModelCode^^_dtl  where entgid = __ENTGID__ and flowgid = ##FlowGid## and ##wf_Stat## <> '100'
+
+;删除附件表
+sql3=delete from Wf_^^ModelCode^^_Attach  where entgid = __ENTGID__ and flowgid = ##FlowGid## and ##wf_Stat## <> '100'
+
+;更新作废状态
+SQL4=UPDATE Wf_^^ModelCode^^ SET STAT = 100 where entgid = __ENTGID__ and flowgid = ##FlowGid## and ##wf_Stat## = '100'
+
+;先删除地理位置
+sql5=delete from Wf_^^ModelCode^^_ground  where entgid = __ENTGID__ and flowgid = ##FlowGid## 
+
+;还原原来的状态
+loopsql1=update prl_GROUNDH set  fstat = '未租' where fgid = ##%sel_OldGround%## 
+
+;更新铺号表信息
+loopsql2=update prl_GROUNDH set  fstat = '待租' where fgid = ##%sel_Ground%## and ##wf_Stat## = '10'
+
+;插入明细表
+loopsql3=insert into Wf_^^ModelCode^^_dtl (entgid,modelgid,flowgid,gid,yeartype,freerentdate1,freerentdate2,tbrd,tbrm,pmfd,pmfm,ap,apfixed,gto,progtod,progtom,progtorent) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),##%yeartype%##,to_date(##%freerentdate1%##,'yyyy.mm.dd'), to_date(##%freerentdate2%##,'yyyy.mm.dd'),##%TBRD%##,##%TBRM%##,##%pmfD%##,##%pmfM%##,##%AP%##,##%APfixed%##,##%GTO%##,##%ProGTOD%##,##%ProGTOM%##,##%ProGTOrent%##  from dual where ##wf_Stat## <> '100'
+
+;插入地理位置
+LoopSql4=insert into Wf_^^ModelCode^^_ground (EntGid,ModelGid,FlowGid,Gid,fgid,fno) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),fgid,fno from prl_GROUNDH where fgid = ##%sel_Ground%## and ##wf_Stat## <> '100'
+
+;插入附件信息
+AttachSqlAdd1=insert into Wf_^^ModelCode^^_Attach (EntGid,modelgid,FlowGid,Attach_Gid,Attach_Title,Attach_Url,Attach_Size) select   __ENTGID__ , ##modelgid##,##FlowGid##, @@AttachID@@, @@FileName@@, @@FilePath@@,@@FileSize@@ from dual  where ##wf_Stat## <> '100'
+
+;修改流程备注
+[Title]
+Text1=^^ModelName^^——修改保存
+Text2=
+Text3=
+Text4=
+Text5=
+AttachCtrl=selFileList
+AttachPath=^^ModelCode^^
+
+ChangePage=0
+Log=
+PageKind=0
+
+
+;提交
+^^Wf_Run^^2=WFFlowRun( ^^ModelCode^^_TMod | ^^ModelCode^^_TA1 | usrA1 | and ##wf_Stat## = '10' | 待审批(发起人：^^CurUsrName^^；[^^atype^^]^^lessee^^))
+
+;结束流程
+^^Wf_Run^^5=WFFlowFinish( ^^ModelCode^^_TMod | and ##wf_Stat## = '100')
+
+
+
+[Link]
+URL1=
+URL2=
+URL3=
+URL4=
+URL5=
+URL6=
+URL7=
+URL8=
+URL9=
+URL10=

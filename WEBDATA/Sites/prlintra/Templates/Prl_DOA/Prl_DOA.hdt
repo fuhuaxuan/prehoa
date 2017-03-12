@@ -1,0 +1,73 @@
+<!--Js引入-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<script language="javascript">
+  function changeCom(JsObj){
+    var $sel_Com = $(JsObj);
+    $("iframe[name=AcgList]").attr("src","##HDNet_AppName##/__ExplainModule?URL=Prl_DOA_List&UsrGid=<HDPrint Value=#UsrGid#>&COMGid="+$sel_Com.val()+'&ComName='+$sel_Com.find("option:selected").text());
+  }
+</script>
+
+<table width="100%" cellspacing="0" cellpadding="0" border="0" height="100%" style="margin-top:5px;">
+  <tr height="100%">
+    <td colspan="3">
+      <table height="100%" border="0" width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+          <td width="22%" valign=top>
+            <table Class="ListBar" Cellspacing="1" Cellpadding="0"  width="100%">
+              <col style="padding-left:4px" width="100%">
+              <tr Class="Listtr">
+                <td align="left">
+                公司：
+                <select name="sel_Com" class="JQSelect" style="width:200px;" onchange="changeCom(this)">
+                  <HDLoop>
+                  <option value="<HDPrint Value=#Gid#>"><HDPrint Value=#Name#></option>
+                  </HDLoop>
+                </select>
+                <br>
+                项目信息：【<A HREF="javascript:DataInterface(frmDataInterface_Search);">查询</a>】
+                </td>
+              </tr>
+            </table>
+            <iframe width=100% height="95%" src="##HDNet_AppName##/__ExplainModule?URL=Prl_DOA_List&UsrGid=<HDPrint Value=#UsrGid#>&COMGid=<HDPrint Value=#Gid#>&ComName=<HDPrint Value=#Name#>" NAME="AcgList" frameborder="0" style="overflow-x: scroll;" Target="ACG"></iframe>
+          </td>
+          <td valign=top>
+            <iframe width=100% height="100%" SRC="##HDNet_AppName##/__ExplainModule?URL=Prl_DOA_Dtl&UsrGid=<HDPrint Value=#UsrGid#>&ComGid=<HDPrint Value=#Gid#>&AcGGid=" NAME="ACG" scrolling="auto" frameborder="0"></iframe>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<script language="javascript">
+  //数据提交后，对页面查询条件重新赋值
+  if ('<HDPrint value=#sel_Com# Replace=#DBField2Js#>' != ''){
+    document.all.sel_Com.value = '<HDPrint value=#sel_Com# Replace=#DBField2Js#>';
+  }
+</script>
+
+<!-- DataInterface函数引入 -->
+<script language="javascript" src="##GetWebRootPath(/Scripts/DataInterface.js)##"></script>
+<FORM NAME="frmDataInterface_Search" ACTION="">
+  <INPUT TYPE="hidden" name="DataInterface_Title" value="项目查询列表">
+
+  <INPUT TYPE="hidden" name="DataInterface_Sql" value="select d.gid,d.code,d.name from PRL_ACG d where d.EntGid = '<HDPrint Value=#EntGid#>'">
+
+  <INPUT TYPE="hidden" name="DataInterface_CountSql" value="select count(1) from PRL_ACG d where d.EntGid = '<HDPrint Value=#EntGid#>'">
+  <INPUT TYPE="hidden" name="DataInterface_OrderSql" value="order by d.code">
+  <INPUT TYPE="hidden" name="DataInterface_UsrGid" value="<HDPrint Value=#UsrGid#>">
+  <INPUT TYPE="hidden" name="DataInterface_AppName" value="##HDNet_AppName##">
+
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="2^项目代码^left^20">
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="3^项目名称^left^100">
+
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="d.code^项目代码^1">
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="d.name^项目名称^1">
+  <input type="hidden" name="DataInterface_Search_Sql" value="">
+  <input type="hidden" name="DataInterface_Search_Cols" value="">
+
+  <INPUT TYPE="hidden" name="DataInterface_FieldTo" value="">
+  <INPUT TYPE="hidden" name="DataInterface_FieldBy" value="1">
+  <INPUT TYPE="hidden" name="DataInterface_CallBckFunc" value="window.AcgList.JQTreeSearch">
+  <INPUT TYPE="hidden" name="DataInterface_Close" value="true">
+</FORM>

@@ -1,0 +1,24 @@
+<!-- 引入邮件 -->
+<HDPrint Value=#EmailList# Replace=#None#>
+
+<SCRIPT LANGUAGE="JavaScript">
+  //如有打开页面，刷新打开页面
+  if (self.opener != null) {
+    try{
+      self.opener.location.reload();
+    }
+    catch(e){
+    }
+    window.opener = null;
+    window.open(' ', '_self', ' ');
+  }
+  alert('审批完毕，审批人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>，审批意见：<HDPrint Value=#AppAssign# Replace=#DBField2Js#>');
+
+  if ('<HDPrint Value=#AppAssign# Replace=#DBField2Js#>' == '同意' && '<HDPrint Value=#IsTA1# Replace=#DBField2Js#>' == '0'){
+    //发送邮件
+    frmMail.submit();
+  }
+  else{
+    window.close();
+  }
+</SCRIPT>

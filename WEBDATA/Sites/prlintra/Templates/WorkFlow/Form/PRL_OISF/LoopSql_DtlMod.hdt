@@ -1,0 +1,17 @@
+<script>
+  <hdloop>
+    Add_Dtl('<HDPrint Value=#TbId# Replace=#DBField2Js#>',
+    '<HDPrint Value=#Gid# Replace=#DBField2Js#>',
+    '<HDPrint Value=#YearType# Replace=#DBField2Js#>',
+    '<HDPrint Value=#FreeRentDate1# Replace=#DBField2Js#>',
+    '<HDPrint Value=#FreeRentDate2# Replace=#DBField2Js#>',
+    '<HDPrint Value=#TBRD# Replace=#DBField2Js#>',
+    '<HDPrint Value=#TBRM# Replace=#DBField2Js#>',
+    '<HDPrint Value=#FTBRD# Replace=#DBField2Js#>',
+    '<HDPrint Value=#FTBRM# Replace=#DBField2Js#>',
+    '<HDPrint Value=#PMFD# Replace=#DBField2Js#>',
+    '<HDPrint Value=#PMFM# Replace=#DBField2Js#>',
+    '<HDPrint Value=#FPMFD# Replace=#DBField2Js#>',
+    '<HDPrint Value=#FPMFM# Replace=#DBField2Js#>');
+  </hdloop>
+</script>

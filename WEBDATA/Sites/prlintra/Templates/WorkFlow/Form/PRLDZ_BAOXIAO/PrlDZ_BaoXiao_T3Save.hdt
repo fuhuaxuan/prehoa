@@ -1,0 +1,23 @@
+<!-- 引入邮件 -->
+<HDPrint Value=#EmailList# Replace=#None#>
+<!--版本号：2014年3月份（此行不允许删除）-->
+<SCRIPT LANGUAGE="JavaScript">
+  alert('审批完毕，审批人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>，审批意见：<HDPrint Value=#AppAssign# Replace=#DBField2Js#>');
+
+if (self.opener != null) {
+  try{
+    self.opener.location.reload();
+  }
+  catch(e){
+  }
+  window.opener = null;
+  window.open(' ', '_self', ' ');
+}
+if ('<HDPrint Value=#AppAssign# Replace=#DBField2Js#>' == '通知出纳'){
+  //发送邮件
+  frmMail.submit();
+}
+else{
+  window.close();
+}
+</SCRIPT>

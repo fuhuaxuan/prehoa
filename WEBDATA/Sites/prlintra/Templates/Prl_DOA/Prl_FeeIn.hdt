@@ -1,0 +1,224 @@
+<!--Js引入-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+
+<HDIF EqualNot(<HDPrint Value=#IsShow#>, yes)>
+<form name="frmDo" method="Post" action="">
+<h3 class="TitleBar"><HDPrint Value=#ModuleAtype#>-><HDPrint Value=#ModuleName#></h3>
+<div id="JQ_ToolBar">
+<table class="ButtonBar" cellpadding="0" cellspacing="0">
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A Href="javascript:CheckSubmit('导入');void(0);" name="btn_1"><FONT class="IconImport">　&nbsp;</FONT> 导入 </A>
+     |
+     <A Href="javascript:location.reload();void(0);" name="btn_1"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新 </A>
+    </td>
+  </TR>
+</TABLE>
+</div>
+
+<!--隐藏的一些控件-->
+<input type="hidden" name="UploadInfo" value="UploadInfo">
+<input type="hidden" name="LogImport" value="Log">
+
+<h3 class="SubTitleBar"><FONT style="padding-left:10px">请选择导入文件</FONT></h3>
+<table width="100%" class="ListBar" cellpadding=0 cellspacing=1>
+  <col style="width:15%; padding-left:4px">
+  <col style="width:35%; padding-left:4px">
+  <col style="width:15%; padding-left:4px">
+  <col style="width:35%; padding-left:4px">
+  <tr>
+    <td class="DtlBarTitle">年份：<font color="red">*</font></td>
+    <td class="ListTD">
+    <select style="width:250px;" name="year" class="JQMust">
+      <option value=''>--请选择--</option>
+      <script language="javascript">
+        var date=new Date;
+        var year=date.getFullYear(); 
+        document.write('<option value="'+year+'" selected>'+year+'</option>');
+        document.write('<option value="'+(year+1)+'">'+(year+1)+'</option>');
+      </script>
+    </select>
+    </td>
+    <td class="DtlBarTitle">公司名称：<font color="red">*</font></td>
+    <td class="ListTD">
+    <select style="width:250px;" name="CompanyGid" class="JQMust">
+      <option value=''>--请选择--</option>
+      <HDPrint Value=#ComList# Replace=#None#>
+    </select>
+    </td>
+  </tr>
+  <TR>
+    <TD class="DtlBarTitle">上传文件:<font color="red">*</font><br><a href="##GetWebRootPath(/Files/prlintra/Prl_Fee/鹏瑞利Intra_费用申请单导入模板.xls)##" target="_blank">[Excel导入模板下载]</a></TD>
+    <TD class="ListTD" colspan="3">
+      <input type="text" NAME="ImportFileName" class="JQText JQMust" readonly style="width:300px"><br>
+      <iframe FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid# Replace=#DBField2Input#>&CallBackFun=AddAttach" height=28></iframe>
+      <input type="hidden" name="HDTempPath" value="<HDPrint Value=#NewGid# Replace=#DBField2Input#>">
+    </TD>
+  </TR>
+</TABLE>
+
+<FieldSet style="width:100%;paddign-left:4px">
+  <legend><font color=red><B>特别提醒</B></font></legend>
+    <li>点击“模板下载”下载模板。</li>
+    <li>根据“导入说明”填写模板中数据。</li>
+    <li>点击“浏览”找到要上传的（.xls）格式的Office/Wps-Excel文件，并点击“上传”。</li>
+    <li>文件的大小不要超过<font color="red">1M</font>，否则将影响处理的速度。</li>
+    <li>点击工具栏中“导入”把选择文件的数据上传到服务中。</li>
+    <li>为了减少错误，系统限制每次只能上传一个文件。</li>
+    <li><font color="red"><b>导入模板中第一行为标题行，对第一行的数据不予导入。</b></font></li>
+    <li><b>只有整个文件中的数据全部正确，数据才能被保存，否则不会保存数据。</b></li>
+</FieldSet>
+
+<h3 class="SubTitleBar"><FONT style="padding-left:10px">导入字段说明</FONT></h3>
+<table width="100%" class="ListBar" cellpadding=0 cellspacing=1>
+  <col style="width:20%; padding-left:4px">
+  <col style="width:20%; padding-left:4px">
+  <TR>
+    <TD class="DtlBarTitle" align="center">第1列</TD>
+    <TD class="DtlBarTitle" align="center">第2列</TD>
+  </TR>
+  <TR valign="top">
+    <TD class="ListTD">
+      <b>名称：</b>项目编号<br/>
+      <b>数据类型(大小)：</b>数字（10位数以下）<br/>
+      <b>是否必填：</b><font color="red">是</font><br/>
+      <b>例：</b>1.01</font>
+    </TD>
+    <TD class="ListTD">
+      <b>名称：</b>预算金额<br/>
+      <b>数据类型(大小)：</b>数字（10位数以下），单位：元<br/>
+      <b>是否必填：</b><font color="red">是</font><br/>
+      <b>备注：</b>请填写对应预算金额数值。<br/>
+      <b>例：</b>10000</font>
+    </TD>
+  </TR>
+</TABLE>
+
+</form>
+<!--JS区-->
+<SCRIPT LANGUAGE="JavaScript">
+  //复制一个工具栏
+  var $ToolBar = $("div#JQ_ToolBar");
+  $("form[name=frmDo]").append($ToolBar.html());
+
+//附件上传
+function AddAttach(JsFileName)
+{
+  if (JsFileName == '') return false;
+  frmDo.ImportFileName.value = JsFileName;
+}
+//提交函数
+function CheckSubmit(){
+  //提交时，验证必填项
+  if (!JQcheck("JQMust")){
+    return false;
+  }
+  
+  //获取当前表单对象 
+  var JqObj = $("form[name=frmDo]");
+  //表单参数设定
+  JqObj.attr({
+    "action":'##HDNet_AppName##/__ExplainModule?Url=<HDPrint Value=#Url#>Save&UsrGid=<HDPrint Value=#UsrGid#>',
+    "target":'_self'
+  });
+  //表单提交
+  JqObj.submit();
+
+  //操作按钮变为不可用
+    $("a[name=btn_1]").prop("disabled",true);
+
+  //本函数失效
+  CheckSubmit = function() {return false;}
+}
+</SCRIPT>
+</HDIF>
+
+<!-------------------------------分隔线----------------------------->
+
+<HDIF Equal(<HDPrint Value=#IsShow#>, yes)>
+<form name="frmList" method="Post" action="">
+<h3 class="TitleBar" ><HDPrint Value=#ModuleAtype#>-<HDPrint Value=#ModuleName#>-确认</h3>
+<div id="JQ_ToolBar">
+<table class="ButtonBar" cellpadding="0" cellspacing="0">
+  <col style="width:85%">
+  <col style="width:15%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A Href="javascript:CheckSubmit('确认导入');void(0);" name="btn_1"><FONT class="IconImport">　&nbsp;</FONT> 确认导入 </A>
+     |
+     <A Href="javascript:location.reload();void(0);" name="btn_1"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新 </A>
+    </td>
+  </TR>
+</TABLE>
+</div>
+<!--隐藏的一些控件-->
+<input type="hidden" name="AddtionalSQL" value="AddtionalSQL">
+<input type="hidden" name="IsShow" value="<HDPrint Value=#IsShow# Replace=#DBField2Input#>">
+<input type="hidden" name="LogSave" value="Log">
+<input type="hidden" name="SQL" value="SQL">
+
+<table class="ListBar" cellspacing="1">
+  <col style="padding-left:4px;" >
+  <col style="padding-left:4px;" >
+  <col style="padding-left:4px;" >
+  <col style="padding-left:4px;" >
+
+  <tr class="listtr">
+    <td nowrap>年份</td>
+    <td nowrap>公司名称</td>
+    <td nowrap>项目编号</td>
+    <td nowrap>本次导入预算金额</td>
+    <td nowrap>备注</td>
+  </tr>
+  <HDLoop>
+  <tr class="listtd" onmouseover="this.className='listtdfocus';" onmouseout="this.className='listtd'">
+    <td nowrap><HDPrint Value=#year# Replace=#None#></td>
+    <td nowrap><HDPrint Value=#CompanyName# Replace=#None#></td>
+    <td nowrap><HDPrint Value=#TAcgCODE# Replace=#None#></td>
+    <td nowrap><HDPrint Value=#TLeftBudgutFee# Replace=#None#></td>
+    <td nowrap><font color="red"><b><HDPrint Value=#IsNull# Replace=#None#></b></font></td>
+  </tr>
+  </HDLoop>
+</table>
+</form>
+<FieldSet style="width:100%;paddign-left:4px">
+  <legend><font color=red><B>特别提醒</B></font></legend>
+  <li>请检查数据是否正确，出现<font color="red">红色</font>标记的整行数据为无效数据，将不会导入。</li>
+  <li>如果数据正确，请点击”确认导入“按钮。</li>
+</FieldSet>
+<script language="JavaScript">
+  //复制一个工具栏
+  var $ToolBar = $("div#JQ_ToolBar");
+  $("form[name=frmList]").append($ToolBar.html());
+
+//提交函数
+function CheckSubmit(){
+  //提交时，验证必填项
+  if (!JQcheck("JQMust")){
+    return false;
+  }
+  //提交时，提示
+  if (!(confirm('您确认要导入数据吗？导入后，数据将不可更改！')))
+    return false;
+  //获取当前表单对象 
+  var JqObj = $("form[name=frmList]");
+  //表单参数设定
+  JqObj.attr({
+    "action":'##HDNet_AppName##/__ExplainModule?Url=<HDPrint Value=#Url#>Save&UsrGid=<HDPrint Value=#UsrGid#>',
+    "target":'_self'
+  });
+  //表单提交
+  JqObj.submit();
+
+  //操作按钮变为不可用
+    $("a[name=btn_1]").prop("disabled",true);
+
+  //本函数失效
+  CheckSubmit = function() {return false;}
+}
+</script>
+</HDIF>

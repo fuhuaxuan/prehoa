@@ -1,0 +1,22 @@
+<hdloop>
+  <tr class="listtd" valign="top" JQIndex="<HDPrint Value=#OpIndexText# Replace=#DBField2Js#>" style="display:<HDPrint Value=#OpShow#>">
+    <td><HDPrint Value=#CType#></td>
+    <td align="center"><HDPrint Value=#CNum#></td>
+    <td><HDPrint Value=#Content#></td>
+    <td>
+      <script language="javascript">
+        var JsMod = '<HDPrint Value=#OpMod# Replace=#DBField2Js#>';
+        if (JsMod == 'ÆäËû' || JsMod == 'É¾³ý'){
+          document.write('£¨<HDPrint Value=#OpAppText# Replace=#None#>£©<font color="red"><HDPrint Value=#OpMod#></font><br><HDPrint Value=#OpModOther#>')
+        }
+        else if ('<HDPrint Value=#OpIndex# Replace=#DBField2Js#>' == ''){
+          document.write('&nbsp;')
+        }
+        else{
+          document.write('<HDPrint Value=#OpIndex#>¡¢<br><HDPrint Value=#OpMod#>');
+        }
+      </script>
+    </td>
+    <td><HDPrint Value=#Memo#></td>
+  </tr>
+</hdloop>

@@ -1,0 +1,83 @@
+<!--Js引入-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+
+<form name="frmDo" method="post" action="">
+<h3 class="TitleBar" ><HDPrint Value=#ModeleAtype#>-<HDPrint Value=#ModeleName#>：[<HDPrint Value=#fno#>]</h3>
+  <TABLE width="100%" class="ButtonBar" cellpadding=0 cellspacing=0>
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <HDIF Equal(<HDPrint Value=#chkRtID1#>, 1)>
+        <A HREF="##HDNet_AppName##/__ExplainModule?Url=Prl_Groundh_Mod&UsrGid=<HDPrint Value=#UsrGid#>&fGid=<HDPrint Value=#fGid#>"><FONT class="IconMod">　&nbsp;</FONT> 修改</A>
+      </HDIF>
+      <HDIF Equal(<HDPrint Value=#chkRtID2#>, 1)>
+      <a href="##HDNet_AppName##/__ExplainModule?Url=Prl_Groundh_Del&UsrGid=<HDPrint Value=#UsrGid#>&fGid=<HDPrint Value=#fGid#>" onclick="javascript:if (!(confirm('你确定要删除该信息吗？\n删除操作是不能还原的！'))) return false;"><FONT class="IconDel">　&nbsp;</FONT> 删除</A>
+      </HDIF>
+     |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+      
+      <a HREF="##HDNet_AppName##/__ExplainModule?URL=Prl_Groundh_List&UsrGid=<HDPrint Value=#UsrGid#>"><FONT class="IconBack">　&nbsp;</FONT> 返回列表</A>
+    </TD>
+  </TR>
+</TABLE>
+
+<table width="100%" class="ListBar" cellpadding="0"  cellspacing="1">
+  <colgroup>
+    <col style="padding-left:4px;width:10%">
+    <col style="padding-left:4px;width:23%">
+    <col style="padding-left:4px;width:10%">
+    <col style="padding-left:4px;width:23%">
+    <col style="padding-left:4px;width:10%">
+    <col style="padding-left:4px;width:23%">
+  </colgroup>
+  <tr>
+    <td class="DtlBarTitle">项目:</td>
+    <td class="listtd">[<HDPrint Value=#deptsource#>]<HDPrint Value=#DeptName#></td>
+    <td class="DtlBarTitle">编号:</td>
+    <td class="listtd"><HDPrint Value=#fno#></td>
+    <td class="DtlBarTitle">楼层:</td>
+    <td class="listtd"><HDPrint Value=#floorno#></td>
+  </tr>
+  <tr>
+    <td class="DtlBarTitle">面积:</td>
+    <td class="listtd"><HDPrint Value=#farea#></td>
+    <td class="DtlBarTitle">建筑面积:</td>
+    <td class="listtd"><HDPrint Value=#Jarea#></td>
+    <td class="DtlBarTitle">预算:</td>
+    <td class="listtd"><HDPrint Value=#fmr#></td>
+  </tr>
+</table>
+
+<h3 class="SubTitleBar" >
+<TABLE cellspacing="1" cellpadding="0" width="100%">
+  <col style="padding-left:4px;">
+  <col style="width:20px;" align="center">
+  <TR>
+    <TD align="left" style="padding-left:10px;"><b>地理位置操作记录</b></TD>
+    <TD onclick="JQExpand('tb_Dtl');" style="cursor:hand" class="IconUp">　&nbsp;</TD>
+  </TR>
+</TABLE>
+</h3>
+<table width="100%" class="ListBar JQMust" cellpadding="0"  cellspacing="1" id="tb_Dtl">
+  <colgroup>
+     <col style="width:10%">
+     <col style="width:10%">
+     <col style="width:15%">
+     <col style="width:65%">
+  </colgroup>
+  <thead>
+  <tr class="listtr">
+    <td>操作类别</td>
+    <td>操作人</td>
+    <td>操作时间</td>
+    <td>操作备注</td>
+  </tr>
+  </thead>
+  <tbody>
+<HDPrint Value=#DtlList# Replace=#None#>
+  </tbody>
+  <tfoot>
+</table>
+</form>

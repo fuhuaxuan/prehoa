@@ -1,0 +1,97 @@
+;名称：报表hdc 模板
+;版本：201303
+[Permission]
+;可用于设置变量的默认值及一些限制条件。部分变量要求一进入页面就有恰当的值，例如：MASTER中WHERE关联条件中要用到的引自HDT的变量，需要一开始就赋予其默认值，否则其值为空，会报错
+DEFAULT1=txtCreateDate1
+DEFAULTValue1=[date],-30
+
+[Detail]
+;可随意使用的变量，一般用于显示
+;获取当前用户的 二级部门
+SqlForCondition1=select substr(d.code1, 1, 8) CurCode1 from hr_emp hr, dept d where hr.entgid =  __ENTGID__ and d.entgid = hr.entgid and hr.usrgid = __USRGID__ and hr.deptgid = d.gid 
+
+;获取当前用户的 报表管理权限
+SqlForCondition2=select 1 RepAdmin from Rep_rt_admin r, v_org_usr v where r.EntGid =  __ENTGID__ and v.EntGid = r.entgid and r.RepGid = ##Gid## and r.UsrGidEx = v.OrgGid and r.sourceNum is null and v.UsrGid = __USRGID__ 
+
+;工作流程名称
+LoopSQL1=select a.modelgid, classify || '-' || name name, decode(stat, 0, '(未)', 2, '(停)', 5, '(废)') stattext from wf_model a where entgid = __ENTGID__ order by classify, name
+LoopHDT1=Templates\WorkFlow\WF_Model_Option.hdt
+LoopVAR1=WF_Model_Option
+
+;工作流程分类名称列表
+LoopSQL2=select distinct classify name, classify modelgid from WF_Model where entgid=__ENTGID__ order by length(name) 
+LoopHDT2=Templates\WorkFlow\WF_Model_Option.hdt
+LoopVAR2=WF_Model_Type
+
+[AddtionalSQL]
+;事前操作；对数据库的操作，可以创建表、更新记录、插入记录，从BeforeSql1～BeforeSql20共支持20条
+;仅仅对报表有用
+BeforeSql1=
+;事后操作AfterSQL,从AfterSQL1～AfterSQL20共支持20条
+;对于大部分新用户，可以用这个语句记录，用户都访问了哪些报表。
+AfterSQL1=call HDNet_pro_UseTrack(__ENTGID__,__USRGID__,##GID##,'报表名称-'||##REP_NAME##)
+
+[AddtionalSQLUseWhere]
+;显示，单条数据的查询，可以用于HDT显示，有select命令。从SQL1～SQL20共支持20条，同时会使用上面的[where]中的sql语句
+;示例
+Sql1=
+sql2=
+
+[Master]
+;主查询语句，必写，分别为查询数据和记录条数，分别只能写一条语句
+;如数据过多时，并第一次加载页面不显示页面 可在 where 条件 后加 上 and '^^NotFirst^^' = '1'
+SQL=select a.*,to_char(a.createdate,'yyyy.mm.dd hh24:mi:ss') FlowCreateDate,to_char(a.FinishDate,'yyyy.mm.dd hh24:mi:ss') FlowFinishDate, b.Code ModelCode, b.Name ModelName ,decode(a.stat,'0', '未执行','1', '待执行','2', '执行中','3', '<FONT COLOR="blue">已完成</FONT>','4', '<font color="gray">已停止</font>','5', '<FONT COLOR="red">已作废</FONT>','6', '<FONT COLOR="red">已超时</FONT>') Flowstat,decode(a.stat,0,'a',1,'a',2,'a','div style="display:inline"') stattext from WF_Flow a, WF_Model b where a.entgid=__ENTGID__ and b.entgid=__ENTGID__ and a.ModelGid = b.ModelGid and (exists (select 1 from hr_emp hr, dept d where hr.entgid = __ENTGID__ and d.entgid = hr.entgid and hr.usrgid = a.CREATERGID and hr.deptgid = d.gid and substr(d.code1, 1, 8) = '^^CurCode1^^') or '^^RepAdmin^^' = '1')
+
+Count=select count(1) from WF_Flow a, WF_Model b where a.entgid=__ENTGID__ and b.entgid=__ENTGID__ and a.ModelGid = b.ModelGid and (exists (select 1 from hr_emp hr, dept d where hr.entgid = __ENTGID__ and d.entgid = hr.entgid and hr.usrgid = a.CREATERGID and hr.deptgid = d.gid and substr(d.code1, 1, 8) = '^^CurCode1^^') or '^^RepAdmin^^' = '1')
+
+;and exists (select 1 from wf_rt c, v_org_usr d where c.entgid = __ENTGID__ and c.modelgid = b.modelgid and d.entgid = __ENTGID__ and c.usrgidex = d.orggid and d.usrgid = __USRGID__ and substr(c.rtid, 1, 1) = '1' )
+
+[DefaultWhere]
+;多条记录的查询的默认条件
+DefaultWhere=and l.CreateDate >= sysdate -1
+
+[Where]
+;按需要关联在MASTER后面的查询条件，双井号引的是HDT中控件的名字，如果对应控件有VALUE，则该语句起作用，否则不起作用
+1= and b.ModelGid in (##selModelGid##)
+2= and (a.CreaterCode like '%' || ##txtCreaterCode## || '%' or  a.CreaterName like '%' || ##txtCreaterCode## || '%')
+3= and b.CLASSIFY = ##selModelType##
+4= and a.Stat = ##selStat##
+5= and a.CreateDate >= to_date(##txtCreateDate1##, 'yyyy.mm.dd hh24:mi')
+6= and a.CreateDate <= to_date(##txtCreateDate2##, 'yyyy.mm.dd hh24:mi')
+7= and a.FinishDate >= to_date(##txtFinishDate1##, 'yyyy.mm.dd hh24:mi')
+8= and a.FinishDate <= to_date(##txtFinishDate2##, 'yyyy.mm.dd hh24:mi')
+9= and lower(a.FlowNote) like '%' || lower(##txtFlowNote##) || '%'
+10= and b.Name like '%' || ##selModelName## || '%'
+11= and a.flowgid in (select FlowGid from v_WF_task where EntGid = __ENTGID__ and ExecCode like lower('%' || ##txtExecInfo## || '%') or ExecName like lower('%' || ##txtExecInfo## || '%'))
+
+[GroupBy]
+;多条记录的查询的分组
+GroupBy=
+
+[DefaultOrderBy]
+;串在MASTER后面的默认排序语句
+DefaultOrderBy=a.CreateDate desc
+
+[OrderBy]
+;多条记录的查询的排序,支持多重排序排序的先后顺序由序号决定
+1=##selOrderBy##
+
+[Title]
+;用于设置页面显示功能
+;页面的标题，从Text1～Text30共支持30条
+Text1=^^Rep_Name^^
+
+;页面显示: 0:BodyPage;1:DetailPage;2:BlankPage
+PageKind=2
+
+;是否翻页：1是，0否
+ChangePage=1
+
+;翻页时的每页记录数，如果没有的话，则取HDNet默认值20
+ChangePageRow=30
+
+;如果出现SQL错误，可在hdnet\webdata\system\syslog\下查看系统日志，查找错误
+
+[Link]
+;按钮权限，从URL1~URL10共支持10个，内容放的是RT表的权限，在页面返回的变量为chkRtID1~chkRtID10
+URL1=WFFlowSetState

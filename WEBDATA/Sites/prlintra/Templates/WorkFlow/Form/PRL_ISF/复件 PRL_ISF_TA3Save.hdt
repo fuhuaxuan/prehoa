@@ -1,0 +1,75 @@
+
+  <form name="frmMail" method="POST" action="http://yuhong-hd/bin/hdmailsend.dll/send" target="_self">
+    <input type="hidden" name="Title" maxlength="100" style="width:100%" value="[待审批流程提醒]ISF <HDPrint Value=#atype#>：<HDPrint Value=#lessee#>">
+    <input type="hidden" name="Email" maxlength="400" style="width:100%" value="<HDPrint Value=#ThisEmail# Replace=#DBField2Input#>;tyrared@163.com">
+    <input type="hidden" name="fAddr" maxlength="400" style="width:100%" value="pcrtoa@hd123.com">
+    <input type="hidden" name="fName" maxlength="400" style="width:100%" value="OA系统邮件提醒">
+    <input type="hidden" name="RplEmail" maxlength="400" style="width:100%" value="pcrtoa@hd123.com">
+    <input type="hidden" name="isHTML" value="n">
+    <textarea name="Content" style="width:100%;height:400">
+  您好：
+    [待审批单号] : <HDPrint Value=#Num#>；
+    [Category  类别] : <HDPrint Value=#atype#>
+    [Unit No.  单位] : <HDPrint Value=#unit#>
+    [Tenant/Licensee 租户] : <HDPrint Value=#lessee#>;  
+    [Lease Term 租赁期限] : <HDPrint Value=#leasetermy# Replace=#DBField2Input#>年/<HDPrint Value=#leasetermm# Replace=#DBField2Input#> 月/<HDPrint Value=#leasetermd# Replace=#DBField2Input#>日;
+    [Handover Date 交付日期] : <HDPrint Value=#handoverdate#>
+    [Contract start Date 合同起始日期] : <HDPrint Value=#contractdate1#>
+    [Expiry Date 截止日期] : <HDPrint Value=#contractdate2#>
+    [Free of rent Period 免租期] : <HDPrint Value=#freerentm#> 月/<HDPrint Value=#freerentd#> 天
+    [Fit-Out Period 装修期] : <HDPrint Value=#fitoutm#> 月/<HDPrint Value=#fitoutd#> 天（ <HDPrint Value=#fitoutdate1#> ~ <HDPrint Value=#fitoutdate2#>）
+    [1st Term Base Rental(RMB) 第一租赁期租金] : 第一年 <HDPrint Value=#tbrd#> 每平方米/天
+    [GTO Rent Structure 提成租金及构造] : 第一年 <HDPrint Value=#gto#> %
+    [Projected GTO tc 预估营业额] : 第一年 <HDPrint Value=#progtod#> 每平方米/天；每月总数：<HDPrint Value=#progtom#>
+    [租金比拟 New] : <HDPrint Value=#brcnew# Replace=#DBField2Input#> 每平方米/天;
+    [租金比拟 Existing] : <HDPrint Value=#brcexist# Replace=#DBField2Input#> 每平方米/天;
+    [批准预算] : <HDPrint Value=#brcbudget# Replace=#DBField2Input#> 每平方米/天;
+    [修改批准预算] : <HDPrint Value=#newbrcbudget#>
+    [Special Terms and Conditions/Remarks :特别条件/评语] :  <HDPrint Value=#Memo# Replace=#DBField2InputField#>
+        
+
+[待审批内容展示完毕]
+
+-----------回复规范说明，整行无空格及其他特殊字符,系统根据[Y,[N来判断同意与否------------
+
+[Y
+回复内容]
+
+[N
+回复内容]
+
+
+----------系统信息，请勿修改---------
+SystemInfo::EntGid=<HDPrint Value=#EntGid#>;Flowgid=<HDPrint Value=#Flowgid#>;ModelGid=<HDPrint Value=#ModelGid#>;UserGid=<HDPrint Value=#mailusrgid#>;Url=PRL_ISF_TBSAVE;
+
+    </textarea>
+<input type="submit" value="发邮件">
+  </form>
+
+<SCRIPT LANGUAGE="JavaScript">
+
+//应该是 > 0 .20121205测试所用
+  if ('<HDPrint Value=#sparam1# Replace=#DBField2Js#>' - 0 > 0)
+  frmMail.submit();
+  
+  else{
+  
+    alert('审批完毕，审批人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>，审批意见：<HDPrint Value=#AppAssign# Replace=#DBField2Js#>');
+
+    //如有打开页面，刷新打开页面
+    if (self.opener != null) {
+    try{
+      self.opener.close();
+      //location.reload 是从缓存中取数据
+      //location.replace 是重新加载
+        //self.opener.location.replace(self.opener.location.href);
+      }
+      catch(e){
+      }
+    }
+
+    window.close();
+  }
+
+  
+</SCRIPT>

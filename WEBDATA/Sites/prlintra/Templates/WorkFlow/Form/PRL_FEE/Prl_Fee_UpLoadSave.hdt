@@ -1,0 +1,24 @@
+<script>
+if ('<HDPrint Value=#UploadInfoText# Replace=#DBField2Js#>' == 'UploadInfo')
+{
+  alert('预算金额导入预保存成功，您还需要检查并确认导入，资料才会存入费用申请单库中！');
+  location.replace('##HDNet_AppName##/WFFlowPage?Url=Prl_Fee_UpLoad&UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Js#>&EmpID=show&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>');
+}
+else 
+{
+  alert('预算金额已经导入，请查看！');
+  
+    if (self.opener != null) 
+    {
+      try
+      {
+        self.opener.location.reload();
+      }
+      catch(e)
+      {
+      }
+      window.opener = null;window.open(' ', '_self', ' ');
+    }
+    window.close();
+}
+</script>

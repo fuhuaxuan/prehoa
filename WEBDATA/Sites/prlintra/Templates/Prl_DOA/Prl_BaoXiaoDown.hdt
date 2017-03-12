@@ -1,0 +1,25 @@
+[Rep_BeginLine]
+公司名称
+项目信息
+单号
+状态
+金额
+收款人
+银行帐号
+开户行
+备注
+[Rep_EndLine]
+<HDLoop>
+[Rep_BeginLine]
+<HDPrint Value=#ComName# Replace=#None#>
+<HDPrint Value=#AcgCode# Replace=#None#>-<HDPrint Value=#AcgName# Replace=#None#>
+<HDPrint Value=#Num# Replace=#None#></a>
+<HDPrint Value=#FStat# Replace=#None#>-<HDPrint Value=#Stat# Replace=#None#>
+<HDPrint Value=#ApplyFee# Replace=#None#>
+<HDPrint Value=#PayMan# Replace=#None#>
+<HDPrint Value=#PayBank# Replace=#None#>
+<HDPrint Value=#PayAccount# Replace=#None#>
+#NoForm#<HDPrint Value=#Memo# Replace=#DBField2Excel#>
+[Rep_EndLine]
+</HDLoop>
+

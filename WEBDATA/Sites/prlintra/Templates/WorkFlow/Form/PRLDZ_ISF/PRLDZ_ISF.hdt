@@ -1,0 +1,243 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<!-- Ajax函数引入 -->
+<script language="JavaScript" src="##GetWebRootPath(/Scripts/Ajax/json.js)##"></Script>
+
+<script language="JavaScript">
+  var datainfo = {
+    OrganizationID: "BDA02110-39BF-48CE-8D00-E4D31A45EE88",
+    JobNO: "<HDPrint Value=#Num# Replace=#DBField2Js#>",
+    Department: "<HDPrint Value=#FillUsrDeptCode# Replace=#DBField2Js#>",
+    Location: "<HDPrint Value=#unit# Replace=#DBField2Js#>",
+    FormatsCode: "<HDPrint Value=#Trade# Replace=#DBField2Js#>",
+    FormatsName: "<HDPrint Value=#Tradename# Replace=#DBField2Js#>",
+    LeaseCode: "<HDPrint Value=#LesseeGid# Replace=#DBField2Js#>",
+    LeaseName: "<HDPrint Value=#Lessee# Replace=#DBField2Js#>",
+    ShopsCode: "<HDPrint Value=#TradingGid# Replace=#DBField2Js#>",
+    ShopsName: "<HDPrint Value=#Tradingname# Replace=#DBField2Js#>",
+    ContactBy: "<HDPrint Value=#Contactor# Replace=#DBField2Js#>",
+    Address: "<HDPrint Value=#Address# Replace=#DBField2Js#>",
+    Tel: "<HDPrint Value=#Phone# Replace=#DBField2Js#>",
+    Email: "<HDPrint Value=#Email# Replace=#DBField2Js#>",
+    Fax: "<HDPrint Value=#Fax# Replace=#DBField2Js#>",
+    CalcArea: "<HDPrint Value=#Area# Replace=#DBField2Js#>",
+    BuildArea: "<HDPrint Value=#BuildArea# Replace=#DBField2Js#>",
+    LeaseY: "<HDPrint Value=#LeaseTermY# Replace=#DBField2Js#>",
+    LeaseM: "<HDPrint Value=#LeaseTermM# Replace=#DBField2Js#>",
+    LeaseD: "<HDPrint Value=#LeaseTermD# Replace=#DBField2Js#>",
+    DeliverDate: "<HDPrint Value=#HandoverDate# Replace=#DBField2Js#>",
+    FreeDateM: "<HDPrint Value=#FreeRentM# Replace=#DBField2Js#>",
+    FreeDateD: "<HDPrint Value=#FreeRentD# Replace=#DBField2Js#>",
+    DecorateDateM: "<HDPrint Value=#FitoutM# Replace=#DBField2Js#>",
+    DecorateDateMD: "<HDPrint Value=#fitoutD# Replace=#DBField2Js#>",
+    CalcMode: "<HDPrint Value=#RateText# Replace=#DBField2Js#><HDPrint Value=#Rate# Replace=#DBField2Js#>",
+    CashierMode: "<HDPrint Value=#Collection# Replace=#DBField2Js#>",
+    POSUseFee: "<HDPrint Value=#POSFeeD# Replace=#DBField2Js#>",
+    LawFee: "<HDPrint Value=#LegalFeeD# Replace=#DBField2Js#>",
+    DepositFee: "<HDPrint Value=#Security# Replace=#DBField2Js#>",
+    Remark: "<HDPrint Value=#Memo# Replace=#DBField2Js#>",
+    DetailList: []
+  };
+  //调用路径
+  var url = 'http://171.221.248.15/MallOAService/MallService.asmx/InsertContract';
+  /*
+  *函数功能：Ajax中POST方式取出员工资料
+  *参数：代码控件对象
+  */
+  function PostMall2() {
+    Run_Div_Show();
+    //参数
+    var data = {
+      data : JSON.stringify(datainfo)
+    };
+    //回调函数
+    var cb = {
+      //成功，处理函数
+      success : function (ret){
+        if(ret.returnCode == '00'){
+          PostMall1('2');
+        }
+        else{
+          Run_Div_hide();
+          alert(ret.errorMsg);
+        }
+        return true;
+      },
+      //失败，处理函数
+      failed : function (ret){
+        Run_Div_hide();
+        alert('发送失败');
+        return false;
+      }
+    };
+    //调用Ajax函数
+    JQAjax(url,data,cb);
+  }
+
+  /*
+  *函数功能：Ajax中POST方式取出员工资料
+  *参数：代码控件对象
+  */
+  function PostMall1(MallStat) {
+    //调用路径
+    //若在报表(RepDisplay)中使用，则标记Rep=1
+    //若在流程(WFFlowPage)中使用，则标记Flow=1
+    var url = '##HDNet_AppName##/__ExplainAjax?Url=<HDPrint Value=#ModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&Flow=1&OpAtype=2';
+
+    //参数
+    var data = {
+      ThisFlowGid : '<HDPrint Value=#FlowGid# Replace=#DBField2Js#>',
+      MallStat : MallStat
+    };
+    //回调函数
+    var cb = {
+      //成功，处理函数
+      success : function (ret){
+        alert('已经发送成功！');
+        location.reload();
+        return true;
+      },
+      //失败，处理函数
+      failed : function (ret){
+        alert('发送失败！');
+        return false;
+      }
+    };
+    //调用Ajax函数
+    JQAjax(url,data,cb);
+  }
+
+</script>
+
+<HDPrint Value=#DtlList# Replace=#None#>
+<form name="frmDo" method="post" action="">
+<h3 class="TitleBar" ><HDPrint Value=#ModelName#>-明细</h3>
+<TABLE width="100%" class="ButtonBar" cellpadding="0" cellspacing="0">
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <HDIF EqualNot(<HDPrint Value=#NextStepCode# Replace=#None#>, )>
+        <A HREF="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#NextStepCode#>&UsrGid=<HDPrint Value=#UsrGid#>&FlowGid=<HDPrint Value=#FlowGid#>&ModelGid=<HDPrint Value=#ModelGid#>" target="_blank"><FONT class="IconNext">　&nbsp;</FONT> 下一步操作：<HDPrint Value=#NextStepName#></A>
+      </HDIF>
+      <HDIF Equal(<HDPrint Value=#Stat# Replace=#none#>, 30,已完成)>
+        <HDIF Equal(<HDPrint Value=#CurUsrGid# Replace=#none#>, <HDPrint Value=#FillUsrgid# Replace=#none#>)>
+        <A HREF="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_Print&UsrGid=<HDPrint Value=#UsrGid#>&FlowGid=<HDPrint Value=#FlowGid#>&ModelGid=<HDPrint Value=#ModelGid#>" target="_blank"><FONT class="IconPrint">　&nbsp;</FONT>打印关键条款</A>
+        </HDIF>
+        <A HREF="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_Content&UsrGid=<HDPrint Value=#UsrGid#>&FlowGid=<HDPrint Value=#FlowGid#>&ModelGid=<HDPrint Value=#ModelGid#>&IsPrint=1" target="_blank"><FONT class="IconPrint">　&nbsp;</FONT>打印全部条款</A>
+        <HDIF EqualNot(<HDPrint Value=#Mallstat# Replace=#none#>, 100)>
+          <HDIF Equal(<HDPrint Value=#UsrGid# Replace=#none#>, <HDPrint Value=#CWUsrGid# Replace=#None#>)>
+            <A HREF="javascript:void(0)" onclick="PostMall1('1')" JQ="MALL1" style="display:none"><FONT class="IconDefault">　&nbsp;</FONT> 发送到mall自动生成合同</A>
+            <A HREF="javascript:void(0)" onclick="PostMall2()" JQ="MALL2" style="display:none"><FONT class="IconDefault">　&nbsp;</FONT> 发送到mall自动生成合同</A>
+          </HDIF>
+        </HDIF>
+      </HDIF>
+      <script language="javascript">
+        //函数：ready
+        //功能：document 加载完成后调用
+        $(document).ready(function(){
+          if ('<HDPrint Value=#ParentDeptCode# Replace=#DBField2Js#>' == '0003') {
+            $("[JQ=MALL2]").show();
+          }
+          else{
+            $("[JQ=MALL1]").show();
+          }
+        });
+      </script>
+      |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+      <A HREF="javascript:window.close();void(0)"><FONT class="IconClose">　&nbsp;</FONT> 关闭</A>
+      <A HREF="##HDNet_AppName##/MainPage?URL=&UsrGid=<HDPrint Value=#UsrGid#>"><FONT class="IconHome">　&nbsp;</FONT> 返回首页</A>
+    </TD>
+  </TR>
+</TABLE>
+<iframe onload="JQAutoHeight(this)" id="iframeDtl" frameborder ='0' width="100%"  scrolling="no" style="width:100%" Src="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_Content&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid#>"></iframe>
+<br>
+<TABLE width="100%" class="ButtonBar" cellpadding="0" cellspacing="0">
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <HDIF EqualNot(<HDPrint Value=#NextStepCode# Replace=#None#>, )>
+        <A HREF="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#NextStepCode#>&UsrGid=<HDPrint Value=#UsrGid#>&FlowGid=<HDPrint Value=#FlowGid#>&ModelGid=<HDPrint Value=#ModelGid#>" target="_blank"><FONT class="IconNext">　&nbsp;</FONT> 下一步操作：<HDPrint Value=#NextStepName#></A>
+      </HDIF>
+      _blank"><FONT class="IconPrint">　&nbsp;</FONT>打印关键条款</A>
+        </HDIF>
+        <A HREF="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_Content&UsrGid=<HDPrint Value=#UsrGid#>&FlowGid=<HDPrint Value=#FlowGid#>&ModelGid=<HDPrint Value=#ModelGid#>&IsPrint=1" target="_blank"><FONT class="IconPrint">　&nbsp;</FONT>打印全部条款</A>
+        <HDIF EqualNot(<HDPrint Value=#Mallstat# Replace=#none#>, 100)>
+          <HDIF Equal(<HDPrint Value=#UsrGid# Replace=#none#>, <HDPrint Value=#CWUsrGid# Replace=#None#>)>
+            <A HREF="javascript:void(0)" onclick="PostMall1('1')" JQ="MALL1" style="display:none"><FONT class="IconDefault">　&nbsp;</FONT> 发送到mall自动生成合同</A>
+            <A HREF="javascript:void(0)" onclick="PostMall2()" JQ="MALL2" style="display:none"><FONT class="IconDefault">　&nbsp;</FONT> 发送到mall自动生成合同</A>
+          </HDIF>
+        </HDIF>
+      </HDIF>
+      |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+      <A HREF="javascript:window.close();void(0)"><FONT class="IconClose">　&nbsp;</FONT> 关闭</A>
+      <A HREF="##HDNet_AppName##/MainPage?URL=&UsrGid=<HDPrint Value=#UsrGid#>"><FONT class="IconHome">　&nbsp;</FONT> 返回首页</A>
+    </TD>
+  </TR>
+</TABLE>
+</form>
+
+<HDIF Equal(<HDPrint Value=#CurUsrCode#>,heading,admin)>
+<form name="frmMail" method="POST" action="/bin/hdmailsend.dll/send" target="_blank">
+标　题:<input type="text" name="Title" maxlength="100" style="width:150" value="<HDPrint Value=#MCode# Replace=#DBField2Input#>提醒:<HDPrint Value=#fillusrdept# Replace=#DBField2Input#>" readonly><br>
+
+收件人:<input type="text" name="Email" maxlength="400" style="width:400" value=""> <input type="button" name="btn_1" value="发送邮件" onclick="CheckSubmit()">
+<br>
+
+<input type="hidden" name="fAddr" maxlength="400" style="width:150" value="pcrtoa@hd123.net" readonly>
+<input type="hidden" name="fName" maxlength="400" style="width:150" value="OA系统邮件提醒" readonly>
+<input type="hidden" name="RplEmail" maxlength="400" style="width:150" value="pcrtoa@hd123.net" readonly>
+<input type="hidden" name="isHTML" value="y" readonly>
+<textarea name="Content" style="width:100%;height:400;display:none"></textarea>
+</form>
+<div id="tb_Email">
+<table border="0" style="width:500px;">
+<tr><td>您好 :</td></tr>
+<tr><td>[发起人] : <HDPrint Value=#FillUsrName#>[<HDPrint Value=#fillusrdept#>]；</td></tr>
+<tr><td>[单号] : <HDPrint Value=#Num#>；</td></tr>
+<tr><td>[Category 类别] : <HDPrint Value=#atype#> <HDPrint Value=#Category#> <HDPrint Value=#CategoryText#>；</td></tr>
+<tr><td>[Unit No. 单位] : <HDPrint Value=#unitList# Replace=#None#></td></tr>
+<tr><td>[Area 面积] : <HDPrint Value=#Area#>；</td></tr>
+<tr><td>[Tenant/Licensee 租户] : <HDPrint Value=#lessee#>；</td></tr>
+<tr><td>[Trading Name 商店营业名称] : <HDPrint Value=#tradingname#>；</td></tr>
+<tr><td>[Lease Term 租赁期限] : <HDPrint Value=#leasetermy#> 年/ <HDPrint Value=#leasetermm#> 月/ <HDPrint Value=#leasetermd#> 日；</td></tr>
+<tr><td>[Handover Date 交付日期] : <HDPrint Value=#handoverdate#>；</td></tr>
+<tr><td>[Contract Date 合同起始日期] : <HDPrint Value=#contractdate1#>~<HDPrint Value=#contractdate2#></td></tr>
+<tr><td>[Free of rent Period 免租期] : <HDPrint Value=#freerentm#> 月/ <HDPrint Value=#freerentd#>天；</td></tr>
+<tr><td>[Fit-Out Period 装修期] : <HDPrint Value=#fitoutm#> 月/ <HDPrint Value=#fitoutd#> 天（<HDPrint Value=#fitoutdate1#> ~ <HDPrint Value=#fitoutdate2#>）；</td></tr>
+<tr><td><HDPrint Value=#Rate1#> ( <HDPrint Value=#Rate#>)</td></tr>
+<tr><td><HDPrint Value=#EmailDtl# Replace=#None#></td></tr>
+<tr><td>[New 新] : <HDPrint Value=#brcnew#> RMB/㎡/天；</td></tr>
+<tr><td>[Existing 目前] : <HDPrint Value=#brcexist#> RMB/㎡/天；</td></tr>
+<tr><td>[Budget 批准预算] : <HDPrint Value=#brcbudget#> RMB/㎡/天；</td></tr>
+<tr><td>[Special Terms and Conditions/Remarks :特别条件/评语] : <HDPrint Value=#Memo# Replace=#DBField2InputField#>；</td></tr>
+<tr><td>-----------内容展示完毕-----------</td></tr>
+</table>
+</div>
+<script language="javascript">
+  //提交函数
+  function CheckSubmit(OpText){
+
+    $("textarea[name=Content]").val($("div#tb_Email").html());
+
+    //获取当前表单对象
+    var JqObj = $("form[name=frmMail]");
+    //表单提交
+    JqObj.submit();
+
+    /*
+    //操作按钮变为不可用
+    $("[name=btn_1]").each(function(){
+      $(this).prop("disabled",true);
+    });
+    //本函数失效
+    CheckSubmit = function() {return false;}
+    */
+  }
+</script>
+</HDIF>
+

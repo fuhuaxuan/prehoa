@@ -1,0 +1,13 @@
+<script>
+  <hdloop>
+    CallAcg('<HDPrint Value=#AcgGid# Replace=#DBField2Js#>',
+    '<HDPrint Value=#AcgCode# Replace=#DBField2Js#>',
+    '<HDPrint Value=#AcgName# Replace=#DBField2Js#>',
+    '<HDPrint Value=#PAcgGid# Replace=#DBField2Js#>',
+    '<HDPrint Value=#PAcgCode# Replace=#DBField2Js#>',
+    '<HDPrint Value=#PAcgName# Replace=#DBField2Js#>',
+    '<HDPrint Value=#Year# Replace=#DBField2Js#>',
+    '<HDPrint Value=#AcgFee# Replace=#DBField2Js#>',
+    '<HDPrint Value=#ApplyFee# Replace=#DBField2Js#>');
+  </hdloop>
+</script>

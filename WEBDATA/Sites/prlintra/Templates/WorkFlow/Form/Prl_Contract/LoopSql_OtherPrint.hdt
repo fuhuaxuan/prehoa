@@ -1,0 +1,3 @@
+<hdloop>
+  <p class="PrintText">其它条款<HDPrint Value=#Line#>：<HDPrint Value=#Content#></p>
+</hdloop>

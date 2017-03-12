@@ -1,0 +1,11 @@
+<hdloop>
+  <tr>
+    <td class="PrintTdRT"><HDPrint Value=#DataName#></td>
+    <td class="PrintTdRT" align="center"><HDPrint Value=#DataA#></td>
+    <td class="PrintTdRT" align="center"><HDPrint Value=#DataB#></td>
+    <td class="PrintTdRT" align="center"><HDPrint Value=#DataC#></td>
+    <td class="PrintTdRT" align="center"><HDPrint Value=#DataD#></td>
+    <td class="PrintTdRT" align="center"><HDPrint Value=#DataE#></td>
+    <td class="PrintTdRT"><HDPrint Value=#Memo#></td>
+  </tr>
+</hdloop>

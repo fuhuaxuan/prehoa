@@ -1,0 +1,62 @@
+[Permission]
+
+
+[Master]
+SQL=
+Count=
+
+[Detail]
+
+SqlForCondition1=select Code ModelCode, Name ModelName from wf_Model where ModelGid = ##ModelGid##
+
+SQL1=select a.Gid DeptGid, a.Code2 DeptCode, a.Name DeptName from Dept a, HR_Emp b where a.EntGid=__ENTGID__ and b.EntGid=__ENTGID__ and b.UsrGid = __USRGID__ and a.Gid = b.DeptGid
+
+LoopSQL1=select gid code ,NAME name from prl_company where entgid = __ENTGID__ AND STAT = 10
+LoopHDT1=Templates\workflow\form\prl_pay\LoopSQL_company.hdt
+LoopVAR1=companynamelist
+
+LoopSQL2=select gid code,name name from v_acg a where entgid = __ENTGID__ AND parentgid is null and payflag = 10  order by a.code
+LoopHDT2=Templates\workflow\form\prl_pay\LoopSQL_company.hdt
+LoopVAR2=acglist1
+
+[Where]
+1= 
+2= 
+3= 
+4= 
+5= 
+
+[DefaultWhere]
+DefaultWhere= 
+
+[OrderBy]
+1= 
+
+[DefaultOrderBy]
+DefaultOrderBy=
+
+[GroupBy]
+
+[LoopSQL]
+
+
+[Title]
+ChangePage=1
+Log=
+PageKind=0
+Text1=ÃÓ–¥∏∂øÓ…Í«Îµ•
+Text2=
+Text3=
+Text4=
+Text5=
+
+[Link]
+URL1=
+URL2=
+URL3=
+URL4=
+URL5=
+[AJAX]
+Master= select GID ,code||' '||NAME name  from  V_ACG  where ENTGID = __ENTGID__ AND PARENTGID = '^^PARENTGID^^' and payflag = 10 order by code
+
+Detail2=select b.A AVALUE, b.B BVALUE, b.C CVALUE, b.D DVALUE, B.E EVALUE, B.TSTART, B.TEND from prl_doa b where LOWER(B.CODE) = LOWER('^^DOAGID^^')

@@ -1,0 +1,97 @@
+[Permission]
+LIMIT1=FlowGid
+LIMITDesc1=StringSize[,0]
+LIMITRemind1=您选择的流程数据有误，请返回重新选择！
+
+;判断是否有该条信息
+SQL1=select 1 from wf_prl_fee where EntGid=__ENTGID__ and FlowGid=##FlowGid##
+Remind1=您指定的费用流程没有找到！<script>alert('您指定的费用流程没有找到！');window.close()</script>
+
+;检查判断的Sql语句，查不到结果是报错，从SQL1～SQL5，共可以写5句
+SQL2=select 1 from dual where ##AppAssign## = '否决' union select 1 from v_WF_Model_App v where v.EntGid = __ENTGID__ and v.ModelGid = ##ModelGid## and lower(v.ModelCode) like '%' || lower('_TC1') and ##AppAssign## = '同意' 
+Remind2=对不起，下一步审批人资产总监/Hd Invest未设置，请与管理员联系。<script>alert('对不起，下一步审批人资产总监/Hd Invest未设置，请与管理员联系。');history.back()</script>
+
+;检查判断的Sql语句，查不到结果是报错，从SQL1～SQL5，共可以写5句
+SQL3=select 1 from dual where ##AppAssign## = '否决' union select 1 from v_WF_Model_App v where v.EntGid = __ENTGID__ and v.ModelGid = ##ModelGid## and lower(v.ModelCode) like '%' || lower('_TC3') and ##AppAssign## = '同意'
+Remind3=对不起，下一步审批人首席财务官/CFO未设置，请与管理员联系。<script>alert('对不起，下一步审批人首席财务官/CFO未设置，请与管理员联系。');history.back()</script>
+[Master]
+
+[Detail]
+;得到模型名称
+SqlForCondition1=select Code ModelCode, Name ModelName from wf_Model where ModelGid = ##ModelGid##
+
+;得到业务单据信息
+SqlForCondition2=select '本次申请金额：'||askfee||';申请目的：'||substr(target,0,50) flownote,nvl(askfee,0) + nvl(naskfee,0) askfee1,nvl(AVALUE,0) avalue,nvl(bVALUE,0) bvalue,nvl(cVALUE,0) cvalue,nvl(dVALUE,0) dvalue,nvl(eVALUE,0) evalue,(nvl(cVALUE,0) +nvl(dVALUE,0)+nvl(eVALUE,0)) allvalue, fillusrdeptgid,fillusrgid,doacode from WF_^^ModelCode^^ where FlowGid = ##FlowGid##
+
+SqlForCondition3=select v.PostGid TccGid from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##DeptGid## and v.atype=30
+
+SqlForCondition4=select areaflag from prl_doa where code=##doacode##
+
+SqlForCondition5= select a.acgother acgothertext from wf_^^ModelCode^^ A where  EntGid=__ENTGID__ and FlowGid = ##FlowGid##
+
+Sql1=select A.*,substr(acgtwoname,0,20) acgtwonametext,decode(a.acgother,null,'none','') acgotherdis,decode(a.confirmfee,null,'审批通过后回填',a.confirmfee||'  [确认时间：'||to_char(a.confirmdate,'yyyy.mm.dd hh24:mi')||']') confirmfeetext from wf_^^ModelCode^^ A where  EntGid=__ENTGID__ and FlowGid = ##FlowGid##
+
+Sql2=select b.Email thisemail from  hr_emp b ,v_org_usr a,(select ExecGidEx from WF_Task_Define_Exec where TaskDefGid = (select TaskDefGid from WF_Task_Define where LOWER(Code) = 'prl_fee_tc1' and EntGid = __ENTGID__) ) c where a.usrgid = b.usrgid and c.ExecGidEx = a.orggid and ##areaflag## != '10' union select b.Email thisemail from  hr_emp b ,v_org_usr a,(select ExecGidEx from WF_Task_Define_Exec where TaskDefGid = (select TaskDefGid from WF_Task_Define where LOWER(Code) = 'prl_fee_tc2' and EntGid = __ENTGID__) ) c where a.usrgid = b.usrgid and c.ExecGidEx = a.orggid and ##areaflag## = '10'
+
+sql3=select name acgotherdoatext from prl_doa where code='^^acgothertext^^'
+
+[Where]
+
+[DefaultWhere]
+DefaultWhere= 
+
+[OrderBy]
+1=
+
+[DefaultOrderBy]
+DefaultOrderBy=
+
+[GroupBy]
+
+[AddtionalSQL]
+;全部审批完成后更新流程主表
+SQL1=insert into WF_^^ModelCode^^_App (EntGid,FlowGid, DtlGid,AppStat, AppGid,AppName, AppAssign, Note,AppDate,apptype) values(__ENTGID__,##FlowGid##, sys_guid(),decode(##AppAssign##,'同意','12','13'), __USRGID__, __USRNAME__ || '[' || __USRCODE__ || ']', ##AppAssign##, ##Note##,sysdate,60)
+
+
+Sql2=update WF_^^ModelCode^^ set Stat = '13', LastUpdDate = sysdate where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## and ##AppAssign## = '否决'
+
+
+Sql3=update WF_^^ModelCode^^ set Stat = '12', LastUpdDate = sysdate where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## and ##AppAssign## = '同意' and (##askfee1## - ##cvalue## <= 0 or ##allvalue## - 0  = 0)
+
+[Title]
+Text1=^^ModelName^^
+Text2=
+Text3=
+Text4=
+Text5=
+
+ChangePage=0
+
+
+;对于要走到C的步骤。需要判断areaflag
+;如果 areaflag = 10 就要走到 财务总监，因为，本来C步骤是需要走到（部门总监和财务总监），但是B2本身就是部门总监。因此把C中需要走到部门总监的跳过。
+;如果 areaflag = 0 就要走到 资产总监
+
+WF1=WFFlowRun( ^^ModelCode^^_TB3 | ^^ModelCode^^_TC1 | NULL | AND ##areaflag## != '10' and ##askfee1## - ##cvalue##> 0 and ##allvalue## - 0 != 0 and ##AppAssign## = '同意' | 高级副总裁/Coo:同意 - ^^flownote^^)
+
+WF2=WFFlowRun( ^^ModelCode^^_TB3 | ^^ModelCode^^_TC3 | NULL | AND ##areaflag## = '10' and ##askfee1## - ##cvalue##> 0 and ##allvalue## - 0 != 0 and ##AppAssign## = '同意' | 高级副总裁/Coo:同意 - ^^flownote^^)
+
+WF3=WFFlowRun( ^^ModelCode^^_TB3 | ^^ModelCode^^_TMOD | NULL | and ##AppAssign## = '否决' | 高级副总裁/Coo:否决 - ^^flownote^^)
+;否决后，还有个抄送给相关人员没有做
+
+WF4=WFFlowRun( ^^ModelCode^^_TB3 | ^^ModelCode^^_Tconfirm | NULL | and ##AppAssign## = '同意' and (##askfee1## -  ##cvalue## <= 0 or ##allvalue## - 0 = 0)   | 审批通过，请确认 - ^^flownote^^)
+
+WF5=WFFlowRun( ^^ModelCode^^_TB3 | ^^ModelCode^^_TCC2 | TccGid |   and (##askfee1## - ##cvalue##<= 0 or ##allvalue## - 0 = 0) | 高级副总裁/Coo:^^AppAssign^^ - ^^flownote^^)
+
+
+[Link]
+URL1=
+URL2=
+URL3=
+URL4=
+URL5=
+URL6=
+URL7=
+URL8=
+URL9=
+URL10=

@@ -1,0 +1,26 @@
+
+1.修改z.Install.cmd，保证其能够通过 system 用户登录到数据库
+
+如下，需要提供sys用户的密码，以及实际的实例名称
+>>echo 开始执行HDNet\z.Install.sql...
+>>sqlplus sys/hdnet@orcl @z.Install.sql  >> HDNetInst_1.log
+
+
+2.修改《A0数据库用户的创建及初始化.sql》 中的常量设定
+
+1)实例名需要替换掉“orcl”
+>>--链接到新创建的数据库用户
+>>CONNECT intradaguan_v3/heading.com@orcl
+
+2)路径如果不是在e:\web\intradaguan_v3\下，则更改如下语句。
+>>--网站路径
+>>create or replace function getHDNetPath return varchar2 is
+>>begin
+>>  return 'e:\web\intradaguan_v3\';
+>>end;
+
+
+
+
+3.《A4企业_Intra初始化》 中修改ent表的 url = 服务器本机的IP地址 （外部ip或者内部ip）
+也可以都写入，示例如下：192.168.1.16;651.1.1.1

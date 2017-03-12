@@ -1,0 +1,67 @@
+<!-- JQuery函数引入 -->
+<script language="javascript" src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQTree.js)##"></script>
+<link rel="stylesheet" href="##GetWebRootPath(/css/JQTree.css)##" type="text/css">
+
+<form name="frmQuery" method="Post" action="">
+  <ul id="ACGTree" class="ztree" style="width:95%;height:95%"></ul>
+</form>
+<!-- 实现 -->
+<script language="JavaScript">
+  var $EmpIframe = $(window.parent.document.getElementsByName('ACG')[0]);
+  //设置
+  var setting = {
+    view : {
+      dblClickExpand : false,
+      showLine : true,
+      selectedMulti : false,
+      showIcon: false
+    },
+    data : {
+      simpleData : {
+        enable : true,
+        idKey : "id",
+        pIdKey : "pId",
+        rootPId : ""
+      }
+    },
+    callback : {
+      beforeClick : function(treeId, treeNode) {
+        var zTree = $.fn.zTree.getZTreeObj("ACGTree");
+        $EmpIframe.attr("src", treeNode.file);
+      }
+    }
+  };
+  //数据收集
+  var zNodes = [];
+  var IsOpen = true;
+  var JsName = '';
+  <HDLoop>
+  if (IsOpen){
+    JsName = "<HDPrint Value=#Name# Replace=#DBField2Js#>";
+  }
+  else{
+    JsName = "[<HDPrint Value=#Code# Replace=#DBField2Js#>]<HDPrint Value=#Name# Replace=#DBField2Js#>";
+  }
+  var otps = {
+    id : '<HDPrint Value=#gid# Replace=#DBField2Js#>',
+    pId : '<HDPrint Value=#ParentGID# Replace=#DBField2Js#>',
+    name : JsName,
+    open : IsOpen,
+    file : "##HDNet_AppName##/__ExplainModule?Url=Prl_DOA_Dtl&UsrGid=<HDPrint Value=#UsrGid#>&ComGid=<HDPrint Value=#ComGid# Replace=#DBField2Js#>&AcGGid=<HDPrint Value=#Gid# Replace=#DBField2Js#>"
+  };
+  zNodes.push(otps);
+  IsOpen = false;
+  </HDLoop>
+  //加载
+  $(document).ready(function() {
+    $.fn.zTree.init($("#ACGTree"), setting, zNodes);
+  });
+  //查询
+  function JQTreeSearch(JsGid) {
+    var zTree = $.fn.zTree.getZTreeObj("ACGTree");
+    var treeNode = zTree.getNodeByParam("id", JsGid)
+    zTree.selectNode(treeNode);
+    $EmpIframe.attr("src", treeNode.file);
+  }
+</script>

@@ -1,0 +1,262 @@
+<style type="text/css">
+
+.PrintTD {
+  padding-left:2px;
+  color: windowtext;
+  font-size:9.0pt;
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: none;
+  font-family: 宋体,Tahoma;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  border-left: .5pt solid windowtext;
+  border-right: .5pt solid windowtext;
+  border-top: 1.0pt solid windowtext;
+  border-bottom: .5pt solid windowtext;
+  padding: 0px;
+}
+.pline {
+   text-align:center;
+   line-height:18.0pt;
+}
+.fontspan {
+  font-size:9.0pt;
+  font-family:宋体
+}
+.fontspan2 {
+  font-size:10.0pt;
+  font-family:Arial
+} 
+.PrintTD2 {
+  padding-left:4px;
+  color: windowtext;
+  font-size:9.0pt;
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: none;
+  font-family: 宋体,Tahoma;
+  text-align: ;
+  vertical-align: middle;
+  white-space: nowrap;
+  border-left: .5pt solid windowtext;
+  border-right: .5pt solid windowtext;
+  border-top: .5pt solid windowtext;
+  border-bottom: .5pt solid windowtext;
+}
+</style>
+<table style="width:645;"  border=0 valign="top" align="center">
+<tr align="right"  valign="bottom">
+  <td style="font-family:方正中等线简体;font-size:12pt;height:45mm"><br>
+
+  合同编号：
+  <u><HDPrint Value=#Num#></u><br><br>
+
+  单位：
+  <u><HDPrint Value=#unit#></u>
+  </td>
+</tr>
+<tr style="height:59mm">
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td align="center" style="line-height:36pt;font-size:36.0pt;font-family:方正大标宋简体">租赁协议</td>
+</tr>
+<tr style="height:45mm">
+  <td style="font-size:12.0pt;padding-left:10mm"><b>签约双方:</b><br>
+  （1） 出租人：<HDPrint Value=#thisdeptname#><br><br>
+  （2） 承租人（租户）：<HDPrint Value=#lessee#><br>
+  </td>
+</tr>
+<tr style="height:90mm">
+  <td>&nbsp;</td>
+</tr>
+</table>
+<br>
+<table style="width:645;"  border=0 valign="top" align="center">
+<col style="font-size:12.0pt;padding-left:15mm;width:8mm;">
+<col style="font-size:12.0pt;padding-left:0;">
+<tr>
+  <td colspan="2" style="font-size:16.0pt;padding-left:8mm"><b>附件一，主要租赁条款</b></td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+</tr>
+<tr valign="top" style="line-height:16pt">
+  <td>1，</td>
+  <td>
+  承租人：<HDPrint Value=#lessee#><br>
+   地址：<HDPrint Value=#address#><br>
+   电话：<HDPrint Value=#phone#><br>
+   传真：<HDPrint Value=#fax#><br>
+   联系人：<HDPrint Value=#contactor#>
+   </td>
+</tr>
+<tr valign="top" style="line-height:16pt">
+  <td>2，</td>
+  <td>
+  商店营业名称： <HDPrint Value=#TradingName#><br>
+  业态： <HDPrint Value=#tradename#>
+  </td>
+</tr>
+
+<tr valign="top" style="line-height:16pt">
+  <td>3，</td>
+  <td>
+  租赁单位：<HDPrint Value=#UnitList# Replace=#None#><br>
+ 面积： <HDPrint Value=#area#> 平方米
+ </td>
+</tr>
+<tr valign="top" style="line-height:16pt">
+  <td>4，</td>
+  <td>
+  租赁期限： <HDPrint Value=#leasetermy#>年、
+      <HDPrint Value=#leasetermm#> 月、
+       <HDPrint Value=#leasetermd#> 日<br>
+  合同起始日期： <HDPrint Value=#contractdate1text#><br>
+  合同截止日期： <HDPrint Value=#contractdate2text#><br>
+  (租期包括开始日期和终止日期)
+  </td>
+</tr>
+<tr valign="top" style="line-height:16pt">
+  <td>5，</td>
+  <td>
+  免租期： <HDPrint Value=#freerentmtext#> <HDPrint Value=#freerentdtext#> ;
+  <HDPrint Value=#freeDateList# Replace=#None#>
+  </td>
+</tr>
+<tr valign="top" style="line-height:16pt">
+  <td>6，</td>
+  <td>
+  交付日期：<HDPrint Value=#handoverdatetext#>
+  </td>
+</tr>
+<tr valign="top" style="line-height:16pt">
+  <td>7，</td>
+  <td>
+  装修期：<HDPrint Value=#fitoutmtext#>   <HDPrint Value=#fitoutdtext#>  （ <HDPrint Value=#fitoutdate1text#> ~ <HDPrint Value=#fitoutdate2text#>）
+  </td>
+</tr>
+<tr valign="top" style="line-height:16pt">
+  <td>8，</td>
+  <td>
+租金及管理费<br>
+&nbsp;&nbsp;(1)	方式：<HDPrint Value=#rate#><br>
+&nbsp;&nbsp;(2)	租金：<br>
+</td>
+</tr>
+<tr valign="top">
+  <td colspan="2" style="padding-left:0">
+  <table border="1" cellspacing="0" cellpadding="0" width="100%" style="border: .5pt solid windowtext;border-collapse: collapse; align:center;">
+    <tr style="height:47.25pt">
+      <td class="PrintTD"  colspan="2" style=" background: #c0c0c0;width: 56.7%; height: 47.25pt">
+      <p align="center"class="pline"><b>
+      <span style="font-size:8.0pt;font-family:Arial;">1st Term Base Rental (RMB)<br /></span>
+      <span style="font-size:8.0pt;">第一租赁期固定租金（人民币）</span></b></p>
+      </td>
+      <td class="PrintTD"  colspan="1" style=" background: #c0c0c0;width: 56.7%; height: 47.25pt">
+      <p align="center"class="pline"><b>
+      <span style="font-size:8.0pt;font-family:Arial;">物业管理费</span></b></p>
+      </td>
+      <td  class="PrintTD"  valign="top" style=" background: #c0c0c0;width: 20.3%;height: 47.25pt">
+      <p  align="center"class="pline"><b>
+      <span style="font-size:8.0pt;font-family:Arial;">A&amp;P</span></b><br><b>
+      <span style="font-size:8.0pt;font-family:宋体;">市场推广费</span><span  style="font-size:8.0pt;font-family:Arial;"></span></b></p>
+      </td>
+      <td  class="PrintTD"  style=" background: #c0c0c0;width: 23.0%; height: 47.25pt">
+      <p  align="center"class="pline"><b>
+      <span  style="font-size:8.0pt;font-family:Arial;">GTO Rent Structure<br /></span>
+      <span style="font-size:8.0pt;font-family:SimSun;">提成租金构造</span></b></p>
+      </td>
+    </tr>
+    <tr style="mso-yfti-irow:1;height:30.0pt">
+      <td  class="PrintTD"  style=" background: #c0c0c0;width: 16.14%;height: 30.0pt">
+      <p  align="center"class="pline">
+      <span class="fontspan2">&nbsp;</span></p>
+      </td>
+      <td  class="PrintTD" style="width: 20.16%;background: #c0c0c0; height: 30.0pt">
+      <p  align="center"class="pline">
+      <span class="fontspan">psm/day<br />
+      </span>
+      <span class="fontspan">每平方米<span>/</span>天</span></p>
+      </td>
+      <td  class="PrintTD" style="width: 20.16%;background: #c0c0c0; height: 30.0pt">
+      <p  align="center"class="pline">
+      <span class="fontspan">psm/day<br />
+      </span>
+      <span class="fontspan">每平方米<span>/</span>天</span></p>
+      </td>
+      <td  class="PrintTD"  valign="top" style="width: 20.3%; background: #c0c0c0;height: 30.0pt">
+      <p  align="center"class="pline">
+      <span  class="fontspan">details<br />
+      </span>
+      <span class="fontspan">细节<span ></span></span></p>
+      </td>
+      <td  class="PrintTD"  style=" background: #c0c0c0;width: 23.0%;height: 30.0pt">
+      <p  align="center"class="pline">
+      <span  class="fontspan">details<br />
+      </span>
+      <span class="fontspan">细节<span ></span></span></p>
+      </td>
+    </tr>
+   <HDLoop>   
+
+    <tr style="height:27.75pt">
+      <td class="PrintTD" style="width:16.14%;height:27.75pt">
+      <p  align="center"class="pline">
+      <span style="font-size:10.0pt;font-family:SimSun;display: <HDPrint Value=#displayfreerent# Replace=#None#>"><HDPrint Value=#freerentdate1#> ~ <HDPrint Value=#freerentdate2#></span>
+      <span style="font-size:10.0pt;font-family:SimSun;display: <HDPrint Value=#displayyear# Replace=#None#>">第<HDPrint Value=#yeartypetext1#>年(<HDPrint Value=#sDate#>~<HDPrint Value=#eDate#>)</span></p>
+      </td>
+      <td  class="PrintTD" nowrap style="width:20.16%;height:27.75pt">
+      <p  align="center"class="pline">
+      <span class="fontspan2">&nbsp;<HDPrint Value=#tbrd#></span></p>
+      </td>
+      <td  class="PrintTD" nowrap style="width:20.16%;height:27.75pt">
+      <p  align="center"class="pline">
+      <span class="fontspan2">&nbsp;<HDPrint Value=#pmfd#></span></p>
+      </td>
+      <td  class="PrintTD" valign="top" style="width:20.3%;height:27.75pt">
+      <p  align="center"class="pline">
+      <span  class="fontspan2">&nbsp;<HDPrint Value=#apvalue#> <HDPrint Value=#aptext#></span></p>
+      </td>
+      <td  class="PrintTD"  nowrap style="width:23.0%;height:27.75pt">
+      <p  align="center"class="pline">
+      <span class="fontspan2">&nbsp;<HDPrint Value=#gto#> %</span></p>
+      </td>
+    </tr>
+    </HDLoop>   
+  </table>
+  </td>
+</tr>
+<tr>
+  <td></td>
+  <td >
+  <b>注:每月总数按照月份实际天数计算</b><br>
+&nbsp;&nbsp;(3)	POS机使用费：<HDPrint Value=#posfeed#> 每平方米/天
+  </td>
+</tr>
+<tr valign="top">
+  <td>9，</td>
+  <td>
+保证金：<HDPrint Value=#security#> 元
+  </td>
+</tr>
+<tr valign="top">
+  <td>10，</td>
+  <td>
+收银方式：<HDPrint Value=#collection#>
+  </td>
+</tr>
+
+</table>
+
+
+<script language="JavaScript">
+<!--
+  window.print();
+//-->
+</script>
+
+
+

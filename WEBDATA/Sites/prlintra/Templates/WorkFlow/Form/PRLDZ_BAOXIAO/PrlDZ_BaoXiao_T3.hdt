@@ -1,0 +1,88 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<SCRIPT LANGUAGE="JavaScript">
+  //进入时，函数
+</script>
+
+<form name="frmDo" method="Post" action="">
+
+  <!-- 流程信息 -->
+  <INPUT type="text" style="display:none" name="ModelGid" value="<HDPrint Value=#ModelGid# Replace=#DBField2Input#>">
+  <INPUT type="text" style="display:none" name="FlowGid" value="<HDPrint Value=#FlowGid# Replace=#DBField2Input#>">
+  <INPUT type="text" style="display:none" name="CurUrl" value="<HDPrint Value=#Url# Replace=#DBField2Input#>">
+  <!--发起人UsrGid-->
+  <INPUT type="text" style="display:none" name="FillUsrGid" value="<HDPrint Value=#FillUsrGid# Replace=#DBField2Input#>">
+  <input type="text" style="display:none" name="FillDeptGid" value="<HDPrint Value=#FillDeptGid# Replace=#DBField2Input#>">
+  <INPUT type="text" style="display:none" name="FillDeptName" value="<HDPrint Value=#FillDeptName# Replace=#DBField2Input#>">
+  <!--意见标志：同意；否决-->
+  <input type="text" style="display:none" name="AppAssign" value="">
+
+  <h3 class="TitleBar" ><HDPrint Value=#ModelName#>-<HDPrint Value=#StepName#></h3>
+  <TABLE width="100%" class="ButtonBar" cellpadding="0" cellspacing="0">
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A name="btn_1" HREF="javascript:CheckSubmit('通知出纳');void(0)"><FONT class="IconRead">　&nbsp;</FONT> 通知出纳 </A>
+      |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+      <A HREF="javascript:window.close();void(0)"><FONT class="IconClose">　&nbsp;</FONT> 关闭</A>
+    </TD>
+  </TR>
+</TABLE>
+<iframe onload="JQAutoHeight(this)" id="iframeDtl" frameborder ='0' width="100%"  scrolling="no" style="width:100%" src="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_Content&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid#>"></iframe>
+<br>
+<TABLE width="100%" class="ButtonBar" cellpadding="0" cellspacing="0">
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A name="btn_1" HREF="javascript:CheckSubmit('通知出纳');void(0)"><FONT class="IconRead">　&nbsp;</FONT> 通知出纳 </A>
+      |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+      <A HREF="javascript:window.close();void(0)"><FONT class="IconClose">　&nbsp;</FONT> 关闭</A>
+    </TD>
+  </TR>
+</TABLE>
+</form>
+<script language="javascript">
+  //提交函数
+  function CheckSubmit(OpText){
+    //定义 必填验证的 值
+    var sCss = 'JQMust';
+    //定义 提交提示文字
+    var sConfirm = '您确定已经阅读完毕这份申请单，并作出 “' + OpText + '” 的审核意见吗？';
+    //否决时，判断必填
+    if(OpText == '否决'){
+      sCss = 'JQNo'
+    }
+    //提交时，验证必填项
+    if (!JQcheck(sCss)){
+      return false;
+    }
+    //审批意见赋值
+    $("input[name=AppAssign]").val(OpText);
+
+    //提交时，提示文字
+    if (!confirm(sConfirm)){
+      return false;
+    }
+    //获取当前表单对象 
+    var JqObj = $("form[name=frmDo]");
+    //表单参数设定
+    JqObj.attr({
+      "action":'##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#Url#>Save&UsrGid=<HDPrint Value=#UsrGid#>',
+      "target":'_self'
+    });
+    //表单提交
+    JqObj.submit();
+
+    //操作按钮变为不可用
+    $("a[name=btn_1]").each(function(){
+      $(this).prop("disabled",true);
+    });
+    //本函数失效
+    CheckSubmit = function() {return false;}
+  }
+</script>

@@ -1,0 +1,157 @@
+<!--Js引入-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/DateControl.js)##"></script>
+<script language="javascript">
+//定义全局变量，定位控件所处位置
+  var g_Type;
+  /*
+  *函数功能：选择不同审批人，调用同一个DataInterface，并保存一些临时控件
+  *参数1：审批人类别（10：审批人1 ;20：审批人2）
+  *参数2：审批人类别对应的中文名称
+  *参数3：审批人类别对应的组织代码
+  */
+  function GetApp(JsType,JsTitle,JsOrg)
+  {
+    //暂时保留传递的参数
+    g_Type = JsType;
+
+    //对字段DataInterface 的Sql 与， count ，Title 进行赋值
+    var s_App = "select u.gid, u.code, u.name, u.atype from v_usr u, v_org_usr v, org o where u.EntGid = '<HDPrint Value=#EntGid#>' and u.EntGid = v.EntGid and u.EntGid = o.EntGid and u.Gid = v.Usrgid and v.OrgGid = o.Gid and lower(o.Code) = lower('"+JsOrg+"')";
+
+    var c_App = "select count(*) from v_usr u, v_org_usr v, org o where u.EntGid = '<HDPrint Value=#EntGid#>' and u.EntGid = v.EntGid and u.EntGid = o.EntGid and u.Gid = v.Usrgid and v.OrgGid = o.Gid and lower(o.Code) = lower('"+JsOrg+"')";
+
+    var t_App = JsTitle + '_选择列表';
+
+    $("input#s_App").val(s_App);
+    $("input#c_App").val(c_App);
+    $("input#t_App").val(t_App);
+
+    //调用字段的DataInterface
+    DataInterface(frmDataInterface_App);
+  }
+  /*
+  *函数功能：审批人的DataInterface时调用函数，回写字段
+  *参数1：审批人Gid
+  *参数2：审批人Code
+  *参数3：审批人Name
+  */
+  function CallApp(JsAppGid,JsAppCode,JsAppName)
+  {
+    if (g_Type == 'A'){
+      frmOther.action='##HDNet_AppName##/__ExplainModule?URL=Prl_FeeRT&UsrGid=<HDPrint Value=#UsrGid#>&AUsrGid='+JsAppGid;
+      frmOther.target='_self';
+      frmOther.submit();
+    }
+    else{
+      //判断是否存在附件
+      if (!JQgetSingle("BUsrGid_1",JsAppGid)){
+        alert('对不起，已经存在该用户！');
+        return false;
+      }
+      //添加到附件表中
+      var JsOption = '<option value="'+JsAppGid+'">['+JsAppCode+']'+JsAppName+'</option>';
+      $("select[name=BUsrGid_1]").append(JsOption);
+    }
+  }
+</script>
+<form name="frmOther" method="post" action=""></form>
+<form name="frmDo" method="Post" action="">
+<h3 class="TitleBar" ><HDPrint Value=#ModeleAtype#>-<HDPrint Value=#ModeleName#></h3>
+<TABLE width="100%" class="ButtonBar" cellpadding=0 cellspacing=0>
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A Href="javascript:CheckSubmit('保存');void(0);" name="btn_1"><FONT class="IconSave">　&nbsp;</FONT> 保存 </A>
+     |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+      <A HREF="##HDNet_AppName##/MainPage?URL=&UsrGid=<HDPrint Value=#UsrGid#>"><FONT class="IconBack">　&nbsp;</FONT> 返回首页</A>
+    </TD>
+  </TR>
+</TABLE>
+<INPUT TYPE="hidden" NAME="AUsrGid" maxlength="32" value="<HDPrint Value=#AUsrGid# Replace=#DBField2Input#>" class="JQText">
+<INPUT TYPE="hidden" NAME="AUsrCode" maxlength="32" value="<HDPrint Value=#AUsrCode# Replace=#DBField2Input#>" class="JQText">
+<table  width="100%" class="ListBar" cellspacing="1" id="tb_ACG">
+  <colgroup>
+    <col style="padding-left:4px;width:15%">
+    <col style="padding-left:4px;width:85%">
+  </colgroup>
+  <tr>
+    <td class="DtlBarTitle">查看用户信息:<A HREF="javascript:void(0);" onclick="GetApp('A','查看用户信息','all_usr_grp')">[选择]</a></td>
+    <td class="listtd"><INPUT TYPE="text" NAME="AUsrName" maxlength="32" value="<HDPrint Value=#AUsrName# Replace=#DBField2Input#>" class="JQText JQMust" readonly style="border:0px;"></td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">被查看用户信息:<A HREF="javascript:void(0);" onclick="GetApp('B','被查看用户信息','all_usr_grp')">[选择]</a><br><font color="gray">(双击删除)</font></td>
+    <td class="listtd">
+    <select name="BUsrGid_1" class="JQList" multiple style="height:400px;"><HDPrint Value=#BUsrList# Replace=#None#></select>
+    </td>
+  </tr>
+</table>
+<FieldSet width="100%" style="padding-left:4px">
+  <legend><font color="red"><B>特别提醒</B></font></legend>
+    <li><b>A</b>:选择查看用户</li>
+    <li><b>B</b>:选择被查看用户</li>
+    <li>设置后，付款时，A 可以调用 B 的费用单</li>
+    <li>未设置，付款时，A 只可以调用自己的费用单</li>
+</FieldSet>
+
+</form>
+
+<script>
+  //提交函数
+  function CheckSubmit(){
+    //定义 提交提示文字
+    var sConfirm = '您确定已经填写完成，并保存吗？';
+    //提交时，验证必填项
+    if (!JQcheck("JQMust")){
+      return false;
+    }
+    //提交时，提示
+    if (!(confirm(sConfirm)))
+      return false;
+    
+    //获取当前表单对象 
+    var JqObj = $("form[name=frmDo]");
+    //表单参数设定
+    JqObj.attr({
+      "action":'##HDNet_AppName##/__ExplainModule?Url=<HDPrint Value=#Url#>Save&UsrGid=<HDPrint Value=#UsrGid#>',
+      "target":'_self'
+    });
+    //表单提交
+    JqObj.submit();
+
+    //操作按钮变为不可用
+    $("a[name=btn_1]").each(function(){
+      $(this).prop("disabled",true);
+    });
+    //本函数失效
+    CheckSubmit = function() {return false;}
+  }
+</script>
+
+<script language="javascript" src="##GetWebRootPath(/Scripts/DataInterface.js)##"></script>
+<!--选择审批人调用-->
+<FORM NAME="frmDataInterface_App" ACTION="">
+  <INPUT TYPE="hidden" name="DataInterface_Title" ID="t_App" value="审批人列表">
+
+  <INPUT TYPE="hidden" name="DataInterface_Sql" ID="s_App" value="">
+  <INPUT TYPE="hidden" name="DataInterface_CountSql" ID="c_App" value="">
+  <INPUT TYPE="hidden" name="DataInterface_OrderSql" value="order by u.code">
+  <INPUT TYPE="hidden" name="DataInterface_UsrGid" value="<HDPrint Value=#UsrGid#>">
+  <INPUT TYPE="hidden" name="DataInterface_AppName" value="##HDNet_AppName##">
+
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="2^代码^left^100">
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="3^姓名^left^100">
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="4^类别^left^100">
+
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="u.code^用户代码^1">
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="u.name^用户姓名^1">
+  <input TYPE="hidden" name="DataInterface_Search_Sql" value="">
+  <input TYPE="hidden" name="DataInterface_Search_Cols" value="">
+
+  <INPUT TYPE="hidden" name="DataInterface_FieldTo" value="">
+  <INPUT TYPE="hidden" name="DataInterface_FieldBy" value="1^2^3">
+  <INPUT TYPE="hidden" name="DataInterface_CallBckFunc" value="CallApp">
+  <INPUT TYPE="hidden" name="DataInterface_Close" value="false">
+</FORM>

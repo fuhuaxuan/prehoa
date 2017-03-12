@@ -1,0 +1,9 @@
+<script>
+  <hdloop>
+    Add_Other('<HDPrint Value=#CGid# Replace=#DBField2Js#>',
+      '<HDPrint Value=#Line# Replace=#DBField2Js#>',
+      '<HDPrint Value=#Content# Replace=#DBField2Js#>',
+      '<HDPrint Value=#OtherMemo# Replace=#DBField2Js#>',
+      '<HDPrint Value=#OtherAppMemo# Replace=#DBField2Js#>');
+  </hdloop>
+</script>

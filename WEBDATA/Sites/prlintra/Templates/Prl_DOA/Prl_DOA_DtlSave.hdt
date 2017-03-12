@@ -1,0 +1,16 @@
+<SCRIPT LANGUAGE="JavaScript">
+  alert('<HDPrint Value=#ModeleName# Replace=#DBField2Js#>成功，操作人：<HDPrint value=#CurUsrName# Replace=#DBField2Js#>！');
+  //如有打开页面，刷新打开页面
+  if (self.opener != null) 
+  {
+    try{
+      self.opener.location.reload();
+    }
+    catch(e){
+    }
+    window.opener = null;
+    window.open(' ', '_self', ' ');
+  }
+  //转到补丁明细页面
+  location.replace('##HDNet_AppName##/__ExplainModule?Url=Prl_DOA_Dtl&UsrGid=<HDPrint Value=#UsrGid#>&ComGid=<HDPrint Value=#ComGid# Replace=#DBField2Js#>&AcGGid=<HDPrint Value=#AcGGid# Replace=#DBField2Js#>');
+</SCRIPT>

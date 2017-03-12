@@ -1,0 +1,221 @@
+<script language="javascript" src="##GetWebRootPath(/Scripts/Common.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JSCalendar.js)##"></script>
+<SCRIPT LANGUAGE="JavaScript">
+function check(sAssign) {
+
+document.all.AppAssign.value = sAssign;
+if (sAssign != 'Deny')
+{
+  if (document.all.paydate.value == '')
+  {
+    alert('请填写支付日期！');
+    document.all.paydate.focus();
+    return false;
+  }
+  if (!confirm('您确定支付？' )) {
+    return false;
+  }
+}
+else {
+  if (document.all.Note.value == '')
+  {
+    alert('请填写意见说明，便于发起人准确修改支付信息！');
+    return false;
+  }
+
+}
+
+  frmDo.submit();
+}
+
+</SCRIPT>
+
+
+
+<form name="frmDo" method="Post" action=" ##HDNet_AppName##/WFFlowPage?URL=<HDPrint Value=#Url#>save&UsrGid=<HDPrint Value=#UsrGid#>">
+  <h3 class="TitleBar" >出纳确认支付信息</h3>
+  <TABLE width="100%" class="ButtonBar" cellpadding=0 cellspacing=0>
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A HREF="javascript:check('Confirm');void(0)"> √  确认支付</A>　
+      <A HREF="javascript:check('Deny');void(0);"> x 需要修改支付信息</A>　
+
+
+      <A HREF="##HDNet_AppName##/Main?URL=&UsrGid=<HDPrint Value=#UsrGid#>"><FONT style="font-family:Wingdings;font-size:14px">&#199;</FONT> 返回首页</A>　
+    </TD>
+  </TR>
+  </TABLE>
+  <INPUT TYPE="hidden" name="DeptGid" value="<HDPrint Value=#FillUsrDeptGid# Replace=#DBField2Input#>">
+  <INPUT TYPE="hidden" name="DeptCode" value="<HDPrint Value=#DeptCode#>">
+  <INPUT TYPE="hidden" name="DeptName" value="<HDPrint Value=#DeptName#>">
+  <!-- 流程信息 -->
+  <INPUT TYPE="hidden" name="ModelGid" value="<HDPrint Value=#ModelGid#>">
+  <INPUT TYPE="hidden" name="Num" value="<HDPrint Value=#Num# Replace=#DBField2Input#>">
+  <INPUT TYPE="hidden" name="FlowGid" value="<HDPrint Value=#FlowGid#>">
+  <INPUT TYPE="hidden" name="StoreName" value="<HDPrint Value=#StoreName#>">
+  <INPUT TYPE="hidden" name="unitgid" value="<HDPrint Value=#unitgid#>">
+  <INPUT TYPE="hidden" name="AppAssign" value="">
+  <INPUT TYPE="hidden" name="npayfee" value="<HDPrint Value=#npayfee# Replace=#DBField2Input#>">
+  <INPUT TYPE="hidden" name="payfee" value="<HDPrint Value=#payfee# Replace=#DBField2Input#>">
+
+<table width=100% cellspacing="1" cellpadding="0">
+  <col style="padding-left:4px;width:9%">
+  <col style="padding-left:4px;width:21%">
+  <col style="padding-left:4px;width:40%">
+  <col style="padding-left:4px;width:30%">
+  <TR>
+    <TD class="newtd2"><B>发起人</B></TD>
+    <td class="newtd3"><B>[<HDPrint Value=#FillUsrCode#>]<HDPrint Value=#FillUsrName#></B></td>
+    <td class=title rowspan="3"  align="center"><HDPrint Value=#ModelName#></td>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2"><B>系统流水号</B></TD>
+    <TD class="newtd3"><B><HDPrint Value=#Num#></B></td>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2">发起时间</TD>
+    <td class="newtd3"><HDPrint Value=#CreateDate#></td>
+    <TD></TD>
+  </TR>
+</table>
+<br>
+<HDPrint Value=#applist# Replace=#None#>
+ <table cellspacing="1">
+  <col style="padding-left:20px;width:200">
+  <tr class="listtr2"><td><b>单据内容</b></td></tr>
+</table>
+   <table cellspacing="1">
+    <tr ><td>&nbsp;&nbsp;(货币：RMB)</td></tr>
+  </table>
+<table class="NewTb"  width="100%" cellpadding="0" cellspacing="1"  >
+<col style="width:15%">
+<col style="width:20%">
+<col style="width:15%">
+<col style="width:20%">
+<col style="width:15%">
+<col style="width:20%">
+<HDIF EqualNot(<HDPrint Value=#feeflowgid# Replace=#DBField2Input#>1, 1)>
+<tr>
+  <td class="Newtd2">费用申请单</td>
+  <td class="Newtd3" id="feedtl"> <a href="##HDNet_AppName##/wfflowpage?url=prl_fee&modelcode=prl_fee&flowgid=<HDPrint Value=#feeFlowGid#>&usrgid=<HDPrint Value=#usrgid#>" target="_blank"><HDPrint Value=#feeNum#></a></td>
+  <INPUT TYPE="hidden" name="DOACODE" style="border:0;width:20" readonly>
+  <td class="Newtd2">是否为费用申请表尾款</td>
+  <td class="Newtd3" ><HDPrint Value=#isendtext#></td>
+  <td class="Newtd2">付款单单号</td>
+  <td class="Newtd3"><HDPrint Value=#feenum#>-<HDPrint Value=#partnum#>
+</td>
+</tr>
+<tr>
+  <td class="Newtd2">公司名称：</td>
+  <td class="Newtd3"><HDPrint Value=#companyname#></td>
+  <td class="Newtd2">项目名称：</td>
+  <td class="Newtd3" colspan="3"><HDPrint Value=#acgonename#> - <HDPrint Value=#acgtwoname#>
+      付款单DOA信息: <HDPrint Value=#paydoacode#>
+  </td>
+</tr>
+</HDIF>
+<HDIF Equal(<HDPrint Value=#feeflowgid# Replace=#DBField2Input#>1, 1)>
+<tr>
+  <td class="Newtd2">公司名称：</td>
+  <td class="Newtd3" colspan="5"> <HDPrint Value=#companyname#></td>
+</tr>
+<tr>
+  <td class="Newtd2">项目名称：</td>
+  <td class="Newtd3" colspan="3"><HDPrint Value=#acgonename#> - <HDPrint Value=#acgtwoname#>   </td>
+  <td style="display: <HDPrint Value=#acgotherdis# Replace=#None#>">细节勾选：<HDPrint Value=#acgothertext#></td>
+
+
+<td >
+  付款单DOA信息: <HDPrint Value=#doacode#>
+  </td>
+</tr>
+
+</HDIF>
+<tr>
+  <td class="Newtd2">付款金额</td>
+  <td class="Newtd3"><font color="blue"><HDPrint Value=#payfee#></font></td>
+  <td class="Newtd2">要求支付方式 </td>
+  <td class="Newtd3" colspan="3"><HDPrint Value=#payway#></td></tr>
+<tr>
+  <td class="Newtd2">人民币（大写）</td>
+  <td class="Newtd3" colspan="1"><HDPrint Value=#bigrmb#></td>
+  <td class="Newtd2">付款备注（Memo）</td>
+  <td class="Newtd3" colspan="3"><HDPrint Value=#Memo#></td>
+  </td>
+</tr>
+<tr>
+  <td class="Newtd2">收款单位（Payee）</td>
+  <td class="Newtd3"><HDPrint Value=#payee#></td>
+  <td class="Newtd2">收款银行（Bank）</td>
+  <td class="Newtd3"><HDPrint Value=#bank#></td>
+  <td class="Newtd2">银行帐号（Accounts）</td>
+  <td class="Newtd3"><HDPrint Value=#account#></td>
+</tr>
+
+<HDIF EqualNot(<HDPrint Value=#feeflowgid# Replace=#DBField2Input#>1, 1)>
+<tr>
+  <td colspan="6">
+  <table cellpadding="0" width="100%" cellspacing="1" >
+  <tr>
+    <td  class="Newtd2">（A）项目总额</td>
+    <td class="Newtd2" title="是出纳已付款 + 审批通过未付款 + 审批中的金额合计">
+        （B）已付款金额</td>
+    <td class="Newtd2">（C）本次付款 </td>
+    <td class="Newtd2">尚欠余额=A-B-C</td>
+    <td class="Newtd2">实际付款总额=B+C </td>
+  </tr>
+  <tr>
+    <td class="Newtd3"><HDPrint Value=#feeA#></td>
+    <td class="Newtd3"><HDPrint Value=#feeB#></td>
+    <td class="Newtd3"><HDPrint Value=#payfee#></td>
+    <td class="Newtd3"><HDPrint Value=#feeleft#></td>
+    <td class="Newtd3"><HDPrint Value=#feeok#></td>
+  </tr>
+  </table>
+  </td>
+</tr>
+</HDIF>
+<tr>
+  <td class="Newtd2">凭证类型：</td>
+  <td class="Newtd3"><input type="text" name="certtype" maxlength="60" style="width:100%"></td>
+  <td class="Newtd2">凭证编号：</td>
+  <td class="Newtd3"><input type="text" name="certnum" maxlength="60" style="width:100%"></td>
+  <td class="Newtd2">支付日期：<font color="red">*</font></td>
+  <td class="Newtd3"><input type="text" NAME="paydate" maxlength="10" onblur="checkDateTime(this)" onclick="showCalender(this,this);" Value="<HDPrint Value=#CurDate# Replace=#DBField2Input#>"></td>
+</tr>
+ 
+<tr valign="top">
+  <td class="newtd2">附件</td>
+  <td class="newtd3" colspan="5">
+  <font color="gray">(本处请附上订单，发票，合同等)</font><br>
+     <HDPrint Value=#AttachList# Replace=#None#>&nbsp;
+  </td>
+</tr>
+<tr valign="top">
+  <td class="newtd2">意见说明</td>
+  <td class="newtd3" colspan="5"><textarea style="width:100%;height:100" id="Note" name="Note" onpropertychange="if(value.length>500) value=value.substr(0,500)"></textarea></td>
+</tr>
+</table>
+</form>
+<script language="JavaScript">
+<!--
+
+function checkDateTime(obj)
+{
+  if (!isValidDateTime(obj.value))
+  {
+    alert('请输入正确的日期格式：YYYY.MM.DD');
+    obj.focus();
+    obj.value = '';
+    return false;
+  }
+  return true;
+}
+
+
+
+//-->
+</script>

@@ -1,0 +1,60 @@
+<script language="javascript" src="##GetWebRootPath(/Scripts/Common.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JSCalendar.js)##"></script>
+<SCRIPT LANGUAGE="JavaScript">
+function check(sAssign) {
+
+  if (!confirm('您确定要通知出纳进行付款么？\n请带好您的发票以及相关文件到出纳处进行支付！' )) {
+    return false;
+  }
+  frmDo.submit();
+}
+
+</SCRIPT>
+
+
+
+<form name="frmDo" method="Post" action=" ##HDNet_AppName##/WFFlowPage?URL=<HDPrint Value=#Url#>save&UsrGid=<HDPrint Value=#UsrGid#>">
+  <h3 class="TitleBar" >审批</h3>
+  <TABLE width="100%" class="ButtonBar" cellpadding=0 cellspacing=0>
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A HREF="javascript:check();void(0)"> √  通知出纳</A>　(请将相关合同发票正本提交出纳)
+      <A HREF="##HDNet_AppName##/Main?URL=&UsrGid=<HDPrint Value=#UsrGid#>"><FONT style="font-family:Wingdings;font-size:14px">&#199;</FONT> 返回首页</A>　
+    </TD>
+  </TR>
+  </TABLE>
+  <INPUT TYPE="hidden" name="DeptGid" value="<HDPrint Value=#FillUsrDeptGid# Replace=#DBField2Input#>">
+  <INPUT TYPE="hidden" name="DeptCode" value="<HDPrint Value=#DeptCode#>">
+  <INPUT TYPE="hidden" name="DeptName" value="<HDPrint Value=#DeptName#>">
+  <INPUT TYPE="hidden" name="fillusrdept" value="<HDPrint Value=#fillusrdept# Replace=#DBField2Input#>">
+  <INPUT TYPE="hidden" name="FillUsrDeptGid" value="<HDPrint Value=Value=#FillUsrDeptGid#  Replace=#DBField2Input#>">
+  <!-- 流程信息 -->
+  <INPUT TYPE="hidden" name="ModelGid" value="<HDPrint Value=#ModelGid#>">
+  <INPUT TYPE="hidden" name="FlowGid" value="<HDPrint Value=#FlowGid#>">
+
+<table width=100% cellspacing="1" cellpadding="0">
+  <col style="padding-left:4px;width:9%">
+  <col style="padding-left:4px;width:21%">
+  <col style="padding-left:4px;width:40%">
+  <col style="padding-left:4px;width:30%">
+  <TR>
+    <TD class="newtd2"><B>发起人</B></TD>
+    <td class="newtd3"><B>[<HDPrint Value=#FillUsrCode#>]<HDPrint Value=#FillUsrName#></B></td>
+    <td class=title rowspan="3"  align="center"><HDPrint Value=#ModelName#></td>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2"><B>系统流水号</B></TD>
+    <TD class="newtd3"><B><HDPrint Value=#Num#></B></td>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2">发起时间</TD>
+    <td class="newtd3"><HDPrint Value=#CreateDate#></td>
+    <TD></TD>
+  </TR>
+</table>
+<iframe class="newtb" style="height:500;width:100%" src="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_Content&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid#>"></iframe>
+<BR>
+</form>

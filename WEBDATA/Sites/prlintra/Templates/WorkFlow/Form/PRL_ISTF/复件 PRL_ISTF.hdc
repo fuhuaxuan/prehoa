@@ -1,0 +1,62 @@
+[Permission]
+LIMIT1=FlowGid
+LIMITDesc1=StringSize[,0]
+LIMITRemind1=您选择的流程数据有误，请返回重新选择！
+
+ ;判断是否有该条信息
+SQL1=select 1 from wf_PRL_ISTF where EntGid=__ENTGID__ and FlowGid=##FlowGid##
+Remind1=您指定的[ISTF]没有找到！<script>alert('您指定的[ISTF]没有找到！');window.close()</script>
+
+
+[Master]
+[Detail]
+;得到模型名称
+SqlForCondition1=select Code ModelCode, Name ModelName from wf_Model where ModelGid = ##ModelGid##
+
+;得到业务单据信息
+SqlForCondition2=select a.*,decode(mallstat,0,'已发送至Mall，处理失败',10,'已发送至Mall,未接收',100,'已发送至Mall，成功') mallstattext,a.mallModDate mallModDateText from WF_^^ModelCode^^ a where FlowGid = ##FlowGid##
+
+;财务经理
+Sql3=select b.usrgid CWUsrGid from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##fillusrdeptgid## and b.gid = a.empgidex and atype=30 and b.usrgid is not null
+---10:部门经理； 20:行政经理； 30:财务经理； 40:商场总经理； 50:区域总监； 60:常务理事； 70:资产总监； 80:资产总监； 90:CFO； 100:CEO；
+
+[Where]
+1= 
+2= 
+3= 
+4= 
+5= 
+
+[DefaultWhere]
+DefaultWhere= 
+
+[OrderBy]
+1= 
+
+[DefaultOrderBy]
+DefaultOrderBy=
+
+[GroupBy]
+
+[LoopSQL]
+
+
+[Title]
+ChangePage=0
+Log=
+PageKind=0
+Text1=^^ModelName^^
+Text2=
+Text3=
+Text4=
+Text5=
+
+[Link]
+URL1=
+URL2=
+URL3=
+URL4=
+URL5=
+
+[AJAX]
+AddtionalSQL1=update WF_PRL_ISTF set mallstat = 10,LastUpdDate = sysdate where  FlowGid = ##thisFlowGid##

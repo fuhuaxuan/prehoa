@@ -1,0 +1,3 @@
+<HDLoop>
+<HDPrint Value=#empnameex# Replace=#DBField2Input#><br>
+</HDLoop>   

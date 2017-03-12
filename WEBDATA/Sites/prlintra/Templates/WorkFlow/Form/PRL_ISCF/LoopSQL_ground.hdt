@@ -1,0 +1,3 @@
+<HDLoop>
+<option value="<HDPrint value=#fgid# Replace=#DBField2Input#>"><HDPrint value=#fno#></option>
+</HDLoop>

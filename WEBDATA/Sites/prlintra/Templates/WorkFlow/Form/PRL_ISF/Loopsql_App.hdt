@@ -1,0 +1,23 @@
+ <table cellspacing="1">
+  <col style="padding-left:20px;width:200">
+  <tr class="listtr2"><td><b>过程记录</b></td></tr>
+</table>
+<table width="100%" class="newtb" cellspacing="1" cellpadding="0">
+  <col style="padding-left:4px;width:150" valign="top">
+  <col style="padding-left:4px;width:100" valign="top">
+  <col style="padding-left:4px;width:100" valign="top">
+  <col style="padding-left:4px;width:" valign="top">
+  <tr>
+    <td class="newtd1"><B>时间</B></td>
+    <td class="newtd1" colspan="2"><B>执行人</B></td>
+    <td class="newtd1"><B>内容</B></td>
+  </tr>
+  <HDLoop>
+  <tr>
+    <td class="newtd3"><HDPrint Value=#AppDate#></td>
+    <td class="newtd3"><HDPrint Value=#Apptypetext#></td>
+    <td class="newtd3"><HDPrint Value=#AppName#></td>
+    <td class="newtd3"><b>概要：<script>if ('<HDPrint Value=#AppAssign#>' == '否决') {document.write('<font color="red">')}</script><HDPrint Value=#AppAssign#></b></font><br><B>内容：</B><HDPrint Value=#Note#></td>
+  </tr>
+  </HDLoop>
+</table>

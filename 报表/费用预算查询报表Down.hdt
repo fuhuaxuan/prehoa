@@ -1,0 +1,14 @@
+[Rep_BeginLine]
+公司名称 
+项目代码 
+项目名称 
+剩余预算金额
+[Rep_EndLine]
+<HDLoop>
+[Rep_BeginLine]
+<HDPrint Value=#CompanyName# Replace=#None#>
+<HDPrint Value=#AcgCode# Replace=#None#>
+<HDPrint Value=#AcgName# Replace=#None#>
+#NoForm#<HDPrint Value=#LeftBudgutFee# Replace=#DBField2Excel#>
+[Rep_EndLine]
+</HDLoop>

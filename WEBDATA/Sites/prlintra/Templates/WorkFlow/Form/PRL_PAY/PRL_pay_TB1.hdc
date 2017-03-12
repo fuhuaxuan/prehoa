@@ -1,0 +1,57 @@
+[Permission]
+LIMIT1=FlowGid
+LIMITDesc1=StringSize[,0]
+LIMITRemind1=您选择的流程数据有误，请返回重新选择！
+
+;判断是否有该条信息
+SQL1=select 1 from wf_prl_pay where EntGid=__ENTGID__ and FlowGid=##FlowGid##
+Remind1=您指定的付款流程没有找到！<script>alert('您指定的付款流程没有找到！');window.close()</script>
+
+[Master]
+Sql=select * from WF_^^ModelCode^^_App where FlowGid = ##FlowGid## order by AppDate
+Count=select 1 from dual
+
+[Detail]
+;得到模型名称
+SqlForCondition1=select Code ModelCode, Name ModelName from wf_Model where EntGid = __ENTGID__ and  ModelGid = ##ModelGid##
+
+;得到业务单据信息
+Sql1=select * from WF_^^ModelCode^^ where EntGid = __ENTGID__ and  FlowGid = ##FlowGid##
+
+[Where]
+1= 
+2= 
+3= 
+4= 
+5= 
+
+[DefaultWhere]
+DefaultWhere= 
+
+[OrderBy]
+1= 
+
+[DefaultOrderBy]
+DefaultOrderBy=
+
+[GroupBy]
+
+[LoopSQL]
+
+
+[Title]
+ChangePage=0
+Log=
+PageKind=0
+Text1=^^ModelName^^
+Text2=
+Text3=
+Text4=
+Text5=
+
+[Link]
+URL1=
+URL2=
+URL3=
+URL4=
+URL5=

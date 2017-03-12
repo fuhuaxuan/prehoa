@@ -1,0 +1,165 @@
+<!--版本号：2013年3月份;此行不允许删除-->
+<script language="javascript" src="##GetWebRootPath(/Scripts/Common.js)##"></script>
+<form name="frmDo" method="Post" action="">
+<br>
+<HDIF EqualNot(<HDPrint Value=#IsShow# Replace=#None#>, 0)>
+<table cellspacing="1">
+  <col style="padding-left:20px;width:200">
+  <tr class="listtr2"><td><b>过程记录</b></td></tr>
+</table>
+<table width="100%" class="newtb" cellspacing="1" cellpadding="0">
+  <col style="padding-left:4px;width:140" valign="top">
+  <col style="padding-left:4px;width:100" valign="top">
+  <col style="padding-left:4px;width:70" valign="top">
+  <col style="padding-left:4px;width:" valign="top">
+  <tr>
+    <td class="newtd1"><B>时间</B></td>
+    <td class="newtd1" colspan="2"><B>执行人</B></td>
+    <td class="newtd1"><B>内容</B></td>
+  </tr>
+  <HDLoop>
+  <tr>
+    <td class="newtd3"><HDPrint Value=#AppDate#></td>
+    <td class="newtd3"><HDPrint Value=#Apptypetext#></td>
+    <td class="newtd3"><HDPrint Value=#AppName#></td>
+    <td class="newtd3"><b>概要：<script>if ('<HDPrint Value=#AppAssign# Replace=#DBField2Js#>' == '否决') {document.write('<font color="red">')}</script><HDPrint Value=#AppAssign#></b></font><script>if ('<HDPrint Value=#AppMemo# Replace=#DBField2Js#>' != '') {document.write('<br><B>内容：</B><HDPrint Value=#AppMemo#>')}</script></td>
+  </tr>
+  </HDLoop>
+</table>
+<br>
+</HDIF>
+ <table cellspacing="1">
+  <col style="padding-left:20px;width:200">
+  <tr class="listtr2"><td><b>单据内容</b></td></tr>
+</table>
+<table class="ListBar" cellspacing="1" cellpadding="0" width="100%">
+  <col style="padding-left:4px;width:20%" valign="top">
+  <col style="padding-left:4px;width:30%" valign="top">
+  <col style="padding-left:4px;width:20%" valign="top">
+  <col style="padding-left:4px;width:30%" valign="top">
+  <tr>
+    <td class="newtd2">Date 日期:</td>
+    <td class="listtd"><HDPrint Value=#createdate1#></td>
+    <td class="newtd2">Serial No 编号:</td>
+    <td class="listtd"><HDPrint Value=#SerialNo#></td>
+  </tr>
+  <tr>
+    <td class="newtd2"  rowspan="2">Category 类别:</td>
+    <td class="listtd"  rowspan="2"><HDPrint Value=#Category#> <HDPrint Value=#CategoryText#></td>
+    <td class="newtd2">AType 租赁类别:</td>
+    <td class="listtd"><HDPrint Value=#Atype#>
+  </tr>
+  <tr>
+    <td class="newtd2">Rent Price Charge Way租金单价收取方式:</td>
+    <td class="listtd"><HDPrint Value=#RentWay#></td>
+  </tr>
+  <tr>
+    <td class="newtd2">Tenant/Licensee 租户:</td>
+    <td class="listtd"><HDPrint Value=#TenantLicensee#></td>
+    <td class="newtd2">Trading Name 商店营业名称:</td>
+    <td class="listtd"><HDPrint Value=#TradingName#></td>
+  </tr>
+  <tr>
+    <td class="newtd2">Address 地址:</td>
+    <td class="listtd" colspan="3"><HDPrint Value=#Address#></td>
+  </tr>
+  <tr>
+    <td class="newtd2">Contact Person 接洽人:</td>
+    <td class="listtd"><HDPrint Value=#ContactPerson#></td>
+    <td class="newtd2">Phone 电话号码:</td>
+    <td class="listtd"><HDPrint Value=#Phone#></td>
+  </tr>
+  <tr>
+    <td class="newtd2">E-mail 电子邮件:</td>
+    <td class="listtd"><HDPrint Value=#Email#></td>
+    <td class="newtd2">Fax 传真号码:</td>
+    <td class="listtd"><HDPrint Value=#Fax#></td>
+  </tr>
+  <tr>
+    <td class="newtd2">Lease Period 租赁起止日:</td>
+    <td class="listtd"><HDPrint Value=#LeasePeriodBDate#>&nbsp;~&nbsp;<HDPrint Value=#LeasePeriodEDate#>
+    </td>
+    <td class="newtd2">Lease Term 租赁期限:</td>
+    <td class="listtd"><HDPrint Value=#LeaseTermM#> Months 个月
+    </td>
+  </tr>
+  <tr>
+    <td class="newtd2">LeaseType 租户类别:</td>
+    <td class="listtd"><HDPrint Value=#LeaseType#>
+    </td>
+    <td class="newtd2">ConditionForExemption 租金减免条件:</td>
+    <td class="listtd"><HDPrint Value=#ConditionForExemption#></td>
+  </tr>
+</table>
+<h3 class="TitleBar" >
+  <table width="100%" style="width:100%" cellpadding="0" cellspacing="0">
+  <tr>
+    <td>
+      <B>Income 收入</td>
+    </tr>
+</table>
+</h3>
+<table  width="100%" class="ListBar" cellspacing="1" id="tb_Income">
+    <colgroup>
+      <col style="padding-left:4px;width:5%">
+      <col style="padding-left:4px;width:12%">
+      <col style="padding-left:4px;width:10%">
+      <col style="padding-left:4px;width:10%">
+      <col style="padding-left:4px;width:12%">
+      <col style="padding-left:4px;width:10%">
+      <col style="padding-left:4px;width:15%">
+      <col style="padding-left:4px;width:20%">
+    </colgroup>
+    <tr class="listtr">
+      <td align="center">No. 序号</td>
+      <td align="center">Serial No. 编号</td>
+      <td align="center">Lease Term 租赁期</td>
+      <td align="center">Area Size 面积尺寸</td>
+      <td align="center">Unit Rate 租赁单价</td>
+      <td align="center">Total 总金额</td>
+      <td align="center">Fund Model Rate 租金底价</td>
+      <td align="center">Remark 备注</td>
+    </tr>
+    <HDPrint Value=#IncomeList# Replace=#None#>
+  </table>
+<br>
+<table cellpadding="0" cellspacing="1" class="ListBar" width="100%">
+  <col style="padding-left:4px;width:20%" valign="top">
+  <col style="padding-left:4px;width:30%" valign="top">
+  <col style="padding-left:4px;width:20%" valign="top">
+  <col style="padding-left:4px;width:30%" valign="top">
+  <tr>
+    <td class="newtd2">Rental In cash 现金租金:[RMB 人民币]</td>
+    <td class="listtd"><HDPrint Value=#RentalIncash#></td>
+    <td class="newtd2">GTO Rent 销售提成:</td>
+    <td class="listtd"><HDPrint Value=#GTORent#></td>
+  </tr>
+  <tr>
+    <td class="newtd2">Security Deposit 保证金:[RMB 人民币]</td>
+    <td class="listtd"><HDPrint Value=#SecurityDeposit#></td>
+    <td class="newtd2">Total Sales 销售额:</td>
+    <td class="listtd"><HDPrint Value=#TotalSales#></td>
+  </tr>
+  <tr>
+    <td class="newtd2">Others 其他:</td>
+    <td class="listtd"><HDPrint Value=#TotalSales#></td>
+    <td class="newtd2">GTO % 提成百分比:</td>
+    <td class="listtd"><HDPrint Value=#GTO#></td>
+  </tr>
+  <tr>
+    <td class="newtd2">PowerRate 电费:</td>
+    <td class="listtd"><HDPrint Value=#PowerRate#>
+    </td>
+    <td class="newtd2">GTO Rent Fee 销售提成金额:</td>
+    <td class="listtd"><HDPrint Value=#GTORentFee#></td>
+  </tr>
+  <tr>
+    <td class="newtd2">Special Terms and Conditions/Remarks <br>特别条件/说明:</td>
+    <td class="listtd" colspan="3"><HDPrint Value=#Remarks#></td>
+  </tr>
+  <tr>
+    <td class="newtd2">Attachments 附件信息</td>
+    <td class="newtd3" colspan="3"><HDPrint Value=#AttachList# Replace=#None#>&nbsp;</td>
+  </tr>
+</table>
+</form>

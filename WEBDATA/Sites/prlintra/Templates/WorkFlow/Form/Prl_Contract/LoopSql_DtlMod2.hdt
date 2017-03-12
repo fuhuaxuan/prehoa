@@ -1,0 +1,34 @@
+<hdloop>
+  <tr class="listtd" valign="top" JQIndex="<HDPrint Value=#OpIndexText# Replace=#DBField2Js#>" style="display:<HDPrint Value=#OpShow#>">
+    <td>
+      <HDPrint Value=#CType#>
+      <INPUT TYPE="hidden" NAME="DtlGid_1" maxlength="32" value="<HDPrint Value=#Gid# Replace=#DBField2Input#>" class="JQText">
+      <INPUT TYPE="hidden" NAME="OpIndex_1" maxlength="32" value="<HDPrint Value=#OpIndexText# Replace=#DBField2Input#>" class="JQText">
+    </td>
+    <td align="center"><HDPrint Value=#CNum#></td>
+    <td><HDPrint Value=#Content#></td>
+    <td>
+      <script language="javascript">
+        var JsMod = '<HDPrint Value=#OpMod# Replace=#DBField2Js#>';
+        if (JsMod == 'ÆäËû' || JsMod == 'É¾³ý'){
+          document.write('£¨<HDPrint Value=#OpAppText# Replace=#None#>£©<font color="red"><HDPrint Value=#OpMod#></font><br><HDPrint Value=#OpModOther#>')
+        }
+        else if ('<HDPrint Value=#OpIndex# Replace=#DBField2Js#>' == ''){
+          document.write('&nbsp;')
+        }
+        else{
+          document.write('£¨<HDPrint Value=#OpAppText# Replace=#None#>£©¡¢<HDPrint Value=#OpMod#>');
+        }
+      </script>
+    </td>
+    <td><HDPrint Value=#Memo#></td>
+    <td>
+    <textarea rows="5" id ="AppMemo_1<HDPrint Value=#Gid# Replace=#DBField2Input#>" name="AppMemo_1" class="JQText" maxlength="1000" ><HDPrint Value=#AppMemo# Replace=#DBField2InputField#></textarea>
+    <script language="javascript">
+      if ('<HDPrint Value=#OpIndexText# Replace=#DBField2Js#>' == '999'){
+        $('textarea#AppMemo_1<HDPrint Value=#Gid# Replace=#DBField2Js#>').hide();
+      }
+    </script>
+    </td>
+  </tr>
+</hdloop>

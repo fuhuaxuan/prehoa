@@ -1,0 +1,1165 @@
+<!-- JQuery函数引入 -->
+<script language="javascript" src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+
+<script language="javascript" src="##GetWebRootPath(/Scripts/DataInterface.js)##"></script>
+<script language="JavaScript" src="##GetWebRootPath(/Scripts/Common.js)##"></Script>
+  <form name="frmDataInterface_fee">
+    <input type="hidden" name="DataInterface_Title" value="费用申请单选择列表">
+    <!--在实际应用中sql语句应该加密-->
+
+    <!-- 
+    1   a.flowgid,
+    2   a.num,
+    3   nvl(b.maxnum, 1)+1 maxnum,
+    4   a.companyname,
+    5   a.actonegid,
+    6   a.acgonename,
+    7   a.acgtwogid,
+    8   a.acgtwoname,
+    9   a.confirmfee,
+    10   nvl(b.sumpayfee, 0) sumpayfee,
+    11   (a.confirmfee - nvl(b.sumpayfee, 0)) leftfee,
+    12   c.paydoacode,
+    13   d.a,
+    14   d.b,
+    15   d.c,
+    16   d.d,
+    17   d.e,
+    18   d.tstart,
+    19   d.tend,
+        
+     -->
+   <input type="hidden" name="DataInterface_Sql" value="select distinct a.flowgid, a.num, nvl(b.maxnum, 0) + 1 maxnum, a.companyname, a.acgonegid, a.acgonename, a.acgtwogid, a.acgtwoname, nvl(a.NCONFIRMFEE,0) + a.confirmfee, nvl(b.sumpayfee, 0) sumpayfee, (nvl(a.NCONFIRMFEE,0) + a.confirmfee - nvl(b.sumpayfee, 0)) leftfee, p.doacode, d.a, d.b, d.c, d.d, d.e, d.tstart, d.tend, a.fillusrname, a.target, a.doacode from wf_prl_fee a, prl_acg_doa c, prl_acg_doa p, prl_doa d, (select sum(payfee) sumpayfee, max(partnum) maxnum, feeflowgid from wf_prl_pay m, wf_flow n where m.entgid = '<HDPrint Value=#EntGid#>' and m.entgid = n.entgid and m.flowgid = n.flowgid and n.stat <> 5 and m.stat not in ('13', '100') group by feeflowgid union select 0, 0, '0' from dual) b, wf_flow e where a.entgid = '<HDPrint Value=#EntGid#>' and c.entgid = a.entgid and d.entgid = a.entgid and e.entgid = a.entgid and p.entgid = a.entgid and a.flowgid = e.flowgid and e.stat <> 5 and a.acgtwogid = c.acggid and p.doagid = d.gid and c.acggid = p.acggid and c.fatype = '费用单' and p.fatype = '付款单' and a.flowgid = b.feeflowgid(+) and nvl(a.endstat, 0) <> 10 and (a.fillusrgid = '<HDPrint Value=#UsrGid#>' or exists (select 1 from PRL_FeeRT r where r.entgid = a.entgid and r.ausrgid = '<HDPrint Value=#UsrGid#>' and r.busrgid = a.fillusrgid)) and a.stat = '30' and c.doacode = a.doacode and ((substr(c.doacode,0,5) = '10.4.' and c.doacode = p.doacode) or (substr(c.doacode,0,5) <> '10.4.' and 1=1))">
+   <input type="hidden" name="DataInterface_CountSql" value="select count(distinct a.flowgid) from wf_prl_fee a, prl_acg_doa c, prl_acg_doa p, prl_doa d, (select sum(payfee) sumpayfee, max(partnum) maxnum, feeflowgid from wf_prl_pay m, wf_flow n where m.entgid = '<HDPrint Value=#EntGid#>' and m.entgid = n.entgid and m.flowgid = n.flowgid and n.stat <> 5 and m.stat not in ('13', '100') group by feeflowgid union select 0, 0, '0' from dual) b, wf_flow e where a.entgid = '<HDPrint Value=#EntGid#>' and c.entgid = a.entgid and d.entgid = a.entgid and e.entgid = a.entgid and p.entgid = a.entgid and a.flowgid = e.flowgid and e.stat <> 5 and a.acgtwogid = c.acggid and p.doagid = d.gid and c.acggid = p.acggid and c.fatype = '费用单' and p.fatype = '付款单' and a.flowgid = b.feeflowgid(+) and nvl(a.endstat, 0) <> 10 and (a.fillusrgid = '<HDPrint Value=#UsrGid#>' or exists (select 1 from PRL_FeeRT r where r.entgid = a.entgid and r.ausrgid = '<HDPrint Value=#UsrGid#>' and r.busrgid = a.fillusrgid)) and a.stat = '30' and c.doacode = a.doacode and ((substr(c.doacode,0,5) = '10.4.' and c.doacode = p.doacode) or (substr(c.doacode,0,5) <> '10.4.' and 1=1))">
+  
+    <input type="hidden" name="DataInterface_OrderSql" value="order by a.num ">
+    <input type="hidden" name="DataInterface_UsrGid" value="<HDPrint Value=#UsrGid#>">
+    <input type="hidden" name="DataInterface_AppName" value="##HDNet_AppName##">
+    <!--在实际应用中sql语句应该加密-->
+    <input type="hidden" name="DataInterface_Cols" value="2^单号^left^170">
+    <input type="hidden" name="DataInterface_Cols" value="20^申请人^left^120">
+    <input type="hidden" name="DataInterface_Cols" value="21^申请目的^left^120">
+    <input type="hidden" name="DataInterface_FieldTo" value="feeflowgid^feenum^feeB^feeA^paydoacode^partnum^companyname^acgonegid^acgonename^acgtwogid^acgtwoname^feeleft^feenotpay^Avalue^Bvalue^Cvalue^Dvalue^Evalue^TSTART^TEND^DOACODE">
+    
+    <INPUT TYPE="hidden" name="DataInterface_FieldBy" value="1^2^10^9^12^3^4^5^6^7^8^11^11^13^14^15^16^17^18^19^22">
+    <INPUT TYPE="hidden" name="DataInterface_CallBckFunc" value="CallBck">
+    <input type="hidden" name="DataInterface_Close" value="true">
+    <input type="hidden" name="DataInterface_PerPageNum" value="20">
+    <input type="hidden" name="DataInterface_Search" value="a.fillusrcode^申请人代码^1">
+    <input type="hidden" name="DataInterface_Search" value="a.fillusrcode^申请人名称^1">
+    <input type="hidden" name="DataInterface_Search" value="a.num^单号^1">
+    <input type="hidden" name="DataInterface_Search" value="">
+    <input type="hidden" name="DataInterface_Search_Sql" value="">
+    <input type="hidden" name="DataInterface_Search_Cols" value="">
+  </form>
+  
+
+<form name="frmDo" method="Post" action="">
+<!--<标准>-->
+
+  <h3 class="TitleBar" >生成申请审批表</h3>
+  <TABLE width="100%" class="ButtonBar" cellpadding=0 cellspacing=0>
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A HREF="javascript:CheckSubmit('save');void(0)" title="ALT+S"><FONT style="font-family:Wingdings;font-size:14px">&#60;</FONT> 保存</A>　
+      <A HREF="javascript:CheckSubmit('confirm');void(0)" title="ALT+S"><FONT style="font-family:Wingdings;font-size:14px">&#254;</FONT> 提交</A>　
+      <HDIF Equal(<HDPrint Value=#stat# Replace=#none#>, 13)>
+      <A HREF="javascript:CheckSubmit('End');void(0)" title="ALT+S"><FONT style="font-family:Wingdings;font-size:14px">&#253;</FONT> 结束流程</A>　</HDIF>
+    </TD>
+    <td  style="width:20%">
+      <!-- <A HREF="##HDNet_AppName##/Main?URL=&UsrGid=<HDPrint Value=#UsrGid#>"><FONT style="font-family:Wingdings ;font-size:14px">&#199;</FONT> 返回首页</A>　
+ -->    </TD>
+  </TR>
+  </TABLE>
+  <INPUT TYPE="hidden" name="wfflow" value="">
+  <INPUT TYPE="hidden" name="save" value="">
+  <INPUT TYPE="hidden" name="ModelGid" value="<HDPrint Value=#ModelGid#>">
+  <INPUT TYPE="hidden" name="FlowGid" value="<HDPrint Value=#FlowGid#>">
+  <INPUT TYPE="hidden" name="Num" value="<HDPrint Value=#Num#>">
+
+  <INPUT TYPE="hidden" name="Avalue"  value="<HDPrint Value=#Avalue# Replace=#DBField2Input#>">
+  <INPUT TYPE="hidden" name="Bvalue"  value="<HDPrint Value=#Bvalue# Replace=#DBField2Input#>">
+  <INPUT TYPE="hidden" name="Cvalue"  value="<HDPrint Value=#Cvalue# Replace=#DBField2Input#>">
+  <INPUT TYPE="hidden" name="Dvalue"  value="<HDPrint Value=#Dvalue# Replace=#DBField2Input#>">
+  <INPUT TYPE="hidden" name="Evalue"  value="<HDPrint Value=#Evalue# Replace=#DBField2Input#>">
+  
+  <INPUT TYPE="hidden" name="TSTART"  value="<HDPrint Value=#TSTART# Replace=#DBField2Input#>">
+  <INPUT TYPE="hidden" name="TEND"  value="<HDPrint Value=#TEND# Replace=#DBField2Input#>">
+
+  <input type="hidden" name="DeptGid" value="<HDPrint Value=#FillUsrDeptGid# Replace=#DBField2Input#>">
+  <input type="hidden" name="DeptCode" value="<HDPrint Value=#DeptCode# Replace=#DBField2Input#>">
+  <input type="hidden" name="DeptName" value="<HDPrint Value=#DeptName# Replace=#DBField2Input#>">  
+  <!-- 流程信息 -->
+  <INPUT TYPE="hidden" name="ModelGid" value="<HDPrint Value=#ModelGid#>">
+  <INPUT TYPE="hidden" name="feeflowgid" value="<HDPrint Value=#feeflowgid# Replace=#DBField2Input#>">
+  <INPUT TYPE="hidden" name="feenotpay" value="<HDPrint Value=#feenotpay# Replace=#DBField2Input#>">
+
+
+
+
+
+
+<table width=100% cellspacing="1" cellpadding="0">
+  <col style="padding-left:4px;width:9%">
+  <col style="padding-left:4px;width:21%">
+  <col style="padding-left:4px;width:40%">
+  <col style="padding-left:4px;width:30%">
+  <TR>
+    <TD class="newtd2"><B>发起人</B></TD>
+    <td class="newtd3"><B>[<HDPrint Value=#FillUsrCode#>]<HDPrint Value=#FillUsrName#></B></td>
+    <td class=title rowspan="3"  align="center"><HDPrint Value=#ModelName#></td>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2"><B>系统流水号</B></TD>
+    <TD class="newtd3"><B><HDPrint Value=#Num#></B></td>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2">发起时间</TD>
+    <td class="newtd3"><HDPrint Value=#CreateDate#></td>
+    <TD></TD>
+  </TR>
+</table>
+<br>
+<HDIF Equal(<HDPrint Value=#allstat# Replace=#none#>, 13)>
+<HDPrint Value=#applist# Replace=#None#>
+</HDIF>
+ <table cellspacing="1">
+  <col style="padding-left:20px;width:200">
+  <tr class="listtr2"><td><b>单据内容</b></td></tr>
+</table>
+<HDIF Equal(<HDPrint Value=#havefee# Replace=#none#>, yes)>
+  <INPUT TYPE="hidden" name="acgonegid"  value="<HDPrint Value=#acgonegid# Replace=#DBField2Input#>">
+  <INPUT TYPE="hidden" name="acgtwogid"  value="<HDPrint Value=#acgtwogid# Replace=#DBField2Input#>">
+  <INPUT TYPE="hidden" name="acgother" >
+
+  <table width="100%" class="newtb" cellspacing="1" cellpadding="0" align=center>
+    <col style="padding-left:4px;padding-right:4px;width:100;">
+    <col style="padding-left:4px;padding-right:4px;width:120;">
+    <col style="padding-left:4px;padding-right:4px;width:100;">
+    <col style="padding-left:4px;padding-right:4px;width:120;">
+    <col style="padding-left:4px;padding-right:4px;width:100;">
+    <col style="padding-left:4px;padding-right:4px;width:120;">
+    <col style="padding-left:4px;padding-right:4px;width:100;">
+    <col style="padding-left:4px;padding-right:4px;width:120;">
+    <tr>
+      <td class="Newtd2">费用申请单<a href="javascript:void(DataInterface(frmDataInterface_fee))">[选择]</a>：<font color="red">*</font></td>
+      <td class="Newtd3" id="feedtl"> <a href="##HDNet_AppName##/wfflowpage?url=prl_fee&modelcode=prl_fee&flowgid=<HDPrint Value=#feeFlowGid#>&usrgid=<HDPrint Value=#usrgid#>" target="_blank"><HDPrint Value=#feeNum#></a></td>
+      <INPUT TYPE="hidden" name="DOACODE" style="border:0;width:20" readonly>
+      <td class="Newtd2">是否为费用申请表尾款<font color="red">*</font></td>
+      <td class="Newtd3" > 
+      <input type="radio" name="isend1" value="10" onclick="document.all.isend.value = this.value"> 是尾款
+      <input type="radio" name="isend1" value="0" onclick="document.all.isend.value = this.value"> 否
+      <input type="hidden" name="isend" value="<HDPrint Value=#isend# Replace=#DBField2Input#>">
+      </td>
+      <td class="Newtd2">付款单单号</td>
+      <td class="Newtd3"><INPUT TYPE="text" name="feenum" style="border:0;width:150" readonly value="<HDPrint Value=#feenum# Replace=#DBField2Input#>"> - <INPUT TYPE="text" name="partnum" style="border:0;width:10" readonly value="<HDPrint Value=#partnum# Replace=#DBField2Input#>">
+    </td>
+    </tr>
+    <tr>
+      <td class="Newtd2">公司名称：<font color="red">*</font></td>
+      <td class="Newtd3">
+      <select style="width:200px;" name="companyname">
+        <option value=''>--请选择--</option>
+        <HDPrint Value=#companynamelist# Replace=#None#>
+      </select>
+      </td>
+      <td class="Newtd2">项目名称：</td>
+      <td class="Newtd3" colspan="3"><input name="acgonename" style="border:0;width:250" readonly  value="<HDPrint Value=#acgonename# Replace=#DBField2Input#>"> - <input name="acgtwoname" style="border:0;width:200" readonly  value="<HDPrint Value=#acgtwoname# Replace=#DBField2Input#>">
+      付款单DOA信息:
+      <INPUT TYPE="text" name="paydoacode" style="border:0;width:50"  value="<HDPrint Value=#paydoacode# Replace=#DBField2Input#>" readonly>
+      <span class="" id="td_dtl104" style="display: <HDPrint Value=#acgotherdis104# Replace=#None#>"> <br>细节勾选: <font color="red">*</font> <select style="width:300;" name="acgother" onchange="GetCItem(this.options[this.options.selectedIndex].value)">
+          <option value=''>--请选择--</option>
+          <option value='10.4.1'>紧急情况或金额低于2000元（无需报价）</option>
+          <option value='10.4.2'>报价</option>
+          <option value='10.4.3'>招标</option>
+        </select>
+      </span>
+      </td>
+    </tr>
+    <tr>
+      <td class="Newtd2">付款金额<font color="red">*</font></td>
+      <td class="Newtd3">
+        <INPUT TYPE="text" NAME="payfee"  value="<HDPrint Value=#payfee# Replace=#DBField2Input#>"  maxlength="20" style="width:120" onkeypress="return checkNumber(this)" onchange="changeNumber(this);" title="只能填写数字类型" >
+        <span id="acg_3" style="display:none">
+        公司承担：<INPUT TYPE="text" name="npayfee" maxlength="11" style="width:120" onkeypress="return checkNumber(this)" onchange="checkNFee(this);" Class="JQFloat" title="只能填写数字类型" value="<HDPrint Value=#npayfee# Replace=#DBField2Input#>">
+        </span>
+      <script language="javascript">
+        //函数：ready
+        //功能：document 加载完成后调用
+        $(document).ready(function(){
+          var sCode = $("input[name=acgonename]").val().substr(0,1);
+        var $span = $("span#acg_3");
+        if (sCode == '3'){
+          $span.show();
+        }
+        });
+      </script>
+      </td>
+      <td class="Newtd2">要求支付方式 <font color="red">*</font></td>
+      <td class="Newtd3" colspan="3">
+      <input type="radio" name="payway1" value="电汇/Bank Transfer" onclick="document.all.payway.value = this.value">电汇/Bank Transfer
+      <input type="radio" name="payway1" value="支票/Cheque" onclick="document.all.payway.value = this.value">支票/Cheque
+      <input type="radio" name="payway1" value="现金/Cash" onclick="document.all.payway.value = this.value">现金/Cash
+      <input type="radio" name="payway1" value="账扣" onclick="document.all.payway.value = this.value">账扣
+      <input type="hidden" name="payway"  value="<HDPrint Value=#payway# Replace=#DBField2Input#>">
+    </tr>
+    <tr>
+      <td class="Newtd2">人民币（大写）</td>
+      <td class="Newtd3" colspan="1"><INPUT TYPE="text" NAME="bigrmb" style="border:0;width:100%" readonly  value="<HDPrint Value=#bigrmb# Replace=#DBField2Input#>"></td>
+      <td class="Newtd2">付款备注（Memo）<br>   
+    <font color="gray">(最多1000字)</font></td>
+      <td class="Newtd3" colspan="2"><TEXTAREA NAME="Memo" id="Memo" ROWS="4" STYLE="width:98%" onpropertychange="ChangeValue(this)"><HDPrint Value=#Memo# Replace=#DBField2InputField#></TEXTAREA></td>
+      </td>
+    </tr>
+    <tr>
+      <td class="Newtd2">收款单位（Payee）<font color="red">*</font></td>
+      <td class="Newtd3"><INPUT TYPE="text" style="width:100%"  name="payee" maxlength="250"  value="<HDPrint Value=#payee# Replace=#DBField2Input#>"></td>
+      <td class="Newtd2">收款银行（Bank）<font color="red">*</font></td>
+      <td class="Newtd3"><INPUT TYPE="text" style="width:100%"  name="bank" maxlength="250" value="<HDPrint Value=#bank# Replace=#DBField2Input#>"></td>
+      <td class="Newtd2">银行帐号（Accounts）<font color="red">*</font></td>
+      <td class="Newtd3"><INPUT TYPE="text" style="width:100%"  name="account" maxlength="250" value="<HDPrint Value=#account# Replace=#DBField2Input#>"></td>
+    </tr>
+
+    <tr>
+      <td colspan="6">
+      <table cellpadding="0" width="100%" cellspacing="1" >
+      <tr>
+        <td  class="Newtd2">（A）项目总额</td>
+        <td class="Newtd2" title="是出纳已付款 + 审批通过未付款 + 审批中的金额合计">
+            （B）已付款金额</td>
+        <td class="Newtd2">（C）本次付款 </td>
+        <td class="Newtd2">尚欠余额=A-B-C</td>
+        <td class="Newtd2">实际付款总额=B+C </td>
+      </tr>
+      <tr>
+        <td class="Newtd3"><input name="feeA" type="text" value="<HDPrint Value=#feeA# Replace=#DBField2Input#>" style="border:0;width:100" readonly></td>
+        <td class="Newtd3"><input name="feeB"  value="<HDPrint Value=#feeB# Replace=#DBField2Input#>"  type="text" style="border:0;width:100" readonly></td>
+        <td class="Newtd3"><input name="feeC"  value="<HDPrint Value=#payfee# Replace=#DBField2Input#>"  type="text" style="border:0;width:100" readonly></td>
+        <td class="Newtd3"><input name="feeleft"  value="<HDPrint Value=#feeleft# Replace=#DBField2Input#>"  type="text" style="border:0;width:100" readonly></td>
+        <td class="Newtd3"><input name="feeok"  value="<HDPrint Value=#feeok# Replace=#DBField2Input#>"  type="text" style="border:0;width:100" readonly></td>
+      </tr>
+      </table>
+      </td>
+    </tr>
+    <tr>
+      <td class="Newtd2"><font color="gray">凭证类型：</td>
+      <td class="Newtd3"><INPUT TYPE="text" style="border:0;width:100;color:gray" value="出纳填写" readonly></td>
+      <td class="Newtd2"><font color="gray">凭证编号：</td>
+      <td class="Newtd3"><INPUT TYPE="text"style="border:0;width:100;color:gray"  value="出纳填写" readonly></td>
+      <td class="Newtd2"><font color="gray">支付日期：</td>
+      <td class="Newtd3"><INPUT TYPE="text"style="border:0;width:100;color:gray"  value="出纳填写" readonly></td>
+    </tr>
+    <tr valign="top">
+        <td class=newtd2>Upload Attachment :<br>上传附件<font color="red">*</font><br><br> double click to del :<br>双击删除</td>
+        <td class=newtd3 colspan="5">
+      <font color="gray">(本处请附预算控制表和合同或报价)</font><br>
+        <SELECT NAME="selFileList" size="8" style="width:400;"  ondblclick="DelClick(this)" multiple>
+          <HDPrint Value=#attachoptions# Replace=#None#>
+          </SELECT><br>
+          <input type="hidden" name="HDTempPath" value="<HDPrint Value=#NewGid#>">
+          <iframe FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid#>&CallBackFun=AddAttach" height=28></iframe>
+        </td>
+      </tr>
+    </table>
+    <TABLE width="100%" class="ButtonBar" cellpadding=0 cellspacing=0>
+    <TR>
+      <TD>
+        <B>工具栏：</B>
+        <A HREF="javascript:CheckSubmit('save');void(0)" title="ALT+S"><FONT style="font-family:Wingdings;font-size:14px">&#60;</FONT> 保存</A>　
+        <A HREF="javascript:CheckSubmit('confirm');void(0)" title="ALT+S"><FONT style="font-family:Wingdings;font-size:14px">&#254;</FONT> 提交</A>　
+        <HDIF Equal(<HDPrint Value=#stat# Replace=#none#>, 13)>
+        <A HREF="javascript:CheckSubmit('End');void(0)" title="ALT+S"><FONT style="font-family:Wingdings;font-size:14px">&#253;</FONT> 结束流程</A>　</HDIF><INPUT TYPE="hidden" NAME="controlfee"  maxlength="20" style="width:100px;"  title="只能填写数字类型" value="" readonly>
+      </TD>
+      <td  style="width:20%">
+      </TD>
+    </TR>
+  </table>
+
+
+
+  <script language="JavaScript">
+  <!--
+    //结果：
+
+  //预算金额判断
+function checkNFee(obj)
+{
+  var payfee = $("input[name=payfee]").val();
+  var npayfee = $("input[name=npayfee]").val();
+  if (payfee == ''){
+    payfee = 0;
+  }
+  if (npayfee == ''){
+    npayfee = 0;
+  }
+
+  if (parseFloat(npayfee) > parseFloat(payfee))
+  {
+    alert('公司承担不能超过本次申请金额，请调整!');
+    obj.value = payfee;
+  }
+}
+  function CallBck(sFlowGid,sNum,sfeeB,stotal,sDOA) {
+  if (sFlowGid !='')
+    document.all.feedtl.innerHTML = '<a href="##HDNet_AppName##/wfflowpage?url=prl_fee&modelcode=prl_fee&flowgid='+sFlowGid+'&usrgid=<HDPrint Value=#usrgid#>" target="_blank">'+ sNum +'</a>';
+    var sCode = $("input[name=acgonename]").val().substr(0,1);
+    var $span = $("span#acg_3");
+    if (sCode == '3'){
+      $span.show();
+    }
+    else{
+      $span.hide();
+      $("input[name=npayfee]").val('');
+    }
+   document.all.feeC.value = document.all.payfee.value;
+
+  if (document.all.payfee.value !=''){
+    document.all.bigrmb.value = GetBigRMB(document.all.payfee.value);
+
+    document.all.feeok.value = parseFloat(document.all.payfee.value) + parseFloat(sfeeB);
+
+    document.all.feeleft.value = parseFloat(stotal) - parseFloat(document.all.feeC.value) - parseFloat(sfeeB);
+  }
+  if (document.all.feeleft.value - 0 < 0)
+    document.all.feeleft.style.color = 'red';
+  else if (document.all.feeleft.value - 0 == 0){
+
+    document.all.feeleft.style.color = 'blue';
+    document.all.feeleft.style.fontWeiht = 'bold';
+  }
+  else 
+    document.all.feeleft.style.color = '';
+
+  //对于10.4 的还需要另选择细节
+  if (sDOA == '10.4'){
+    document.all.paydoacode.value = '';
+    //document.all.acgother104.value = '';
+    document.all.td_dtl104.style.display = '';
+    document.all.acgtwoname.style.width = '100';
+    }
+  else if (sDOA == 'xxxxx')
+  {}
+  else{
+    //document.all.acgother104.value = '';
+    document.all.td_dtl104.style.display = 'none';
+    document.all.acgtwoname.style.width = '200';
+  }
+
+}
+
+
+
+
+  //商品数量：检查整数
+  function changeNumber(obj) {
+    //数字的判断
+    if(isNaN(obj.value)) {obj.value='0';}
+    CallBck('','',document.all.feeB.value,document.all.feeA.value,'xxxxx');
+
+  }
+
+
+  function CheckSubmit(str) {
+
+    if (str == 'End')
+    {
+      if (confirm('如果您要结束流程，您在本页所做的操作将不被保存！'))
+      {
+        document.all.wfflow.value = '';
+        //结束流程
+        document.all.save.value = 'WF';
+      }
+      else return false;
+    }
+    //保存
+    //保存
+    if (str == 'save')
+    {
+
+      document.all.wfflow.value = '';
+      document.all.save.value = '';
+      if (document.all.feeflowgid == '')
+      {
+        alert('请选择您要付款的费用申请单！');
+        return false;
+      }
+      if (document.all.companyname.value == '')
+      {
+        alert('请选择"公司名称"！');
+        document.all.companyname.focus();
+        return false;
+      }
+
+      if (document.all.Memo.value.length > 1000)
+      {
+        var sLen = document.all.Memo.value.length *1 - 1000;
+        alert('"付款备注"最多可以填写1000字，目前已超出'+sLen+'字，请确认！');
+        document.all.Memo.focus();
+        return false;
+      }
+    }
+    if (str == 'confirm')
+    {
+        document.all.wfflow.value = 'WF';
+        document.all.save.value = '';
+      if (document.all.feeflowgid == '')
+      {
+        alert('请选择您要付款的费用申请单！');
+        return false;
+      }
+      if (document.all.companyname.value == '')
+      {
+        alert('请选择"公司名称"！');
+        document.all.companyname.focus();
+        return false;
+      }
+
+      if (document.all.isend.value == '')
+      {
+        alert('请确定，本次付款单是否为费用申请单的尾款！');
+        return false;
+      }
+      if (document.all.paydoacode.value == '')
+      {
+        /*if (document.all.acgother104.style.display == '' )
+        {
+          alert('请进行费用项目的细节勾选！');
+          return false;
+        }
+        else 
+        {
+          alert('您的费用项目勾选没有找到对应的DOA信息，请重新选择！');
+          return false;
+        }*/
+      }
+      if (document.all.payway.value == '')
+      {
+        alert('请选择要求的支付方式！');
+        return false;
+      }
+      if (document.all.payfee.value == '')
+      {
+        alert('请填写本次付款金额！');
+        document.all.payfee.focus();
+        return false;
+      }
+      
+
+      if (document.all.feeleft.value - 0 < 0)
+      {
+        alert('您好，您本次的付款的金额:['+ document.all.payfee.value +']已经大于费用申请单剩余的金额:['+ document.all.feenotpay.value +']！请确认');
+        document.all.payfee.focus();
+        return false;
+      }
+
+      if (document.all.Memo.value.length > 1000)
+      {
+        var sLen = document.all.Memo.value.length *1 - 1000;
+        alert('"付款备注"最多可以填写1000字，目前已超出'+sLen+'字，请确认！');
+        document.all.Memo.focus();
+        return false;
+      }
+      if (document.all.payee.value == '')
+      {
+        alert('请填写收款单位名称！');
+        document.all.payee.focus();
+        return false;
+      }
+      if (document.all.bank.value == '')
+      {
+        alert('请填写收款银行名称！');
+        document.all.bank.focus();
+        return false;
+      }
+      if (document.all.account.value == '')
+      {
+        alert('请填写银行账户！');
+        document.all.account.focus();
+        return false;
+      }
+      
+
+      if (frmDo.selFileList.length == 0)
+      {
+        alert('请上传订单，发票，合同等！');
+        return false;
+      }
+    }
+
+    CallBck('','',document.all.feeB.value,document.all.feeA.value,'xxxxx');
+
+    //合并附件文件
+    for (i = 0; i < frmDo.selFileList.length; i++) 
+    {
+      frmDo.selFileList.options[i].selected = true;
+    }
+
+
+      frmDo.action=' ##HDNet_AppName##/WFFlowPage?URL=<HDPrint Value=#ModelCode#>_TMODSAVE&UsrGid=<HDPrint Value=#UsrGid#>';
+      frmDo.target='_self';
+      frmDo.submit();
+
+  }
+
+
+
+if ('<HDPrint Value=#acgotherdis104# Replace=#none#>' != 'none')
+  document.all.acgother.value = '<HDPrint Value=#acgother# Replace=#DBField2Js#>';
+
+  $("input[name='isend1'][value='<HDPrint Value=#isend# Replace=#DBField2Js#>']").attr("checked",true);
+
+  //-->
+  </script>
+</HDIF>
+<HDIF Equal(<HDPrint Value=#havefee# Replace=#none#>, no)>
+  <INPUT TYPE="hidden" name="feenum">
+  <INPUT TYPE="hidden" name="partnum">
+  <INPUT TYPE="hidden" name="isEnd">
+  <INPUT TYPE="hidden" name="acgonename">
+  <INPUT TYPE="hidden" name="acgtwoname">
+  <INPUT TYPE="hidden" name="FeeA">
+  <INPUT TYPE="hidden" name="Feeleft">
+  <INPUT TYPE="hidden" name="feeok">
+  <INPUT TYPE="hidden" name="feeB">
+  <table width="100%" class="newtb" cellspacing="1" cellpadding="0" align=center>
+  <col style="width:10%">
+  <col style="width:20%">
+  <col style="width:10%">
+  <col style="width:20%">
+  <col style="width:12%">
+  <col style="width:30%">
+    <tr>
+      <td class="Newtd2">付款单单号</td>
+      <td class="Newtd3"><HDPrint Value=#num#>
+    </td>
+      <td class="Newtd2">公司名称：<font color="red">*</font></td>
+      <td class="Newtd3" colspan="3">
+      <select style="width:200px;" name="companyname">
+        <option value=''>--请选择--</option>
+        <HDPrint Value=#companynamelist# Replace=#None#>
+      </select>
+      </td>
+    </tr>
+  <tr>
+    <td class="Newtd2">项目名称：<font color="red">*</font></td>
+    <td class="Newtd3" colspan="5">
+    <select style="width:300px;" name="acgonegid" onchange="GetAItem(this.options[this.options.selectedIndex].value,this)">
+      <option value=''>--请选择--</option>
+      <HDPrint Value=#acglist1# Replace=#None#>
+    </select>
+    <select style="width:250px;" name="acgtwogid" onchange="GetBItem(this.options[this.options.selectedIndex].value,this)">
+      <option value=''>--请先选择大项目--</option>
+      <HDPrint Value=#acglist2# Replace=#None#>
+    </select>
+    
+    <span id="td_dtl" style="display:none">细节勾选: <font color="red">*</font>
+    <select style="width:400px;" name="acgother" onchange="GetCItem(this.options[this.options.selectedIndex].value)">
+    <HDPrint Value=#acgotherlist# Replace=#None#>
+    </select>
+    </span>
+    <script language="javascript">
+    if ('<HDPrint Value=#IsDtl# Replace=#DBField2Js#>' != '1' && '<HDPrint Value=#IsDtl# Replace=#DBField2Js#>' != '0'){
+      $("span#td_dtl").show();
+    }
+    </script>
+
+     付款单DOA信息:<INPUT TYPE="text" name="paydoacode" style="border:0;width:60" readonly  value="<HDPrint Value=#DOACODE# Replace=#DBField2Input#>">
+    </td>
+  </tr>
+    <tr>
+      <td class="Newtd2">付款金额<font color="red">*</font></td>
+      <td class="Newtd3" colspan="3"><INPUT TYPE="text" NAME="payfee"  value="<HDPrint Value=#payfee# Replace=#DBField2Input#>"  maxlength="20" style="width:120" onkeypress="return checkNumber(this)" onchange="checkFee(this);changeNumber(this);" title="只能填写数字类型">
+      <span id="acg_3" style="display:none">
+      公司承担：<INPUT TYPE="text" name="npayfee" maxlength="11" style="width:120" onkeypress="return checkNumber(this)" onchange="checkNFee(this);" Class="JQFloat" title="只能填写数字类型" value="<HDPrint Value=#npayfee# Replace=#DBField2Input#>">
+      </span>
+      剩余预算：<INPUT TYPE="text" NAME="controlfee"  maxlength="20" style="width:100px;"  title="只能填写数字类型" value="<HDPrint Value=#controlfee# Replace=#DBField2Input#>" readonly></td>
+      <td class="Newtd2">要求支付方式 <font color="red">*</font></td>
+      <td class="Newtd3">
+      <input type="radio" name="payway1" value="电汇/Bank Transfer" onclick="document.all.payway.value = this.value">电汇/Bank Transfer
+      <input type="radio" name="payway1" value="支票/Cheque" onclick="document.all.payway.value = this.value">支票/Cheque
+      <input type="radio" name="payway1" value="现金/Cash" onclick="document.all.payway.value = this.value">现金/Cash
+      <input type="radio" name="payway1" value="账扣" onclick="document.all.payway.value = this.value">账扣
+      <input type="hidden" name="payway" value='<HDPrint Value=#payway# Replace=#DBField2Input#>'>
+      </td>
+    </tr>
+    <tr>
+      <td class="Newtd2">人民币（大写）</td>
+      <td class="Newtd3" colspan="3"><INPUT TYPE="text" NAME="bigrmb" style="border:0;width:100%" readonly  value="<HDPrint Value=#bigrmb# Replace=#DBField2Input#>"></td>
+      <td class="Newtd2">付款备注（Memo）<br>   
+     <font color="gray">(最多1000字)</font></td>
+      <td class="Newtd3"><TEXTAREA NAME="Memo" id="Memo" ROWS="4" STYLE="width:98%" onpropertychange="ChangeValue(this)"><HDPrint Value=#Memo# Replace=#DBField2InputField#></TEXTAREA></td>
+      </td>
+    </tr>
+    <tr>
+      <td class="Newtd2">收款单位（Payee）<font color="red">*</font></td>
+      <td class="Newtd3"><INPUT TYPE="text" style="width:200"  name="payee" maxlength="250"  value="<HDPrint Value=#payee# Replace=#DBField2Input#>"></td>
+      <td class="Newtd2">收款银行（Bank）<font color="red">*</font></td>
+      <td class="Newtd3"><INPUT TYPE="text" style="width:200"  name="bank" maxlength="250" value="<HDPrint Value=#bank# Replace=#DBField2Input#>"></td>
+      <td class="Newtd2">银行帐号（Accounts）<font color="red">*</font></td>
+      <td class="Newtd3"><INPUT TYPE="text" style="width:100%"  name="account" maxlength="250" value="<HDPrint Value=#account# Replace=#DBField2Input#>"></td>
+    </tr>
+    <tr>
+      <td class="Newtd2"><font color="gray">凭证类型：</td>
+      <td class="Newtd3"><INPUT TYPE="text" style="border:0;width:100;color:gray" value="出纳填写" readonly></td>
+      <td class="Newtd2"><font color="gray">凭证编号：</td>
+      <td class="Newtd3"><INPUT TYPE="text"style="border:0;width:100;color:gray"  value="出纳填写" readonly></td>
+      <td class="Newtd2"><font color="gray">支付日期：</td>
+      <td class="Newtd3"><INPUT TYPE="text"style="border:0;width:100;color:gray"  value="出纳填写" readonly></td>
+    </tr>
+    <tr valign="top">
+        <td class=newtd2>Upload Attachment :<br>上传附件<font color="red">*</font><br><br> double click to del :<br>双击删除</td>
+        <td class=newtd3 colspan="5">
+      <font color="gray">(本处请附预算控制表和合同或报价)</font><br>
+        <SELECT NAME="selFileList" size="8" style="width:400;"  ondblclick="DelClick(this)" multiple>
+          <HDPrint Value=#attachoptions# Replace=#None#>
+          </SELECT><br>
+          <input type="hidden" name="HDTempPath" value="<HDPrint Value=#NewGid#>">
+          <iframe FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid#>&CallBackFun=AddAttach" height=28></iframe>
+        </td>
+      </tr>
+    </table>
+    <TABLE width="100%" class="ButtonBar" cellpadding=0 cellspacing=0>
+    <TR>
+      <TD>
+        <B>工具栏：</B>
+        <A HREF="javascript:CheckSubmit('save');void(0)" title="ALT+S"><FONT style="font-family:Wingdings;font-size:14px">&#60;</FONT> 保存</A>　
+        <A HREF="javascript:CheckSubmit('confirm');void(0)" title="ALT+S"><FONT style="font-family:Wingdings;font-size:14px">&#254;</FONT> 提交</A>　
+        <HDIF Equal(<HDPrint Value=#stat# Replace=#none#>, 13)>
+        <A HREF="javascript:CheckSubmit('End');void(0)" title="ALT+S"><FONT style="font-family:Wingdings;font-size:14px">&#253;</FONT> 结束流程</A>　</HDIF>
+      </TD>
+      <td  style="width:20%">
+      </TD>
+    </TR>
+  </table>
+
+  <script language="JavaScript">
+  
+  <!--
+    //功能：如果对应多项DOA则需要进行细节选择
+//功能：如果对应多项DOA则需要进行细节选择
+function DisplayTD(par2) {
+    document.all.acgother104.value = '';
+    document.all.td_dtl104.style.display = 'none';
+  if (par2 == '10.4')
+  {
+    document.all.td_dtl104.style.display = '';
+    document.all.paydoacode.value = '';
+  }
+  else {
+    document.all.td_dtl104.style.display = 'none';
+
+  }
+
+}
+
+
+  //商品数量：检查整数
+  function changeNumber(obj) {
+    //数字的判断
+    if(isNaN(obj.value)) {obj.value='0';}
+    document.all.bigrmb.value = GetBigRMB(obj.value);
+
+  }
+  //预算金额判断
+function checkNFee(obj)
+{
+  var payfee = $("input[name=payfee]").val();
+  var npayfee = $("input[name=npayfee]").val();
+  if (payfee == ''){
+    payfee = 0;
+  }
+  if (npayfee == ''){
+    npayfee = 0;
+  }
+
+  if (parseFloat(npayfee) > parseFloat(payfee))
+  {
+    alert('公司承担不能超过本次申请金额，请调整!');
+    obj.value = payfee;
+  }
+}
+//预算金额判断
+function checkFee(obj)
+{
+  var payfee = $("input[name=payfee]").val();
+  if (payfee == ''){
+    payfee = 0;
+  }
+  var objFee = document.all.controlfee;
+  if (objFee.value == '')
+  {
+    objFee.value = '0';
+  }
+  if (parseFloat(payfee) > parseFloat(objFee.value))
+  {
+    alert('本次申请金额不能超过剩余预算金额，请调整!');
+    obj.value = objFee.value;
+  }
+}
+  function GetAItem(sGid)
+  {
+    var sCode = $("select[name=acgonegid] option:selected").text();
+    sCode = sCode.substr(0,1);
+    var $span = $("span#acg_3");
+    $span.hide();
+    $("input[name=npayfee]").val('');
+    if (sCode == '3'){
+      $span.show();
+    }
+    for (j = document.all.acgtwogid.length - 1 ;j >= 0; j--) 
+    {
+      document.all.acgtwogid.removeChild(document.all.acgtwogid.options[j]); 
+    }
+    var sName,sGid;
+    http.open('Get','##HDNet_AppName##/__ExplainAjax?Url=PRL_pay_T1&FLOW=1&UsrGid=<HDPrint Value=#UsrGid#>&OpAtype=3&PARENTGID='+sGid,true);
+    http.onreadystatechange=function ()
+    {
+      if(http.readyState==4)
+      {
+        if (http.status==200)
+        {
+          try
+          {
+            var response=JSON.parse(http.responseText);
+            if(http.responseText !='{"Master":]}')
+            {
+              var response=JSON.parse(http.responseText);
+              document.all.acgtwogid.options.add(new Option('--请选择--', ''));
+              for(i=0;i<response.Master.length;i++)
+              {
+                sName=response.Master[i].NAME;
+                sGid=response.Master[i].GID;
+                document.all.acgtwogid.options.add(new Option(sName, sGid));
+              }
+            }
+          }
+          catch (e)
+          {
+            document.all.acgtwogid.options.add(new Option('--无小项目--', ''));
+           // alert(http.responseText);
+            return(e);
+          }
+        }
+      }
+    }
+    http.send(null);
+  }
+  function GetBItem(sGid)
+  {
+    //存放将要发送到服务器的内容
+    var sParams = '&ACGGID='+sGid;
+    http.open('POST', '##HDNet_AppName##/__ExplainAjax?Url=PRL_Pay_TMod&UsrGid=<HDPrint Value=#UsrGid#>&OpAtype=3&FLOW=1');
+
+    $("select[name=acgother]").empty();
+
+    http.onreadystatechange = function () {
+      if (http.readyState == 4) {
+        if(http.status == 200) {
+          try
+          {
+            if(http.responseText.indexOf('Master') > 0 )
+            {
+              var sResponse = JSON.parse(http.responseText);
+              if (sResponse.Master.length == 1){
+                $("span#td_dtl").hide();
+              }
+              else{
+                $("span#td_dtl").show();
+              }
+              for(i = 0; i < sResponse.Master.length; i++)
+              {
+                JsGid=sResponse.Master[i].DOACODE;
+                JsName=sResponse.Master[i].DOANAME;
+
+                //添加到附件表中
+                var JsOption = '<option value="'+JsGid+'">'+JsName+'</option>';
+                $("select[name=acgother]").append(JsOption);
+              }
+              var JsDoaCode = sResponse.Master[0].DOACODE;
+              GetCItem(JsDoaCode)
+            }
+            else{
+              alert('对不起，该项目未找到DOA信息！');
+            }
+          }
+          catch (e) {
+            alert('您选择的项目，不需要填写付款申请单！');
+            document.all.acglist1.value= '';
+            document.all.acglist2.value= '';
+            alert(http.responseText);
+            return(e);
+          }
+        }
+      }
+    };
+    //发送
+    http.send(sParams);
+
+    /*var sA,sB,sC,sD,sE,sType,sStart,sEnd;
+    http.open('Get','##HDNet_AppName##/__ExplainAjax?Url=PRL_pay_T1&FLOW=1&UsrGid=<HDPrint Value=#UsrGid#>&OpAtype=1&ACGGID='+sGid,true);
+    http.onreadystatechange=function ()
+    {
+      if(http.readyState==4)
+      {
+        if (http.status==200)
+        {
+          try
+          {
+            var response=JSON.parse(http.responseText);
+            if(http.responseText!='{"Detail":]}')
+            {
+              sA=response.Detail[0].A;
+              sB=response.Detail[0].B;
+              sC=response.Detail[0].C;
+              sD=response.Detail[0].D;
+              sE=response.Detail[0].E;
+              sType=response.Detail[0].DOACODE;
+              sStart=response.Detail[0].TSTART;
+              sEnd=response.Detail[0].TEND;
+              document.all.Avalue.value = sA;
+              document.all.Bvalue.value = sB;
+              document.all.Cvalue.value = sC;
+              document.all.Dvalue.value = sD;
+              document.all.Evalue.value = sE;
+              document.all.paydoacode.value = sType;
+              document.all.TSTART.value = sStart;
+              document.all.TEND.value = sEnd;
+
+
+              DisplayTD(sType);
+
+            }
+          }
+          catch (e)
+          {
+           // alert(http.responseText);
+            return(e);
+          }
+        }
+      }
+    }
+    http.send(null);*/
+  }
+  
+  function CheckSubmit(str) {
+
+    if (str == 'End')
+    {
+      if (confirm('如果您要结束流程，您在本页所做的操作将不被保存！'))
+      {
+        document.all.wfflow.value = '';
+        //结束流程
+        document.all.save.value = 'WF';
+      }
+      else return false;
+    }
+    //保存
+    //保存
+    if (str == 'save')
+    {
+
+      document.all.wfflow.value = '';
+      document.all.save.value = '';
+      if (document.all.companyname.value == '')
+      {
+        alert('请选择"公司名称"！');
+        document.all.companyname.focus();
+        return false;
+      }
+      if (document.all.acgonegid.value == '')
+      { 
+          alert('请选择"项目"！');
+          return false;
+      }
+      if (document.all.acgtwogid.value == '')
+      {  
+          alert('请选择"项目"！');
+          return false;
+      }
+      if (document.all.paydoacode.value == '')
+      {
+        /*if ( document.all.acgother104.style.display == '')
+        {
+          alert('请进行费用项目的细节勾选！');
+          return false;
+        }
+        else 
+        {
+          alert('您的费用项目勾选没有找到对应的DOA信息，请重新选择！');
+          return false;
+        }*/
+      }
+
+      if (document.all.Memo.value.length > 1000)
+      {
+        var sLen = document.all.Memo.value.length *1 - 1000;
+        alert('"付款备注"最多可以填写1000字，目前已超出'+sLen+'字，请确认！');
+        document.all.Memo.focus();
+        return false;
+      }
+    }
+    if (str == 'confirm')
+    {
+        document.all.wfflow.value = 'WF';
+        document.all.save.value = '';
+      if (document.all.companyname.value == '')
+      {
+        alert('请选择"公司名称"！');
+        document.all.companyname.focus();
+        return false;
+      }
+      if (document.all.acgonegid.value == '')
+      { 
+          alert('请选择"项目"！');
+          return false;
+      }
+      if (document.all.acgtwogid.value == '')
+      {  
+          alert('请选择"项目"！');
+          return false;
+      }
+      if (document.all.paydoacode.value == '')
+      {
+        /*if ( document.all.acgother104.style.display == '')
+        {
+          alert('请进行费用项目的细节勾选！');
+          return false;
+        }
+        else 
+        {
+          alert('您的费用项目勾选没有找到对应的DOA信息，请重新选择！');
+          return false;
+        }*/
+      }
+    
+
+      if (document.all.payway.value == '')
+      {
+        alert('请选择要求的支付方式！');
+        return false;
+      }
+      if (document.all.payfee.value == '')
+      {
+        alert('请填写本次付款金额！');
+        document.all.payfee.focus();
+        return false;
+      }
+      var sCode = $("select[name=acgonegid] option:selected").text();
+      sCode = sCode.substr(0,1);
+      if (sCode == '3'){
+        if (document.all.npayfee.value == '')
+        {
+          alert('请填写公司承担！');
+          document.all.npayfee.focus();
+          return false;
+        }
+      }
+      if (document.all.Memo.value.length > 1000)
+      {
+        var sLen = document.all.Memo.value.length *1 - 1000;
+        alert('"付款备注"最多可以填写1000字，目前已超出'+sLen+'字，请确认！');
+        document.all.Memo.focus();
+        return false;
+      }
+      if (document.all.payee.value == '')
+      {
+        alert('请填写收款单位名称！');
+        document.all.payee.focus();
+        return false;
+      }
+      if (document.all.bank.value == '')
+      {
+        alert('请填写收款银行名称！');
+        document.all.bank.focus();
+        return false;
+      }
+      if (document.all.account.value == '')
+      {
+        alert('请填写银行账户！');
+        document.all.account.focus();
+        return false;
+      }
+      
+
+      if (frmDo.selFileList.length == 0)
+      {
+        alert('请上传订单，发票，合同等！');
+        return false;
+      }
+    }
+
+    //合并附件文件
+    for (i = 0; i < frmDo.selFileList.length; i++) 
+    {
+      frmDo.selFileList.options[i].selected = true;
+    }
+
+
+      frmDo.action=' ##HDNet_AppName##/WFFlowPage?URL=<HDPrint Value=#ModelCode#>_TMODSAVE&UsrGid=<HDPrint Value=#UsrGid#>';
+      frmDo.target='_self';
+      frmDo.submit();
+
+  }
+
+if ('<HDPrint Value=#acgotherdis104# Replace=#none#>' != 'none')
+  document.all.acgother.value = '<HDPrint Value=#acgother# Replace=#DBField2Js#>';
+
+  //-->
+  </script>
+
+</HDIF>
+</form>
+<script language="JavaScript">
+<!--
+//函数功能：上传附件
+//参数：sFileName：附件名称
+function AddAttach(sFileName)
+{
+  if (sFileName == '') return false;
+  for (j=0; j < frmDo.selFileList.length; j++)
+  {
+    if (frmDo.selFileList.options[j].value == sFileName)
+    {
+      alert('已经存在该附件！');
+      return false;
+    }
+  }
+  frmDo.selFileList.options.add(new Option(sFileName, sFileName));
+}
+//函数功能：双击删除选中附件
+//参数：obj:选中的对象
+
+function DelClick(obj)
+{
+  if (obj.selectedIndex >= 0) 
+    obj.remove(obj.selectedIndex);
+}
+
+function ChangeValue(obj)
+{
+  if (obj.value.length > 1000) 
+  {
+    var sLen = obj.value.length *1 - 1000;
+    alert('您最多可以填写1000字，目前已超出'+sLen+'字，请确认！')
+    //obj.value=obj.value.substr(0,1000)
+  }
+
+}
+
+
+
+//只能输入数字
+function checkNumber(obj) {
+  if (event.keyCode == null) return false;
+  if (event.keyCode > 57 || (event.keyCode < 48 && event.keyCode != 46 && event.keyCode != 45 )) return false;
+}
+
+
+$("input[name='payway1'][value='<HDPrint Value=#payway# Replace=#DBField2Js#>']").attr("checked",true);
+document.all.companyname.value = '<HDPrint Value=#companyGid# Replace=#DBField2Js#>';
+document.all.acgonegid.value = '<HDPrint Value=#ACGONEGID# Replace=#DBField2Js#>';
+document.all.acgtwogid.value = '<HDPrint Value=#ACGtwoGID# Replace=#DBField2Js#>';
+document.all.acgother.value = '<HDPrint Value=#acgother# Replace=#DBField2Js#>';
+
+var sCode = $("select[name=acgonegid] option:selected").text();
+    sCode = sCode.substr(0,1);
+    var $span = $("span#acg_3");
+    $span.hide();
+    if (sCode == '3'){
+      $span.show();
+    }
+function GetCItem(str)
+  {
+    document.all.paydoacode.value = str;
+
+    var sA,sB,sC,sD,sE,sSC,sType,sStart,sEnd;
+    http.open('Get','##HDNet_AppName##/__ExplainAjax?Url=PRL_Pay_T1&FLOW=1&UsrGid=<HDPrint Value=#UsrGid#>&OpAtype=1&DOAGID='+str,true);
+    http.onreadystatechange=function ()
+    {
+      if(http.readyState==4)
+      {
+        if (http.status==200)
+        {
+          try
+          {
+            var response=JSON.parse(http.responseText);
+            if(http.responseText!='{"Detail":]}')
+            {
+              sA=response.Detail[0].AVALUE;
+              sB=response.Detail[0].BVALUE;
+              sC=response.Detail[0].CVALUE;
+              sD=response.Detail[0].DVALUE;
+              sE=response.Detail[0].EVALUE;
+              sStart=response.Detail[0].TSTART;
+              sEnd=response.Detail[0].TEND;
+              document.all.Avalue.value = sA;
+              document.all.Bvalue.value = sB;
+              document.all.Cvalue.value = sC;
+              document.all.Dvalue.value = sD;
+              document.all.Evalue.value = sE;
+              document.all.TSTART.value = sStart;
+              document.all.TEND.value = sEnd;
+
+              document.all.payfee.value = '';
+              var sGid = $("select[name=acgtwogid]").val();
+              GetLeftBudgutFee(sGid);
+            }
+          }
+          catch (e)
+          {
+            return(e);
+          }
+        }
+      }
+    }
+    http.send(null);
+  
+  }
+ //取出预算金额
+  function GetLeftBudgutFee(sGid)
+  {
+    if (frmDo.companyname.value == '')
+    {
+      //frmDo.acglist2.value = '';
+      return false;
+    }
+    if (sGid != '')
+    {
+      var sLeftBudgutFee;
+      http.open('Get','##HDNet_AppName##/__ExplainAjax?Url=PRL_Pay_TMod&FLOW=1&UsrGid=<HDPrint Value=#UsrGid#>&OpAtype=1&ACGGID='+sGid+'&CompanyGid='+frmDo.companyname.value,true);
+      http.onreadystatechange=function (){
+        if(http.readyState==4){
+          if (http.status==200){
+            try{
+              var response=JSON.parse(http.responseText);
+              if(http.responseText!='{"Detail":]}'){
+                sLeftBudgutFee=response.Detail[0].LEFTBUDGUTFEE;
+                if (parseFloat(sLeftBudgutFee) <= 0){
+                  document.all.controlfee.value = 0;
+                }
+                else{
+                  document.all.controlfee.value = sLeftBudgutFee;
+                }
+              }
+            }
+            catch (e){
+              alert('您选择的项目信息预算金额为0！');
+              //frmDo.acglist2.value = '';
+              //frmDo.acglist1.value = '';
+              return(e);
+            }
+          }
+        }
+      }
+      http.send(null);
+    }
+  }
+
+
+//-->
+</script>
+

@@ -1,0 +1,75 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<style type="text/css">
+.PrintTdRT {
+  border-right:1 solid black;
+  border-top:1 solid black;
+}
+</style>
+<table style="width:645;margin-top:10px;" align="center" border="0" cellpadding="0" cellspacing="0">
+  <col style="width:30%">
+  <col style="width:40%">
+  <col style="width:30%">
+  <tr>
+    <td class="Title" align="center" colspan="3"><HDPrint Value=#ModelName#></td>
+  </tr>
+  <tr>
+    <td align="center"><B>单号</B>：<HDPrint Value=#Num#></td>
+    <td align="center"><B>发起人</B>：<HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]</td>
+    <td align="center"><B>申请时间</B>：<HDPrint Value=#CreateDate#></td>
+  </tr>
+</table>
+
+<table width="645" cellspacing="0" cellpadding="0" align="center" style="border-left:1 solid black;">
+  <col style="padding-left:4px;width:10%" valign="top">
+  <col style="padding-left:4px;width:40%" valign="top">
+  <col style="padding-left:4px;width:10%" valign="top">
+  <col style="padding-left:4px;width:40%" valign="top">
+  <tr valign="top">
+    <td class="PrintTdRT">名称:</td>
+    <td class="PrintTdRT"><HDPrint Value=#Title#></td>
+    <td class="PrintTdRT">日期:</td>
+    <td class="PrintTdRT"><HDPrint Value=#ApplyDate#></td>
+  </tr>
+  <tr valign="top">
+    <td class="PrintTdRT">原因:</td>
+    <td class="PrintTdRT" colspan="3"><HDPrint Value=#Memo#></td>
+  </tr>
+  <tr valign="top">
+    <td class="listtd">
+    印章使用人 Stamp Administrator<br><br>
+    签字 Signature:____________ 日期 Date :
+    </td>
+    <td class="listtd">
+    存档部门 Filing Department<br><br>
+    管理人签字 Signature:____________ 日期 Date :
+    </td>
+  </tr>
+</table>
+<table width="645" cellspacing="0" cellpadding="0" align="center" ID="tb_Dtl" style="border-bottom:1 solid black;border-left:1 solid black;">
+  <colgroup>
+     <col style="width:5%">
+     <col style="width:20%">
+     <col style="width:20%">
+     <col style="width:15%">
+     <col style="width:20%">
+     <col style="width:20%">
+  </colgroup>
+  <thead>
+  <tr>
+    <td class="PrintTdRT" align="center">行号</td>
+    <td class="PrintTdRT" align="center">明细1</td>
+    <td class="PrintTdRT" align="center">明细2</td>
+    <td class="PrintTdRT" align="center">明细3</td>
+    <td class="PrintTdRT" align="center">明细4</td>
+    <td class="PrintTdRT" align="center">明细5</td>
+  </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+<HDPrint Value=#DtlList# Replace=#None#>
+<script language="javascript">
+  window.print();
+</script>

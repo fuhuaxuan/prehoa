@@ -1,0 +1,92 @@
+
+
+  <form name="frmMail" method="POST" action="/bin/hdmailsend.dll/send" target="_self">
+    <input type="hidden" name="Title" maxlength="100" style="width:100%" value="ISF待审提醒:<HDPrint Value=#DeptName# Replace=#DBField2Input#>">
+    <input type="hidden" name="Email" maxlength="400" style="width:100%" value="<HDPrint Value=#ThisEmail# Replace=#DBField2InputField#>;<HDPrint Value=#thisemail2# Replace=#DBField2InputField#>;">
+    <input type="hidden" name="fAddr" maxlength="400" style="width:100%" value="pcrtoa@hd123.net">
+    <input type="hidden" name="fName" maxlength="400" style="width:100%" value="OA系统邮件提醒">
+    <input type="hidden" name="RplEmail" maxlength="400" style="width:100%" value="pcrtoa@hd123.net">
+    <input type="hidden" name="isHTML" value="y">
+    <textarea name="Content" style="width:100%;height:400;display:none">
+<table border="0">
+<tr><td>您好：
+<tr><td>[发起人] : <HDPrint Value=#FillUsrName#>[<HDPrint Value=#fillusrdept#>]；
+<tr><td>[待审批单号] : <HDPrint Value=#Num#>；
+<tr><td>[Category  类别] : <HDPrint Value=#atype#>
+<tr><td>[Unit No.  单位] : <HDPrint Value=#unit#>
+<tr><td>[Area 面积] : <HDIF Equal(<HDPrint Value=#modarea# Replace=#None#>, 是)><HDPrint Value=#newarea#></HDIF><HDIF EqualNot(<HDPrint Value=#modarea# Replace=#None#>, 是)><HDPrint Value=#area#></HDIF>
+<tr><td>[Tenant/Licensee 租户] : <HDPrint Value=#lessee#>;  
+<tr><td>[Trading Name  商店营业名称] : <HDPrint Value=#tradingname#>
+<tr><td>[Lease Term 租赁期限] : <HDPrint Value=#leasetermy# Replace=#DBField2InputField#>年/<HDPrint Value=#leasetermm# Replace=#DBField2InputField#> 月/<HDPrint Value=#leasetermd# Replace=#DBField2InputField#>日;
+<tr><td>[Handover Date 交付日期] : <HDPrint Value=#handoverdate#>
+<tr><td>[Contract start Date 合同起始日期] : <HDPrint Value=#contractdate1#>
+<tr><td>[Expiry Date 截止日期] : <HDPrint Value=#contractdate2#>
+<tr><td>[Free of rent Period 免租期] : <HDPrint Value=#freerentm# Replace=#DBField2InputField#> 月/<HDPrint Value=#freerentd# Replace=#None#> 天 （ <HDPrint Value=#freerentdate1#> ~ <HDPrint Value=#freerentdate2#>）
+<tr><td>[Fit-Out Period 装修期] : <HDPrint Value=#fitoutm# Replace=#DBField2InputField#> 月/<HDPrint Value=#fitoutd# Replace=#DBField2InputField#> 天（ <HDPrint Value=#fitoutdate1#> ~ <HDPrint Value=#fitoutdate2#>）
+<tr><td>[1st Term Base Rental(RMB) 第一期租赁租金] : 第一年 <HDPrint Value=#tbrd#> 每平方米/天
+<tr><td>[物业管理费]: 第一年 <HDPrint Value=#pmfd#> 每平方米/天
+<tr><td>[GTO Rent Structure 提成租金及构造] : 第一年 <HDPrint Value=#gto#> %
+<tr><td>[Projected GTO tc 预估营业额] : 第一年 <HDPrint Value=#progtod#> 每平方米/天；每月总数：<HDPrint Value=#progtom#>
+<tr><td>[租金比拟 New] : <HDPrint Value=#brcnew# Replace=#DBField2InputField#> 每平方米/天;
+<tr><td>[租金比拟 Existing] : <HDPrint Value=#brcexist# Replace=#DBField2InputField#> 每平方米/天;
+<tr><td>[批准预算] : <HDPrint Value=#brcbudget# Replace=#DBField2InputField#> 每平方米/天;
+<HDIF Equal(<HDPrint Value=#modbud#>, 是)><tr><td>[修改批准预算] : <HDPrint Value=#newbrcbudget# Replace=#DBField2InputField#></HDIF>
+<tr><td>[Special Terms and Conditions/Remarks :特别条件/评语] :  <HDPrint Value=#Memo# Replace=#DBField2InputField#>
+<tr><td>-----------待审批内容展示完毕-----------
+</table>
+</textarea>
+  </form>
+<!-- 
+-----------回复规范说明，整行无空格及其他特殊字符-----------
+[Y
+回复内容]
+[N
+回复内容]
+注意：assetmanager请勿回信。谢谢。
+-----------系统信息，请勿修改-----------
+SystemInfo::EntGid=<HDPrint Value=#EntGid#>;Flowgid=<HDPrint Value=#Flowgid#>;ModelGid=<HDPrint Value=#ModelGid#>;UserGid=<HDPrint Value=#mailusrgid#>;Url=<HDPrint Value=#ModelCode#>_TBSAVE;
+
+ -->
+<script language="JavaScript">
+ 
+  
+  if ('<HDPrint Value=#wf_Stat# Replace=#DBField2Js#>' == '10')
+  {
+    alert('提交成功，发起人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>！');
+    frmMail.submit();
+    //如有打开页面，刷新打开页面
+    if (self.opener != null) {
+    try{
+      self.opener.location.reload();
+      //location.reload 是从缓存中取数据
+      //location.replace 是重新加载
+        //self.opener.location.replace(self.opener.location.href);
+      }
+      catch(e){
+      }
+    }
+    //window.close();
+  } 
+  else if ('<HDPrint Value=#wf_Stat# Replace=#DBField2Js#>' == '100')
+  {
+    alert('作废成功，发起人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>！');
+    //如有打开页面，刷新打开页面
+    
+    if (self.opener != null) 
+    {
+      try
+      {
+        self.opener.location.reload();
+      }
+      catch(e)
+      {
+      }
+      window.opener = null;window.open(' ', '_self', ' ');
+    }
+    window.close();
+  }
+  else{
+    location.replace('##HDNet_AppName##/wfflowpage?Modelcode=<HDPrint Value=#ModelCode#>&Url=<HDPrint Value=#ModelCode#>_TMod&UsrGid=<HDPrint Value=#UsrGid#>&flowGid=<HDPrint Value=#flowGid#>');
+        //如有打开页面，刷新打开页面
+  }
+</SCRIPT>

@@ -1,0 +1,216 @@
+<form name="frmDo" method="Post" action="">
+<INPUT TYPE="hidden" name="ModelGid" value="<HDPrint Value=#ModelGid# Replace=#DBField2Input#>">
+<HDIF EqualNot('<HDPrint Value=#EmpID#>', '')>
+<h3 class="TitleBar">费用申请单预算金额Excel导入</h3>
+<table class="ButtonBar" cellpadding="0" cellspacing="0">
+  <col style="width:85%">
+  <col style="width:15%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A HREF="javascript:check('UpLoad');void(0);" id="btn_UpLoad"><FONT class="IconWing">&#202;</FONT> 确认导入</A>
+    </TD>
+    <td>
+      <A HREF="javascript:location.reload();void(0);"><FONT class="IconWeb">&#113;</FONT> 刷新</A>　
+    </td>
+  </TR>
+</TABLE>
+  <input type="hidden" name="UploadInfoText" value="">
+  <input type="hidden" name="SQLForConditionText" value="">
+  <input type="hidden" name="LoopSQLSave" value="LOOPSQL">
+  <input type="hidden" name="SQLSave" value="SQL">
+  <input type="hidden" name="LogSave" value="Log">
+  <input type="hidden" name="EmpID" value="<HDPrint Value=#EmpID#>">
+
+<table class="ListBar" cellspacing="1">
+  <col style="padding-left:4px;" >
+  <col style="padding-left:4px;" >
+  <col style="padding-left:4px;" >
+  <col style="padding-left:4px;" >
+
+  <tr class="listtr">
+    <td nowrap>年份</td>
+    <td nowrap>公司名称</td>
+    <td nowrap>项目编号</td>
+    <td nowrap>本次导入预算金额</td>
+    <td nowrap>备注</td>
+  </tr>
+  <HDLoop>
+  <tr class="listtd" onmouseover="this.className='listtdfocus';" onmouseout="this.className='listtd'">
+    <td nowrap><HDPrint Value=#year# Replace=#None#></td>
+    <td nowrap><HDPrint Value=#CompanyName# Replace=#None#></td>
+    <td nowrap><HDPrint Value=#TAcgCODE# Replace=#None#></td>
+    <td nowrap><HDPrint Value=#TLeftBudgutFee# Replace=#None#></td>
+    <td nowrap><font color="red"><b><HDPrint Value=#IsNull# Replace=#None#></b></font></td>
+  </tr>
+  </HDLoop>
+</table>
+<table class="ButtonBar" cellpadding="0" cellspacing="0">
+  <col style="width:85%">
+  <col style="width:15%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A HREF="javascript:check('UpLoad');void(0);" id="btn_UpLoad"><FONT class="IconWing">&#202;</FONT> 确认导入</A>
+    </TD>
+    <td>
+      <A HREF="javascript:location.reload();void(0);"><FONT class="IconWeb">&#113;</FONT> 刷新</A>　
+    </td>
+  </TR>
+</TABLE>
+<FieldSet style="width:100%;paddign-left:4px">
+  <legend><font color=red><B>特别提醒</B></font></legend>
+    <li>预算金额将会被更新，其它不变</li>
+    <li>请保证数据完成正确，再点击”确认导入“按钮。</li>
+</FieldSet>
+<script language="JavaScript">
+//确认导入
+function check()
+{
+  frmDo.target='_self';
+  frmDo.action="##HDNet_AppName##/WFFlowPage?URL=Prl_Fee_UpLoadSave&UsrGid=<HDPrint Value=#UsrGid#>";
+  frmDo.submit();
+  return true;
+}
+</script>
+</HDIF>
+
+<HDIF Equal('<HDPrint Value=#EmpID#>', '')>
+<h3 class="TitleBar">费用申请单预算金额Excel导入</h3>
+<table class="ButtonBar" cellpadding="0" cellspacing="0">
+  <col style="width:85%">
+  <col style="width:15%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A HREF="javascript:check('UpLoad');void(0);" id="btn_UpLoad"><FONT class="IconWing">&#202;</FONT> 导入Excel</A>
+    </TD>
+    <td>
+      <A HREF="javascript:location.reload();void(0);"><FONT class="IconWeb">&#113;</FONT> 刷新</A>　
+    </td>
+  </TR>
+</TABLE>
+
+  <input type="hidden" name="UploadInfoText" value="UploadInfo">
+  <input type="hidden" name="SQLForConditionText" value="SQLForCondition">
+  <input type="hidden" name="LogImport" value="Log">
+  
+<h3 class="SubTitleBar"><FONT style="padding-left:10px">请选择文件</FONT></h3>
+<table width="100%" class="ListBar" cellpadding=0 cellspacing=1>
+  <col style="width:15%; padding-left:4px">
+  <col style="width:35%; padding-left:4px">
+  <col style="width:15%; padding-left:4px">
+  <col style="width:35%; padding-left:4px">
+  <tr>
+  <td class="DtlBarTitle">年份：<font color="red">*</font></td>
+  <td class="ListTD">
+  <select style="width:250px;" name="year">
+    <option value=''>--请选择--</option>
+    <script language="javascript">
+      var date=new Date;
+      var year=date.getFullYear(); 
+      document.write('<option value="'+year+'" selected>'+year+'</option>');
+      document.write('<option value="'+(year+1)+'">'+(year+1)+'</option>');
+    </script>
+  </select>
+  </td>
+  <td class="DtlBarTitle">公司名称：<font color="red">*</font></td>
+  <td class="ListTD">
+  <select style="width:250px;" name="companyname">
+    <option value=''>--请选择--</option>
+    <HDPrint Value=#companyname# Replace=#None#>
+  </select>
+  </td>
+</tr>
+  <TR>
+    <TD class="DtlBarTitle">上传文件 <a href="##GetWebRootPath(/Files/prlintra/Prl_Fee/鹏瑞利Intra_费用申请单导入模板.xls)##" target="_blank">[模板下载]</a>　<font color="red">*</font></TD>
+    <TD class="ListTD" colspan="3">
+      <input NAME="ImportFileName" class="SearchBox" readonly >
+      <iframe FRAMEBORDER=0 SCROLLING=NO  NAME="frmFtUpload" src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid#>&CallBackFun=AddAttach" height=28></iframe>
+      <input type="hidden" name="HDTempPath" value="<HDPrint Value=#NewGid#>">
+    </TD>
+  </TR>
+</TABLE>
+<h3 class="SubTitleBar"><FONT style="padding-left:10px">导入说明</FONT></h3>
+<table width="100%" class="ListBar" cellpadding=0 cellspacing=1>
+  <col style="width:20%; padding-left:4px">
+  <col style="width:20%; padding-left:4px">
+  <TR>
+    <TD class="DtlBarTitle" align="center">第1列</TD>
+    <TD class="DtlBarTitle" align="center">第2列</TD>
+  </TR>
+  <TR valign="top">
+    <TD class="ListTD">
+      <b>名称：</b>项目编号<br/>
+      <b>数据类型(大小)：</b>数字（10位数以下）<br/>
+      <b>是否必填：</b><font color="red">是</font><br/>
+      <b>例：</b>1.01</font>
+    </TD>
+    <TD class="ListTD">
+      <b>名称：</b>预算金额<br/>
+      <b>数据类型(大小)：</b>数字（10位数以下），单位：元<br/>
+      <b>是否必填：</b><font color="red">是</font><br/>
+      <b>备注：</b>请填写对应预算金额数值。<br/>
+      <b>例：</b>10000</font>
+    </TD>
+  </TR>
+</TABLE>
+
+<FieldSet style="width:100%;paddign-left:4px">
+  <legend><font color=red><B>特别提醒</B></font></legend>
+    <li>点击“模板下载”下载模板。</li>
+    <li>根据“导入说明”填写模板中数据。</li>
+    <li>点击“浏览”找到要上传的Excel文件，并点击“上传”。</li>
+    <li>点击工具栏中“导入Excel”把选择文件的数据上传到服务中。</li>
+    <li><font color="red"><b>第一行为标题行，对第一行的数据不予导入。</b></font></li>
+    <li>为了减少错误，系统限制每次只能上传一个文件。</li>
+    <li>文件的大小不要超过<font color="red">1M</font>，否则将影响处理的速度。</li>
+    <li><b>只有整个文件中的数据全部正确，数据才能被保存，否则不会保存数据。</b></li>
+    <li>请用（.xls）格式的Office/Wps文件进行上传。</li>
+</FieldSet>
+<!--JS区-->
+<SCRIPT LANGUAGE="JavaScript">
+//附件上传
+function AddAttach(sFileName)
+{
+  if (sFileName == '') return false;
+  frmDo.ImportFileName.value = sFileName;
+}
+//导入时验证
+function check(str)
+{
+  if (str == 'UpLoad')
+  {
+    
+    //文件名称
+    frmDo.companyname.className = 'SearchBox';
+    if(frmDo.companyname.value == '')
+    {
+      alert('请选择公司!');
+      frmDo.companyname.className = 'MustFillBox';
+      frmDo.companyname.focus();
+      return false;
+    }
+    //文件名称
+    frmDo.ImportFileName.className = 'SearchBox';
+    if(frmDo.ImportFileName.value == '')
+    {
+      alert('请先上传文件!');
+      frmDo.ImportFileName.className = 'MustFillBox';
+      frmDo.ImportFileName.focus();
+      return false;
+    }
+
+    frmDo.action="##HDNet_AppName##/WFFlowPage?URL=Prl_Fee_UpLoadSave&UsrGid=<HDPrint Value=#UsrGid#>";
+    frmDo.target='_self';
+    frmDo.submit();
+    return true;
+  }
+  //操作按钮变为不可用
+  document.all.btn_UpLoad.disabled = true;
+  //本函数失效
+  check = function() {return false;}
+}
+</SCRIPT>
+</HDIF>
+</form>

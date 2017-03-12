@@ -1,0 +1,128 @@
+<!-- JQuery函数引入 -->
+<script language="javascript" src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+
+<HDPrint Value=#applist# Replace=#None#>
+ <table cellspacing="1">
+  <col style="padding-left:20px;width:200">
+  <tr class="listtr2"><td><b>单据内容</b></td></tr>
+</table>
+<table cellspacing="1">
+    <tr ><td>&nbsp;&nbsp;(货币：RMB)</td></tr>
+  </table>
+<table class="NewTb"  width="100%" cellpadding="0" cellspacing="1"  >
+<col style="width:80">
+<col style="width:100px">
+<col style="width:80">
+<col style="width:100px">
+<col style="width:80">
+<col style="width:100px">
+<HDIF EqualNot(<HDPrint Value=#feeflowgid# Replace=#DBField2Input#>1, 1)>
+  <tr>
+    <td class="Newtd2">费用申请单</td>
+    <td class="Newtd3" id="feedtl"> <a href="##HDNet_AppName##/wfflowpage?url=prl_fee&modelcode=prl_fee&flowgid=<HDPrint Value=#feeFlowGid#>&usrgid=<HDPrint Value=#usrgid#>" target="_blank"><HDPrint Value=#feeNum#></a></td>
+    <INPUT TYPE="hidden" name="DOACODE" style="border:0;width:20" readonly>
+    <td class="Newtd2">是否为费用申请表尾款</td>
+    <td class="Newtd3" ><HDPrint Value=#isendtext#></td>
+    <td class="Newtd2">付款单单号</td>
+    <td class="Newtd3"><HDPrint Value=#feenum#>-<HDPrint Value=#partnum#>
+  </td>
+  </tr>
+  <tr>
+    <td class="Newtd2">公司名称：</td>
+    <td class="Newtd3"><HDPrint Value=#companyname#></td>
+    <td class="Newtd2">项目名称：</td>
+    <td class="Newtd3" colspan="3"><HDPrint Value=#acgonename#> - <HDPrint Value=#acgtwoname#> <font style="display: <HDPrint Value=#acgotherdis# Replace=#None#>"> - <HDPrint Value=#acgothertext#><br></font>
+        付款单DOA信息: <HDPrint Value=#doacode#>
+    </td>
+  </tr>
+</HDIF>
+
+<HDIF Equal(<HDPrint Value=#feeflowgid# Replace=#DBField2Input#>1, 1)>
+<tr>
+  <td class="Newtd2">公司名称：</td>
+  <td class="Newtd3" colspan="5"> <HDPrint Value=#companyname#></td>
+</tr>
+<tr>
+  <td class="Newtd2">项目名称：</td>
+  <td class="Newtd3" colspan="5"><HDPrint Value=#acgonename#> - <HDPrint Value=#acgtwoname#>  <font style="display: <HDPrint Value=#acgotherdis# Replace=#None#>"> - <HDPrint Value=#acgothertext#></font>；付款单DOA信息: <HDPrint Value=#doacode#> 
+  </td>
+</tr>
+
+
+</HDIF>
+
+<tr>
+  <td class="Newtd2">付款金额</td>
+  <td class="Newtd3"><font color="blue"><HDPrint Value=#payfee#></font>
+  <span id="acg_3" style="display:none">(公司承担：<HDPrint Value=#npayfee#>)</span>
+  <script language="javascript">
+  var sCode = '<HDPrint Value=#acgonename# Replace=#DBField2Js#>';
+    sCode = sCode.substr(0,1);
+    var $span = $("span#acg_3");
+    $span.hide();
+    if (sCode == '3'){
+      $span.show();
+    }
+  </script>
+  
+  </td>
+  <td class="Newtd2">要求支付方式 </td>
+  <td class="Newtd3" colspan="3"><HDPrint Value=#payway#></td></tr>
+<tr>
+  <td class="Newtd2">人民币（大写）</td>
+  <td class="Newtd3" colspan="1"><HDPrint Value=#bigrmb#></td>
+  <td class="Newtd2">付款备注（Memo）</td>
+  <td class="Newtd3" colspan="3"><HDPrint Value=#Memo#></td>
+  </td>
+</tr>
+<tr>
+  <td class="Newtd2">收款单位（Payee）</td>
+  <td class="Newtd3"><HDPrint Value=#payee#></td>
+  <td class="Newtd2">收款银行（Bank）</td>
+  <td class="Newtd3"><HDPrint Value=#bank#></td>
+  <td class="Newtd2">银行帐号（Accounts）</td>
+  <td class="Newtd3"><HDPrint Value=#account#></td>
+</tr>
+<HDIF EqualNot(<HDPrint Value=#feeflowgid# Replace=#DBField2Input#>1, 1)>
+
+<tr>
+  <td colspan="6">
+  <table cellpadding="0" width="100%" cellspacing="1" >
+  <tr>
+    <td  class="Newtd2">（A）项目总额</td>
+    <td class="Newtd2" title="是出纳已付款 + 审批通过未付款 + 审批中的金额合计">
+        （B）已付款金额</td>
+    <td class="Newtd2">（C）本次付款 </td>
+    <td class="Newtd2">尚欠余额=A-B-C</td>
+    <td class="Newtd2">实际付款总额=B+C </td>
+  </tr>
+  <tr>
+    <td class="Newtd3"><HDPrint Value=#feeA#></td>
+    <td class="Newtd3"><HDPrint Value=#feeB#></td>
+    <td class="Newtd3"><HDPrint Value=#payfee#></td>
+    <td class="Newtd3"><HDPrint Value=#feeleft#></td>
+    <td class="Newtd3"><HDPrint Value=#feeok#></td>
+  </tr>
+  </table>
+  </td>
+</tr>
+</HDIF>
+<tr>
+  <td class="Newtd2">凭证类型：</td>
+  <td class="Newtd3"><HDPrint Value=#certtype#></td>
+  <td class="Newtd2">凭证编号：</td>
+  <td class="Newtd3"><HDPrint Value=#certnum#></td>
+  <td class="Newtd2">支付日期：</td>
+  <td class="Newtd3"><HDPrint Value=#paydate#></td>
+</tr>
+  
+<tr valign="top">
+  <td class="newtd2">附件</td>
+  <td class="newtd3" colspan="5">
+  <font color="gray">(本处请附上订单，发票，合同等)</font><br>
+     <HDPrint Value=#AttachList# Replace=#None#>&nbsp;
+  </td>
+</tr>
+</table>
+</form>

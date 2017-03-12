@@ -1,0 +1,222 @@
+<!--Js引入-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/DateControl.js)##"></script>
+<form name="frmDo" method="Post" action="">
+<h3 class="TitleBar" ><HDPrint Value=#ModeleAtype#>-<HDPrint Value=#ModeleName#></h3>
+<TABLE width="100%" class="ButtonBar" cellpadding=0 cellspacing=0>
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <HDIF Equal(<HDPrint Value=#chkRtID1#>, 1)>
+        <A HREF="##HDNet_AppName##/__ExplainModule?Url=Prl_Groundh_Add&UsrGid=<HDPrint Value=#UsrGid#>" target="_blank"><FONT class="IconAdd">　&nbsp;</FONT> 新增</A>
+      </HDIF>
+      <HDIF Equal(<HDPrint Value=#chkRtID4#>, 1)>
+        <A HREF="##HDNet_AppName##/__ExplainModule?Url=Prl_Groundh_Import&UsrGid=<HDPrint Value=#UsrGid#>" target="_blank"><FONT class="IconImport">　&nbsp;</FONT> 导入</A>
+      </HDIF>
+     |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+      <A HREF="##HDNet_AppName##/MainPage?URL=&UsrGid=<HDPrint Value=#UsrGid#>"><FONT class="IconBack">　&nbsp;</FONT> 返回首页</A>
+    </TD>
+  </TR>
+</TABLE>
+<!--排序点击标题即可排序-用到的控件-->
+<INPUT TYPE="hidden" title="点击标题排序-记录上一次排序order by的值" name="selOrderBy" value="<HDPrint Value=#selOrderBy# Replace=#DBField2Input#>">
+<INPUT TYPE="hidden" title="点击标题排序-记录上一次排序是正序还是倒序" name="selOrderAsc" value="<HDPrint Value=#selOrderAsc# Replace=#DBField2Input#>">
+<INPUT TYPE="hidden" title="点击标题排序-记录上一次排序的字段" name="selOrderColumn" value="<HDPrint Value=#selOrderColumn# Replace=#DBField2Input#>">
+<INPUT TYPE="hidden" title="下载报表用到的控件" name="Rep_Download" value="">
+<input type="hidden" name="NotFirst" value="1">
+
+<table class="SearchBar" width="100%" cellspacing="0">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:15%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:15%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:15%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:15%">
+  <tr class="SearchTr" >
+    <td colspan="8"><b>搜索条件</b></td>
+  </tr>
+  <tr>
+    <td>项目信息 = </td>
+    <td>
+      <select name="sel_deptsource" class="JQSelect">
+        <option value="">--全部--</option>
+        <HDPrint Value=#DeptList# Replace=#None#>
+      </select>
+    </td>
+    <td>编号 ≈ </td>
+    <td><input type="Text" name="txt_fno" class="JQText" style="width:90%"></td>
+    <td>楼层 ≈ </td>
+    <td><input type="Text" name="txt_floorno" class="JQText" style="width:90%"></td>
+    <td>租赁状态 = </td>
+    <td>
+      <select name="sel_fstat" class="JQSelect">
+        <option value="">--全部--</option>
+        <option value="未租">未租</option>
+        <option value="待租">待租</option>
+        <option value="被租">被租</option>
+        <option value="空闲">空闲</option>
+      </select>
+    </td>
+  </tr>
+  <tr >
+    <td colspan="4">
+     <a href="javascript:void(0)" onclick="JQExpand('tb_Search','font_Icon');" class="IconDown">　&nbsp;显示说明信息</a>（请进行相应的查询，找到您需要的信息）
+    </td>
+    <td colspan="4" align="right">
+      <INPUT TYPE="hidden" name="NotFirst" value="1">
+      <INPUT TYPE="submit" name="btnSearch" class="NormalSbt" value=" 查询 " >
+      <INPUT TYPE="reset" name="btnReset" class="NormalSbt" value=" 默认 ">
+      <HDIF Equal(<HDPrint Value=#chkRtID5#>, 1)>
+        <INPUT TYPE="button" name="btnDownload" class="NormalSbt" value="下载Excel" onclick="return DownLoad()">
+      </HDIF>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="8" align="left">
+      <div id="tb_Search" style="display:none">
+        <li>≈ 可以模糊查询</li>
+        <li>时间格式：YYYY.MM.DD HH24:MI/YYYY.MM.DD</li>
+      </div>
+    </td>
+  </tr>
+</table>
+<script language="javascript">
+  //数据提交后，对页面查询条件重新赋值
+  document.all.sel_deptsource.value = '<HDPrint value=#sel_deptsource# Replace=#DBField2Js#>';
+  document.all.txt_fno.value = '<HDPrint value=#txt_fno# Replace=#DBField2Js#>';
+  document.all.txt_floorno.value = '<HDPrint value=#txt_floorno# Replace=#DBField2Js#>';
+  document.all.sel_fstat.value = '<HDPrint value=#sel_fstat# Replace=#DBField2Js#>';
+</script>
+<BR>
+<HDPageBar>
+<table class=ListBar width="100%" cellspacing="1">
+  <col style="padding-left:4px;width:7%">
+  <col style="padding-left:4px;width:15%">
+  <col style="padding-left:4px;width:7%">
+  <col style="padding-left:4px;width:8%">
+  <col style="padding-left:4px;width:7%">
+  <col style="padding-left:4px;width:8%">
+  <col style="padding-left:4px;width:7%">
+  <col style="padding-left:4px;width:8%">
+  <col style="padding-left:4px;width:7%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:7%">
+  <tr class="listtr">
+    <td style="cursor:hand;" JQAsc="" JQColumn="s.deptsource">项目</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="s.fno">编号</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="s.floorno">楼层</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="s.farea">面积</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="s.Jarea">建筑面积</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="s.fmr">预算</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="s.fstat">租赁状态</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="s.OpType">最近操作类型</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="s.OpName">最近操作人</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="s.OpDate">最近操作时间</td>
+    <td>操作</td>
+  </tr>
+  <HDLoop>
+  <tr class="listtd" onmouseover="this.className='listtdfocus';" onmouseout="this.className='listtd'">
+    <td align="center">[<HDPrint Value=#deptsource#>]<HDPrint Value=#DeptName#></td>
+    <td><a href="##HDNet_AppName##/__ExplainModule?Url=Prl_Groundh_Dtl&UsrGid=<HDPrint Value=#UsrGid#>&fGid=<HDPrint Value=#fGid#>" target="_self"><HDPrint Value=#fno#></a></td>
+    <td align="center"><HDPrint Value=#floorno#></td>
+    <td align="right"><HDPrint Value=#farea#></td>
+    <td align="right"><HDPrint Value=#Jarea#></td>
+    <td align="right"><HDPrint Value=#fmr#></td>
+    <td align="center"><HDPrint Value=#fstat#></td>
+    <td align="center"><HDPrint Value=#OpType#></td>
+    <td align="center"><HDPrint Value=#OpName#></td>
+    <td align="center"><HDPrint Value=#OpDate#></td>
+    <td align="center">
+    <script language="javascript">
+      if ('<HDPrint Value=#chkRtID2# Replace=#DBField2Js#>' == '1'){
+        document.write('<a href="##HDNet_AppName##/__ExplainModule?Url=Prl_Groundh_Mod&UsrGid=<HDPrint Value=#UsrGid#>&fGid=<HDPrint Value=#fGid#>" target="_blank">[修改]　</a>');
+      }
+      if ('<HDPrint Value=#chkRtID3# Replace=#DBField2Js#>' == '1'){
+        document.write('<a href="##HDNet_AppName##/__ExplainModule?Url=Prl_Groundh_Del&UsrGid=<HDPrint Value=#UsrGid#>&fGid=<HDPrint Value=#fGid#>" target="_blank" onclick="javascript:if (!(confirm(\'你确定要删除该信息吗？\\n删除操作是不能还原的！\'))) return false;">[删除]</a>');
+      }
+    </script>
+    </td>
+  </tr>
+  </HDLoop>
+</table>
+
+<SCRIPT LANGUAGE="JavaScript">
+  //下载Excel
+  function DownLoad(){
+    document.all.Rep_Download.value = '1';
+    //获取当前表单对象 
+    var JqObj = $("form[name=frmDo]");
+    //表单参数设定
+    JqObj.attr({
+      "action":'##HDNet_AppName##/__ExplainModule?Url=Prl_Groundh_Down&UsrGid=<HDPrint Value=#UsrGid#>',
+      "target":'_blank'
+    });
+    //表单提交
+    JqObj.submit();
+    //表单参数还原
+    JqObj.attr({
+      "action":'',
+      "target":'_self'
+    });
+    document.all.Rep_Download.value = '';
+    return true;
+  }
+  //函数：ready
+  //功能：document 加载完成后调用
+  $(function(){
+    //Td点击排序时事件
+    $("td[JQColumn]").click(function(){
+      //取出点击Td的参数
+
+      //JQColumn 字段名
+      var sJQColumn = $(this).attr("JQColumn");
+      //JQAsc 可不写，为空 或 desc
+      var sJQAsc = '';
+      if ($(this).attr("JQAsc") != null){
+        sJQAsc = $(this).attr("JQAsc");
+      }
+
+      //取出排序控件，并赋值
+      $("input[name=selOrderBy]").val(sJQColumn + ' ' + sJQAsc);
+
+      //保留本次点击参数
+      $("input[name=selOrderAsc]").val(sJQAsc);
+      $("input[name=selOrderColumn]").val(sJQColumn);
+
+      //获取当前表单对象 
+      var JqObj = $("form[name=frmDo]");
+      //表单参数设定
+      JqObj.attr({
+        "action":'',
+        "target":''
+      });
+      //表单提交
+      JqObj.submit();
+    });
+    //数据提交后，对数据提交前点击的排序Td列重新赋值
+    $("td[JQColumn]").each(function(){
+      var sJQColumn = $(this).attr("JQColumn");
+      var selOrderColumn = '<HDPrint Value=#selOrderColumn# Replace=#DBField2Js#>';
+      var selOrderAsc = '<HDPrint Value=#selOrderAsc# Replace=#DBField2Js#>';
+      if (sJQColumn == selOrderColumn){
+        //取出本Td的文本值，并重新赋值
+        var sText = $(this).text();
+        if (selOrderAsc == ''){
+          $(this).text(sText+"↑");
+          $(this).attr("JQAsc","desc");
+        }
+        else{
+          $(this).text(sText+"↓");
+          $(this).attr("JQAsc","");
+        }
+      }
+    });
+  });
+  </script>
+</form>

@@ -1,0 +1,63 @@
+[Permission]
+SQL1=
+Remind1=
+
+[Detail]
+;得到模型名称
+SqlForCondition1=select ModelGid,Code ModelCode, Name ModelName from wf_Model where EntGid = __ENTGID__ and  ModelGid = ##ModelGid##
+[^^UploadInfoText^^]
+;是否应用
+Active=true
+;是否为Excel导入，如果指定Excel导入，则文件后缀名必须为.xls
+ExcelFormat=true
+
+;上传文件的空间名称，如果没有，默认寻找 ImportFileName 控件，同时必须临时文件目录采用 HDTempPath 控件名。
+ImportFileNameOcx=ImportFileName
+
+;首行提醒共几行，首行提醒仅是用于导入数据的内容容易辨别，对于存储数据库没有作用，在程序执行时忽略
+ImportHeadLines=1
+
+;导入文件内容的分隔符，如果不填写，默认为#9，即Tab符
+ImportSeparator=#9
+
+;SQL1~SQL10，导入前执行，执行的Sql语句与导入文件内容无关
+SQL1=delete from  PRL_ACG_COMPANY_Temp B where b.ENTGID = __ENTGID__ 
+
+;SQL1~SQL10，导入前执行，执行的Sql语句与导入文件内容无关
+LOOPSQL1=insert into PRL_ACG_COMPANY_Temp (EntGid,Gid,year,COMPANYGid,ACGGid,ACGCode,LeftBudgutFee) select distinct __ENTGID__,sys_guid(),##year##,##companyname##,pc.gid,substrb(trim(@@Param1@@), 0, 10),substrb(trim(@@Param2@@), 0, 10) from (select __ENTGID__ EntGid from dual) d,PRL_ACG pc where pc.entgid(+) = __ENTGID__ and lower(pc.code(+)) = lower(substrb(trim(@@Param1@@), 0, 10)) and d.entgid = pc.entgid(+)
+
+
+[AddtionalSQL]
+;更新数据
+^^SQLSave^^2=insert into PRL_ACG_COMPANY (EntGid,Gid,year,COMPANYGid,ACGGID,LeftBudgutFee) select __ENTGID__,sys_guid(),t.year,t.COMPANYGid,t.ACGGID,t.LeftBudgutFee from PRL_ACG_COMPANY_Temp t where t.entgid = __ENTGID__ and not exists (select 1 from PRL_ACG_COMPANY ac where ac.entgid = __ENTGID__ and t.COMPANYGid = ac.COMPANYGid and t.ACGGid = ac.ACGGid and t.year = ac.year) and t.ACGGID is not null
+
+;改成覆盖的。不要累计
+^^SQLSave^^3=update PRL_ACG_COMPANY ac set ac.LeftBudgutFee = (select nvl(t.LeftBudgutFee,0) from PRL_ACG_COMPANY_Temp t where t.entgid = __ENTGID__ and t.COMPANYGid = ac.COMPANYGid and t.ACGGid = ac.ACGGid and t.year = ac.year) where exists (select 1 from PRL_ACG_COMPANY_Temp t where t.entgid = __ENTGID__ and t.COMPANYGid = ac.COMPANYGid and t.ACGGid = ac.ACGGid and t.year = ac.year)
+
+;删除临时表
+^^SQLSave^^4=delete from  PRL_ACG_COMPANY_Temp t where t.ENTGID = __ENTGID__ 
+
+[Master]
+SQL=
+Count=
+
+[Where]
+1= 
+2= 
+
+[OrderBy]
+1=
+
+[DefaultOrderBy]
+DefaultOrderBy=
+
+[GroupBy]
+
+[Title]
+Text1=预算金额导入保存
+
+ChangePage=0
+PageKind=2
+^^LogSave^^=成功导入预算金额预保存成功
+^^LogImport^^=成功确认导入预算金额保存成功
+

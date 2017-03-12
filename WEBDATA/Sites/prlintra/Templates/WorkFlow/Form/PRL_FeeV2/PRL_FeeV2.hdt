@@ -1,0 +1,112 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<script language="javascript">
+
+</script>
+<form name="frmDo" method="post" action="">
+<h3 class="TitleBar" ><HDPrint Value=#ModelName#>->明细</h3>
+<div id="JQ_ToolBar">
+<TABLE width="100%" class="ButtonBar" cellpadding="0" cellspacing="0">
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <HDIF EqualLess(<HDPrint Value=#Flowstat# Replace=#None#>, 3)>
+      <HDIF Equal(<HDPrint Value=#chkRtID1# Replace=#None#>, 11)>
+        <a href="##HDNet_AppName##/__ExplainModule?UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Input#>&url=WFFlowSetState&stat=5&flowgid=<HDPrint Value=#FlowGid#>&modelgid=<HDPrint Value=#ModelGid#>" onclick="javascript:if (!(confirm('你确定作废该流程吗？\n该操作是不能还原的！'))) return false;" target="_blank"><FONT class="IconEnd">　&nbsp;</FONT> 管理员作废 </A>
+      </HDIF>
+      </HDIF>
+      <A HREF="##HDNet_AppName##/__ExplainModule?UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Input#>&url=WFFlowTrace&flowgid=<HDPrint Value=#flowgid#>&modelgid=<HDPrint Value=#modelgid#>" target="_blank"><FONT class="IconNext">　&nbsp;</FONT> 执行过程</A>
+      <HDIF EqualNot(<HDPrint Value=#NextStepCode# Replace=#None#>, )>
+        <A HREF="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#NextStepCode#>&UsrGid=<HDPrint Value=#UsrGid#>&FlowGid=<HDPrint Value=#FlowGid#>&ModelGid=<HDPrint Value=#ModelGid#>" target="_blank"><FONT class="IconNext">　&nbsp;</FONT> 下一步操作：<HDPrint Value=#NextStepName#></A>
+      </HDIF>
+      <HDIF Equal(<HDPrint Value=#Stat# Replace=#none#>, 30,已完成)>
+        <HDIF Equal(<HDPrint Value=#CurUsrGid# Replace=#none#>, <HDPrint Value=#FillUsrgid# Replace=#none#>)>
+        <A HREF="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_Print&UsrGid=<HDPrint Value=#UsrGid#>&FlowGid=<HDPrint Value=#FlowGid#>&ModelGid=<HDPrint Value=#ModelGid#>" target="_blank"><FONT class="IconPrint">　&nbsp;</FONT> 打印</A>
+        </HDIF>
+      </HDIF>
+      |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+      <A HREF="javascript:window.close();void(0)"><FONT class="IconClose">　&nbsp;</FONT> 关闭</A>
+      <A HREF="##HDNet_AppName##/MainPage?URL=&UsrGid=<HDPrint Value=#UsrGid#>"><FONT class="IconHome">　&nbsp;</FONT> 返回首页</A>
+    </TD>
+  </TR>
+</TABLE>
+</div>
+<iframe onload="JQAutoHeight(this)" id="iframeDtl" frameborder ='0' width="100%"  scrolling="no" style="width:100%" Src="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_Content&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid#>"></iframe>
+<br>
+</form>
+<script language="javascript">
+  //复制一个工具栏
+  var $ToolBar = $("div#JQ_ToolBar");
+  $("form[name=frmDo]").append($ToolBar.html());
+</script>
+
+<HDIF Equal(<HDPrint Value=#CurUsrCode#>, heading)>
+<!-- heading管理员进入查看相关值 -->
+heading管理员进入查看相关值<br>
+AValue： <HDPrint Value=#AValue#><br>
+BValue： <HDPrint Value=#BValue#><br>
+CValue： <HDPrint Value=#CValue#><br>
+DValue： <HDPrint Value=#DValue#><br>
+EValue： <HDPrint Value=#EValue#><br>
+DOA： <HDPrint Value=#DOACode#><br>
+ACGOther： <HDPrint Value=#ACGOther#>
+</HDIF>
+<!-- 不等于,只能不等于一个条件-->
+<HDIF Equal(<HDPrint Value=#CurUsrCode#>,heading,admin)>
+<form name="frmMail" method="POST" action="/bin/hdmailsend.dll/send" target="_blank">
+标　题:<input type="text" name="Title" maxlength="100" style="width:300" value="费用待审提醒:<HDPrint Value=#fillusrdept# Replace=#DBField2Input#>" readonly><br>
+
+收件人:<input type="text" name="Email" maxlength="400" style="width:400" value=""> <input type="button" name="btn_1" value="发送邮件" onclick="CheckSubmit()">
+<br>
+
+<input type="hidden" name="fAddr" maxlength="400" style="width:150" value="pcrtoa@hd123.net" readonly>
+<input type="hidden" name="fName" maxlength="400" style="width:150" value="OA系统邮件提醒" readonly>
+<input type="hidden" name="RplEmail" maxlength="400" style="width:150" value="pcrtoa@hd123.net" readonly>
+<input type="hidden" name="isHTML" value="y" readonly>
+<textarea name="Content" style="width:100%;height:400;display:none"></textarea>
+</form>
+
+
+<div id="tb_Email">
+<table border="0" style="width:500px;">
+<tr><td>您好 :</td></tr>
+<tr><td>[流程名称] : <HDPrint Value=#ModelName#>；</td></tr>
+<tr><td>[单号] : <HDPrint Value=#Num#>；</td></tr>
+<tr><td>[发起人] : <HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillUsrDept#>]；</td></tr>
+<tr><td>[发起时间] : <HDPrint Value=#CreateDate#>；</td></tr>
+<tr><td>[公司名称] : <HDPrint Value=#companyname#>；</td></tr>
+<tr><td>[项目名称] : <HDPrint Value=#acgonename#> - <HDPrint Value=#acgtwoname#>；</td></tr>
+<tr><td>[DOA信息] : <HDPrint Value=#DOACode#> - <HDPrint Value=#DOAname#>；</td></tr>
+<tr><td>[申请目的] : <HDPrint Value=#target#>；</td></tr>
+<tr><td>[申请项目内容] : <HDPrint Value=#Memo#>；</td></tr>
+<tr><td>[推荐及理由] : <HDPrint Value=#reason#>；</td></tr>
+<tr><td>[剩余预算金额] : <HDPrint Value=#controlfee#> 元；</td></tr>
+<tr><td>[本次申请金额] : 今年：<HDPrint Value=#askfee#> 元；明年：<HDPrint Value=#Naskfee#> 元；</td></tr>
+<tr><td>-----------邮件补发-----------</td></tr>
+</table>
+</div>
+<script language="javascript">
+  //提交函数
+  function CheckSubmit(OpText){
+
+    $("textarea[name=Content]").val($("div#tb_Email").html());
+
+    //获取当前表单对象
+    var JqObj = $("form[name=frmMail]");
+    //表单提交
+    JqObj.submit();
+
+    /*
+    //操作按钮变为不可用
+    $("[name=btn_1]").each(function(){
+      $(this).prop("disabled",true);
+    });
+    //本函数失效
+    CheckSubmit = function() {return false;}
+    */
+  }
+</script>
+</HDIF>

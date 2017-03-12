@@ -1,0 +1,119 @@
+;版本号：2014年3月份（此行不允许删除）
+[Permission]
+;判断FlowGid 是否为空
+LIMIT1=FlowGid
+LIMITDesc1=StringSize[,0]
+LIMITRemind1=对不起，您未指定流程信息！请从正确的路径进入
+
+;判断传入FlowGid 是否存在
+SQL1=select 1 from WF_Prl_Contract where EntGid = __ENTGID__ and FlowGid = ##FlowGid##
+Remind1=对不起，您指定的流程申请单没有找到<script>alert('对不起，您指定的流程申请单没有找到');window.close()</script>
+
+[Detail]
+;显示，查询得到的结果可以用于HDT显示，从SQL1～SQL20共支持20条
+;取出本流程模型信息
+SqlForCondition1=select wm.Code ModelCode, wm.Name ModelName from wf_Model wm where wm.EntGid = __ENTGID__ and wm.ModelGid = ##ModelGid##
+
+;显示本流程主表信息
+SQL1=select wf.* from wf_^^ModelCode^^ wf where EntGid = __ENTGID__ and  FlowGid = ##FlowGid##
+
+;得到当前用户的部门名称
+SQL2=select p.Name DeptName from HR_Emp hr,Dept d,dept p,wf_^^ModelCode^^ f where hr.EntGid=__ENTGID__ and hr.EntGid=d.EntGid and d.EntGid = p.EntGid and f.EntGid = p.EntGid and hr.UsrGid = f.FillUsrGid and hr.DeptGid = d.Gid and substr(d.Code1,0,8) = p.code1 and f.EntGid = __ENTGID__ and  f.FlowGid = ##FlowGid##
+
+;取出本流程已审批的审批人的个数，用于判断是否显示审批人
+SQL3=select count(*) IsShow from wf_^^ModelCode^^_App where EntGid = __ENTGID__ and  FlowGid = ##FlowGid## and AppDate is not null
+
+;取出其它条款的审批级别
+SQL4=select distinct decode(OpApp,'F','<font color="red"><b>F<b></font>','E','<font color="red">E</font>','D','<font color="blue"><b>D</b></font>','C','<font color="blue">C</font>','B','<b>B</b>','A','A','空') OpAppOther from wf_^^ModelCode^^_Other fd where EntGid = __ENTGID__ and FlowGid = ##FlowGid##
+
+;显示本流程附件信息
+LoopSQL1=select replace(Attach_Url,' ','%20') Attach_Url,Attach_Title Attach_Title from wf_^^ModelCode^^_Attach where EntGid = __ENTGID__ and  FlowGid = ##FlowGid## order by attach_title
+LoopHDT1=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_Attach.hdt
+LoopVAR1=AttachList
+
+;显示本流程已审批审批人信息
+LoopSQL2=select a.*,decode(a.apptype,10,'发起人',20,'法务部',30,'招商经理',35,'财务经理',40,'商场总经理',50,'租赁部总监',60,'高级副总裁Coo') apptypetext  from WF_^^ModelCode^^_App a where FlowGid = ##FlowGid## and AppDate is not null order by AppDate
+LoopHDT2=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_App.hdt
+LoopVAR2=AppList
+
+;显示本流程明细信息
+LoopSQL3=select fd.*,decode(OpIndex,null,'none','') OpShow,nvl(OpIndex,'999') OpIndexText,decode(OpApp,'F','<font color="red"><b>F<b></font>','E','<font color="red">E</font>','D','<font color="blue"><b>D</b></font>','C','<font color="blue">C</font>','B','<b>B</b>','A','A','空') OpAppText from wf_^^ModelCode^^_Dtl fd where EntGid = __ENTGID__ and FlowGid = ##FlowGid## order by Line
+LoopHDT3=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_DtlList.hdt
+LoopVAR3=DtlList
+
+;显示本流程明细信息
+LoopSQL4=select fd.* from wf_^^ModelCode^^_Other fd where EntGid = __ENTGID__ and FlowGid = ##FlowGid## order by Line
+LoopHDT4=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_OtherList.hdt
+LoopVAR4=OtherList
+
+[AddtionalSQL]
+;操作，没有返回的结果，是在数据库中执行，由Insert, Update, Delete命令。从SQL1～SQL20共支持20条
+SQL1=
+
+[AddtionalSQLUseWhere]
+;显示，查询得到的结果可以用于HDT显示，从SQL1～SQL20共支持20条，同时会使用上面的[where]中的sql语句
+;示例
+Sql1=
+
+[Master]
+;多条记录的查询，可在HDT页面中直接使用<HDLoop>显示，并能够提供翻页。
+SQL=
+Count=
+
+[DefaultWhere]
+;多条记录的查询的默认条件
+DefaultWhere=
+
+[Where]
+;多条记录的查询的条件，可以根据页面传入的变量组合成
+1=
+
+[GroupBy]
+;多条记录的查询的组合
+GroupBy=
+
+[DefaultOrderBy]
+;多条记录的查询的默认排序
+DefaultOrderBy=
+
+[OrderBy]
+;多条记录的查询的排序,支持多重排序排序的先后顺序由序号决定
+1=
+
+
+[Title]
+;页面的标题,Title最多可以到Text30
+
+Text1=^^ModelName^^-明细
+Text2=
+Text3=
+Text4=
+Text5=
+
+;是否翻页：1是，0否
+ChangePage=0
+
+;翻页时的每页记录数，如果没有的话，则取HDNet默认值20
+ChangePageRow=
+
+;写入数据库日志
+Log=
+
+;页面显示: 0:BodyPage;1:DetailPage;2:BlankPage
+PageKind=2
+
+
+;以下内容是为了让ExplainAjax引擎来读的。对ExplainModule引擎来说，忽略此部分内容。
+[Ajax]
+;此Section“[Ajax]”,表明以下内容是为了Ajax应用而配置的文件。
+;需要显示一条的内容，可以支持21条, Detail, Detail1～Detail20
+Detail=
+
+;需要循环显示的内容,可以支持11条，Master, Master1～Master10
+Master=
+
+;实现对数据库进行的操作，可以支持20条, AddtionalSQL1～AddtionalSQL20
+AddtionalSQL1=
+
+;实现对数据库进行的循环操作，可以支持20条, LoopSQL1～LoopSQL20
+LoopSQL1=

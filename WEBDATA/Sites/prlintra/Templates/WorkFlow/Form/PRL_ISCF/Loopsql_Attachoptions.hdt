@@ -1,0 +1,3 @@
+<HDLoop>
+<option value='<HDPrint Value=#Attach_Title# Replace=#DBField2InputField#>'><HDPrint Value=#Attach_Title#></option>
+</HDLoop>

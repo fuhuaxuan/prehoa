@@ -1,0 +1,462 @@
+<script language="JavaScript" src="##GetWebRootPath(/Scripts/Common.js)##"></Script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/DataInterface.js)##"></script>
+<script language="JavaScript" src="##GetWebRootPath(/Scripts/Ajax/json.js)##"></Script>
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script src="##GetWebRootPath(/Scripts/jquery/svg.js)##"></script>
+
+<form name="frmDataInterface_1" method="Post" action="">
+  <INPUT TYPE="hidden" name="DataInterface_Title" value="任务导入列表">
+
+  <!--在实际应用中应该加密-->
+  <INPUT TYPE="hidden" name="DataInterface_Sql" value="select TaskDefGid, Code, Name, IsMCF, IsMCFTEXT, Ltrim(Max(Sys_connect_by_path(ExecGidEx, ''',''')) Keep(Dense_rank Last Order By Curr), ''',''') As ExecGidEx from (select a.TaskDefGid, a.Code, a.Name, a.IsMCF, decode(a.IsMCF, 1, '是', '否') IsMCFTEXT, b.ExecGidEx, Row_number() Over(Partition By a.TaskDefGid Order By a.Code) As Curr, Row_number() Over(Partition By a.TaskDefGid Order By a.Code) - 1 As Prev from WF_Task_Define a, Wf_Task_Define_Exec b where a.EntGid = '<HDPrint Value=#EntGid#>' and b.EntGid = '<HDPrint Value=#EntGid#>' and a.ModelGid = '<HDPrint Value=#ModelGid#>' and b.ModelGid = '<HDPrint Value=#ModelGid#>' and a.TaskDefGid = b.TaskDefGid and a.IsStart = 0 and a.IsEnd = 0) Group By TaskDefGid,Code,Name,IsMCF,IsMCFTEXT Connect By Prev = Prior Curr And TaskDefGid = Prior TaskDefGid Start With Curr = 1">
+  <INPUT TYPE="hidden" name="DataInterface_CountSql" value="select count(*) from WF_Task_Define where EntGid = '<HDPrint Value=#EntGid#>' and ModelGid = '<HDPrint Value=#ModelGid#>' and IsStart = 0 and IsEnd = 0">
+  <INPUT TYPE="hidden" name="DataInterface_OrderSql" value="order by Code">
+  <!--在实际应用中应该加密-->
+  <INPUT TYPE="hidden" name="DataInterface_UsrGid" value="<HDPrint Value=#UsrGid#>">
+  <INPUT TYPE="hidden" name="DataInterface_AppName" value="##HDNet_AppName##">
+
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="2^任务代码^left^100">
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="3^任务名称^left^100">
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="5^是否是抄送步骤^left^100">
+  <input type="hidden" name="DataInterface_PerPageNum" value="20">
+
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="Code^任务代码^1">
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="Name^任务名称^1">
+  <input type="hidden" name="DataInterface_Search_Sql" value="">
+  <input type="hidden" name="DataInterface_Search_Cols" value="">
+
+  <INPUT TYPE="hidden" name="DataInterface_FieldTo" value="">
+  <INPUT TYPE="hidden" name="DataInterface_FieldBy" value="1^2^3^4^6">
+  <INPUT TYPE="hidden" name="DataInterface_CallBckFunc" value="CallBackFun">
+  <INPUT TYPE="hidden" name="DataInterface_Close" value="false">
+</form>
+
+<form name="frmDataInterface_2" method="Post" action="">
+  <INPUT TYPE="hidden" name="DataInterface_Title" value="执行人导入列表">
+
+  <!--在实际应用中应该加密-->
+  <INPUT TYPE="hidden" name="DataInterface_Sql" value="">
+  <INPUT TYPE="hidden" name="DataInterface_CountSql" value="">
+  <INPUT TYPE="hidden" name="DataInterface_OrderSql" value="order by Code">
+  <!--在实际应用中应该加密-->
+  <INPUT TYPE="hidden" name="DataInterface_UsrGid" value="<HDPrint Value=#UsrGid#>">
+  <INPUT TYPE="hidden" name="DataInterface_AppName" value="##HDNet_AppName##">
+
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="2^用户代码^left^100">
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="3^用户名称^left^100">
+
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="Code^用户代码^1">
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="Name^用户名称^1">
+  <input type="hidden" name="DataInterface_Search_Sql" value="">
+  <input type="hidden" name="DataInterface_Search_Cols" value="">
+
+  <INPUT TYPE="hidden" name="DataInterface_FieldTo" value="">
+  <INPUT TYPE="hidden" name="DataInterface_FieldBy" value="1^2^3">
+  <INPUT TYPE="hidden" name="DataInterface_CallBckFunc" value="CallBackFun1">
+  <INPUT TYPE="hidden" name="DataInterface_Close" value="true">
+</form>
+<form name="frmDataInterface_App" method="Post" action="">
+  <INPUT TYPE="hidden" name="DataInterface_Title" value="用户导入列表">
+
+  <!--在实际应用中应该加密-->
+  <INPUT TYPE="hidden" name="DataInterface_Sql" value="select Gid, Code, Name from V_USR where EntGid='<HDPrint Value=#EntGid#>' and SortID = 1">
+  <INPUT TYPE="hidden" name="DataInterface_CountSql" value="select count(*) from V_USR where EntGid='<HDPrint Value=#EntGid#>' and SortID = 1">
+  <INPUT TYPE="hidden" name="DataInterface_OrderSql" value="order by Code">
+  <!--在实际应用中应该加密-->
+  <INPUT TYPE="hidden" name="DataInterface_UsrGid" value="<HDPrint Value=#UsrGid#>">
+  <INPUT TYPE="hidden" name="DataInterface_AppName" value="##HDNet_AppName##">
+
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="2^用户代码^left^100">
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="3^用户名称^left^100">
+
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="Code^用户代码^1">
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="Name^用户名称^1">
+  <input type="hidden" name="DataInterface_Search_Sql" value="">
+  <input type="hidden" name="DataInterface_Search_Cols" value="">
+
+  <INPUT TYPE="hidden" name="DataInterface_FieldTo" value="">
+  <INPUT TYPE="hidden" name="DataInterface_FieldBy" value="1^2^3">
+  <INPUT TYPE="hidden" name="DataInterface_CallBckFunc" value="CallBackFunApp">
+  <INPUT TYPE="hidden" name="DataInterface_Close" value="true">
+</form>
+
+
+<form method="post" name="frmDo">
+<table class="newtb" cellpadding="0" cellspacing="1" width="100%">
+  <col style="width:100">
+  <col style="width:120">
+  <col style="width:200">
+  <col style="width:120">
+  <col style="width:120" align=center>
+  <col style="width:120" align=center>
+  <col style="width:60" align=center>
+  <tr class=listtr1>
+    <td colspan=10>工作流程实例过程明细查看</td>
+  </tr>
+  <tr>
+    <td class=newtd2>工作流程代码</td>
+    <td class=newtd3><HDPrint Value=#Code#></td>
+    <td class=newtd2>工作流程名称</td>
+    <td class=newtd3><HDPrint Value=#Name#></td>
+  </tr>
+    <td class=newtd2>发起人</td>
+    <td class=newtd3>[<HDPrint Value=#CreaterCode#>] <HDPrint Value=#CreaterName#></td>
+    <td class=newtd2>当前流程状态</td>
+    <td class=newtd3>
+      <HDIF Equal(<HDPrint Value=#stat#>, 0)><font color="gray">未执行</font></HDIF>
+      <HDIF Equal(<HDPrint Value=#stat#>, 1)>待执行</HDIF>
+      <HDIF Equal(<HDPrint Value=#stat#>, 2)>执行中</HDIF>
+      <HDIF Equal(<HDPrint Value=#stat#>, 3)><FONT COLOR="blue">已完成</FONT></HDIF>
+			<HDIF Equal(<HDPrint Value=#Stat#>, 4)><font color="gray">已停止</font></HDIF>
+      <HDIF Equal(<HDPrint Value=#stat#>, 5)><FONT COLOR="red">已作废</FONT></HDIF>
+      <HDIF Equal(<HDPrint Value=#stat#>, 6)><FONT COLOR="red">已超时</FONT></HDIF>
+    </td>
+  </tr>
+  <tr>
+  <td colspan=7>
+  <iframe id="frmFlow" style="width:100%;" height="300" FRAMEBORDER=0 SCROLLING=auto src="##HDNet_AppName##/WorkFlowGraphi?UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Input#>&modelgid=<HDPrint Value=#modelgid#>&flowgid=<HDPrint Value=#flowgid#>&ShowType=1"></iframe> 
+  <script language="javascript">
+    if (SVG.supported) {
+      $("iframe#frmFlow").attr("src","##HDNet_AppName##/__ExplainModule?Url=workflowmap&UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Input#>&modelgid=<HDPrint Value=#modelgid#>&flowGid=<HDPrint Value=#flowgid#>");
+    }
+  </script>
+  </td>
+</tr>
+</table>
+<BR>
+
+
+<table  cellpadding="0" cellspacing="1" width="100%" id="WFTaskList">
+  <col style="width:125">
+  <col style="width:120">
+  <col style="width:100">
+  <col style="width:130">
+  <col style="width:130">
+  <col style="width:130" align=center>
+  <col style="width:55" align=center>
+  <col style="width:55" align=center>
+  <col style="width:80" align=center>
+  <tr class=listtr1>
+    <td>任务代码</td>
+    <td>任务名称</td>
+    <td>执行者</td>
+    <td>备注</td>
+    <td>任务开始时间</td>
+    <td>任务结束时间</td>
+    <!--暂时没有用到所以去掉<td>超时</td>-->
+    <td title="小时">执行</td>
+    <td>状态</td>
+    <td>操作</td>
+  </tr>
+
+<HDLoop>
+  <tr style="<HDPrint value=#bgstyle# Replace=#None#>">
+    <td class=newtd3><HDPrint Value=#code#></td>
+    <td class=newtd3><HDPrint Value=#name#></td>
+   <!-- 没有有权限修改执行者，展示此部分 -->
+    <td class=newtd3 style="display:<HDPrint value=#IsDisplay1# Replace=#None#>">[<HDPrint Value=#execcode#>] <HDPrint Value=#execname#></td>
+
+   <!-- 有权限修改执行者的才能够展示此部分 -->
+    <td class=newtd3 style="display:<HDPrint value=#IsDisplay2# Replace=#None#>" title="[<HDPrint Value=#execcode#>]<HDPrint Value=#execname# Replace=#DBField2Input#>">
+       
+       <input name =taskGid_1 type=hidden value="<HDPrint Value=#taskGid#>">
+       <input type=hidden name="ExecUsrGid_<HDPrint Value=#TaskGid# Replace=#DBField2Input#>" style="width:100%" value="<HDPrint Value=#execgid# Replace=#DBField2Input#>" maxlength=5>
+       <input type=hidden name="ExecUsrCode_<HDPrint Value=#TaskGid# Replace=#DBField2Input#>" style="width:100%" value="<HDPrint Value=#execcode# Replace=#DBField2Input#>" maxlength=5>
+       <input name="ExecUsrName_<HDPrint Value=#TaskGid# Replace=#DBField2Input#>" style="width:65%" value="<HDPrint Value=#execname# Replace=#DBField2Input#>" maxlength=100><A HREF="javascript:Selectman(document.all.ExecUsrGid_<HDPrint Value=#TaskGid# Replace=#DBField2Js#>,document.all.ExecUsrCode_<HDPrint Value=#TaskGid# Replace=#DBField2Js#>,document.all.ExecUsrName_<HDPrint Value=#TaskGid# Replace=#DBField2Js#>)" readonly>[选择]</a>
+    </td>
+    <td class=newtd3><HDPrint Value=#MEMO#>&nbsp;</td>
+    <td class=newtd3><HDPrint Value=#btime#></td>
+    <td class=newtd3><HDPrint Value=#etime#></td>
+    <!--暂时没有用到所以去掉<td class=newtd3><HDPrint Value=#deadline#></td>-->
+    <td class=newtd3  title="小时"><HDPrint Value=#SpendTime#></td>
+    <td class=newtd3><HDPrint value=#PsStat# Replace=#None#></td>
+    <td class=newtd3><a href="javascript:void(0)"  onclick="AjaxDel(this,'<HDPrint Value=#taskGid#>','<HDPrint Value=#stat#>')" ><HDPrint Value=#statdeltext# Replace=#None#></a>&nbsp;<a href="javascript:void(0)"  onclick="AjaxDel(this,'<HDPrint Value=#taskGid#>','<HDPrint Value=#stat#>','4')" ><HDPrint Value=#statStoptext# Replace=#None#></a></td>
+  </tr>
+  </HDLoop>
+  <tr class=listtr1>
+    <td align=center colspan=9>
+      <INPUT TYPE="hidden" name="ModelGid" value="<HDPrint Value=#ModelGid#>">
+      <INPUT TYPE="hidden" name="FlowGid" value="<HDPrint Value=#FlowGid#>">
+      <INPUT TYPE="hidden" name="SFLAG" value="SAVE">
+      <!-- 将维护的权限只赋给heading用户 -->
+      <HDIF Equal(<HDPrint Value=#RTID#><HDPrint Value=#Curusrcode#>, 1heading,1admin)>
+      <HDIF Equal(<HDPrint Value=#stat#>, 0,1,2,4,6)>
+      <INPUT TYPE="button" name="btnSave" value=" 新增 " class="NormalSbt" onclick="return AddTr()" >
+      <INPUT TYPE="button" name="btnSave" value=" 保存 " class="NormalSbt" onclick="return check('SAVE')" >
+      </HDIF>
+
+      <HDIF Equal(<HDPrint Value=#stat#>, 0,1,2,4,6)>
+      <INPUT TYPE="button" name="btnAbolish" value=" 作废流程 " class="NormalSbt" onclick="return Abolish('<HDPrint Value=#flowgid#>','<HDPrint Value=#modelgid#>')" >
+      </HDIF>
+
+      <HDIF Equal(<HDPrint Value=#stat#>, 2)>
+      <INPUT TYPE="button" name="btnEnd" value=" 结束流程 " class="NormalSbt" onclick="return check('END')" >
+      </HDIF>
+      </HDIF>
+      <input type="button" class="NormalSbt" value=" 关闭 " onClick="window.close()">
+      <input type="button" class="NormalSbt" value=" 刷新 " onClick="window.location.reload()">
+    </td>
+  </tr>
+</table>
+</form>
+
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+  function Abolish(sflowgid,smodelgid)
+  {
+    if (confirm('该操作不能还原，您确定要作废该流程？')) window.open('##HDNet_AppName##/__ExplainModule?UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Input#>&url=WFFlowSetState&stat=5&flowgid='+sflowgid+'&modelgid='+smodelgid);
+  
+  }
+//-->
+</SCRIPT>
+
+<SCRIPT>
+  var Obj_Man1,Obj_Man2,Obj_Man3;
+  function Selectman(id1,id2,id3)
+  {
+    Obj_Man1 = id1;
+    Obj_Man2 = id2;
+    Obj_Man3 = id3;
+    DataInterface(frmDataInterface_App);
+  }
+
+
+  function CallBackFunApp(sUsrGid, sUsrCode, sUsrName)
+  { 
+    Obj_Man1.value = sUsrGid;
+    Obj_Man2.value = sUsrCode;
+    Obj_Man3.value = sUsrName;
+  }
+
+
+
+//用于标记输入框的下标
+var iNum = 1;
+var RNum;
+var RENameNum='';
+
+//在WFTaskList表的倒数第二行新增行
+function AddTr()
+{
+  var tr,td;
+  var rowIndex = WFTaskList.rows.length - 1;
+
+  tr = WFTaskList.insertRow(rowIndex);
+
+  td = tr.insertCell(-1);
+  td.insertAdjacentHTML('afterbegin','<INPUT TYPE="text" style="width:98%" name="Code_0" id="Code_'+iNum+'" readonly onclick="javascript: GetDI(\''+iNum+'\')"><INPUT TYPE="hidden" name="IsMCF_0" id="IsMCF_'+iNum+'"><INPUT TYPE="hidden" name="TaskDefGid_0" id="TaskDefGid_'+iNum+'"><INPUT TYPE="hidden" name="TaskEGid_0" id="TaskEGid_'+iNum+'">');  td.className="newtd3";
+
+  td = tr.insertCell(-1);
+  td.insertAdjacentHTML('afterbegin','&nbsp;');
+  td.className="newtd3";
+  td.id='TdName_'+iNum;
+
+  td = tr.insertCell(-1);
+  td.insertAdjacentHTML('afterbegin','<INPUT TYPE="text" style="width:98%" name="ExecName_0" id="ExecName_'+iNum+'" readonly onclick="javascript: GetENameDI(\''+iNum+'\')"><input type="hidden" name="ExecGid_0" id="ExecGid_'+iNum+'"><input type="hidden" name="ExecCode_0" id="ExecCode_'+iNum+'">');  td.className="newtd3";
+  td = tr.insertCell(-1);
+  td.insertAdjacentHTML('afterbegin','<INPUT TYPE="text" style="width:98%" name="Memo_0" id="Memo_'+iNum+'" maxlength="500">');
+  td.className="newtd3";
+
+  td = tr.insertCell(-1);
+  td.insertAdjacentHTML('afterbegin','<HDPrint value=#CurDate# Replace=#DBField2Js#> <HDPrint value=#CurTime# Replace=#DBField2Js#><input name="Btime_0" value="<HDPrint value=#CurDate# Replace=#DBField2Js#> <HDPrint value=#CurTime# Replace=#DBField2Js#>" type="hidden">');
+  td.className="newtd3";
+
+  //td = tr.insertCell(-1);
+  //td.insertAdjacentHTML('afterbegin','&nbsp;');
+  //td.className="newtd3";
+
+  td = tr.insertCell(-1);
+  td.insertAdjacentHTML('afterbegin','&nbsp;');
+  td.className="newtd3";
+
+  td = tr.insertCell(-1);
+  td.insertAdjacentHTML('afterbegin','&nbsp;');
+  td.className="newtd3";
+
+  td = tr.insertCell(-1);
+  td.insertAdjacentHTML('afterbegin','待执行');
+  td.className="newtd3";
+
+  td = tr.insertCell(-1);
+  td.insertAdjacentHTML('afterbegin','<a href="javascript:void(0)"  onclick="DelTr(this)" >删除</a>');
+  td.className="newtd3";
+
+  iNum++;
+
+}
+
+function DelTr(obj)
+{
+  if (!confirm ('您确定删除此行记录吗?')) return false;
+  obj.parentElement.parentElement.removeNode(true);
+}
+
+//点击任务代码触发的函数
+function GetDI(str)
+{
+  RNum = str;
+  DataInterface(frmDataInterface_1);
+}
+
+//用DI返回值给相应的控件赋值
+//str1:任务代码编号；
+//str2: 任务代码
+//str3: 任务名称
+//str4: 是否为抄送
+//str5: 执行人Gid
+
+function CallBackFun(str1, str2, str3, str4, str5)
+{
+  document.all('TaskDefGid_'+RNum).value = str1;
+  document.all('IsMCF_'+RNum).value = str4;
+  document.all('Code_'+RNum).value = str2;
+  document.all('TdName_'+RNum).innerHTML = str3;
+  document.all('TaskEGid_'+RNum).value = str5;
+  //同步显示执行者的选择框
+  GetENameDI(RNum)
+}
+
+//点击执行者所触发的函数
+function GetENameDI(str1)
+{
+  RENameNum = str1;
+  //先将执行者赋为空
+  document.all('ExecGid_'+RENameNum).value = '';
+  document.all('ExecCode_'+RENameNum).value = '';
+  document.all('ExecName_'+RENameNum).value = '';
+  str2=document.all('TaskEGid_'+RENameNum).value;
+  //判断是否选择了任务代码
+  if (document.all('TaskDefGid_'+RENameNum).value == '')
+  {
+    alert('请先选择任务代码');
+    //显示任务代码的选择框
+    GetDI(RENameNum);
+    return false;
+  }
+  //以下部分为执行者选择范围的控制
+  //当是发起人时,范围固定为发起人,当发起人出现离职等情况时，选择范围变成全体用户
+  if (str2 == '**CreateGid**')
+  {
+    frmDataInterface_2.DataInterface_Sql.value = 'select gid,code,name from (select Gid, Code, Name from V_USR v where EntGid=\'<HDPrint Value=#EntGid#>\' and SortID = 1 and gid in (select createRGid from WF_Flow where EntGid = \'<HDPrint value=#EntGid#>\' and ModelGid = \'<HDPrint value=#ModelGid#>\' and FlowGid = \'<HDPrint value=#FlowGid#>\') union select Gid, Code, Name from V_USR v where EntGid=\'<HDPrint Value=#EntGid#>\' and SortID = 1 and not exists (select 1 from V_USR v where EntGid=\'<HDPrint Value=#EntGid#>\' and SortID = 1 and gid in (select createRGid from WF_Flow where EntGid = \'<HDPrint value=#EntGid#>\' and ModelGid = \'<HDPrint value=#ModelGid#>\' and FlowGid = \'<HDPrint value=#FlowGid#>\'))) where 1=1';
+    frmDataInterface_2.DataInterface_CountSql.value = 'select count(*) from (select 1 from V_USR v where EntGid=\'<HDPrint Value=#EntGid#>\' and SortID = 1 and gid in (select createRGid from WF_Flow where EntGid = \'<HDPrint value=#EntGid#>\' and ModelGid = \'<HDPrint value=#ModelGid#>\' and FlowGid = \'<HDPrint value=#FlowGid#>\') union select 1 from V_USR v where EntGid=\'<HDPrint Value=#EntGid#>\' and SortID = 1 and not exists (select 1 from V_USR v where EntGid=\'<HDPrint Value=#EntGid#>\' and SortID = 1 and gid in (select createRGid from WF_Flow where EntGid = \'<HDPrint value=#EntGid#>\' and ModelGid = \'<HDPrint value=#ModelGid#>\' and FlowGid = \'<HDPrint value=#FlowGid#>\')))  where 1=1';
+  }
+  //当是流程中指定时，显示全体用户
+  else if (str2 == '**SpecGid**')
+  {
+    frmDataInterface_2.DataInterface_Sql.value = 'select Gid, Code, Name from V_USR v where EntGid=\'<HDPrint Value=#EntGid#>\' and SortID = 1';
+    frmDataInterface_2.DataInterface_CountSql.value = 'select count(*) from V_USR v where EntGid=\'<HDPrint Value=#EntGid#>\' and SortID = 1';
+  }
+  //当是“流程参与人”时，显示流程各步骤的执行人信息，如果都离职了，选择范围变成全体用户
+  else if (str2 == '**FlowMember**')
+  {
+    frmDataInterface_2.DataInterface_Sql.value = 'select gid, code, name from (select gid, code, name from v_usr v where entgid = \'<HDPrint Value=#EntGid#>\' and sortid = 1 and gid in (select ExecGid from v_wf_task where entgid = \'<HDPrint value=#EntGid#>\' and modelgid = \'<HDPrint value=#ModelGid#>\' and flowgid = \'<HDPrint value=#FlowGid#>\') union select gid, code, name from v_usr v where entgid = \'<HDPrint Value=#EntGid#>\' and sortid = 1 and not exists (select 1 from v_usr v where entgid = \'<HDPrint Value=#EntGid#>\' and sortid = 1 and gid in (select ExecGid from v_wf_task where entgid = \'<HDPrint value=#EntGid#>\' and modelgid = \'<HDPrint value=#ModelGid#>\' and flowgid = \'<HDPrint value=#FlowGid#>\'))) where 1 = 1';
+    frmDataInterface_2.DataInterface_CountSql.value = 'select count(*) from (select gid, code, name from v_usr v where entgid = \'<HDPrint Value=#EntGid#>\' and sortid = 1 and gid in (select ExecGid from v_wf_task where entgid = \'<HDPrint value=#EntGid#>\' and modelgid = \'<HDPrint value=#ModelGid#>\' and flowgid = \'<HDPrint value=#FlowGid#>\') union select gid, code, name from v_usr v where entgid = \'<HDPrint Value=#EntGid#>\' and sortid = 1 and not exists (select 1 from v_usr v where entgid = \'<HDPrint Value=#EntGid#>\' and sortid = 1 and gid in (select ExecGid from v_wf_task where entgid = \'<HDPrint value=#EntGid#>\' and modelgid = \'<HDPrint value=#ModelGid#>\' and flowgid = \'<HDPrint value=#FlowGid#>\'))) where 1 = 1 ';
+  }
+  //当是固定组织时，选择范围也为固定组织,当固定组织的人都离职时，选择范围变成全体用户
+  else 
+  {
+    frmDataInterface_2.DataInterface_Sql.value = 'select gid,code,name from (select Gid, Code, Name from V_USR v where EntGid=\'<HDPrint Value=#EntGid#>\' and SortID = 1 and exists (select 1 from v_org_usr where EntGid=\'<HDPrint Value=#EntGid#>\' and usrgid = v.gid and orggid in (\''+str2+'\')) union select Gid, Code, Name from V_USR v where EntGid=\'<HDPrint Value=#EntGid#>\' and SortID = 1 and not exists (select 1 from V_USR v where EntGid=\'<HDPrint Value=#EntGid#>\' and SortID = 1 and exists (select 1 from v_org_usr where EntGid=\'<HDPrint Value=#EntGid#>\' and usrgid = v.gid and orggid in (\''+str2+'\')))) where 1=1';
+    frmDataInterface_2.DataInterface_CountSql.value = 'select count(*) from (select Gid, Code, Name from V_USR v where EntGid=\'<HDPrint Value=#EntGid#>\' and SortID = 1 and exists (select 1 from v_org_usr where EntGid=\'<HDPrint Value=#EntGid#>\' and usrgid = v.gid and orggid in (\''+str2+'\')) union select Gid, Code, Name from V_USR v where EntGid=\'<HDPrint Value=#EntGid#>\' and SortID = 1 and not exists (select 1 from V_USR v where EntGid=\'<HDPrint Value=#EntGid#>\' and SortID = 1 and exists (select 1 from v_org_usr where EntGid=\'<HDPrint Value=#EntGid#>\' and usrgid = v.gid and orggid in (\''+str2+'\')))) where 1=1';
+  }
+  DataInterface(frmDataInterface_2)
+}
+
+//给执行者赋值
+function CallBackFun1(gid, code, name)
+{
+  document.all('ExecGid_'+RENameNum).value = gid;
+  document.all('ExecCode_'+RENameNum).value = code;
+  document.all('ExecName_'+RENameNum).value = name;
+}
+
+function check(str)
+{
+  if (str == 'END')
+  {
+    if (!confirm('您确认要手工结束流程？该操作无法还原，请确认！'))
+    {
+      return false;
+    }
+  }
+  //判断是否选择了下一步任务代码
+  /*if (!document.all.Code_0)
+  {
+    //alert('请新增下一步骤的任务执行人');
+    ///AddTr();
+    //return false;
+  }
+  //当只有一条任务代码时，判断该任务是否为抄送步骤
+  if (!document.all.Code_0.length)
+  {
+    if (document.all.IsMCF_0.value == '1')
+    {
+      alert('请至少新增一条非抄送任务的步骤');
+      return false;
+    }
+  }
+  else 
+  {
+    //当有多条记录时，只要一条不是抄送步骤就能保存
+    var sIsMCF = '1'
+    outer:
+    for (i=0;i<document.all.IsMCF_0.length ;i++ )
+    {
+      if (document.all.IsMCF_0[i].value == '0')
+      {
+        sIsMCF = '0';
+        break outer;
+      }
+    }
+    if (sIsMCF == '1')
+    {
+      alert('请至少新增一条非抄送任务的步骤');
+      return false;
+    }
+  }*/
+  document.all.SFLAG.value = str;
+  frmDo.action = "##HDNet_AppName##/__ExplainModule?Url=wfflowtracesave&UsrGid=<HDPrint Value=#UsrGid#>";
+  frmDo.target = '_self';
+  frmDo.submit();
+  return true;
+}
+
+  /*
+  *函数功能：Ajax中POST方式取出员工资料
+  *参数：代码控件对象
+  */
+  function AjaxDel(obj,sGid,sStat,sAfterstat) {
+    var sText='删除';
+    if (sAfterstat) sText='停止';
+    else sAfterstat='';
+
+  if (!confirm ('您确定'+ sText +'此行记录吗?\n'+ sText +'后，此数据不能还原，请确认！')) return false;
+  
+    var sParams = '&sFlowGid=<HDPrint Value=#FlowGid#>&sModelGid=<HDPrint Value=#modelgid#>&sGid='+sGid+'&sStat='+sStat+'&Afterstat='+ sAfterstat;
+    http.open('POST', '##HDNet_AppName##/__ExplainAjax?Url=WFFLOWTRACE&UsrGid=<HDPrint Value=#UsrGid#>&OpAtype=2');
+
+    http.onreadystatechange =function()
+    {
+      if (http.readyState == 4) {
+        if(http.status == 200) {
+          try {
+            if(http.responseText.indexOf('Success') > 0) {
+              alert('此步骤已经成功'+ sText +'！');
+              window.location.reload();
+              //obj.parentElement.parentElement.removeNode(true);
+
+            }
+            else {
+              alert('此步骤'+ sText +'失败，请检查后重试！');
+            }
+          }
+          catch (e) {
+            alert(http.responseText);
+            return(e);
+          }
+        }
+      }
+    };
+    //发送
+    http.send(sParams);
+  }
+</script>

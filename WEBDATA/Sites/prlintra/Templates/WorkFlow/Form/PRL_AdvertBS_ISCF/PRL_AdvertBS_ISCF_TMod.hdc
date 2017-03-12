@@ -1,0 +1,78 @@
+;版本号：2013年3月份（此行不允许删除）
+[Permission]
+LIMIT1=FlowGid
+LIMITDesc1=StringSize[,0]
+LIMITRemind1=您进入的路径不正确，请从正确的路径进入。
+
+DEFAULT1=sFlowGid
+DEFAULTValue1=
+
+
+SQL1=select 1 from WF_PRL_AdvertBS_ISF where EntGid = __ENTGID__ and FlowGid = ##FlowGid##
+Remind1=您指定的申请单没有找到。<script>alert('您指定的申请单没有找到。');window.close()</script>
+[Master]
+SQL=select * from WF_PRL_AdvertBS_ISF_Dtl where EntGid = __ENTGID__ and FlowGid = ##FlowGid## order by Line
+Count=select 1 from dual
+[Detail]
+;显示模型代码
+SqlForCondition1=select Code ModelCode, Name ModelName from wf_Model where EntGid = __ENTGID__ and  ModelGid = ##ModelGid##
+
+SqlForCondition2=select a.Gid DeptGid, a.Code2 DeptCode, a.Name DeptName,substr(a.code1,0,length(a.code1) - 4) parentlayercode from Dept a, HR_Emp b where a.EntGid=__ENTGID__ and b.EntGid=__ENTGID__ and b.UsrGid = __USRGID__ and a.Gid = b.DeptGid
+
+;显示主表信息
+SQl1=select a.*,to_char(a.createdate,'YYYY.MM.DD') createdate1,substr(SerialNo,4,9) sSerialNo from WF_PRL_AdvertBS_ISF a where EntGid = __ENTGID__ and  FlowGid = ##FlowGid## and ##sFlowGid## is null
+
+Sql2=select code2 deptsource from dept where EntGid=__ENTGID__ and code1 = ##parentlayercode##
+
+SQL3=select count(*) IsShow from WF_PRL_AdvertBS_ISF_App where EntGid = __ENTGID__ and  FlowGid = ##FlowGid## and AppDate is not null
+
+;显示附件信息
+LoopSQL1=select replace(Attach_Url,' ','%20') Attach_Url ,Attach_Title  from WF_PRL_AdvertBS_ISF_Attach where EntGid = __ENTGID__ and  FlowGid = ##FlowGid## and ##sFlowGid## is null order by attach_title
+LoopHDT1=Templates\WorkFlow\Form\^^ModelCode^^\LoopSql_AttachOptions.hdt
+LoopVAR1=AttachOptions
+
+;显示审批人信息
+LoopSQL2=select a.*,decode(a.apptype,'10','商场总经理/CM','20','财务经理/FM','40','总部推广总监/常务理事COO','50','资产总监(Hd Invest)','60','首席财务官(CFO)','70','首席执行官(CEO)') apptypetext  from WF_PRL_AdvertBS_ISF_App a where FlowGid = ##FlowGid## and AppDate is not null and ##sFlowGid## is null order by AppDate
+LoopHDT2=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_App.hdt
+LoopVAR3=applist
+
+
+;显示明细
+LoopSQL3=select a.* from WF_PRL_AdvertBS_ISF_dtl a where FlowGid = ##FlowGid## and ##sFlowGid## is null order by Line
+LoopHDT3=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_DtlMod.hdt
+LoopVAR3=IncomeList1
+
+;显示
+SQl5=select ModelGid,FlowGid,Num,Stat,FillUsrGid,FillUsrCode,FillUsrName,FillUsrDeptGid,FillUsrDeptCode,FillUsrDept,to_char(a.createdate,'YYYY.MM.DD') createdate1,substr(SerialNo,4,9) sSerialNo,SerialNo from WF_PRL_AdvertBS_ISF a where EntGid = __ENTGID__ and  FlowGid = ##FlowGid## and ##sFlowGid## is not null
+
+;取出ISF表
+SQl4=select FlowGid ISFFlowGid,Num ISFNum,Atype,Category,Categorytext,TenantLicensee ,TradingName,Address,ContactPerson ,Phone,Email,Fax,LeasePeriodBDate,LeasePeriodEDate,LeaseTermM,LeaseTermM*30 LeaseTermD,LeaseType,ConditionForExemption,RentalIncash,GTORent,SecurityDeposit,TotalSales,sOthers,GTO,PowerRate,GTORentFee,Remarks,Budget,PI,RentWay from WF_PRL_AdvertBS_ISF a where EntGid= __ENTGID__ AND FlowGid = ##sFlowGid##
+
+;显示明细
+LoopSQL4=select a.* from WF_PRL_AdvertBS_ISF_dtl a where FlowGid = ##sFlowGid## order by Line
+LoopHDT4=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_DtlMod.hdt
+LoopVAR4=IncomeList2
+
+;显示明细
+LoopSQL5=select a.* from WF_PRL_AdvertBS_ISF_dtl a where FlowGid = ##FlowGid## order by Line
+LoopHDT5=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_DtlList.hdt
+LoopVAR5=IncomeList3
+
+[Where]
+
+[DefaultWhere]
+
+[OrderBy]
+
+[DefaultOrderBy]
+
+[GroupBy]
+
+[AddtionalSQL]
+[Title]
+Text1=^^ModelName^^_修改
+
+ChangePage=0
+PageKind=0
+
+[Link]

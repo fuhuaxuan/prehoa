@@ -1,0 +1,507 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JSCalendar.js)##"></script>
+<script>
+  /*
+  *函数名称：新增附件添加到附件列表中
+  *参数：sFileName-附件名称
+  */
+  function AddAttach(JsFileName)
+  {
+    if (JsFileName == '')
+      return false;
+    //判断是否存在附件
+    if (!JQgetSingle("selFileList_1",JsFileName)){
+      alert('对不起，已经存在该附件！');
+      return false;
+    }
+    //添加到附件表中
+    var JsOption = "<option value='"+JsFileName+"'>"+JsFileName+"</option>";
+    $("select[name=selFileList_1]").append(JsOption);
+  }
+
+  //定义全局变量，定位控件所处位置
+  var g_Type;
+  //ISF合同选择时调用
+  function CallISF(JsISFGid,JsISFNum,JsISFCode,JsCashWay,JsLeasee,JsAddress){
+    //清空所选合同信息
+    if ($("input[name=CashWay]").val() != JsCashWay){
+      $("table#tb_Contract>tbody>tr").remove();
+    }
+    $("input[name=ISFGid]").val(JsISFGid);
+    $("input[name=ISFNum]").val(JsISFNum);
+    $("input[name=ISFCode]").val(JsISFCode);
+    $("input[name=CashWay]").val(JsCashWay);
+    $("input[name=Leasee]").val(JsLeasee);
+    $("input[name=Address]").val(JsAddress);
+
+    //对字段DataInterface 的Sql 与， count ，Title 进行赋值
+    var s_Contract = "select Gid,Line,CType,CNum,Content,OpApp2,OpMod2,OpApp3,OpMod3,OpApp4,OpMod4,OpApp5,OpMod5,OpApp6,OpMod6,decode(OpApp2||OpApp3||OpApp4||OpApp5||OpApp6,null,'不可修改','') from <HDPrint Value=#ModelCode#> f where f.EntGid = '<HDPrint Value=#EntGid#>' and f.CashWay = '"+JsCashWay+"'";
+
+    var c_Contract = "select count(*) from <HDPrint Value=#ModelCode#> f where f.EntGid = '<HDPrint Value=#EntGid#>' and f.CashWay = '"+JsCashWay+"'";
+
+    $("input#s_Contract").val(s_Contract);
+    $("input#c_Contract").val(c_Contract);
+
+    var JsHref = "##HDNet_AppName##/WFFlowPage?Url="+JsISFCode+"&UsrGid=<HDPrint Value=#UsrGid#>&ModelCode="+JsISFCode+"&FlowGid="+JsISFGid;
+
+    $("a[id=a_ISF]").attr("href",JsHref);
+    $("a[id=a_ISF]").html(JsISFNum);
+  }
+  //选择其它时，
+  function SetOther(JsRow,JsApp,JsMod){
+    var JqObj = $("textarea#OpModOther_1"+JsRow);
+    if (JsMod == '其他'){
+      JqObj.addClass("JQMust");
+      JqObj.css("display",'');
+    }
+    else{
+      JqObj.removeClass("JQMust");
+      JqObj.css("display",'none');
+      JqObj.val('');
+    }
+    $("input#OpApp_1"+JsRow).val(JsApp);
+    $("input#OpMod_1"+JsRow).val(JsMod);
+  }
+  /*
+  *函数功能：明细新增一行
+  *参数说明：使用JQTr_Add() 函数新增行时，需写在 tbody 标记中
+  */
+  function CallContract(Gid,Line,CType,CNum,Content,OpApp2,OpMod2,OpApp3,OpMod3,OpApp4,OpMod4,OpApp5,OpMod5,OpApp6,OpMod6,Op,OpIndex,OpApp,OpMod,OpModOther,Memo,AppMemo)
+  {
+    var sTbId = 'tb_Contract';
+    var sTrClass = 'listtd';
+    var tdArr = new Array();
+    var iRow = Math.floor(Math.random() * (1 + 100000 - 1) + 1);
+    var i = $("table#"+sTbId+">tbody>tr").length + 1;
+    var k = 0;
+    //判断是否存在附件
+    if (!JQgetSingle("ISFGid_1",Gid)){
+      alert('对不起，该合同条款已经存在！');
+      return false;
+    }
+    if (Op != ''){
+      alert('条款'+CNum+'不可修改，请重新选择！');
+      return false;
+    }
+    if (OpApp == null){
+      OpApp = '';
+    }
+    if (OpMod == null){
+      OpMod = '';
+    }
+    if (OpModOther == null){
+      OpModOther = '';
+    }
+    if (Memo == null){
+      Memo = '';
+    }
+    if (OpApp2 != '' && OpApp == ''){
+      OpApp = OpApp2;
+      OpMod = OpMod2;
+      OpIndex = '1';
+    }
+    if (OpApp3 != '' && OpApp == ''){
+      OpApp = OpApp3;
+      OpMod = OpMod3;
+      OpIndex = '2';
+    }
+    if (OpApp4 != '' && OpApp == ''){
+      OpApp = OpApp4;
+      OpMod = OpMod4;
+      OpIndex = '3';
+    }
+    if (OpApp5 != '' && OpApp == ''){
+      OpApp = OpApp5;
+      OpMod = OpMod5;
+      OpIndex = '4';
+    }
+    if (OpApp6 != '' && OpApp == ''){
+      OpApp = OpApp6;
+      OpMod = OpMod6;
+      OpIndex = '5';
+    }
+    if (AppMemo == null){
+      AppMemo = '';
+    }
+
+    tdArr[k++] = '<td>'+CType+'<INPUT TYPE="hidden" NAME="ISFGid_1" value="'+ Gid +'" class="JQText"></td>';
+
+    tdArr[k++] = '<td>'+CNum+'</td>';
+
+    tdArr[k++] = '<td>'+Content+'</td>';
+    
+    var JsHtml = '';
+    
+    if (OpApp2 != ''){
+      JsHtml += '<input type="radio" name="OpIndex_1'+ iRow +'" value="1" class="JQMust" onclick="SetOther(\''+ iRow +'\',\''+OpApp2+'\',\''+OpMod2+'\')">（'+OpApp2+'）'+OpMod2+'<br>';
+    }
+    if (OpApp3 != ''){
+      JsHtml += '<input type="radio" name="OpIndex_1'+ iRow +'" value="2" class="JQMust" onclick="SetOther(\''+ iRow +'\',\''+OpApp3+'\',\''+OpMod3+'\')">（'+OpApp3+'）'+OpMod3+'<br>';
+    }
+    JsHtml += '<textarea rows="6" id ="OpModOther_1'+ iRow +'" name="OpModOther_1" class="JQText" maxlength="2000" style="display:none">'+OpModOther+'</textarea>';
+
+    if (OpMod4 != '' && OpApp4 != ''){
+      JsHtml += '<input type="radio" name="OpIndex_1'+ iRow +'" value="3" class="JQMust" onclick="SetOther(\''+ iRow +'\',\''+OpApp4+'\',\''+OpMod4+'\')">（'+OpApp4+'）'+OpMod4+'<br>';
+    }
+    if (OpMod5 != '' && OpApp5 != ''){
+      JsHtml += '<input type="radio" name="OpIndex_1'+ iRow +'" value="4" class="JQMust" onclick="SetOther(\''+ iRow +'\',\''+OpApp5+'\',\''+OpMod5+'\')">（'+OpApp5+'）'+OpMod5+'<br>';
+    }
+    if (OpMod6 != '' && OpApp6 != ''){
+      JsHtml += '<input type="radio" name="OpIndex_1'+ iRow +'" value="5" class="JQMust" onclick="SetOther(\''+ iRow +'\',\''+OpApp6+'\',\''+OpMod6+'\')">（'+OpApp6+'）'+OpMod6;
+    }
+    tdArr[k++] = '<td>'+JsHtml+'<INPUT TYPE="hidden" id="OpApp_1'+ iRow +'" NAME="OpApp_1" value="'+ OpApp +'" class="JQText"><INPUT TYPE="hidden" id="OpMod_1'+ iRow +'" NAME="OpMod_1" value="'+ OpMod +'" class="JQText"></td>';
+
+    tdArr[k++] = '<td><textarea rows="8" id ="Memo_1'+ iRow +'" name="Memo_1" class="JQText" maxlength="1000" >'+Memo+'</textarea></td>';
+
+    tdArr[k++] = '<td>'+AppMemo+'<textarea rows="5" id ="AppMemo_1'+ iRow +'" name="AppMemo_1" class="JQText" maxlength="1000" style="display:none">'+AppMemo+'</textarea></td>';
+
+    tdArr[k++] ='<td><a href="javascript:void(0)" onclick="javascript:JQTr_Del();">删除</a></td>';
+
+    //新增一行
+    JQTr_Add(sTbId,sTrClass,tdArr);
+
+    $("input[name=OpIndex_1"+iRow+"][value='"+OpIndex+"']").prop("checked",true);
+    /*if (OpModOther != ''){
+      $("textarea#OpModOther_1"+iRow).css("display","");
+    }*/
+    SetOther(iRow,OpApp,OpMod);
+  }
+  
+  /*
+  *函数功能：明细新增一行
+  *参数说明：使用JQTr_Add() 函数新增行时，需写在 tbody 标记中
+  */
+  function Add_Other(Gid,Line,Content,OtherMemo,OtherAppMemo)
+  {
+    var sTbId = 'tb_Other';
+    var sTrClass = 'listtd';
+    var tdArr = new Array();
+    var iRow = Math.floor(Math.random() * (1 + 100000 - 1) + 1);
+    var i = $("table#"+sTbId+">tbody>tr").length + 1;
+    var k = 0;
+    if (Gid == null){
+      Content = '';
+      OtherMemo = '';
+      OtherAppMemo = '';
+    }
+
+    tdArr[k++] = '<td><INPUT TYPE="text" NAME="Line_1" value="'+ i +'" style="border:0px;width:100%;" readonly class="JQText"></td>';
+
+    tdArr[k++] = '<td><textarea rows="5" id ="Content_1'+ iRow +'" name="Content_1" class="JQText JQMust" maxlength="1000">'+Content+'</textarea></td>';
+
+    tdArr[k++] = '<td><textarea rows="5" id ="OtherMemo_1'+ iRow +'" name="OtherMemo_1" class="JQText" maxlength="1000" >'+OtherMemo+'</textarea></td>';
+
+    tdArr[k++] = '<td>'+OtherAppMemo+'<textarea rows="5" id ="OtherAppMemo_1'+ iRow +'" name="OtherAppMemo_1" class="JQText" maxlength="1000" style="display:none">'+OtherAppMemo+'</textarea></td>';
+
+    tdArr[k++] ='<td><a href="javascript:void(0)" onclick="javascript:JQTr_Del();JqReCal()">删除</a></td>';
+
+    //新增一行
+    JQTr_Add(sTbId,sTrClass,tdArr);
+  }
+
+  /*
+  *函数功能：删除行，重新计算
+  */
+  function JqReCal()
+  {
+    //重新计算行号
+    $("input[name=Line_1]").each(function(i){
+      $(this).val(i+1);
+    });
+  }
+</script>
+
+<form name="frmDo" method="post" action="">
+<!--流程用到一些控件-->
+<input type="text" style="display:none" name="ModelGid" value="<HDPrint Value=#ModelGid# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="FlowGid" value="<HDPrint Value=#NewGid# Replace=#DBField2Input#>">
+<INPUT type="text" style="display:none" name="CurUrl" value="<HDPrint Value=#Url# Replace=#DBField2Input#>">
+<INPUT type="text" style="display:none" name="Num" value="<HDPrint Value=#NewNum# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="FillDeptGid" value="<HDPrint Value=#FillDeptGid# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="FillDeptCode" value="<HDPrint Value=#FillDeptCode# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="FillDeptName" value="<HDPrint Value=#FillDeptName# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="OpAppOther" value="<HDPrint Value=#OpAppOther# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="Stat" value="">
+
+<h3 class="TitleBar" ><HDPrint Value=#ModelName#>-<HDPrint Value=#StepName#></h3>
+<TABLE width="100%" class="ButtonBar" cellpadding="0" cellspacing="0">
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A name="btn_1" HREF="javascript:CheckSubmit('保存');void(0)"><FONT class="IconSave">　&nbsp;</FONT> 保存 </A>
+      <A name="btn_1" HREF="javascript:CheckSubmit('提交');void(0)"><FONT class="IconCheck">　&nbsp;</FONT> 提交 </A>
+      |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+      <A HREF="javascript:window.close();void(0)"><FONT class="IconClose">　&nbsp;</FONT> 关闭</A>
+    </TD>
+  </TR>
+</TABLE>
+<table cellpadding="0" cellspacing="1" align="center" width="100%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:20%">
+  <col style="padding-left:4px;width:40%">
+  <col style="padding-left:4px;width:30%">
+  <TR>
+    <TD class="newtd2">单号:</TD>
+    <TD class="newtd3"><HDPrint Value=#NewNum#></td>
+    <td class="title" rowspan="3" align="center"><HDPrint Value=#ModelName#></td>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2">申请人:</TD>
+    <TD class="newtd3"><HDPrint Value=#CurUsrName#>[<HDPrint Value=#FillDeptName#>]</td>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2">申请日期:</TD>
+    <TD class="newtd3"><HDPrint Value=#CurDate#> <HDPrint Value=#CurTime#></td>
+    <TD><font color="blue">状态:填写中</font></TD>
+  </TR>
+</table>
+<h3 class="SubTitleBar" >
+<TABLE cellspacing="1" cellpadding="0" width="100%">
+  <col style="padding-left:4px;">
+  <col style="width:20px;" align="center">
+  <TR>
+    <TD align="left" style="padding-left:10px;"><b>鹏瑞利<HDPrint Value=#DeptName#>广场单据信息</b></TD>
+    <TD onclick="JQExpand('Order');" style="cursor:hand" class="IconUp">　&nbsp;</TD>
+  </TR>
+</TABLE>
+</h3>
+
+<table cellpadding="0" cellspacing="1" class="ListBar" width="100%" id="Order">
+  <col style="padding-left:4px;width:10%" valign="top">
+  <col style="padding-left:4px;width:40%" valign="top">
+  <col style="padding-left:4px;width:10%" valign="top">
+  <col style="padding-left:4px;width:40%" valign="top">
+  <tr>
+    <td class="DtlBarTitle">合同信息<a href="javascript:DataInterface(frmDataInterface_ISF);void(0)">[选择]</a>:<font color="red">*</font></td>
+    <td class="listtd">
+      <a href="" target="_blank" id="a_ISF"></a>
+      <INPUT TYPE="hidden" NAME="ISFNum" maxlength="32" value="<HDPrint Value=#ISFNum# Replace=#DBField2Input#>" class="JQText JQSave JQMust" readonly style="border:0px;">
+      <INPUT TYPE="hidden" NAME="ISFGid" maxlength="32" value="<HDPrint Value=#ISFGid# Replace=#DBField2Input#>" class="JQText">
+      <INPUT TYPE="hidden" NAME="ISFCode" maxlength="32" value="<HDPrint Value=#ISFCode# Replace=#DBField2Input#>" class="JQText">
+    </td>
+    <td class="DtlBarTitle">收银方式:</td>
+    <td class="listtd"><INPUT TYPE="text" NAME="CashWay" maxlength="16" value="<HDPrint Value=#CashWay# Replace=#DBField2Input#>" class="JQText" readonly style="border:0px;"></td>
+  </tr>
+  <tr>
+    <td class="DtlBarTitle">承租方:</td>
+    <td class="listtd"><INPUT TYPE="text" NAME="Leasee" maxlength="256" value="<HDPrint Value=#Leasee# Replace=#DBField2Input#>" class="JQText" readonly style="border:0px;"></td>
+    <td class="DtlBarTitle">承租方地址:</td>
+    <td class="listtd"><INPUT TYPE="text" NAME="Address" maxlength="256" value="<HDPrint Value=#Address# Replace=#DBField2Input#>" class="JQText" readonly style="border:0px;"></td>
+  </tr>
+</table>
+<h3 class="SubTitleBar" >
+<TABLE cellspacing="1" cellpadding="0" width="100%">
+  <col style="padding-left:4px;">
+  <col style="width:20px;" align="center">
+  <TR>
+    <TD align="left" style="padding-left:10px;"><b>合同修改信息</b><a href="javascript:DataInterface(frmDataInterface_Contract);void(0)">[选择]</A></TD>
+    <TD onclick="JQExpand('tb_Contract');" style="cursor:hand" class="IconUp">　&nbsp;</TD>
+  </TR>
+</TABLE>
+</h3>
+<table width="100%" class="ListBar" cellpadding="0"  cellspacing="1" id="tb_Contract" JQMust>
+  <colgroup>
+     <col style="width:10%">
+     <col style="width:5%" align="center">
+     <col style="width:25%">
+     <col style="width:25%">
+     <col style="width:10%">
+     <col style="width:20%">
+     <col style="width:5%" align="center">
+  </colgroup>
+  <thead>
+  <tr class="listtr">
+    <td>条款类别</td>
+    <td align="center">条款编号</td>
+    <td>条款原文</td>
+    <td>可选项<font color="red">*</font></td>
+    <td>备注</td>
+    <td>法务备注</td>
+    <td align="center">操作</td>
+  </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+<br>
+<h3 class="SubTitleBar" >
+<TABLE cellspacing="1" cellpadding="0" width="100%">
+  <col style="padding-left:4px;">
+  <col style="width:20px;" align="center">
+  <TR>
+    <TD align="left" style="padding-left:10px;"><b>其它条款</b>（<HDPrint Value=#OpAppOther#>）<a href="javascript:Add_Other();void(0)">[新增]</A></TD>
+    <TD onclick="JQExpand('tb_Other');" style="cursor:hand" class="IconUp">　&nbsp;</TD>
+  </TR>
+</TABLE>
+</h3>
+<table width="100%" class="ListBar" cellpadding="0"  cellspacing="1" id="tb_Other" JQMust>
+  <colgroup>
+     <col style="width:5%" align="center">
+     <col style="width:60%">
+     <col style="width:10%">
+     <col style="width:20%">
+     <col style="width:5%" align="center">
+  </colgroup>
+  <thead>
+  <tr class="listtr">
+    <td align="center">行号</td>
+    <td align="center">条款内容<font color="red">*</font></td>
+    <td>备注</td>
+    <td>法务备注</td>
+    <td align="center">操作</td>
+  </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+<br>
+<table cellpadding="0" cellspacing="1" class="ListBar" width="100%">
+  <col style="padding-left:4px;width:10%" valign="top">
+  <col style="padding-left:4px;width:90%" valign="top">
+  <tr>
+    <td class="DtlBarTitle">备注:<br><font color="gray">(1000字以内)</font></td>
+    <td class="listtd"><textarea rows="5" id ="Memo" name="Memo" class="JQText" maxlength="1000"><HDPrint Value=#Memo# Replace=#DBField2InputField#></textarea></td>
+  </tr>
+  <tr>
+    <td class="DtlBarTitle">上传附件:<br><font color="gray">(双击删除)</font></td>
+    <td class="listtd">
+      <SELECT NAME="selFileList_1" size="3" style="width:250;" multiple><HDPrint Value=#AttachList# Replace=#None#></SELECT><br>
+      <input type="hidden" name="HDTempPath" value="<HDPrint Value=#NewGid# Replace=#DBField2Input#>">
+      <iframe FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid# Replace=#DBField2Input#>&CallBackFun=AddAttach" height=28></iframe>
+    </td>
+  </tr>
+</table>
+<TABLE width="100%" class="ButtonBar" cellpadding="0" cellspacing="0">
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A name="btn_1" HREF="javascript:CheckSubmit('保存');void(0)"><FONT class="IconSave">　&nbsp;</FONT> 保存 </A>
+      <A name="btn_1" HREF="javascript:CheckSubmit('提交');void(0)"><FONT class="IconCheck">　&nbsp;</FONT> 提交 </A>
+      |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+      <A HREF="javascript:window.close();"><FONT class="IconClose">　&nbsp;</FONT> 关闭</A>
+    </TD>
+  </TR>
+</TABLE>
+</form>
+
+<FieldSet style="Font-Family:Tahoma;Font-Size:9pt;">
+<Legend><font color="red">特别提醒</font></Legend>
+<li>审批级别全为空，代表当前条款不可选</li>
+<li>审批级别为空，该可选条款不显示</li>
+<li>选择多条条款时，审批级别从大</li>
+<li>审批级别A：发起人->法务->招商经理->商场总经理</li>
+<li>审批级别B：发起人->法务->招商经理-><b>财务经理</b>->商场总经理</li>
+<li>审批级别C：发起人->法务->招商经理->商场总经理->租赁部总监</li>
+<li>审批级别D：发起人->法务->招商经理-><b>财务经理</b>->商场总经理->租赁部总监</li>
+<li>审批级别E：发起人->法务->招商经理->商场总经理->租赁部总监->高级副总裁COO</li>
+<li>审批级别F：发起人->法务->招商经理-><b>财务经理</b>->商场总经理->租赁部总监->高级副总裁COO</li>
+</FieldSet>
+
+<script language="javascript">
+  //提交函数
+  function CheckSubmit(OpText){
+    //定义 必填验证的 值
+    var sCss = '';
+    //定义 提交提示文字
+    var sConfirm = '';
+    if (OpText == '保存'){
+      sCss = 'JQSave';
+    }
+    else if (OpText == '提交'){
+      sCss = 'JQMust';
+      if ($("table["+sCss+"]>tbody>tr").length < 1){
+        alert('合同条款与其它条款至少填写一条！');
+        return false;
+      }
+      sConfirm = '您确定已经填写完申请单，并提交吗？';
+    }
+    //提交时，验证必填项
+    if (!JQcheck(sCss)){
+      return false;
+    }
+    //提交时，提示
+    if (OpText != '保存'){
+      if (!(confirm(sConfirm)))
+        return false;
+    }
+    //状态赋值
+    $("input[name=Stat]").val(OpText);
+    
+    //获取当前表单对象 
+    var JqObj = $("form[name=frmDo]");
+    //表单参数设定
+    JqObj.attr({
+      "action":'##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#Url#>Save&UsrGid=<HDPrint Value=#UsrGid#>',
+      "target":'_self'
+    });
+    //表单提交
+    JqObj.submit();
+
+    //操作按钮变为不可用
+    $("a[name=btn_1]").each(function(){
+      $(this).prop("disabled",true);
+    });
+    //本函数失效
+    CheckSubmit = function() {return false;}
+  }
+</script>
+
+<script language="javascript" src="##GetWebRootPath(/Scripts/DataInterface.js)##"></script>
+<!--ISF合同选择-->
+<FORM NAME="frmDataInterface_ISF" ACTION="">
+  <INPUT TYPE="hidden" name="DataInterface_Title" ID="t_ISF" value="ISF合同_选择列表">
+
+  <INPUT TYPE="hidden" name="DataInterface_Sql" ID="s_ISF" value="select f.FillUsrName,f.flowgid, f.num,w.code,decode(f.collection,'中央收银','中央收银','独立收银'), f.lessee, f.address from WF_PRL_ISF f,wf_model w where f.entgid = '<HDPrint Value=#EntGid#>' and f.entGid = w.EntGid and f.ModelGid = w.ModelGid and f.Stat in ('30','已完成') and not exists (select 1 from WF_PRL_ISF o where o.entgid = f.entgid and o.oldflowgid = f.flowgid) and not exists (select 1 from wf_flow wf where wf.entgid = f.entgid and wf.flowgid = f.flowgid and wf.stat > 3)">
+  <INPUT TYPE="hidden" name="DataInterface_CountSql" ID="c_ISF" value="select count(*) from WF_PRL_ISF f,wf_model w where f.entgid = '<HDPrint Value=#EntGid#>' and f.entGid = w.EntGid and f.ModelGid = w.ModelGid and f.Stat in ('30','已完成') and not exists (select 1 from WF_PRL_ISF o where o.entgid = f.entgid and o.oldflowgid = f.flowgid) and not exists (select 1 from wf_flow wf where wf.entgid = f.entgid and wf.flowgid = f.flowgid and wf.stat > 3)">
+  <INPUT TYPE="hidden" name="DataInterface_OrderSql" value="order by f.Num desc">
+  <INPUT TYPE="hidden" name="DataInterface_UsrGid" value="<HDPrint Value=#UsrGid#>">
+  <INPUT TYPE="hidden" name="DataInterface_AppName" value="##HDNet_AppName##">
+
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="1^发起人^left^80">
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="3^单号^left^100">
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="4^类别^left^50">
+
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="f.FillUsrCode^发起人代码^1">
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="f.FillUsrName^发起人名称^1">
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="f.Num^单号^1">
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="decode(f.flowType,10,'ISF',20,'ISCF','MALL')^类别^1">
+  <input TYPE="hidden" name="DataInterface_Search_Sql" value="">
+  <input TYPE="hidden" name="DataInterface_Search_Cols" value="">
+
+  <INPUT TYPE="hidden" name="DataInterface_FieldTo" value="">
+  <INPUT TYPE="hidden" name="DataInterface_FieldBy" value="2^3^4^5^6^7">
+  <INPUT TYPE="hidden" name="DataInterface_CallBckFunc" value="CallISF">
+  <INPUT TYPE="hidden" name="DataInterface_Close" value="true">
+</FORM>
+<!--选择审批人调用-->
+<FORM NAME="frmDataInterface_Contract" ACTION="">
+  <INPUT TYPE="hidden" name="DataInterface_Title" ID="t_Contract" value="合同条款_选择列表">
+
+  <INPUT TYPE="hidden" name="DataInterface_Sql" ID="s_Contract" value="select Gid,Line,CType,CNum,Content,OpApp2,OpMod2,OpApp3,OpMod3,OpApp4,OpMod4,OpApp5,OpMod5,OpApp6,OpMod6,decode(OpApp2||OpApp3||OpApp4||OpApp5||OpApp6,null,'不可修改','') from <HDPrint Value=#ModelCode#> f where f.EntGid = '<HDPrint Value=#EntGid#>' and f.CashWay = '<HDPrint Value=#CashWay#>'">
+  <INPUT TYPE="hidden" name="DataInterface_CountSql" ID="c_Contract" value="select count(*) from <HDPrint Value=#ModelCode#> f where f.EntGid = '<HDPrint Value=#EntGid#>' and f.CashWay = '<HDPrint Value=#CashWay#>'">
+  <INPUT TYPE="hidden" name="DataInterface_OrderSql" value="order by f.Line">
+  <INPUT TYPE="hidden" name="DataInterface_UsrGid" value="<HDPrint Value=#UsrGid#>">
+  <INPUT TYPE="hidden" name="DataInterface_AppName" value="##HDNet_AppName##">
+
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="4^条款编号^left^10">
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="5^条款原文^left^100">
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="16^是否可修改^left^30">
+
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="f.CNum^条款编号^1">
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="f.Content^条款原文^1">
+  <input TYPE="hidden" name="DataInterface_Search_Sql" value="">
+  <input TYPE="hidden" name="DataInterface_Search_Cols" value="">
+
+  <INPUT TYPE="hidden" name="DataInterface_FieldTo" value="">
+  <INPUT TYPE="hidden" name="DataInterface_FieldBy" value="1^2^3^4^5^6^7^8^9^10^11^12^13^14^15^16">
+  <INPUT TYPE="hidden" name="DataInterface_CallBckFunc" value="CallContract">
+  <INPUT TYPE="hidden" name="DataInterface_Close" value="false">
+</FORM>

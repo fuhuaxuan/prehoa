@@ -1,0 +1,33 @@
+<!-- 引入邮件 -->
+<HDPrint Value=#EmailList# Replace=#None#>
+
+<script language="javascript">
+  //判断审批，还是阅读
+  var $font=$("font#td_End");
+  if ('<HDPrint Value=#AppAssign# Replace=#DBField2Js#>' == '同意'){
+    $font.html('（此为阅读邮件，请阅读）');
+  }
+  $("textarea[name=Content]").val($("div#tb_Email").html());
+</script>
+
+<SCRIPT LANGUAGE="JavaScript">
+  //如有打开页面，刷新打开页面
+  if (self.opener != null) {
+    try{
+      self.opener.location.reload();
+    }
+    catch(e){
+    }
+    window.opener = null;
+    window.open(' ', '_self', ' ');
+  }
+  alert('审批完毕，审批人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>，审批意见：<HDPrint Value=#AppAssign# Replace=#DBField2Js#>');
+  
+  if ('<HDPrint Value=#AppAssign# Replace=#DBField2Js#>' == '同意'){
+    //发送邮件
+    frmMail.submit();
+  }
+  else{
+    window.close();
+  }
+</SCRIPT>

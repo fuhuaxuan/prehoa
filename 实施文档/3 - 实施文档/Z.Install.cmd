@@ -1,0 +1,3 @@
+echo ¿ªÊ¼Ö´ÐÐHDNet\z.Install.sql...
+sqlplus hdnet/hdnet@hdorcl @z.Install.sql  >> HDNetInst_1.log
+

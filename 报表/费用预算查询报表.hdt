@@ -1,0 +1,143 @@
+<!--HDT文件控制页面的显示方式-->
+<!--版本：201303-->
+<!--以下为头文件的引用-->
+<script language="javascript" src="##GetWebRootPath(/Scripts/Common.js)##"></script>
+
+<!--声明并定义几个要用到的函数-->
+<SCRIPT LANGUAGE="JavaScript">
+/*
+*函数功能：查询，下载
+*参数：
+*/
+function CheckSubmit()
+{
+  //查询
+  if (event.srcElement.name == 'btnSearch')
+  {
+    frmDo.action='';
+    frmDo.target='_self';
+    //frmDo.submit();
+    return true;
+  }
+  //下载
+  if (event.srcElement.name == 'btnDownload')
+  {
+    document.all.Rep_Download.value = '1';
+    frmDo.action='##HDNet_AppName##/RepDisplay?UsrGid=<HDPrint Value=#UsrGid#>&Gid=<HDPrint Value=#Gid#>';
+    frmDo.target='_blank';
+    frmDo.submit();
+    frmDo.action='';
+    frmDo.target='_self';
+    document.all.Rep_Download.value = '';
+    return true;
+  }
+}
+
+</SCRIPT>
+
+<form name="frmDo" method="post">
+<CENTER class=Title><HDPrint Value=#Rep_Name#></CENTER>
+<table width="100%"  class="SearchBar" cellspacing="0">
+    <colgroup>
+      <col style="padding-left:4px" width="10%">
+      <col style="padding-left:4px" width="15%">
+      <col style="padding-left:4px" width="10%">
+      <col style="padding-left:4px" width="15%">
+      <col style="padding-left:4px" width="10%">
+      <col style="padding-left:4px" width="15%">
+      <col style="padding-left:4px" width="10%">
+      <col style="padding-left:4px" width="15%">
+    </colgroup>
+  <tr class="SearchTr" >
+    <td colspan="8">搜索条件</td>
+  </tr>
+  <tr>
+    <td nowrap>公司名称 ≈ </td>
+    <td><input name="txtCompany" style="width:90%" maxlength="32" class="SearchBox"></td>
+    <td nowrap>项目代码 ≈ </td>
+    <td><input name="txtAcgCode" style="width:90%" maxlength="16" class="SearchBox"></td>
+    <td nowrap>项目名称 ≈</td>
+    <td><input name="txtAcgName" style="width:90%" maxlength="32" class="SearchBox"></td>
+    
+  </tr>
+  <tr>
+    <td align="right" colspan="6">
+        <INPUT TYPE="hidden" title="排序点击标题即可排序-用到的控件" name="selOrderBy" value="<HDPrint Value=#selOrderBy# Replace=#DBField2Input#>">
+        <INPUT TYPE="hidden" title="排序点击标题即可排序-用到的控件" name="selOrderAsc" value="<HDPrint Value=#selOrderAsc# Replace=#DBField2Input#>">
+        <INPUT TYPE="hidden" title="排序点击标题即可排序-用到的控件" name="selOrderColumn" value="<HDPrint Value=#selOrderColumn# Replace=#DBField2Input#>">
+        <INPUT TYPE="hidden" title="下载报表用到的控件" name="Rep_Download" value="">
+        <input type="submit" name="btnSearch" value=" 查询 " class="NormalSbt" onclick="return CheckSubmit()">
+        <input type="reset" value=" 默认 " class="NormalSbt">
+        <INPUT TYPE="button" name="btnDownload" value="根据条件下载报表" class=normalsbt onclick="return CheckSubmit()">
+        <input type="hidden" name="NotFirst" value="1">
+    </td>
+  </tr>
+  </table>
+<br>
+<HDPageBar>
+<table class="ListBar" cellspacing="1" cellpadding="0">
+<col style="padding-left:4px;width:110">
+<col style="padding-left:4px;width:100">
+<col style="padding-left:4px;width:100">
+<col style="padding-left:4px;width:80">
+<col style="padding-left:4px;width:80">
+<col style="padding-left:4px;">
+<tr class="listtr">
+  <td id="tdOrder" style="cursor:hand;" onclick="searchOrder()" Asc="1" Column="pc.name">公司名称</td>
+  <td id="tdOrder" style="cursor:hand;" onclick="searchOrder()" Asc="1" Column="pa.code">项目代码</td>
+  <td id="tdOrder" style="cursor:hand;" onclick="searchOrder()" Asc="1" Column="pa.name">项目名称</td>
+  <td id="tdOrder" style="cursor:hand;" onclick="searchOrder()" Asc="1" Column="ac.LeftBudgutFee">剩余预算金额</td>
+</tr>
+
+<!--按MASTER中的查询条件循环显示数据-->
+
+<HDLoop>
+<tr class="listtd" onmouseover="this.className='listtdfocus';" onmouseout="this.className='listtd'">
+  <td><HDPrint Value=#CompanyName#></td>
+  <td><HDPrint Value=#AcgCode#></td>
+  <td><HDPrint Value=#AcgName#></td>
+  <td align="right"><HDPrint Value=#LeftBudgutFee#></td>
+</tr>
+</HDLoop>
+</table>
+</form>
+
+  
+<SCRIPT LANGUAGE="JavaScript">
+  //查询条件的记录，还原
+  document.all.txtCompany.value = '<HDPrint Value=#txtUsr# Replace=#DBField2Js#>';
+  document.all.txtAcgCode.value = '<HDPrint Value=#txtIP# Replace=#DBField2Js#>';
+  document.all.txtAcgName.value = '<HDPrint Value=#txtAcgName# Replace=#DBField2Js#>';
+
+  //排序点击标题即可排序的程序集合
+  for (i = 0; i < document.all.tdOrder.length ; i++ ) {
+    var obj = document.all.tdOrder[i];
+    var sColumn = obj.getAttribute("Column");
+    if (sColumn == '<HDPrint Value=#selOrderColumn# Replace=#DBField2Js#>') {
+      if ('<HDPrint Value=#selOrderAsc# Replace=#DBField2Js#>' == '1') {
+        obj.innerText = obj.innerText + '↑';
+        obj.setAttribute("Asc",'0');
+      }
+      else {
+        obj.innerText = obj.innerText + '↓';
+        obj.setAttribute("Asc",'1');
+      }
+      break;
+    }
+  }
+  //排序的查询
+  function searchOrder() {
+    var obj = event.srcElement;
+    var sColumn = obj.getAttribute("Column");
+    var sAsc = obj.getAttribute("Asc");
+    if (sAsc == '1') frmDo.selOrderBy.value = sColumn;
+    else frmDo.selOrderBy.value = sColumn + ' desc';
+
+    frmDo.selOrderAsc.value = obj.getAttribute("Asc");
+    frmDo.selOrderColumn.value = sColumn;
+
+    frmDo.action = '';
+    frmDo.submit();
+  }
+</script>
+

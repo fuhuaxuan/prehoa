@@ -1,0 +1,673 @@
+<script>
+  //选择租赁意向表后导入 Ajax 实现
+  function CallBackISF(sflowgid)
+  {
+    frmISF.action=' ##HDNet_AppName##/WFFlowPage?URL=<HDPrint Value=#ModelCode#>_T1&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ModelGid#>&oldFlowGid=' + sflowgid + '&FlowGid=';
+    frmISF.target='_self';
+    frmISF.submit();
+  }
+  /*
+  *函数名称：新增附件添加到附件列表中
+  *参数：sFileName-附件名称
+  */
+  function AddAttach(JsFileName)
+  {
+    if (JsFileName == '')
+      return false;
+    //判断是否存在附件
+    if (!JQgetSingle("selFileList_1",JsFileName)){
+      alert('对不起，已经存在该附件！');
+      return false;
+    }
+    //添加到附件表中
+    var JsOption = "<option value='"+JsFileName+"'>"+JsFileName+"</option>";
+    $("select[name=selFileList_1]").append(JsOption);
+  }
+  //类别设置
+  function setCategory(JsStr,JsFirst){
+    var JqObj = $("input[name=CategoryText]");
+    //类别 为 其他 隐藏
+    if (JsStr == 'Others 其他'){
+      JqObj.css("display",'');
+      JqObj.addClass("JQMust");
+    }
+    else{
+      JqObj.css("display",'none');
+      JqObj.removeClass("JQMust");
+      JqObj.val('');
+    }
+    //判断是否固定和非固定
+    var JsWhere = '';
+    var $LeaseTermY = $("input[name=LeaseTermY]");
+    if (JsStr == 'Licence 短期租约(固定)'){
+      JsWhere = " and lower(fno) not like 't%' and lower(fno) not like 'p%'";
+      $LeaseTermY.val('');
+      $LeaseTermY.prop("readonly",true);
+      callDtl('LeaseTermY');
+    }
+    else if (JsStr == 'Licence 短期租约(非固定)'){
+      JsWhere = " and (lower(fno) like 't%' or lower(fno) like 'p%')";
+      $LeaseTermY.val('');
+      $LeaseTermY.prop("readonly",true);
+      callDtl('LeaseTermY');
+    }
+    else{
+      JsWhere = " and 1=1";
+      $LeaseTermY.prop("readonly",false);
+    }
+    //如果改变值，则清空所有
+    if (JsFirst == null){
+      $("select[name=selUnit_1]").empty();
+      calcAll();
+    }
+    $("input[id=s_Unit]").val("select fgid,fno,nvl(farea,0),floorno,nvl(fmr,0),nvl(jArea,0),FSTAT from prl_GROUNDH WHERE deptsource = '<HDPrint Value=#ParentDeptCode#>'"+JsWhere);
+    $("input[id=c_Unit]").val("select count(*) from prl_GROUNDH WHERE deptsource = '<HDPrint Value=#ParentDeptCode#>'"+JsWhere);
+
+    calcContract();
+  }
+  //单位选择后，计算
+  function CallUnit(fgid,fno,farea,floorno,fmr,fjArea){
+    //判断是否存在附件
+    if (!JQgetSingle("selUnit_1",fgid)){
+      alert('对不起，已经存在该单位！');
+      return false;
+    }
+    //添加单位列表中
+    var JsOption = '<option value="'+fgid+'" JsArea="'+farea+'" JsFmr="'+fmr+'" JsjArea="'+fjArea+'">'+fno+'</option>';
+    $("select[name=selUnit_1]").append(JsOption);
+
+    $("input[name=Dept]").val(floorno);
+    //重新计算所有值
+    calcAll();
+  }
+  //删除单位
+  function JqDel(JsObj){
+    var jqObj = $(JsObj);
+    jqObj.find("option:selected").remove();
+
+    //重新计算所有值
+    calcAll();
+  }
+  //面积 及 批准预算合计
+  function calcAll(){
+    //面积总和 = (单位面积1+单位面积2+...)
+    var JsArea = 0;
+    //建筑面积总和 = (单位面积1+单位面积2+...)
+    var JsBuildArea = 0;
+    //批准预算总和 = (单位面积1*单位批准预算1+单位面积2*单位批准预算2+...)
+    var JsBudget = 0;
+    $("select[name=selUnit_1]>option").each(function(){
+      JsArea += parseFloat($(this).attr("JsArea"));
+      JsBuildArea += parseFloat($(this).attr("JsjArea"));
+      JsBudget += parseFloat($(this).attr("JsArea") * $(this).attr("JsFmr"));
+    });
+    //面积赋值
+    $("input[name=Area]").val(parseFloat(JsArea).toFixed(4));
+    //建筑面积赋值
+    $("input[name=BuildArea]").val(parseFloat(JsBuildArea).toFixed(4));
+
+    //批准预算 = 批准预算总和 / 面积总和
+    var JsBRCBudget = 0;
+    if (parseFloat(JsArea) != 0){
+      JsBRCBudget = parseFloat(JsBudget/JsArea).toFixed(4);
+    }
+    //批准预算赋值
+    $("input[name=BRCBudget]").val(JsBRCBudget);
+
+    //重新计算费用
+    calcFee();
+
+    //重新计算每行的值
+    CalcGTO();
+  }
+  //租赁期，免租期 大小判断
+  function checkTerm(){
+    var JsFreeRent = 0;
+    var JsLeaseTerm = 0;
+    //取出免租期的月及日
+    var JsY = $("input[name=FreeRentY]").val();
+    var JsM = $("input[name=FreeRentM]").val();
+    var JsD = $("input[name=FreeRentD]").val();
+    //如果输入的值不为空，则转化为数字，否则 为 0
+    if (JsY == ''){
+      JsY = 0;
+    }
+    if (JsM == ''){
+      JsM = 0;
+    }
+    if (JsD == ''){
+      JsD = 0;
+    }
+    JsFreeRent = (parseFloat(JsY) * 12 + parseFloat(JsM) + parseFloat(JsD) / (365/12)).toFixed(2);
+    $("input[name=sPARAM3]").val(JsFreeRent);
+
+    //取出租赁期的月及日
+    var JsY = $("input[name=LeaseTermY]").val();
+    var JsM = $("input[name=LeaseTermM]").val();
+    var JsD = $("input[name=LeaseTermD]").val();
+    if (JsY == ''){
+      JsY = 0;
+    }
+    if (JsM == ''){
+      JsM = 0;
+    }
+    if (JsD == ''){
+      JsD = 0;
+    }
+    JsLeaseTerm = (parseFloat(JsY) * 12 + parseFloat(JsM) + parseFloat(JsD) / (365/12)).toFixed(2);
+    return JsLeaseTerm - JsFreeRent;
+  }
+  //租赁期，免租期 新增行
+  function callDtl(JsStr){
+    var JsTbId = '';
+    //租赁期
+    if (JsStr == 'LeaseTermY'||JsStr == 'LeaseTermM'||JsStr == 'LeaseTermD'){
+      //定义表格
+      JsTbId = 'tb_Dtl30';
+
+      var JqVal = 0;
+
+      //取出 表格的行数
+      var iTb = $("table#"+JsTbId+">tbody>tr").length;
+
+      var JsY = $("input[name=LeaseTermY]").val();
+      var JsM = $("input[name=LeaseTermM]").val();
+      var JsD = $("input[name=LeaseTermD]").val();
+      if (JsY != ''){
+        JsY = parseFloat(JsY);
+      }
+      else{
+        JsY = 0;
+      }
+      if (JsM != ''){
+        JsM = parseFloat(JsM);
+      }
+      else{
+        JsM = 0;
+      }
+      if (JsD != ''){
+        JsD = parseFloat(JsD);
+      }
+      else{
+        JsD = 0;
+      }
+
+      JqVal = parseFloat(JsY);
+
+      if (JsY == 0 && (JsM != 0 || JsD != 0)){
+        JqVal = 1;
+      }
+
+      if (JsY != 0 && (JsM != 0 || JsD != 0)){
+        JqVal = JqVal + 1;
+      }
+
+      //如果 租赁期年份 > 表格的行数 ， 则新增
+      if (JqVal > iTb){
+        for (var i = 0;i < JqVal - iTb; i++){
+          Add_Dtl(JsTbId);
+        }
+      }
+      //如果 租赁期年份 < 表格的行数 ， 则删除
+      else{
+        for (var i = iTb;i > JqVal; i--){
+          $("table#"+JsTbId+">tbody>tr:last").remove();
+        }
+      }
+      //重新计算 New
+      calcNew();
+    }
+  }
+  //判断日期大小
+  function callDate(JsObj,JsRow){
+    var JsDate1 = $("input#FreeRentDate1_1"+JsRow).val();
+    var JsDate2 = $("input#FreeRentDate2_1"+JsRow).val();
+    if (JsDate1 != '' && JsDate2 != '' ){
+      if (JQDateCompare(JsDate1,JsDate2) <= 0){
+        alert('开始日期必填小于结束日期！');
+        JsObj.focus();
+        JsObj.value = '';
+      }
+    }
+  }
+  /*
+  *函数功能：明细新增一行
+  *参数说明：使用JQTr_Add() 函数新增行时，需写在 tbody 标记中
+  */
+  function Add_Dtl(JsTbId,Gid,YearType,FreeRentDate1,FreeRentDate2,TBRD,TBRM,FTBRD,FTBRM,PMFD,PMFM,FPMFD,FPMFM)
+  {
+    var sTrClass = 'listtd';
+    var tdArr = new Array();
+    var iRow = Math.floor(Math.random() * (1 + 100000 - 1) + 1);
+    var i = $("table#"+JsTbId+">tbody>tr").length + 1;
+    var k = 0;
+    if (Gid == null){
+      YearType = '';
+      FreeRentDate1 = '';
+      FreeRentDate2 = '';
+      TBRD = '';
+      TBRM = '';
+      FTBRD = '';
+      FTBRM = '';
+      PMFD = '';
+      PMFM = '';
+      FPMFD = '';
+      FPMFM = '';
+    }
+    if (JsTbId == 'tb_Dtl10'){
+      tdArr[k++] = '<td>'
+        +'免:<INPUT TYPE="text" NAME="FreeRentDate1_1" ID="FreeRentDate1_1'+ iRow +'" maxlength="10" class="JQDate JQMust" value="'+FreeRentDate1+'" style="width:40%" onblur="callDate(this,\''+ iRow +'\')">~'
+        +'<INPUT TYPE="text" NAME="FreeRentDate2_1" ID="FreeRentDate2_1'+ iRow +'" maxlength="10" class="JQDate JQMust" value="'+FreeRentDate2+'" style="width:40%" onblur="callDate(this,\''+ iRow +'\')">'
+        +'<INPUT TYPE="hidden" JQLine="'+JsTbId+'" NAME="YearType_1" ID="YearType_1'+ iRow +'" maxlength="10" class="JQInt" value="'+i+'">'
+      +'</td>';
+    }
+    if (JsTbId == 'tb_Dtl20'){
+      tdArr[k++] = '<td>'
+        +'<INPUT TYPE="text" NAME="FreeRentDate1_1" ID="FreeRentDate1_1'+ iRow +'" maxlength="10" class="JQDate JQMust" value="'+FreeRentDate1+'" style="width:45%" onblur="callDate(this,\''+ iRow +'\')">~'
+        +'<INPUT TYPE="text" NAME="FreeRentDate2_1" ID="FreeRentDate2_1'+ iRow +'" maxlength="10" class="JQDate JQMust" value="'+FreeRentDate2+'" style="width:45%" onblur="callDate(this,\''+ iRow +'\')">'
+        +'<INPUT TYPE="hidden" JQLine="'+JsTbId+'" NAME="YearType_1" ID="YearType_1'+ iRow +'" maxlength="10" class="JQInt" value="'+i+'">'
+      +'</td>';
+    }
+    if (JsTbId == 'tb_Dtl30'){
+      tdArr[k++] = '<td align="center">'
+        +'<font name="YearType_1">Yr '+i+' 第'+i+'年</font><INPUT TYPE="hidden" NAME="YearType_1" ID="YearType_1'+ iRow +'" JQLine="'+JsTbId+'" maxlength="10" class="JQInt" value="'+i+'" style="border:0px" readonly>'
+        +'<INPUT TYPE="hidden" NAME="FreeRentDate1_1" ID="FreeRentDate1_1'+ iRow +'" maxlength="10" class="JQDate">'
+        +'<INPUT TYPE="hidden" NAME="FreeRentDate2_1" ID="FreeRentDate2_1'+ iRow +'" maxlength="10" class="JQDate">'
+      +'</td>';
+    }
+    tdArr[k++] = '<td><INPUT TYPE="text" NAME="TBRD_1" ID="TBRD_1'+ iRow +'"  maxlength="16" class="JQFloat JQMust" JQBit="4" value="'+TBRD+'" onblur="CalcGTO();"><INPUT TYPE="hidden" NAME="Gid_1" ID="Gid_1'+ iRow +'"  maxlength="16" value="'+ iRow +'"><INPUT TYPE="hidden" NAME="TbId_1" ID="TbId_1'+ iRow +'"  maxlength="16" value="'+ JsTbId +'"></td>';
+
+    tdArr[k++] = '<td><INPUT TYPE="text" NAME="TBRM_1" ID="TBRM_1'+ iRow +'"  maxlength="16" class="JQFloat" JQBit="4" value="'+TBRM+'" style="border:0px;" readonly></td>';
+
+    tdArr[k++] = '<td><INPUT TYPE="text" NAME="FTBRD_1" ID="FTBRD_1'+ iRow +'"  maxlength="16" class="JQFloat JQMust" JQBit="4" value="'+FTBRD+'" onblur="CalcGTO();"></td>';
+
+    tdArr[k++] = '<td><INPUT TYPE="text" NAME="FTBRM_1" ID="FTBRM_1'+ iRow +'"  maxlength="16" class="JQFloat" JQBit="4" value="'+FTBRM+'" style="border:0px;" readonly></td>';
+
+    tdArr[k++] = '<td><INPUT TYPE="text" NAME="PMFD_1" ID="PMFD_1'+ iRow +'" maxlength="16" class="JQFloat JQMust" JQBit="4" value="'+PMFD+'" onblur="CalcGTO();"></td>';
+
+    tdArr[k++] = '<td><INPUT TYPE="text" NAME="PMFM_1" ID="PMFM_1'+ iRow +'" maxlength="16" class="JQFloat" JQBit="4" value="'+PMFM+'" style="border:0px;" readonly></td>';
+
+    tdArr[k++] = '<td><INPUT TYPE="text" NAME="FPMFD_1" ID="FPMFD_1'+ iRow +'" maxlength="16" class="JQFloat JQMust" JQBit="4" value="'+FPMFD+'" onblur="CalcGTO();"></td>';
+
+    tdArr[k++] = '<td><INPUT TYPE="text" NAME="FPMFM_1" ID="FPMFM_1'+ iRow +'" maxlength="16" class="JQFloat" JQBit="4" value="'+FPMFM+'" style="border:0px;" readonly></td>';
+
+    if (JsTbId != 'tb_Dtl20'){
+      tdArr[k++] ='<td align="center">&nbsp;</td>';
+    }
+    else{
+      tdArr[k++] ='<td align="center"><a href="javascript:void(0)" onclick="javascript:JQTr_Del();JqReCal(\''+JsTbId+'\')">删除</a></td>';
+    }
+
+    //新增一行
+    JQTr_Add(JsTbId,sTrClass,tdArr);
+  }
+  /*
+  *函数功能：删除行，重新计算
+  */
+  function JqReCal(JsTbId)
+  {
+    //重新计算行号
+    $("input[JQLine="+JsTbId+"]").each(function(i){
+      $(this).val(i+1);
+    });
+  }
+  //牵连关系实体交易 设置
+  function setRelated(JsObj){
+    if (JsObj.checked == true){
+      $("input[name=Related]").val(JsObj.value);
+    }
+    else{
+      $("input[name=Related]").val('');
+    }
+  }
+  //租金形式 设置
+  function setRate2(JsStr){
+    $("input[name=Rate]").val(JsStr);
+  }
+  //计算 装修期，合同期
+  function calcContract(){
+
+    //租赁期限 年，月，日
+    var JsLeaseTermY = $("input[name=LeaseTermY]").val();
+    var JsLeaseTermM = $("input[name=LeaseTermM]").val();
+    var JsLeaseTermD = $("input[name=LeaseTermD]").val();
+
+    //装修 月，日
+    var JqFitoutM = $("input[name=FitoutM]");
+    var JqFitoutD = $("input[name=FitoutD]");
+
+    var JsFitoutM = JqFitoutM.val();
+    var JsFitoutD = JqFitoutD.val();
+
+    //装修期
+    var JqFitoutDate1 = $("input[name=FitoutDate1]");
+    var JqFitoutDate2 = $("input[name=FitoutDate2]");
+
+    //交付日期
+    var JsHandoverDate = $("input[name=HandoverDate]").val();
+
+    //租赁期限
+    var JqContractDate1 = $("input[name=ContractDate1]");
+    var JqContractDate2 = $("input[name=ContractDate2]");
+
+    //临时变量
+    var JsDate = '';
+    var d = null;
+    if (JsHandoverDate != ''){
+      //日期转换为 YYYY/MM/DD 直接可以转换成日期
+      d = new Date(JsHandoverDate.replace('.','/').replace('.','/'));
+      if (JsFitoutM == ''){JsFitoutM = '0';}
+      if (JsFitoutD == ''){JsFitoutD = '0';}
+
+      if (JsLeaseTermY == ''){JsLeaseTermY = '0';}
+      if (JsLeaseTermM == ''){JsLeaseTermM = '0';}
+      if (JsLeaseTermD == ''){JsLeaseTermD = '0';}
+
+      if (JsFitoutM == '0' && JsFitoutD == '0'){
+        JqFitoutDate1.val('');
+        JqFitoutDate2.val('');
+      }
+      else{
+        /*if (JsFitoutM > 12){JsFitoutM = 12;}
+        if (JsFitoutD > 31){JsFitoutD = 31;}*/
+        JqFitoutDate1.val(JsHandoverDate);
+        d.setMonth(d.getMonth() + parseFloat(JsFitoutM));
+        d.setDate(d.getDate() + parseFloat(JsFitoutD) - 1);
+        JsDate = d.getFullYear() + '.' +  parseFloat(d.getMonth() + 1) + '.' + d.getDate();
+        JqFitoutDate2.val(JsDate);
+
+      }
+      if (JsLeaseTermY == '0' && JsLeaseTermM == '0' && JsLeaseTermD == '0'){
+        JqContractDate1.val('');
+        JqContractDate2.val('');
+      }
+      else{
+        //如果租赁期 的大小判断
+        /*if (JsLeaseTermY > 50){JsLeaseTermY = 50;}
+        if (JsLeaseTermM > 12){JsLeaseTermM = 12;}
+        if (JsLeaseTermD > 31){JsLeaseTermD = 31;}*/
+        if (JsFitoutM == '0' && JsFitoutD == '0'){
+          d.setDate(d.getDate());
+        }
+        else{
+          d.setDate(d.getDate()+1);
+        }
+        JsDate = d.getFullYear() + '.' +  parseFloat(d.getMonth() + 1) + '.' + d.getDate();
+        JqContractDate1.val(JsDate);
+
+        d.setFullYear(d.getFullYear() + parseFloat(JsLeaseTermY));
+        d.setMonth(d.getMonth() + parseFloat(JsLeaseTermM));
+        d.setDate(d.getDate() + parseFloat(JsLeaseTermD) - 1);
+
+        JsDate = d.getFullYear() + '.' +  parseFloat(d.getMonth() + 1) + '.' + d.getDate();
+        JqContractDate2.val(JsDate);
+      }
+    }
+    else{
+      JqFitoutDate1.val('');
+      JqFitoutDate2.val('');
+      JqContractDate1.val('');
+      JqContractDate2.val('');
+    }
+    //装修期，合同期，免租期 设置
+    setTerm();
+  }
+  //装修期，合同期，免租期 设置
+  function setTerm(){
+
+    //租赁期限 年，月，日
+    var JqLeaseTerm = $("input[name^=LeaseTerm]");
+    var JqLeaseTermY = $("input[name=LeaseTermY]");
+    var JqLeaseTermM = $("input[name=LeaseTermM]");
+    var JqLeaseTermD = $("input[name=LeaseTermD]");
+
+    var JsLeaseTermY = $("input[name=LeaseTermY]").val();
+    var JsLeaseTermM = $("input[name=LeaseTermM]").val();
+    var JsLeaseTermD = $("input[name=LeaseTermD]").val();
+
+    //装修 月，日
+    var JqFitoutM = $("input[name=FitoutM]");
+    var JqFitoutD = $("input[name=FitoutD]");
+
+    var JsFitoutM = JqFitoutM.val();
+    var JsFitoutD = JqFitoutD.val();
+
+    //免租期 月，日
+    var JqFreeRentY = $("input[name=FreeRentY]");
+    var JqFreeRentM = $("input[name=FreeRentM]");
+    var JqFreeRentD = $("input[name=FreeRentD]");
+
+    var JsFreeRentY = JqFreeRentY.val();
+    var JsFreeRentM = JqFreeRentM.val();
+    var JsFreeRentD = JqFreeRentD.val();
+
+    //装修
+    if (JsFitoutM == '' && JsFitoutD == ''){
+      JqFitoutM.addClass("JQMust");
+      JqFitoutD.addClass("JQMust");
+    }
+    else{
+      JqFitoutM.removeClass("JQMust");
+      JqFitoutD.removeClass("JQMust");
+      JqFitoutM.css("border", "1px solid #C0C0C0");
+      JqFitoutD.css("border", "1px solid #C0C0C0");
+    }
+    //免租期
+    if (JsFreeRentY == '' && JsFreeRentM == '' && JsFreeRentD == ''){
+      JqFreeRentY.addClass("JQMust");
+      JqFreeRentM.addClass("JQMust");
+      JqFreeRentD.addClass("JQMust");
+    }
+    else{
+      JqFreeRentY.removeClass("JQMust");
+      JqFreeRentM.removeClass("JQMust");
+      JqFreeRentD.removeClass("JQMust");
+      JqFreeRentY.css("border", "1px solid #C0C0C0");
+      JqFreeRentM.css("border", "1px solid #C0C0C0");
+      JqFreeRentD.css("border", "1px solid #C0C0C0");
+    }
+
+    JqLeaseTerm.removeClass("JQMust");
+    JqLeaseTerm.css("border", "1px solid #C0C0C0");
+    //如果是短租
+    if ($("input[name=Category]:checked").val()=='Licence 短期租约(固定)' || $("input[name=Category]:checked").val()=='Licence 短期租约(非固定)'){
+      JqLeaseTermM.addClass("JQMust");
+    }
+    //长租
+    else{
+      JqLeaseTermY.addClass("JQMust");
+    }
+  }
+  //计算费用
+  function calcFee(){
+    var JsBase = 365/12;
+    var JsArea = $("input[name=Area]").val();
+    if (JsArea == ''){JsArea = '0';}
+    var JsValue = 0;
+
+    //POS机使用费
+    var JqFeeD = $("input[name=POSFeeD]");
+    var JqFeeM = $("input[name=POSFeeM]");
+    JsValue = parseFloat(JqFeeD.val() * JsBase).toFixed(4);
+    JqFeeM.val(JsValue);
+
+    //法律服务费
+    var JqFeeD = $("input[name=LegalFeeD]");
+    var JqFeeM = $("input[name=LegalFeeM]");
+    JsValue = parseFloat(JqFeeD.val() * JsBase * JsArea).toFixed(4);
+    JqFeeM.val(JsValue);
+
+    //装修补贴
+    var JqFeeD = $("input[name=FitAllowance]");
+    var JqFeeM = $("input[name=TotalFee]");
+    JsValue = parseFloat(JqFeeD.val() * JsArea).toFixed(4);
+    JqFeeM.val(JsValue);
+
+    //其它费用金额
+    var JqFeeD = $("input[name=OtherFee]");
+    var JqFeeM = $("input[name=OtherTotalFee]");
+    JsValue = parseFloat(JqFeeD.val() * JsArea).toFixed(4);
+    JqFeeM.val(JsValue);
+
+    //总收费
+    $("input[JQRowSum]").each(function(){
+      JQSum($(this),'JQRow');
+    });
+  }
+  //POS机使用费反算
+  function calcFeeM(){
+    var JsBase = 365/12;
+    var JsValue = 0;
+    var JqFeeD = $("input[name=POSFeeD]");
+    var JqFeeM = $("input[name=POSFeeM]");
+    JsValue = parseFloat(JqFeeM.val() / JsBase).toFixed(4);
+    JqFeeD.val(JsValue);
+  }
+  //计算每行租赁租金相关数值
+  function CalcGTO() {
+    /*-------------------------------------
+    |       租 金     |     物业费      |
+    | A | B | FA | FB | M | N | FM | FN |
+    -------------------------------------*/
+    $("input[name=Gid_1]").each(function(){
+      var JsRow = $(this).val();
+      //租 金
+      var JsA = $("input#TBRD_1"+JsRow).val();
+      var JqB = $("input#TBRM_1"+JsRow);
+      var JsFA = $("input#FTBRD_1"+JsRow).val();
+      var JqFB = $("input#FTBRM_1"+JsRow);
+
+      //物业费
+      var JsM = $("input#PMFD_1"+JsRow).val();
+      var JqN = $("input#PMFM_1"+JsRow);
+      var JsFM = $("input#FPMFD_1"+JsRow).val();
+      var JqFN = $("input#FPMFM_1"+JsRow);
+
+      //取出面积
+      var JsArea = $("input[name=Area]").val();
+
+      //基数 = 365/12
+      var JsBase = 365/12;
+
+      var JsVal = 0;
+
+      //判断 为空，则为 0
+      if (JsA == ''){JsA = '0';}
+      if (JsFA == ''){JsFA = '0';}
+      if (JsM == ''){JsM = '0';}
+      if (JsFM == ''){JsFM = '0';}
+      if (JsArea == ''){JsArea = 0;}
+
+      //如果面积为0
+      if (parseFloat(JsArea) == 0){
+        JsBase = '0';
+      }
+      //如果面积不为0
+      else{
+        //基数 = 基数 * 面积
+        JsBase *= JsArea;
+      }
+
+      //租金 月 = 租金 日 * 基数
+      JsVal = parseFloat(JsA * JsBase).toFixed(4);
+      JqB.val(JsVal);
+
+      JsVal = parseFloat(JsFA * JsBase).toFixed(4);
+      JqFB.val(JsVal);
+
+      //物业费 月 = 物业费 日 * 基数
+      JsVal = parseFloat(JsM * JsBase).toFixed(4);
+      JqN.val(JsVal);
+
+      JsVal = parseFloat(JsFM * JsBase).toFixed(4);
+      JqFN.val(JsVal);
+    });
+    //重新计算New
+    calcNew();
+  }
+  //计算New值
+  function calcNew(){
+    //表格
+    var JqTb = $("table#tb_Dtl30");
+    var JqTbMZQ = $("table#tb_Dtl10");
+
+    //联营形式  租金形式（固定租金与提成租金二者取高  租金（含物管费）扣率取高  租金+扣率  固定租金  扣率）
+    var JsRate = $("input[name=Rate]").val();
+
+    //批准预算
+    var JsBRCBudget = $("input[name=BRCBudget]").val();
+
+    //面积
+    var JsArea = $("input[name=Area]").val();
+
+    var JsP1 = 0,JsP2 = 0;
+    var JsVal = 0,JsA = 0,JsB = 0;
+    var JsValMZQ = 0,JsAMZQ = 0,JsBMZQ = 0,JsCMZQ = 0;
+    //第一年租金
+    if (JqTb.find("input[name=TBRD_1]").first().length > 0){
+      //租金
+      JsA = JqTb.find("input[name=TBRD_1]").first().val();
+
+      //物业管理费
+      JsB = JqTb.find("input[name=PMFD_1]").first().val();
+    }
+    //免租期
+    if (JqTbMZQ.find("input[name=TBRD_1]").first().length > 0){
+      //租金
+      JsAMZQ = JqTbMZQ.find("input[name=TBRD_1]").first().val();
+
+      //物业管理费
+      JsBMZQ = JqTbMZQ.find("input[name=PMFD_1]").first().val();
+    }
+    if (JsA == ''){JsA = '0';}
+    if (JsB == ''){JsB = '0';}
+
+    if (JsAMZQ == ''){JsAMZQ = '0';}
+    if (JsBMZQ == ''){JsBMZQ = '0';}
+
+    if (JsBRCBudget == ''){JsBRCBudget = '0';}
+    if (JsArea == ''){JsArea = '0';}
+
+    //租金 + 物业管理费
+    JsVal = parseFloat(parseFloat(JsA) + parseFloat(JsB)).toFixed(4);
+    JsValMZQ = parseFloat(parseFloat(JsAMZQ) + parseFloat(JsBMZQ)).toFixed(4);
+
+    //计算P1,P2
+    //P1=（批准预算-New:新）/批准预算*100)
+    if (parseFloat(JsBRCBudget) == 0){
+      JsP1 = parseFloat('0').toFixed(4);
+    }
+    else{
+      JsP1 = parseFloat((JsBRCBudget - JsVal)/JsBRCBudget*100).toFixed(4);
+    }
+    //P2=（批准预算-New:新）*总面积*(365/12)
+    if (parseFloat(JsArea) == 0){
+      JsP2 = parseFloat('0').toFixed(4);
+    }
+    else{
+      JsP2 = parseFloat((JsBRCBudget - JsVal)*JsArea*(365/12)).toFixed(4);
+    }
+
+    //New 赋值
+    $("input[name=BRCNew]").val(JsVal);
+    //免租期 New 赋值
+    $("input[name=MZQCNew]").val(JsValMZQ);
+    //P1
+    $("input[name=sPARAM1]").val(JsP1);
+    //P2
+    $("input[name=sPARAM2]").val(JsP2);
+  }
+  //判断日期大小
+  function callDate1(JsObj){
+    var JsDate1 = '<HDPrint Value=#CurDate# Replace=#DBField2Js#>';
+    var JsDate2 = $("input[name=HandoverDate]").val();
+    if (JsDate1 != '' && JsDate2 != '' ){
+      if (JQDateCompare(JsDate1,JsDate2) <= 0){
+        alert('交付日期必须大于当前日期:<HDPrint Value=#CurDate#>！');
+        JsObj.focus();
+        JsObj.value = '';
+      }
+    }
+  }
+</script>
+<HDLoop></HDLoop>

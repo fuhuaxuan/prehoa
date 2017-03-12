@@ -1,0 +1,80 @@
+[Permission]
+SQL1=select * from WF_Flow where EntGid=__ENTGID__ and ModelGid='^^modelgid^^' and FlowGid='^^flowgid^^'
+Remind1=您指定的工作流程实例没有找到！<script>alert('您指定的工作流程实例没有找到！');window.close()</script>
+
+
+
+[Master]
+SQL=Select a.*, trim(to_char((a.Etime - a.BTime)*24, 9990.99)) SpendTime, decode(a.stat, 0, '<font color="gray">未执行</font>', 1, '待执行', 2, '执行中', 3, '<FONT COLOR="blue">已完成</FONT>', 4, '<font color="gray">已停止</font>', 5, '<FONT COLOR="red">已作废</FONT>', 6, '<FONT COLOR="red">已超时</FONT>') PsStat, decode(##CurUsrCode##,'heading',decode(##RTID##||a.stat,'11','none',''),'admin',decode(##RTID##||a.stat,'11','none',''),'') IsDisplay1, decode(##CurUsrCode##,'heading',decode(##RTID##||a.stat,'11','','none'),'admin',decode(##RTID##||a.stat,'11','','none'),'none') IsDisplay2,decode(##CurUsrCode##,'heading',decode(a.stat,3,'','[删除]'),'admin',decode(a.stat,3,'','[删除]'),'') statdeltext,decode(##CurUsrCode##,'heading',decode(a.stat,4,'',3,'',5,'','[停止]'),'admin',decode(a.stat,4,'',3,'',5,'','[停止]'),'') statStoptext, decode(instr(note,'手工]'),'0','','color:blue') bgstyle from v_wf_task a where EntGid = __ENTGID__ and modelgid=##modelgid## and flowgid=##flowgid## order by BTime, ETime, Code
+
+Count=Select count(1) from v_wf_task a where EntGid = __ENTGID__ and modelgid=##modelgid## and flowgid=##flowgid## order by BTime, ETime, Code
+
+[Detail]
+SQL1=select a.*, b.Code, b.Name from WF_Flow a, WF_Model b where a.EntGid = __ENTGID__ and a.modelgid=##modelgid## and a.flowgid=##flowgid## and b.EntGid = __ENTGID__ and b.modelgid=##modelgid##
+
+;判断当前用户是否有变更权限
+SQLForCondition1=select 1 RTID from wf_rt where entgid=__ENTGID__ and modelgid=##modelgid## and substr(RTID, 3, 1) = '1' and UsrGidEX in (select OrgGid from v_Org_Usr where EntGid = __ENTGID__ and UsrGid = __USRGID__) union select 0 RTID from dual where not exists (select 1 from wf_rt where entgid=__ENTGID__ and modelgid=##modelgid## and substr(RTID, 3, 1) = '1' and UsrGidEX in (select OrgGid from v_Org_Usr where EntGid = __ENTGID__ and UsrGid = __USRGID__))
+
+;SQL2=Select t.TaskDefGid NowTaskDefGid from v_wf_task t, WF_Task_Define d where t.EntGid = __ENTGID__ and d.EntGid = __ENTGID__ and  t.modelgid=##modelgid## and d.modelgid=##modelgid## and t.flowgid=##flowgid## and t.etime is null and t.TASKDEFGID=d.taskdefgid  and d.isend<>1
+
+;判断当前流程是否为异常流程
+SQL3=select 1 IsException from WF_Flow a where EntGid = __ENTGID__ and stat = 2 and not exists (select 1 from WF_Task where EntGid = __ENTGID__ and stat=1 and FlowGid=a.FlowGid)
+
+;得到最后的任务结束时间作为新增任务的开始时间
+;SQL4=select max(Etime) LEtime from v_wf_task a where EntGid = __ENTGID__ and modelgid=##modelgid## and flowgid=##flowgid##
+
+;暂时将当前时间当成新增任务的开始时间
+SQL4=select sysdate LEtime from dual
+
+
+[Where]
+1=
+2=
+3=
+4=
+
+
+
+[DefaultWhere]
+DefaultWhere= 
+
+[OrderBy]
+1=
+
+
+[DefaultOrderBy]
+DefaultOrderBy=  
+
+[GroupBy]
+
+[AddtionalSQL]
+
+
+[Title]
+Text1=工作流程-实例过程明细查看
+Text2=
+Text3=
+Text4=
+Text5=
+log=
+ChangePage=0
+PageKind=0
+showsql=
+
+[Link]
+;URL1=
+;URL2=
+;URL3=
+URL4=
+URL5=
+[AJAX]
+AddtionalSQL1= delete from wf_task where entgid= __ENTGID__ AND FLOWGID = '^^SFLOWGID^^' AND TASKGID='^^SGID^^' AND '^^sStat^^' != '3' and '^^Afterstat^^' is null
+
+AddtionalSQL2= delete from wf_task_history where entgid= __ENTGID__ AND FLOWGID = '^^SFLOWGID^^' AND TASKGID='^^SGID^^' AND '^^sStat^^' != '3' and '^^Afterstat^^' is null
+
+
+AddtionalSQL3= update  wf_task set stat = '4',etime=sysdate where entgid= __ENTGID__ AND FLOWGID = '^^SFLOWGID^^' AND TASKGID='^^SGID^^' AND '^^sStat^^' not in ( '4','5') and '^^Afterstat^^' ='4'
+
+AddtionalSQL4= update  wf_task_history set stat = '4',etime=sysdate where entgid= __ENTGID__ AND FLOWGID = '^^SFLOWGID^^' AND TASKGID='^^SGID^^' AND '^^sStat^^' not in ('4','5') and '^^Afterstat^^' ='4'
+AddtionalSQL6= insert into Log (EntGid, EntCode, EntName, UsrGid, UsrCode, UsrName, CreateDate, Atype, AContent) select e.gid, e.code, e.name, __USRGID__,__USRCODE__,__USRNAME__, sysdate, 10, 'WFFlowTrace(已'||decode('^^Afterstat^^','4','停止','删除')||'此步骤)'||chr(10)||chr(10)||'模型编号：^^SModelGID^^'||chr(10)||chr(10)||'任务编号：^^SFLOWGID^^'||chr(10)||chr(10)||'步骤编号：^^SGID^^' from ent e where gid = __ENTGID__
+

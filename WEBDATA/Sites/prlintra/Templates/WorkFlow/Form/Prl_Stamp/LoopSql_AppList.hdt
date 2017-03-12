@@ -1,0 +1,41 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<h3 class="SubTitleBar" >
+<TABLE cellspacing="1" cellpadding="0" width="100%">
+  <col style="padding-left:4px;">
+  <col style="width:20px;" align="center">
+  <TR>
+    <TD align="left" style="padding-left:10px;"><b>审批过程信息</b></TD>
+    <TD onclick="JQExpand('tb_AppList');" style="cursor:hand" class="IconUp">　&nbsp;</TD>
+  </TR>
+</TABLE>
+</h3>
+<table width="100%" class="ListBar" cellspacing="1" cellpadding="0" id="tb_AppList">
+  <col style="padding-left:4px;width:15%" valign="top">
+  <col style="padding-left:4px;width:15%" valign="top">
+  <col style="padding-left:4px;width:10%" valign="top">
+  <col style="padding-left:4px;width:10%" valign="top">
+  <col style="padding-left:4px;width:50%" valign="top">
+  <tr class="DtlBarTitle" align="center">
+    <td><B>时间</B></td>
+    <td><B>执行人类别</B></td>
+    <td><B>执行人</B></td>
+    <td><B>审批概要</B></td>
+    <td><B>审批备注</B></td>
+  </tr>
+  <HDLoop>
+  <tr valign="top">
+    <td class="listtd"><HDPrint Value=#AppDate#></td>
+    <td class="listtd"><HDPrint Value=#Apptypetext#></td>
+    <td class="listtd"><HDPrint Value=#AppName#></td>
+    <td class="listtd">
+      <script>
+        if ('<HDPrint Value=#AppAssign# Replace=#DBField2Js#>' == '否决') 
+          document.write('<font color="red"><b><HDPrint Value=#AppAssign#></b></font>');
+        else
+          document.write('<b><HDPrint Value=#AppAssign#></b>')
+      </script>
+    </td>
+    <td class="listtd"><HDPrint Value=#AppMemo#></td>
+  </tr>
+  </HDLoop>
+</table>

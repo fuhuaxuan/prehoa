@@ -1,0 +1,63 @@
+<!--版本号：2013年3月份;此行不允许删除-->
+<form name="frmMail" method="POST" action="/bin/hdmailsend.dll/send" target="_self">
+  <input type="hidden" name="Title" maxlength="100" style="width:100%" value="广告位ISF提醒:<HDPrint Value=#FillUsrDept#>">
+  <input type="hidden" name="Email" maxlength="400" style="width:100%" value="<HDPrint Value=#ThisEmail# Replace=#DBField2InputField#>;">
+  <input type="hidden" name="fAddr" maxlength="400" style="width:100%" value="pcrtoa@hd123.net">
+  <input type="hidden" name="fName" maxlength="400" style="width:100%" value="OA系统邮件提醒">
+  <input type="hidden" name="RplEmail" maxlength="400" style="width:100%" value="pcrtoa@hd123.net">
+  <input type="hidden" name="isHTML" value="y">
+  <textarea name="Content" style="width:100%;height:400;display:none">
+    <table border="0">
+    <tr><td>您好：</td></tr>
+    <tr><td>[发起人] : <HDPrint Value=#FillUsrName#>[<HDPrint Value=#fillusrdept#>]</td></tr>
+    <tr><td>[待审批单号] : <HDPrint Value=#Num#></td></tr>
+    <tr><td>[Serial No 编号] : <HDPrint Value=#SerialNo#></td></tr>
+    <tr><td>[Category  类别] : <HDPrint Value=#Category#> <HDPrint Value=#CategoryText#></td></tr>
+    <tr><td>[AType 租赁类别] : <HDPrint Value=#AType#></td></tr>
+    <tr><td>[Tenant/Licensee 租户] : <HDPrint Value=#TenantLicensee#></td></tr>
+    <tr><td>[Trading Name 商店营业名称] : <HDPrint Value=#TradingName#></td></tr>
+    <tr><td>[Address 地址] : <HDPrint Value=#Address#></td></tr>
+    <tr><td>[Contact Person 接洽人] : <HDPrint Value=#ContactPerson#></td></tr>
+    <tr><td>[Phone 电话号码] : <HDPrint Value=#Phone#></td></tr>
+    <tr><td>[E-mail 电子邮件] : <HDPrint Value=#EMail#></td></tr>
+    <tr><td>[Fax 传真号码] : <HDPrint Value=#Fax#></td></tr>
+    <tr><td>[Lease Period 租赁起止日] : <HDPrint Value=#LeasePeriodBDate#>~<HDPrint Value=#LeasePeriodEDate#></td></tr>
+    <tr><td>[Lease Term 租赁期限] : <HDPrint Value=#leasetermm#> Months 个月</td></tr>
+    <tr><td>[LeaseType 租户类别] : <HDPrint Value=#LeaseType#></td></tr>
+    <tr><td>[ConditionForExemption 租金减免条件] : <HDPrint Value=#ConditionForExemption#></td></tr>
+    <tr><td>[Income 收入] : Total 总金额 <HDPrint Value=#RentalIncash#>;Fund Model Rate 租金底价 <HDPrint Value=#Budget#></td></tr>
+    <tr><td>[Rental In cash 现金租金] : <HDPrint Value=#RentalIncash#></td></tr>
+    <tr><td>[GTO Rent 销售提成] : <HDPrint Value=#GTORent#> </td></tr>
+    <tr><td>[Security Deposit 保证金] : <HDPrint Value=#SecurityDeposit# ></td></tr>
+    <tr><td>[Total Sales 销售额]  <HDPrint Value=#TotalSales#> </td></tr>
+    <tr><td>[Others 其他]: <HDPrint Value=#sOthers#> </td></tr>
+    <tr><td>[GTO % 提成百分比] : <HDPrint Value=#GTO#> %</td></tr>
+    <tr><td>[PowerRate 电费] : <HDPrint Value=#PowerRate#> </td></tr>
+    <tr><td>[GTO Rent Fee 销售提成金额] : <HDPrint Value=#GTORentFee# ></td></tr>
+    <tr><td>[Special Terms and Conditions/Remarks 特别条件/说明] : <HDPrint Value=#Remarks# Replace=#DBField2InputField#> </td></tr>
+    <tr><td>-----------待审批内容展示完毕-----------</td></tr>
+    </table>
+  </textarea>
+</form>
+<SCRIPT LANGUAGE="JavaScript">
+if('<HDPrint Value=#Wf_Stat# Replace=#DBField2Js#>' == '10')
+{
+  alert('保存成功，填单人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>');
+  location.replace('##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#Modelcode#>_TMod&UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid# Replace=#DBField2Js#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>');
+}
+else
+{
+  alert('提交成功，填单人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>');
+  frmMail.submit();
+  if (self.opener != null) 
+  {
+    try
+    {
+      self.opener.location.reload();
+    }
+    catch(e)
+    {
+    }
+  }
+}
+</SCRIPT>

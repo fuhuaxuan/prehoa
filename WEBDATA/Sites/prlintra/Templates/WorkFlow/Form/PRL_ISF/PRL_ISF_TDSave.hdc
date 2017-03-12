@@ -1,0 +1,109 @@
+[Permission]
+LIMIT1=FlowGid
+LIMITDesc1=StringSize[,0]
+LIMITRemind1=您选择的流程数据有误，请返回重新选择！
+
+;判断是否有该条信息
+SQL1=select 1 from wf_PRL_ISF where EntGid=__ENTGID__ and FlowGid=##FlowGid##
+Remind1=您指定的[ISF]没有找到！<script>alert('您指定的[ISF]没有找到！');window.close()</script>
+
+
+;判断WF_FLOW表中该流程是否在流转中的状态
+SQL2=select 1 from wf_Flow where EntGid=__ENTGID__ and FlowGid=##FlowGid## and Stat in ('1','2')
+Remind2=您指定的[ISF]申请单目前不是审批阶段，不允许您再操作了。<script>alert('您指定的[ISF]申请单目前不是审批阶段，不允许您再操作了。');window.close()</script>
+
+;判断WF_Task表中当前用户是否有该流程的待执行(stat=1)的任务
+SQL3=select 1 from wf_Task where EntGid=__ENTGID__ and FlowGid=##FlowGid## and ExecGid = __USRGID__ and stat=1
+Remind3=您暂时无法操作本页面，请与管理员联系！<script>alert('您暂时无法操作本页面，请与管理员联系！');window.close()</script>
+
+[Master]
+
+[Detail]
+;得到模型名称
+SqlForCondition1=select Code ModelCode, Name ModelName from wf_Model where ModelGid = ##ModelGid##
+
+;得到业务单据信息
+SqlForCondition2=select '['||atype||']'||lessee flownote,nvl(sparam1,0) sparam1,nvl(sparam2,0) sparam2,nvl(sparam3,0) sparam3,nvl(round(TotalFee + OtherTotalFee,2),0) TotalFee,fillusrdeptgid,fillusrgid from WF_^^ModelCode^^ where FlowGid = ##FlowGid##
+
+SqlForCondition3=select b.usrgid usrA1 from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##fillusrdeptgid## and b.gid = a.empgidex and atype=30 and b.usrgid is not null
+
+SqlForCondition4=select code2 ZongDept from dept a where code1 = (select substr(code1,0,8)  from dept where gid = ##fillusrdeptgid## and entgid = __ENTGID__) and entgid = __ENTGID__
+
+;发起人
+;招商经理 10
+;财务经理 30 
+;商场总经理 40 
+;资产经理 71
+;物业经理 组织代码 0002 下 所有人员， 中职务 为物业经理的人
+LoopSQL3=select hr.Email from (select a.gid, a.code, a.name from v_usr a, v_org_usr b, org c where a.EntGid = __ENTGID__ and a.EntGid = b.EntGid and a.EntGid = c.EntGid and a.Gid = b.Usrgid and b.OrgGid = c.Gid and lower(c.Code) like lower(##ZongDept##) || '%') u,hr_emp hr where hr.entgid = __ENTGID__ and u.gid = hr.usrgid and hr.position like '%物业经理%' union select b.Email from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##fillusrdeptgid## and b.gid = a.empgidex and atype=10 and b.usrgid is not null union select b.Email from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##fillusrdeptgid## and b.gid = a.empgidex and atype=30 and b.usrgid is not null union select b.Email from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##fillusrdeptgid## and b.gid = a.empgidex and atype=40 and b.usrgid is not null union select b.Email from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##fillusrdeptgid## and b.gid = a.empgidex and atype=71 and b.usrgid is not null union select hr.Email from WF_^^ModelCode^^ i,hr_emp hr where i.EntGid = __ENTGID__ and i.FlowGid = ##FlowGid## and hr.EntGid = __ENTGID__  and hr.usrgid = i.FillUsrGid
+LoopHDT3=Templates\WorkFlow\Form\^^ModelCode^^\LoopSQL_Email.hdt
+LoopVAR3=Emaillist
+
+[Where]
+
+[DefaultWhere]
+DefaultWhere= 
+
+[OrderBy]
+1=
+
+[DefaultOrderBy]
+DefaultOrderBy=
+
+[GroupBy]
+
+[AddtionalSQL]
+;10:部门经理； 20:行政经理； 30:财务经理； 40:商场总经理； 50:区域总监； 60:常务理事； 70:资产总监； 80:资产总监； 90:CFO； 100:CEO；
+SQL1=insert into WF_^^ModelCode^^_App (EntGid,FlowGid, DtlGid,AppStat, AppGid,AppName, AppAssign, Note,AppDate,apptype) values(__ENTGID__,##FlowGid##, sys_guid(),decode(##AppAssign##,'同意','12','13'), __USRGID__, __USRNAME__ || '[' || __USRCODE__ || ']', ##AppAssign##, ##Note##,sysdate,100)
+
+
+Sql2=update WF_^^ModelCode^^ set Stat = '13', LastUpdDate = sysdate where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## and ##AppAssign## = '否决'
+
+;资产经理
+Sql3=select b.usrgid usrcc1,b.Email thisemail2 from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##fillusrdeptgid## and b.gid = a.empgidex and atype=71 and b.usrgid is not null
+
+;审批人同意，结束流程
+Sql4=update WF_^^ModelCode^^ set Stat = '30', LastUpdDate = sysdate where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## and ##AppAssign## = '同意'
+
+;审批人同意，更新铺号状态
+sql5=update prl_GROUNDH set fstat = '被租' where fgid in (select fgid from wf_^^ModelCode^^_ground where EntGid=__ENTGID__ and FlowGid = ##FlowGid##)  and  ##AppAssign## = '同意'
+
+
+[Title]
+Text1=^^ModelName^^
+Text2=
+Text3=
+Text4=
+Text5=
+
+ChangePage=0
+
+;否决，返回发起人修改
+WF2=WFFlowRun( ^^ModelCode^^_TD | ^^ModelCode^^_TMOD | NULL | and ##AppAssign## = '否决' | 首席执行官/CEO:否决 - ^^flownote^^)
+;否决后，还有个抄送给相关人员没有做
+
+;---------------------------------
+;结束流程 抄送 资产总监Asset Manager
+WF3=WFFlowRun( ^^ModelCode^^_TD | ^^ModelCode^^_TCC1 | usrcc1 | and ##AppAssign## = '同意' | 首席执行官/CEO:^^AppAssign^^ - ^^flownote^^)
+
+;结束流程 抄送 财务经理
+WF4=WFFlowRun( ^^ModelCode^^_TD | ^^ModelCode^^_TCC2 | usrA1 | and ##AppAssign## = '同意'  | 首席执行官/CEO:^^AppAssign^^ - ^^flownote^^)
+
+;结束流程 抄送 发起人
+WF5=WFFlowRun( ^^ModelCode^^_TD | ^^ModelCode^^_TCC2 | fillusrgid | and ##AppAssign## = '同意'  | 首席执行官/CEO:^^AppAssign^^ - ^^flownote^^)
+
+;审批人同意，结束流程
+WF7=WFFlowFinish( ^^ModelCode^^_TD | and ##AppAssign## = '同意')
+
+
+[Link]
+URL1=
+URL2=
+URL3=
+URL4=
+URL5=
+URL6=
+URL7=
+URL8=
+URL9=
+URL10=

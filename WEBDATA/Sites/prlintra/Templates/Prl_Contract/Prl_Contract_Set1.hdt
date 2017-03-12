@@ -1,0 +1,197 @@
+<!--Js引入-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JSCalendar.js)##"></script>
+<script>
+  /*
+  *函数功能：明细新增一行
+  *参数说明：使用JQTr_Add() 函数新增行时，需写在 tbody 标记中
+  */
+  function Add_Dtl(Gid,Collection,AType,CNum,Content,Mod1,App1,Mod2,App2,Mod3,App3,Mod4,App4,Mod5,App5,Mod6,App6)
+  {
+    var sTbId = 'tb_Dtl';
+    var sTrClass = 'listtd';
+    var tdArr = new Array();
+    var iRow = Math.floor(Math.random() * (1 + 100000 - 1) + 1);
+    var i = $("table#"+sTbId+">tbody>tr").length + 1;
+    var k = 0;
+    if (Gid == null){
+      Gid = '';
+      Collection = '';
+      AType = '';
+      CNum = '';
+      Content = '';
+      Mod1 = '';
+      App1 = '';
+      Mod2 = '';
+      App2 = '';
+      Mod3 = '';
+      App3 = '';
+      Mod4 = '';
+      App4 = '';
+      Mod5 = '';
+      App5 = '';
+      Mod6 = '';
+      App6 = '';
+    }
+
+    tdArr[k++] = '<td><select name="Collection_1" ID="Collection_1'+ iRow +'" class="JQSelect"><option value="">--请选择--</option><option value="中央收银">中央收银</option><option value="独立收银">独立收银</option><option value="租用我司POS">租用我司POS</option></select></td>';
+
+    tdArr[k++] = '<td><INPUT TYPE="text" NAME="AType_1" ID="AType_1'+ iRow +'" maxlength="32" class="JQText JQMust" value = "'+AType+'"></td>';
+
+    tdArr[k++] = '<td><INPUT TYPE="text" NAME="CNum_1" ID="CNum_1'+ iRow +'" maxlength="16" class="JQFloat" value = "'+CNum+'"></td>';
+
+    tdArr[k++] = '<td><textarea rows="20" name="Content_1" id ="Content_1'+ iRow +'" class="JQText" maxlength="2000">'+Content+'</textarea></td>';
+
+    tdArr[k++] = '<td>'
+      +'<select name="App1_1" ID="App1_1'+ iRow +'" style="width:50px"><option value="1">A</option><option value="2">B</option><option value="3">C</option></select>&nbsp;无改动'
+      +'<INPUT TYPE="hidden" NAME="Mod1_1" ID="Mod1_1'+ iRow +'" maxlength="16" class="JQText" value = "'+Mod1+'"><br>'
+      +'<select name="App2_1" ID="App2_1'+ iRow +'" style="width:50px"><option value="1">A</option><option value="2">B</option><option value="3">C</option></select>&nbsp;其他'
+      +'<INPUT TYPE="hidden" NAME="Mod2_1" ID="Mod2_1'+ iRow +'" maxlength="16" class="JQText" value = "'+Mod2+'"><br>'
+      +'<select name="App3_1" ID="App3_1'+ iRow +'" style="width:50px"><option value="1">A</option><option value="2">B</option><option value="3">C</option></select>&nbsp;删除'
+      +'<INPUT TYPE="hidden" NAME="Mod3_1" ID="Mod3_1'+ iRow +'" maxlength="16" class="JQText" value = "'+Mod3+'"><br>'
+      +'<select name="App4_1" ID="App4_1'+ iRow +'" style="width:50px"><option value="1">A</option><option value="2">B</option><option value="3">C</option></select><textarea rows="5" name="Mod4_1" id ="Mod4_1'+ iRow +'" class="JQText" maxlength="2000" style="width:85%">'+Mod4+'</textarea><br>'
+      +'<select name="App5_1" ID="App5_1'+ iRow +'" style="width:50px"><option value="1">A</option><option value="2">B</option><option value="3">C</option></select><textarea rows="5" name="Mod5_1" id ="Mod5_1'+ iRow +'" class="JQText" maxlength="2000" style="width:85%">'+Mod5+'</textarea><br>'
+      +'<select name="App6_1" ID="App6_1'+ iRow +'" style="width:50px"><option value="1">A</option><option value="2">B</option><option value="3">C</option></select><textarea rows="5" name="Mod6_1" id ="Mod6_1'+ iRow +'" class="JQText" maxlength="2000" style="width:85%">'+Mod6+'</textarea>'
+    +'</td>';
+
+    tdArr[k++] ='<td><a href="javascript:void(0)" onclick="javascript:JQTr_Del();JqDelReCal()">删除</a></td>';
+
+    //新增一行
+    JQTr_Add(sTbId,sTrClass,tdArr);
+    $("select[id=Collection_1"+iRow+"] option[value='"+Collection+"']").prop("selected",true);
+    $("select[id=App1_1"+iRow+"] option[value='"+App1+"']").prop("selected",true);
+    $("select[id=App2_1"+iRow+"] option[value='"+App2+"']").prop("selected",true);
+    $("select[id=App3_1"+iRow+"] option[value='"+App3+"']").prop("selected",true);
+    $("select[id=App4_1"+iRow+"] option[value='"+App4+"']").prop("selected",true);
+    $("select[id=App5_1"+iRow+"] option[value='"+App5+"']").prop("selected",true);
+    $("select[id=App6_1"+iRow+"] option[value='"+App6+"']").prop("selected",true);
+  }
+
+  /*
+  *函数功能：删除行，重新计算
+  */
+  function JqDelReCal()
+  {
+    //重新计算行号
+    $("input[name=Line_1]").each(function(i){
+      $(this).val(i+1);
+    });
+    //重新计算合计
+    $("input[JQRowSum]").each(function(){
+      JQSum($(this),'JQRow');
+    });
+  }
+</script>
+<form name="frmDo" method="post" action="">
+<!--模块使用到一些隐藏的控件-->
+<input type="text" style="display:none" name="Gid" value="<HDPrint Value=#NewGid# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="FillDeptGid" value="<HDPrint Value=#FillDeptGid# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="FillDeptCode" value="<HDPrint Value=#FillDeptCode# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="FillDeptName" value="<HDPrint Value=#FillDeptName# Replace=#DBField2Input#>">
+
+<h3 class="TitleBar" ><HDPrint Value=#ModeleAtype#>-<HDPrint Value=#ModeleName#></h3>
+<TABLE width="100%" class="ButtonBar" cellpadding="0" cellspacing="0">
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A Href="javascript:Add_Dtl();void(0);" name="btn_1"><FONT class="IconAdd">　&nbsp;</FONT> 新建 </A>
+      <A Href="javascript:CheckSubmit('保存');void(0);" name="btn_1"><FONT class="IconSave">　&nbsp;</FONT> 保存 </A>
+     |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+      <a HREF="##HDNet_AppName##/__ExplainModule?URL=Prl_Contract_List&UsrGid=<HDPrint Value=#UsrGid#>"><FONT class="IconBack">　&nbsp;</FONT> 返回列表</A>
+    </TD>
+  </TR>
+</TABLE>
+
+<table width="100%" class="ListBar JQMust" cellpadding="0"  cellspacing="1" id="tb_Dtl">
+  <colgroup>
+     <col style="width:10%">
+     <col style="width:15%">
+     <col style="width:5%">
+     <col style="width:30%">
+     <col style="width:35%">
+     <col style="width:5%" align="center">
+  </colgroup>
+  <!--使用新增行 JQTr_Add 时，需在表格中加上 thead,tbody-->
+  <thead>
+  <tr class="listtr">
+    <td>收银方式<font color="red">*</font></td>
+    <td>条款类别<font color="red">*</font></td>
+    <td>条款编号<font color="red">*</font></td>
+    <td>条款原文<font color="red">*</font></td>
+    <td>审批级别/可修改选项</td>
+    <td>操作</td>
+  </tr>
+  </thead>
+  <tbody>
+  <script language="javascript">
+    for (var i = 1; i < 4; i++ ){
+      Add_Dtl();
+    }
+  </script>
+  </tbody>
+</table>
+
+<TABLE width="100%" class="ButtonBar" cellpadding="0" cellspacing="0">
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A Href="javascript:CheckSubmit('上传');void(0);" name="btn_1"><FONT class="IconUpLoad">　&nbsp;</FONT> 上传 </A>
+      <A Href="javascript:CheckSubmit('下载');void(0);" name="btn_1"><FONT class="IconDownLoad">　&nbsp;</FONT> 下载 </A>
+      <A Href="javascript:CheckSubmit('设置');void(0);" name="btn_1"><FONT class="IconSet">　&nbsp;</FONT> 设置 </A>
+      <A Href="javascript:CheckSubmit('同意');void(0);" name="btn_1"><FONT class="IconYes">　&nbsp;</FONT> 同意 </A>
+      <A Href="javascript:CheckSubmit('否决');void(0);" name="btn_1"><FONT class="IconNo">　&nbsp;</FONT> 否决 </A>
+      <A Href="javascript:CheckSubmit('抄送');void(0);" name="btn_1"><FONT class="IconTcc">　&nbsp;</FONT> 抄送 </A>
+      <A Href="javascript:CheckSubmit('终止');void(0);" name="btn_1"><FONT class="IconEnd">　&nbsp;</FONT> 终止 </A>
+      <A Href="javascript:CheckSubmit('确认');void(0);" name="btn_1"><FONT class="IconRead">　&nbsp;</FONT> 确认 </A>
+      <A Href="javascript:CheckSubmit('打印');void(0);" name="btn_1"><FONT class="IconPrint">　&nbsp;</FONT> 打印 </A>
+      <A Href="javascript:window.close();void(0);" name="btn_1"><FONT class="IconClose">　&nbsp;</FONT> 关闭窗口 </A>
+      <A HREF="##HDNet_AppName##/MainPage?URL=&UsrGid=<HDPrint Value=#UsrGid#>"><FONT class="IconHome">　&nbsp;</FONT> 返回首页 </A>
+     |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+      
+      <a HREF="##HDNet_AppName##/__ExplainModule?URL=Prl_Contract_List&UsrGid=<HDPrint Value=#UsrGid#>"><FONT class="IconBack">　&nbsp;</FONT> 返回列表</A>
+    </TD>
+  </TR>
+</TABLE>
+</form>
+
+<FieldSet style="Font-Family:Tahoma;Font-Size:9pt;">
+<Legend><font color="red">特别提醒</font></Legend>
+<li>相关说明文字；</li>
+</FieldSet>
+
+<script>
+  //提交函数
+  function CheckSubmit(){
+    //定义 提交提示文字
+    var sConfirm = '您确定已经填写完成，并保存吗？';
+    //提交时，验证必填项
+    if (!JQcheck("JQMust")){
+      return false;
+    }
+    //提交时，提示
+    if (!(confirm(sConfirm)))
+      return false;
+    
+    //获取当前表单对象 
+    var JqObj = $("form[name=frmDo]");
+    //表单参数设定
+    JqObj.attr({
+      "action":'##HDNet_AppName##/__ExplainModule?Url=<HDPrint Value=#Url#>Save&UsrGid=<HDPrint Value=#UsrGid#>',
+      "target":'_self'
+    });
+    //表单提交
+    JqObj.submit();
+
+    //操作按钮变为不可用
+    $("a[name=btn_1]").each(function(){
+      $(this).prop("disabled",true);
+    });
+    //本函数失效
+    CheckSubmit = function() {return false;}
+  }
+</script>

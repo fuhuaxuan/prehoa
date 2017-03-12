@@ -1,0 +1,100 @@
+;版本号：2014年3月份（此行不允许删除）
+[Permission]
+;判断FlowGid 是否为空
+LIMIT1=FlowGid
+LIMITDesc1=StringSize[,0]
+LIMITRemind1=对不起，您未指定流程信息！请从正确的路径进入
+
+;判断传入FlowGid 是否存在
+SQL1=select 1 from WF_Flow where EntGid = __ENTGID__ and FlowGid = ##FlowGid##
+Remind1=对不起，您指定的流程申请单没有找到<script>alert('对不起，您指定的流程申请单没有找到');window.close()</script>
+
+;检查判断的Sql语句，查不到结果是报错，从SQL1～SQL5，共可以写5句
+SQL2=select 1 from dual where ##AppAssign## <> '同意' union select 1 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillUsrDeptGid## and v.atype=30 and ##AppAssign## = '同意'
+Remind2=对不起，下一步审批人财务经理未找到，请与管理员联系。<script>alert('对不起，下一步审批人财务经理未找到，请与管理员联系。');history.back()</script>
+
+[Detail]
+;显示，单条数据的查询，可以用于HDT显示，有select命令。从SQL1～SQL20共支持20条
+;取出本流程模型信息
+SqlForCondition1=select wm.code ModelCode,replace(upper(wm.code),'DZ','') ModelCodeT, wm.Name ModelName,d.Name StepName from wf_Model wm,WF_Task_Define d where wm.EntGid = d.EntGid(+) and wm.EntGid = __ENTGID__ and wm.ModelGid = d.ModelGid(+) and wm.ModelGid = ##ModelGid## and lower(d.code(+)) = replace(lower(##Url##),'save')
+
+;审批备注
+SQLForCondition2=select ##CurUsrName##||':'||##AppAssign##||' - ' || decode(FeeNum,'','','费用单：' || FeeNum||'-' || PartNum) || '；付款金额：' || PayFee || '；付款备注：' || Memo AppFlowMemo from wf_^^ModelCodeT^^ where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## 
+
+;取出下一步审批人
+SQLForCondition4=select v.PostGid TA1Gid from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillUsrDeptGid## and v.atype=30
+
+;取出邮件内容
+SQL1=select f.*,decode(f.isend,10,'是','否') IsEndText from WF_^^ModelCodeT^^ f where f.EntGid = __ENTGID__ AND f.FlowGid = ##FlowGid##
+
+;取出邮件
+;同意并下一步：取出下一步执行人Email
+LoopSQL1=select distinct v.Email from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillUsrDeptGid## and v.atype in (30) and ##AppAssign## = '同意'
+LoopHDT1=Templates\WorkFlow\Form\^^ModelCode^^\LoopSql_Email.hdt
+LoopVAR1=EmailList
+
+[AddtionalSQL]
+;操作，没有返回的结果，是在数据库中执行，有Insert, Update, Delete命令。从SQL1～SQL20共支持20条
+;更新本流程中主表信息
+Sql1=update wf_^^ModelCodeT^^ set (LastUpdDate,Stat) = (select sysdate,##AppAssign## from dual) where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## 
+
+;插入本流程中审批人一信息
+SQL2=insert into wf_^^ModelCodeT^^_App (EntGid,FlowGid,dtlgid,AppGid,AppCode,AppName,AppType,AppAssign,note,AppDate) select __ENTGID__,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,10,##AppAssign##, ##note##,sysdate from dual
+
+[AddtionalSQLUseWhere]
+;显示，单条数据的查询，可以用于HDT显示，有select命令。从SQL1～SQL20共支持20条，同时会使用上面的[where]中的sql语句
+;示例
+Sql1=
+
+[Master]
+;显示，多条记录的查询，可在HDT页面中直接使用<HDLoop>显示，并能够提供翻页。
+SQL=
+Count=
+
+[DefaultWhere]
+;多条记录的查询的默认条件
+DefaultWhere=
+
+[Where]
+;多条记录的查询的条件，可以根据页面传入的变量组合成
+1=
+
+[GroupBy]
+;多条记录的查询的分组
+GroupBy=
+
+[DefaultOrderBy]
+;多条记录的查询的默认排序
+DefaultOrderBy=
+
+[OrderBy]
+;多条记录的查询的排序,支持多重排序排序的先后顺序由序号决定
+1=
+
+
+[Title]
+;页面的标题，从Text1～Text30共支持30条
+
+Text1=^^ModelName^^-^^StepName^^保存
+
+;附件
+AttachCtrl=
+AttachPath=
+
+;是否翻页：1是，0否
+ChangePage=0
+
+;翻页时的每页记录数，如果没有的话，则取HDNet默认值20
+ChangePageRow=
+
+;写入数据库日志
+Log=
+
+;页面显示: 0:BodyPage;1:DetailPage;2:BlankPage
+PageKind=0
+
+;否决，返回发起人
+WF1=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T1 | T1Gid | and ##AppAssign## = '否决' |^^AppFlowMemo^^)
+
+
+WF3=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TA1 | TA1Gid | and ##AppAssign## = '同意' | ^^AppFlowMemo^^)

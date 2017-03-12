@@ -1,0 +1,78 @@
+  <form name="frmMail" method="POST" action="/bin/hdmailsend.dll/send" target="_self">
+    <input type="hidden" name="Title" maxlength="100" style="width:100%" value="付款待审提醒:<HDPrint Value=#fillusrdept# Replace=#DBField2Input#>">
+    <input type="hidden" name="Email" maxlength="400" style="width:100%" value="<HDPrint Value=#ThisEmail# Replace=#DBField2InputField#>;<HDPrint Value=#thisemail2# Replace=#DBField2InputField#>">
+    <input type="hidden" name="fAddr" maxlength="400" style="width:100%" value="pcrtoa@hd123.net">
+    <input type="hidden" name="fName" maxlength="400" style="width:100%" value="OA系统邮件提醒">
+    <input type="hidden" name="RplEmail" maxlength="400" style="width:100%" value="pcrtoa@hd123.net">
+    <input type="hidden" name="isHTML" value="y">
+    <textarea name="Content" style="width:100%;height:400;display:none">
+<table border="0">
+<tr><td>您好：
+<tr><td>[发起人] : <HDPrint Value=#FillUsrName#>[<HDPrint Value=#fillusrdept#>]
+<tr><td>[待审批单号] : <HDPrint Value=#Num#>
+<HDIF EqualNot(<HDPrint Value=#feeflowgid# Replace=#DBField2Input#>1, 1)>
+<tr><td>[费用申请单] : <HDPrint Value=#feeNum#>
+<tr><td>[是否为费用申请表尾款] : <HDPrint Value=#isendtext#>
+<tr><td>[付款单单号] : <HDPrint Value=#feenum#>-<HDPrint Value=#partnum#>
+<tr><td>[公司名称] : <HDPrint Value=#companyname#>
+<tr><td>[项目名称] : <HDPrint Value=#acgonename#> - <HDPrint Value=#acgtwoname#>
+</HDIF>
+<HDIF Equal(<HDPrint Value=#feeflowgid# Replace=#DBField2Input#>1, 1)>
+<tr><td>[公司名称] : <HDPrint Value=#companyname#>
+<tr><td>[项目名称] : <HDPrint Value=#acgonename#> - <HDPrint Value=#acgtwoname#> 
+<tr><td>[细节勾选] : <HDPrint Value=#acgothertext#>
+</HDIF>
+<tr><td>[付款金额] : <HDPrint Value=#payfee#>
+<span id="acg_3" style="display:none">(公司承担：<HDPrint Value=#npayfee#>)</span>
+  <script language="javascript">
+  var sCode = '<HDPrint Value=#acgonename# Replace=#DBField2Js#>';
+    sCode = sCode.substr(0,1);
+    var $span = $("span#acg_3");
+    $span.hide();
+    if (sCode == '3'){
+      $span.show();
+    }
+  </script>
+<tr><td>[要求支付方式] : <HDPrint Value=#payway#>
+<tr><td>[人民币（大写）] : <HDPrint Value=#bigrmb#>
+<tr><td>[付款备注（Memo）] : <HDPrint Value=#Memo#>
+<tr><td>[收款单位] : <HDPrint Value=#payee#>
+<HDIF EqualNot(<HDPrint Value=#feeflowgid# Replace=#DBField2Input#>1, 1)>
+<tr><td>[（A）项目总额] : <HDPrint Value=#feeA#>
+<tr><td>[（B）已付款金额] : <HDPrint Value=#feeB#>
+<tr><td>[（C）本次付款] : <HDPrint Value=#payfee#>
+<tr><td>[尚欠余额=A-B-C] : <HDPrint Value=#feeleft#>
+<tr><td>[实际付款总额=B+C] : <HDPrint Value=#feeok#>
+</HDIF>
+
+<tr><td>------待审批内容展示完毕------
+</table>
+</textarea>
+  </form>
+<SCRIPT LANGUAGE="JavaScript">
+    alert('审批完毕，审批人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>，审批意见：<HDPrint Value=#AppAssign# Replace=#DBField2Js#>');
+
+    //如有打开页面，刷新打开页面
+    if (self.opener != null) {
+      try{
+        self.opener.location.reload();
+      }
+      catch(e){
+      }
+      window.opener = null;
+      window.open(' ', '_self', ' ');
+    }
+
+  if ('<HDPrint Value=#PAYFEE# Replace=#DBField2Js#>' - '<HDPrint Value=#dvalue# Replace=#DBField2Js#>' > 0  && '<HDPrint Value=#allvalue# Replace=#DBField2Js#>' - 0 != 0 && '<HDPrint Value=#AppAssign# Replace=#DBField2Js#>' == '同意'){
+    frmMail.submit();
+  }
+  else if (('<HDPrint Value=#PAYFEE# Replace=#DBField2Js#>' - '<HDPrint Value=#dvalue# Replace=#DBField2Js#>' <= 0 || '<HDPrint Value=#allvalue# Replace=#DBField2Js#>' - 0 == 0) && '<HDPrint Value=#AppAssign# Replace=#DBField2Js#>' == '转让授权')
+  {
+    frmMail.submit();
+  }
+  else{
+    window.close();
+  }
+
+  
+</SCRIPT>

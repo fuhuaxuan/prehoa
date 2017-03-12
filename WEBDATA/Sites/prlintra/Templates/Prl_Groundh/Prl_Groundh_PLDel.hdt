@@ -1,0 +1,72 @@
+<!--Js引入-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+
+<form name="frmDo" method="Post" action="">
+<h3 class="TitleBar"><HDPrint Value=#ModuleAtype#>-><HDPrint Value=#ModuleName#></h3>
+<div id="JQ_ToolBar">
+<table class="ButtonBar" cellpadding="0" cellspacing="0">
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A Href="javascript:CheckSubmit('删除');void(0);" name="btn_1"><FONT class="IconImport">　&nbsp;</FONT> 删除 </A>
+     |
+     <A Href="javascript:location.reload();void(0);" name="btn_1"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新 </A>
+    </td>
+  </TR>
+</TABLE>
+</div>
+
+<!--隐藏的一些控件-->
+<input type="hidden" name="UploadInfo" value="UploadInfo">
+<input type="hidden" name="LogImport" value="Log">
+
+<h3 class="SubTitleBar"><FONT style="padding-left:10px">请选择删除的地理位置</FONT></h3>
+<table width="100%" class="ListBar" cellpadding=0 cellspacing=1>
+  <col style="width:15%; padding-left:4px">
+  <col style="width:85%; padding-left:4px">
+  <tr>
+    <td class="DtlBarTitle">项目：<font color="red">*</font></td>
+    <td class="ListTD">
+    <select style="width:250px;" name="CompanyGid" class="JQMust">
+      <option value=''>--请选择--</option>
+      <HDPrint Value=#ComList# Replace=#None#>
+    </select>
+    </td>
+  </tr>
+</TABLE>
+</form>
+<!--JS区-->
+<SCRIPT LANGUAGE="JavaScript">
+  //复制一个工具栏
+  var $ToolBar = $("div#JQ_ToolBar");
+  //$("form[name=frmDo]").append($ToolBar.html());
+//提交函数
+function CheckSubmit(){
+  //提交时，验证必填项
+  if (!JQcheck("JQMust")){
+    return false;
+  }
+
+  if (!(confirm('你确定要删除批量删除地理位置吗？\n删除操作是不能还原的！'))) {
+    return false;
+  }
+
+  //获取当前表单对象
+  var JqObj = $("form[name=frmDo]");
+  //表单参数设定
+  JqObj.attr({
+    "action":'##HDNet_AppName##/__ExplainModule?Url=<HDPrint Value=#Url#>Save&UsrGid=<HDPrint Value=#UsrGid#>',
+    "target":'_self'
+  });
+  //表单提交
+  JqObj.submit();
+
+  //操作按钮变为不可用
+    $("a[name=btn_1]").prop("disabled",true);
+
+  //本函数失效
+  CheckSubmit = function() {return false;}
+}
+</SCRIPT>

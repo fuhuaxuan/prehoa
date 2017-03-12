@@ -1,0 +1,3 @@
+<HDLoop>
+<option value='<HDPrint Value=#Gid# Replace=#DBField2Input#>'><HDPrint Value=#name#></option>
+</HDLoop>

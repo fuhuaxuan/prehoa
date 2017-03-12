@@ -1,0 +1,108 @@
+[Permission]
+LIMIT1=FlowGid
+LIMITDesc1=StringSize[,0]
+LIMITRemind1=您选择的流程数据有误，请返回重新选择！
+
+;判断是否有该条信息
+SQL1=select 1 from wf_prl_fee where EntGid=__ENTGID__ and FlowGid=##FlowGid##
+Remind1=您指定的费用流程没有找到！<script>alert('您指定的费用流程没有找到！');window.close()</script>
+
+;检查判断的Sql语句，查不到结果是报错，从SQL1～SQL5，共可以写5句
+SQL2=select 1 from dual where ##AppAssign## = '否决' union select 1 from v_WF_Model_App v where v.EntGid = __ENTGID__ and v.ModelGid = ##ModelGid## and lower(v.ModelCode) like '%' || lower('_TB3') and ##AppAssign## = '同意'
+Remind2=对不起，下一步审批人高级副总裁/Coo未设置，请与管理员联系。<script>alert('对不起，下一步审批人高级副总裁/Coo未设置，请与管理员联系。');history.back()</script>
+
+;检查判断的Sql语句，查不到结果是报错，从SQL1～SQL5，共可以写5句
+;SQL2=select 1 from dual where ##AppAssign## <> '同意' union select 1 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##DeptGid## and v.atype=71 and ##AppAssign## = '同意'
+;Remind2=对不起，下一步审批人资产经理未设置，请与管理员联系。<script>alert('对不起，下一步审批人资产经理未设置，请与管理员联系。');history.back()</script>
+[Master]
+
+[Detail]
+;得到模型名称
+SqlForCondition1=select Code ModelCode, Name ModelName from wf_Model where ModelGid = ##ModelGid##
+
+;得到业务单据信息
+SqlForCondition2=select '本次申请金额：'||askfee||';申请目的：'||substr(target,0,50) flownote,nvl(askfee,0) + nvl(naskfee,0) askfee1,nvl(AVALUE,0) avalue,nvl(bVALUE,0) bvalue,nvl(cVALUE,0) cvalue,nvl(dVALUE,0) dvalue,nvl(eVALUE,0) evalue,(nvl(cVALUE,0) +nvl(dVALUE,0)+nvl(eVALUE,0)) allvalue, fillusrdeptgid,fillusrgid,doacode from WF_^^ModelCode^^ where FlowGid = ##FlowGid##
+
+;鹏瑞利管辖部门的扩展性：
+;5:部门助理;
+;10:部门经理(招商经理);
+;20:区域财务经理;
+;25:财务会计;
+;30:财务经理;
+;31:出纳付款;
+;35:执行总经理;
+;40:商场总经理;
+;50:区域总监;
+;71:资产经理 AssetManager
+SqlForCondition3=select b.usrgid nextappgid from  hr_emp b ,v_org_usr a,(select ExecGidEx from WF_Task_Define_Exec where TaskDefGid = (select TaskDefGid from WF_Task_Define where LOWER(Code) = 'prl_fee_tb3' and EntGid = __ENTGID__) ) c where a.usrgid = b.usrgid and c.ExecGidEx = a.orggid
+
+SqlForCondition4=select areaflag from prl_doa where code=##doacode##
+
+SqlForCondition5=select b.Email ThisEmail from  hr_emp b ,v_org_usr a,(select ExecGidEx from WF_Task_Define_Exec where TaskDefGid = (select TaskDefGid from WF_Task_Define where LOWER(Code) = 'prl_fee_tb3' and EntGid = __ENTGID__) ) c where a.usrgid = b.usrgid and c.ExecGidEx = a.orggid and ##nextappgid## != ##UsrGid## union select b.Email TC1Email from  hr_emp b ,v_org_usr a,(select ExecGidEx from WF_Task_Define_Exec where TaskDefGid = (select TaskDefGid from WF_Task_Define where LOWER(Code) = 'prl_fee_tc1' and EntGid = __ENTGID__) ) c where a.usrgid = b.usrgid and c.ExecGidEx = a.orggid and ##nextappgid## = ##UsrGid## and ##areaflag## != '10' and ##askfee1## - ##cvalue## > 0 and ##allvalue## - 0 != 0 union select b.Email TC2Email from  hr_emp b ,v_org_usr a,(select ExecGidEx from WF_Task_Define_Exec where TaskDefGid = (select TaskDefGid from WF_Task_Define where LOWER(Code) = 'prl_fee_tc3' and EntGid = __ENTGID__) ) c where a.usrgid = b.usrgid and c.ExecGidEx = a.orggid and ##nextappgid## = ##UsrGid## and ##areaflag## = '10' and ##askfee1## - ##cvalue## > 0 and ##allvalue## - 0 != 0
+
+SqlForCondition6= select a.acgother acgothertext from wf_^^ModelCode^^ A where  EntGid=__ENTGID__ and FlowGid = ##FlowGid##
+
+SqlForCondition7=select b.usrgid usrA1 from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##fillusrdeptgid## and b.gid = a.empgidex and atype=30 and b.usrgid is not null
+
+Sql1=select A.*,substr(acgtwoname,0,20) acgtwonametext,decode(a.acgother,null,'none','') acgotherdis,decode(a.confirmfee,null,'审批通过后回填',a.confirmfee||'  [确认时间：'||to_char(a.confirmdate,'yyyy.mm.dd hh24:mi')||']') confirmfeetext from wf_^^ModelCode^^ A where  EntGid=__ENTGID__ and FlowGid = ##FlowGid##
+
+sql2=select name acgotherdoatext from prl_doa where code='^^acgothertext^^'
+
+[Where]
+
+[DefaultWhere]
+DefaultWhere= 
+
+[OrderBy]
+1=
+
+[DefaultOrderBy]
+DefaultOrderBy=
+
+[GroupBy]
+
+[AddtionalSQL]
+;全部审批完成后更新流程主表
+SQL1=insert into WF_^^ModelCode^^_App (EntGid,FlowGid, DtlGid,AppStat, AppGid,AppName, AppAssign, Note,AppDate,apptype) values(__ENTGID__,##FlowGid##, sys_guid(),decode(##AppAssign##,'同意','12','13'), __USRGID__, __USRNAME__ || '[' || __USRCODE__ || ']', ##AppAssign##, ##Note##,sysdate,50)
+
+Sql2=update WF_^^ModelCode^^ set Stat = '13', LastUpdDate = sysdate where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## and ##AppAssign## = '否决'
+
+;Sql3=update WF_^^ModelCode^^ set Stat = '12', LastUpdDate = sysdate where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## and ##AppAssign## = '同意' and (##askfee1## - ##cvalue## <= 0 or ##allvalue## - 0  = 0) 
+
+[Title]
+Text1=^^ModelName^^
+Text2=
+Text3=
+Text4=
+Text5=
+log= TB1SAVE:flowgid:##flowgid##; ASKFEE: ##askfee1## - Cvalue:##cvalue## >0 and allvalue:##allvalue## - 0  != 0  AND areaflag:##areaflag##  ;nextappgid: ##nextappgid##;USRGID:##UsrGid##
+
+ChangePage=0
+
+
+;如果B1 !=B2
+WF1=WFFlowRun( ^^ModelCode^^_TB1 | ^^ModelCode^^_TB3 | NULL |  and ##AppAssign## = '同意' and ##nextappgid## != ##UsrGid## | 部门总监:同意 - ^^flownote^^)
+
+;areaflag = 10 ,说明doa是10,11,12,13,则，由资产总监变成部门总监审批，但是因为部门总监已经在B中审批过了，因此C1省略，直接到C2
+WF2=WFFlowRun( ^^ModelCode^^_TB1 | ^^ModelCode^^_TC1 | NULL | and ##nextappgid## = ##UsrGid## AND ##areaflag## != '10' and ##askfee1## - ##cvalue##> 0 and ##allvalue## - 0 != 0 and ##AppAssign## = '同意' | 部门总监:同意 - ^^flownote^^)
+
+WF3=WFFlowRun( ^^ModelCode^^_TB1 | ^^ModelCode^^_TC3 | NULL | and ##nextappgid## = ##UsrGid## AND ##areaflag## = '10' and ##askfee1## - ##cvalue##> 0 and ##allvalue## - 0 != 0 and ##AppAssign## = '同意' | 部门总监:同意 - ^^flownote^^)
+
+WF4=WFFlowRun( ^^ModelCode^^_TB1 | ^^ModelCode^^_Tconfirm | NULL | and ##AppAssign## = '同意' and ##nextappgid## = ##UsrGid## and (##askfee1## -  ##cvalue## <= 0 or ##allvalue## - 0 = 0)   | 部门总监审批通过，请确认 - ^^flownote^^)
+
+WF5=WFFlowRun( ^^ModelCode^^_TB1 | ^^ModelCode^^_TCC2 | usrA1 |   and (##askfee1## - ##cvalue##<= 0 or ##allvalue## - 0 = 0) and ##nextappgid## = ##UsrGid## | 部门总监:^^AppAssign^^ - ^^flownote^^)
+
+WF6=WFFlowRun( ^^ModelCode^^_TB1 | ^^ModelCode^^_TMOD | NULL | and ##AppAssign## = '否决' | 部门总监:否决 - ^^flownote^^)
+
+
+[Link]
+URL1=
+URL2=
+URL3=
+URL4=
+URL5=
+URL6=
+URL7=
+URL8=
+URL9=
+URL10=

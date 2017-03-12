@@ -1,0 +1,171 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<script language="javascript">
+  //自动获取高度
+  function changeHeight()
+  {
+    //改变 Iframe 高度
+    if(top != self)
+    {
+      window.parent.document.getElementById('iframeDtl').style.height = frmDtl.scrollHeight + 10;
+    }
+  }
+  //展开，折叠
+  function JQExpandEx(str)
+  {
+    JQExpand(str);
+    changeHeight();
+  }
+  //
+  function ShowAll(JsObj){
+    if (JsObj.checked == true){
+      $("tr[JQIndex=999]").css("display",'');
+    }
+    else{
+      $("tr[JQIndex=999]").css("display",'none');
+    }
+    changeHeight();
+  }
+</script>
+<form name="frmDtl" method="Post" action="">
+<table cellpadding="0" cellspacing="1" align="center" width="100%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:20%">
+  <col style="padding-left:4px;width:40%">
+  <col style="padding-left:4px;width:30%">
+  <TR>
+    <TD class="newtd2">单号:</TD>
+    <TD class="newtd3"><HDPrint Value=#Num#></td>
+    <td class="title" rowspan="3" align="center"><HDPrint Value=#ModelName#></td>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2">申请人:</TD>
+    <TD class="newtd3"><HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]</td>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2">申请日期:</TD>
+    <TD class="newtd3"><HDPrint Value=#CreateDate#></td>
+    <TD><font color="blue">状态:<HDPrint Value=#stat#></font></TD>
+  </TR>
+</table>
+<!--显示审批人信息-->
+<HDIF EqualNot(<HDPrint Value=#IsShow# Replace=#None#>, 0)>
+<HDPrint Value=#AppList# Replace=#None#>
+</HDIF>
+<h3 class="SubTitleBar" >
+<TABLE cellspacing="1" cellpadding="0" width="100%">
+  <col style="padding-left:4px;">
+  <col style="width:20px;" align="center">
+  <TR>
+    <TD align="left" style="padding-left:10px;"><b>鹏瑞利<HDPrint Value=#DeptName#>广场单据信息</b></TD>
+    <TD onclick="JQExpandEx('Order');" style="cursor:hand" class="IconUp">　&nbsp;</TD>
+  </TR>
+</TABLE>
+</h3>
+
+<table cellpadding="0" cellspacing="1" class="ListBar" width="100%" id="Order">
+  <col style="padding-left:4px;width:10%" valign="top">
+  <col style="padding-left:4px;width:40%" valign="top">
+  <col style="padding-left:4px;width:10%" valign="top">
+  <col style="padding-left:4px;width:40%" valign="top">
+  <tr>
+    <td class="DtlBarTitle">合同信息:</td>
+    <td class="listtd">
+     <a href="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ISFCode#>&UsrGid=<HDPrint Value=#UsrGid#>&ModelCode=<HDPrint Value=#ISFCode#>&FlowGid=<HDPrint Value=#ISFGid# Replace=#DBField2Input#>" target="_blank" id="a_ISF"><HDPrint Value=#ISFNum#></a>
+    </td>
+    <td class="DtlBarTitle">收银方式:</td>
+    <td class="listtd"><HDPrint Value=#CashWay#></td>
+  </tr>
+  <tr>
+    <td class="DtlBarTitle">承租方:</td>
+    <td class="listtd"><HDPrint Value=#Leasee#></td>
+    <td class="DtlBarTitle">承租方地址:</td>
+    <td class="listtd"><HDPrint Value=#Address#></td>
+  </tr>
+</table>
+<h3 class="SubTitleBar" >
+<TABLE cellspacing="1" cellpadding="0" width="100%">
+  <col style="padding-left:4px;">
+  <col style="width:20px;" align="center">
+  <TR>
+    <TD align="left" style="padding-left:10px;"><input type="checkbox" name="chk_1" onclick="ShowAll(this)"><b>显示全部合同条款信息</b></TD>
+    <TD onclick="JQExpandEx('tb_Contract');" style="cursor:hand" class="IconUp">　&nbsp;</TD>
+  </TR>
+</TABLE>
+</h3>
+<table width="100%" class="ListBar" cellpadding="0"  cellspacing="1" id="tb_Contract">
+  <colgroup>
+     <col style="width:10%">
+     <col style="width:5%" align="center">
+     <col style="width:25%">
+     <col style="width:25%">
+     <col style="width:10%">
+     <col style="width:20%">
+  </colgroup>
+  <thead>
+  <tr class="listtr">
+    <td>条款类别</td>
+    <td align="center">条款编号</td>
+    <td>条款原文</td>
+    <td>修改后条款</td>
+    <td>备注</td>
+    <td>法务备注</td>
+  </tr>
+  </thead>
+  <tbody>
+    <HDPrint Value=#DtlList# Replace=#None#>
+  </tbody>
+</table>
+<br>
+<h3 class="SubTitleBar" >
+<TABLE cellspacing="1" cellpadding="0" width="100%">
+  <col style="padding-left:4px;">
+  <col style="width:20px;" align="center">
+  <TR>
+    <TD align="left" style="padding-left:10px;"><b>其它条款</b>（<HDPrint Value=#OpAppOther# Replace=#None#>）</TD>
+    <TD onclick="JQExpand('tb_Other');" style="cursor:hand" class="IconUp">　&nbsp;</TD>
+  </TR>
+</TABLE>
+</h3>
+<table width="100%" class="ListBar" cellpadding="0"  cellspacing="1" id="tb_Other">
+  <colgroup>
+     <col style="width:5%" align="center">
+     <col style="width:60%">
+     <col style="width:10%">
+     <col style="width:20%">
+  </colgroup>
+  <thead>
+  <tr class="listtr">
+    <td align="center">行号</td>
+    <td align="center">条款内容</td>
+    <td>备注</td>
+    <td>法务备注</td>
+  </tr>
+  </thead>
+  <tbody>
+  <HDPrint Value=#OtherList# Replace=#None#>
+  </tbody>
+</table>
+<br>
+<table cellpadding="0" cellspacing="1" class="ListBar" width="100%" id="Order">
+  <col style="padding-left:4px;width:10%" valign="top">
+  <col style="padding-left:4px;width:90%" valign="top">
+  <tr>
+    <td class="DtlBarTitle">备注:</td>
+    <td class="listtd"><HDPrint Value=#Memo#></td>
+  </tr>
+<HDIF EqualNot(<HDPrint Value=#EndMemo# Replace=#None#>, )>
+  <tr>
+    <td class="DtlBarTitle">终止原因:</td>
+    <td class="listtd" colspan="3"><HDPrint Value=#EndMemo#></td>
+  </tr>
+</HDIF>
+  <tr>
+    <td class="DtlBarTitle">附件信息:</td>
+    <td class="listtd"><HDPrint Value=#AttachList# Replace=#None#></td>
+  </tr>
+</table>
+</form>

@@ -1,0 +1,14 @@
+<!--版本号：2013年3月份;此行不允许删除-->
+<hdloop>
+  <tr class="listtd" onmouseover="this.className='listtdfocus';" onmouseout="this.className='listtd'">
+    <td><HDPrint Value=#Year#></td>
+    <td>
+      <INPUT TYPE="text" NAME="LeftBudgutFee_1" maxlength="32" value="<HDPrint Value=#LeftFee# Replace=#DBField2Input#>" class="JQFloat JQMust" JQMin="<HDPrint Value=#YesFee# Replace=#DBField2Input#>">
+      <INPUT TYPE="hidden" NAME="Gid_1" maxlength="32" value="<HDPrint Value=#Gid# Replace=#DBField2Input#>" class="JQText">
+    </td>
+    <td><HDPrint Value=#fYesFee#></td>
+    <td><HDPrint Value=#pYesFee#></td>
+    <td><HDPrint Value=#bYesFee#></td>
+    <td><HDPrint Value=#YesFee#></td>
+  </tr>
+</hdloop>

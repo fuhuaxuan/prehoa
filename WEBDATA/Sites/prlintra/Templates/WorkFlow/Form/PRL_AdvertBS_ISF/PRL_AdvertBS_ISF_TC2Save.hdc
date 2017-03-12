@@ -1,0 +1,83 @@
+;版本号：2013年3月份（此行不允许删除）
+[Permission]
+LIMIT1=FlowGid
+LIMITDesc1=StringSize[,0]
+LIMITRemind1=您进入的路径不正确，请从正确的路径进入。
+
+SQL1=select 1 from WF_PRL_AdvertBS_ISF where EntGid = __ENTGID__ and FlowGid = ##FlowGid##
+Remind1=您指定的申请单没有找到。<script>alert('您指定的申请单没有找到。');window.close()</script>
+
+;判断WF_FLOW表中该流程是否在流转中的状态
+SQL2=select 1 from wf_Flow where EntGid=__ENTGID__ and FlowGid=##FlowGid## and Stat in ('1','2')
+Remind2=您指定的申请单目前不是审批阶段，不允许您再操作了。<script>alert('您指定的申请单目前不是审批阶段，不允许您再操作了。');window.close()</script>
+
+;判断WF_Task表中当前用户是否有该流程的待执行(stat=1)的任务
+SQL3=select 1 from wf_Task where EntGid=__ENTGID__ and FlowGid=##FlowGid## and ExecGid = __USRGID__ and stat=1
+Remind3=您暂时无法操作本页面，请与管理员联系！<script>alert('您暂时无法操作本页面，请与管理员联系！');window.close()</script>
+
+;检查判断的Sql语句，查不到结果是报错，从SQL1～SQL5，共可以写5句
+SQL4=select 1 from dual where ##AppAssign## = '否决' union select 1 from WF_Task_Define d, WF_Task_Define_Exec e,v_org_usr o, v_usr v where v.EntGid = __ENTGID__ and d.EntGid = __ENTGID__ and e.EntGid = __ENTGID__ and o.ENTGID = __ENTGID__ and d.Modelgid = e.ModelGid and e.execgidex = o.ORGGID and d.taskdefgid = e.taskdefgid  and o.USRGID = v.GID and d.ModelGid = ##ModelGid## and LOWER(d.Code) = lower('PRL_AdvertBS_ISF_TD') and  ##AppAssign## in ('同意','转让授权')
+Remind4=对不起，下一步审批人首席执行官/CEO未设置，请与管理员联系。<script>alert('对不起，下一步审批人首席执行官/CEO未设置，请与管理员联系。');history.back()</script>
+[Master]
+
+[Detail]
+;得到模型名称
+SqlForCondition1=select Code ModelCode, Name ModelName from wf_Model where ModelGid = ##ModelGid##
+
+;得到业务单据信息
+SQLForCondition2=select '申请人：' || ##CurUsrName##||';Serial No 编号：'||##SerialNo## AppFlowMemo from dual
+
+
+;取出流程主表信息。
+Sql1=select * from WF_^^ModelCode^^ where EntGid = __ENTGID__ and  FlowGid = ##FlowGid##
+
+;下一级审批人
+LoopSQL3=select b.Email from Usr a, v_org_usr o,hr_emp b ,(select ExecGidEx from WF_Task_Define_Exec where TaskDefGid = (select TaskDefGid from WF_Task_Define where LOWER(Code) = lower('^^ModelCode^^'||'_TD') and EntGid = __ENTGID__) ) c where a.gid = b.usrgid and o.ORGGID = c.ExecGidEx and o.USRGID =  a.gid and to_number(##PI## - 0) > 10000 
+LoopHDT3=Templates\WorkFlow\Form\^^ModelCode^^\LoopSQL_Email.hdt
+LoopVAR3=Emaillist
+[Where]
+
+[DefaultWhere]
+DefaultWhere= 
+
+[OrderBy]
+1=
+
+[DefaultOrderBy]
+DefaultOrderBy=
+
+[GroupBy]
+
+[AddtionalSQL]
+;更新主表信息
+Sql1=update WF_^^ModelCode^^ set Stat = decode(##AppAssign##,'同意','12','13'), LastUpdDate = sysdate where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## 
+
+;更新审批人
+SQL2=insert into Wf_^^ModelCode^^_App (EntGid,ModelGid,FlowGid,Gid,AppStat,AppGid,AppCode,AppName,AppType,AppAssign,AppMemo,AppDate) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),decode(##AppAssign##,'同意','12','13'),__USRGID__,__USRCODE__, __USRNAME__, '60',##AppAssign##, ##Note##,sysdate from dual
+
+[Title]
+Text1=^^ModelName^^
+Text2=
+Text3=
+Text4=
+Text5=
+
+ChangePage=0
+;10:部门经理;20:财务经理/FM;30:商场总经理/CM;40:总部推广总监/常务理事COO;50:资产总监(Hd Invest);60:首席财务官(CFO);70:首席执行官(CEO);71:Asset Manager
+WF1=WFFlowRun( ^^ModelCode^^_TC2 | ^^ModelCode^^_TD | null | and ##AppAssign## = '同意' | 首席财务官(CFO):^^AppAssign^^ - ^^AppFlowMemo^^)
+
+WF2=WFFlowRun( ^^ModelCode^^_TC2 | ^^ModelCode^^_TMod | null | and ##AppAssign## = '否决' | 首席财务官(CFO):^^AppAssign^^ - ^^AppFlowMemo^^)
+
+[Link]
+
+[Link]
+URL1=
+URL2=
+URL3=
+URL4=
+URL5=
+URL6=
+URL7=
+URL8=
+URL9=
+URL10=

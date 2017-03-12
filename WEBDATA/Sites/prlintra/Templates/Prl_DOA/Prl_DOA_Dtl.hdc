@@ -1,0 +1,110 @@
+;版本号：2013年6月份（此行不允许删除）
+[Permission]
+
+[Detail]
+;显示，单条数据的查询，可以用于HDT显示，有select命令。从SQL1～SQL20共支持20条
+;取出当前页面的信息
+SqlForCondition1=select Name ModeleName,Atype ModeleAtype from rt where lower(id) = lower(##Url##)
+
+;取出当前项目的信息
+SQL1=select c.Name ComName from PRL_COMPANY c where c.EntGid = __ENTGID__ and c.Gid = ##ComGID##
+
+;取出当前项目的信息
+SQL2=select gid ACGGid,Code ACGCode,NAME ACGName,decode(type,10,'父项目','子项目') ACGType,ParentGID,ParentName,decode(feeflag,10,'是','否') feeflag,decode(payflag,10,'是','否') payflag from v_ACG a where a.EntGid = __ENTGID__ and a.Gid = ##ACGGID##
+
+;显示DOA信息
+LoopSQL1=select r.faType,d.atype,d.Code,d.Name,d.A,d.B,d.C,d.D,d.E,d.F,d.TSTART,d.TEND,d.areaflag from PRL_DOA d,PRL_acg_DOA r where d.EntGid = __ENTGID__ and d.entgid = r.entgid and d.gid = r.doagid and r.acggid = ##ACGGID## order by r.faType,d.code
+
+select '费用单' FlowType,d.atype,d.Code,d.Name,d.A,d.B,d.C,d.D,d.E,d.F,d.TSTART,d.TEND,d.areaflag from PRL_DOA d, PRL_acg_DOA r where d.EntGid = __ENTGID__ and d.EntGid = r.EntGid and d.gid = r.doagid and r.acggid = ##ACGGID## union select '付款单' FlowType,d.atype,d.Code,d.Name,d.A,d.B,d.C,d.D,d.E,d.F,d.TSTART,d.TEND,d.areaflag from PRL_DOA d, PRL_acg_DOA r where d.EntGid = __ENTGID__ and d.EntGid = r.EntGid and d.gid = r.payDOAGID and r.acggid = ##ACGGID##
+LoopHDT1=Templates\Prl_DOA\LoopSql_DOAList.hdt
+LoopVAR1=DOAList
+
+;显示预算费用信息
+LoopSQL2=select s.* from v_PRL_ACG_Fee s where s.entgid = __ENTGID__ and s.COMGid = ##ComGid## and s.ACGGID = ##ACGGID## order by s.Year desc
+
+select s.*, (select nvl(sum(t.applyfee), 0) from v_FlowFee t where t.entgid = s.entgid and t.acggid = s.acggid and t.comgid = s.CompanyGid and t.year = s.year and t.atype = '费用单') afee, (select nvl(sum(t.applyfee), 0) from v_FlowFee t where t.entgid = s.entgid and t.acggid = s.acggid and t.comgid = s.CompanyGid and t.year = s.year and t.atype = '个人报销单') bfee, (select nvl(sum(t.applyfee), 0) from v_FlowFee t where t.entgid = s.entgid and t.acggid = s.acggid and t.comgid = s.CompanyGid and t.year = s.year and t.atype = '付款单') cfee, (select nvl(sum(t.applyfee), 0) from v_FlowFee t where t.entgid = s.entgid and t.acggid = s.acggid and t.comgid = s.CompanyGid and t.year = s.year) tfee from PRL_ACG_COMPANY s where s.entgid = __ENTGID__ and s.COMPANYGid = ##ComGid## and s.ACGGID = ##ACGGID## order by s.Year desc
+LoopHDT2=Templates\Prl_DOA\LoopSql_FeeList.hdt
+LoopVAR2=FeeList
+
+
+;select s.*, nvl(a.ApplyFee, 0) aFee, nvl(b.ApplyFee, 0) bFee, nvl(t.ApplyFee, 0) tFee from PRL_ACG_COMPANY s, v_FlowFee a, v_FlowFee b, v_FlowFee t where s.entgid = __ENTGID__ and s.COMPANYGid = ##ComGid## and s.ACGGID = ##ACGGID## and s.entgid = a.entgid(+) and s.acggid = a.acggid(+) and s.CompanyGid = a.comgid(+) and s.year = a.year(+) and a.atype(+) = '费用单' and s.entgid = b.entgid(+) and s.acggid = b.acggid(+) and s.CompanyGid = b.comgid(+)  and s.year = b.year(+) and b.atype(+) = '个人报销单' and s.entgid = t.entgid(+) and s.acggid = t.acggid(+) and s.CompanyGid = t.comgid(+)  and s.year = t.year(+) order by s.Year desc
+
+[AddtionalSQL]
+;操作，没有返回的结果，是在数据库中执行，有Insert, Update, Delete命令。从SQL1～SQL20共支持20条
+SQL1=
+
+[AddtionalSQLUseWhere]
+;显示，单条数据的查询，可以用于HDT显示，有select命令。从SQL1～SQL20共支持20条，同时会使用上面的[where]中的sql语句
+;示例
+Sql1=
+
+[Master]
+;显示，多条记录的查询，可在HDT页面中直接使用<HDLoop>显示，并能够提供翻页。and '^^NotFirst^^' = '1'
+SQL=select s.* from PRL_DOA_Rcd s where s.EntGid = __ENTGID__ and s.COMPANYGid = ##ComGid## and s.ACGGID = ##ACGGID##
+
+Count=select Count(*) from PRL_DOA_Rcd s where s.EntGid = __ENTGID__ and s.COMPANYGid = ##ComGid## and s.ACGGID = ##ACGGID##
+
+[DefaultWhere]
+;多条记录的查询的默认条件
+DefaultWhere=
+
+[Where]
+;多条记录的查询的条件，可以根据页面传入的变量组合成
+
+[GroupBy]
+;多条记录的查询的分组
+GroupBy=
+
+[DefaultOrderBy]
+;多条记录的查询的默认排序
+DefaultOrderBy=s.CreateDate desc
+
+[OrderBy]
+;多条记录的查询的排序,支持多重排序排序的先后顺序由序号决定
+1=##selOrderBy##
+
+[Title]
+;页面的标题，从Text1～Text30共支持30条
+
+Text1=^^ModeleAtype^^-^^ModeleName^^
+
+;是否翻页：1是，0否
+ChangePage=1
+
+;翻页时的每页记录数，如果没有的话，则取HDNet默认值20
+ChangePageRow=10
+
+;写入数据库日志
+Log=
+
+;页面显示: 0:BodyPage;1:DetailPage;2:BlankPage
+PageKind=2
+
+[Link]
+;按钮权限，从URL1~URL10共支持10个，内容放的是RT表的权限，在页面返回的变量为chkRtID1~chkRtID10
+URL1=
+URL2=
+URL3=
+URL4=
+URL5=
+URL6=
+URL7=
+URL8=
+URL9=
+URL10=
+
+
+;以下内容是为了让ExplainAjax引擎来读的。对ExplainModule引擎来说，忽略此部分内容。
+[Ajax]
+;此Section“[Ajax]”,表明以下内容是为了Ajax应用而配置的文件。
+;需要显示一条的内容，可以支持21条, Detail, Detail1～Detail20
+Detail=
+
+;需要循环显示的内容,可以支持11条，Master, Master1～Master10
+Master=
+
+;实现对数据库进行的操作，可以支持20条, AddtionalSQL1～AddtionalSQL20
+AddtionalSQL1=
+
+;实现对数据库进行的循环操作，可以支持20条, LoopSQL1～LoopSQL20
+LoopSQL1=

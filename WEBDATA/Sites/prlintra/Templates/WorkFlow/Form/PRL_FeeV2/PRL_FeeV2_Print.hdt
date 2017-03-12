@@ -1,0 +1,110 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<style type="text/css">
+.PrintTdRT {
+  border-right:1 solid black;
+  border-top:1 solid black;
+}
+</style>
+<table style="width:645;margin-top:10px;" align="center" border="0" cellpadding="0" cellspacing="0">
+  <col style="width:30%">
+  <col style="width:40%">
+  <col style="width:30%">
+  <tr>
+    <td class="Title" align="center" colspan="3" style="font-size:18pt"><HDPrint Value=#ModelName#></td>
+  </tr>
+  <tr>
+    <td align="center" colspan="3">--状态：<HDPrint Value=#stattext#></td>
+  </tr>
+  <tr>
+    <td align="center"><B>单号</B>：<HDPrint Value=#Num#></td>
+    <td align="center"><B>申请人</B>：<HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillUsrDept#>]</td>
+    <td align="center"><B>申请时间</B>：<HDPrint Value=#CreateDate#></td>
+  </tr>
+</table>
+<table width="645" cellspacing="0" cellpadding="0" align="center" style="border-left:1 solid black;">
+<col style="width:10%">
+<col style="width:60%">
+<col style="width:10%">
+<col style="width:20%">
+<tr>
+  <td class="PrintTdRT">公司名称：</td>
+  <td class="PrintTdRT" colspan="3"> <HDPrint Value=#companyname#></td>
+</tr>
+<tr>
+  <td class="PrintTdRT">项目名称：</td>
+  <td class="PrintTdRT" colspan="3"><HDPrint Value=#acgonename#> - <HDPrint Value=#acgtwoname#></td>
+</tr>
+<tr>
+  <td class="PrintTdRT">DOA信息： </td>
+  <td class="PrintTdRT" colspan="3"><HDPrint Value=#DOACODE#>- <HDPrint Value=#DOAName#></td>
+</tr>
+<tr>
+  <td class="PrintTdRT">申请目的</td>
+  <td class="PrintTdRT"><HDPrint Value=#target#></td>
+</tr>
+<tr>
+  <td class="PrintTdRT">申请项目内容</td>
+  <td class="PrintTdRT"><HDPrint Value=#Memo#></td>
+</tr>
+<tr>
+  <td  class="PrintTdRT" align="center" colspan="4">
+供应商报价QUOTATION BY VENDOR<br>
+（按例采购需采取货比三家  As a rule, purchase should have quotation from 3 vendors）
+  </td>
+</tr>
+</table>
+<table width="645" cellspacing="0" cellpadding="0" align="center" style="border-left:1 solid black;">
+  <tr>
+    <td class="PrintTdRT">报价/供应商</td>
+    <td class="PrintTdRT">供应商 Vendor1</td>
+    <td class="PrintTdRT">供应商 Vendor2</td>
+    <td class="PrintTdRT">供应商 Vendor3</td>
+    <td class="PrintTdRT">供应商 Vendor4</td>
+    <td class="PrintTdRT">供应商 Vendor5</td>
+    <td class="PrintTdRT">供应商 Vendor6</td>
+  </tr>
+  <tr>
+    <td class="PrintTdRT">供应商</td>
+    <td class="PrintTdRT"><font color="blue"><b><HDPrint Value=#VENDORname1#></b></font></td>
+    <td class="PrintTdRT"><font color="blue"><b><HDPrint Value=#VENDORname2#></b></font></td>
+    <td class="PrintTdRT"><font color="blue"><b><HDPrint Value=#VENDORname3#></b></font></td>
+    <td class="PrintTdRT"><font color="blue"><b><HDPrint Value=#VENDORname4#></b></font></td>
+    <td class="PrintTdRT"><font color="blue"><b><HDPrint Value=#VENDORname5#></b></font></td>
+    <td class="PrintTdRT"><font color="blue"><b><HDPrint Value=#VENDORname6#></b></font></td>
+  </tr>
+  <tr>
+    <td class="PrintTdRT">报价</td>
+    <td class="PrintTdRT"><HDPrint Value=#VENDORfee1#></td>
+    <td class="PrintTdRT"><HDPrint Value=#VENDORfee2#></td>
+    <td class="PrintTdRT"><HDPrint Value=#VENDORfee3#></td>
+    <td class="PrintTdRT"><HDPrint Value=#VENDORfee4#></td>
+    <td class="PrintTdRT"><HDPrint Value=#VENDORfee5#></td>
+    <td class="PrintTdRT"><HDPrint Value=#VENDORfee6#></td>
+  </tr>
+</table>
+<table width="645" cellspacing="0" cellpadding="0" align="center" style="border-left:1 solid black;">
+<col style="width:10%">
+<col style="width:10%">
+<col style="width:10%">
+<col style="width:10%">
+<col style="width:10%">
+<col style="width:25%">
+<tr>
+  <td class="PrintTdRT">推荐及理由</td>
+  <td class="PrintTdRT" colspan="5"><HDPrint Value=#reason#></td>
+</tr>
+<tr>
+  <td class="PrintTdRT">剩余预算金额</td>
+  <td class="PrintTdRT"><HDPrint Value=#controlfee#></td>
+  <td class="PrintTdRT">本次申请金额</td>
+  <td class="PrintTdRT"><HDPrint Value=#askfee#></td>
+  <td class="PrintTdRT">本次实际金额</td>
+  <td class="PrintTdRT"><HDPrint Value=#confirmfeetext#></td>
+</tr>
+</table>
+<HDPrint Value=#AppList# Replace=#None#>
+<script language="javascript">
+  window.print();
+</script>

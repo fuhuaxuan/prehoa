@@ -1,0 +1,206 @@
+<!--  脚本加载  -->
+<script language="javascript" src="##GetWebRootPath(/Scripts/JSCalendar.js)##"></script>
+<script language="JavaScript" src="##GetWebRootPath(/Scripts/Common.js)##"></Script>
+<form name="frmDo" method="Post" action="">
+<table border=0 cellspacing=0 cellpadding=1 class=searchtb  width="100%">
+  <col style="padding-left:4px;width:80">
+  <col style="padding-left:4px;width:120">
+  <col style="padding-left:4px;width:70">
+  <col style="padding-left:4px;width:100">
+  <col style="padding-left:4px;width:60">
+  <col style="padding-left:4px;width:100">
+  <col style="padding-left:4px;width:60">
+  <col style="padding-left:4px;width:100">
+  <tr class=searchtr2>
+    <td colspan=8><b>您的所有流程实例</b></td>
+  </tr>
+  <tr>
+    <td title="精确查询">流程名称 = </td>
+    <td>
+      <select name="selModelGid" style="width:90%">
+      <option value="">--请选择--</option>
+      <HDPrint Value=#WF_Model_Option# Replace=#None#>
+      </select>
+    </td>
+    <td title="模糊查询">流程名称 ≈ </td>
+    <td><input name="selModelName" maxlength=16 style="width:90%" ></td>
+    <td>流程分类</td>
+    <td>
+      <select name="selModelType" style="width:90%">
+      <option value="">--请选择--</option>
+      <HDPrint Value=#WF_Model_Type# Replace=#None#>
+      </select>
+    </td>
+    <td>流程状态</td>
+    <td>
+      <select name="selStat" style="width:90%">
+      <option value="">--请选择--</option>
+      <option value="0">未执行</option>
+      <option value="1">待执行</option>
+      <option value="2">执行中</option>
+      <option value="3" style="color:blue">已完成</option>
+      <option value="4"><font color="gray">已停止</font></option>
+      <option value="5" style="color:red">已作废</option>
+      <option value="6" style="color:red">已超时</option>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td>开始时间从</td>
+    <td><input name="txtCreateDate1" onclick='showCalender(this,this,"1")' maxlength=16 style="width:90%"></td>
+    <td>到</td>
+    <td><input name="txtCreateDate2" onclick='showCalender(this,this,"1")' maxlength=16 style="width:90%"></td>
+    <td>结束时间从</td>
+    <td><input name="txtFinishDate1" onclick='showCalender(this,this,"1")' maxlength=16 style="width:90%"></td>
+    <td>到</td>
+    <td><input name="txtFinishDate2" onclick='showCalender(this,this,"1")' maxlength=16 style="width:90%"></td>
+  </tr>
+  <tr>
+    <td title="可以输入发起人代码，或者发起人姓名">发起人信息 ≈ </td>
+    <td><input name="txtCreaterCode" maxlength=16 style="width:90%"></td>
+    <td title="可以输入参与人代码，或者参与人姓名">参与人信息 ≈ </td>
+    <td><input name="txtExecInfo" maxlength=16 style="width:90%"></td>
+    <td>实例备注 ≈ </td>
+    <td><input name="txtFlowNote" maxlength=100 style="width:95%"></td>
+    <td>待执行人 ≈ </td>
+    <td> <input name="txtTsName" maxlength=100 style="width:95%"> </td>
+  </tr>
+  <tr>
+    <td>排序 </td>
+    <td>
+      <select name="SelOrderBy" style="width:90%">
+      <option value="">--请选择--</option>
+      <option value="a.CreateDate Desc"> 开始时间逆序</option>
+      <option value="a.CreateDate"> 开始时间顺序</option>
+      <option value="a.FINISHDATE desc, a.CreateDate Desc"> 结束时间逆序</option>
+      <option value="a.FINISHDATE, a.CreateDate Desc"> 结束时间顺序</option>
+      <option value="b.Name Desc"> 流程名称逆序</option>
+      <option value="b.Name"> 流程名称顺序</option>
+      <option value="a.CreaterName Desc"> 发起人逆序</option>
+      <option value="a.CreaterName"> 发起人顺序</option>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="8">
+    <div id="Production_id" style="display:none;">
+      <li><B>实例备注：</B>如果需要查询多个条件，请在条件中间加入"<FONT COLOR="red">%</FONT>"，例如“<FONT COLOR="red">条件1%条件2</FONT>”，注意，<B>条件1和条件2的先后顺序必须与实例备注中一致</B>；</li>
+      <li><B>发起人信息：</B>可以查询用户代码或者用户名称；</li>
+      <li><B>参与人信息：</B>可以查询用户代码或者用户名称，<FONT COLOR="red">这项查询速度可能较慢，请耐心等待</FONT>；</li>
+      <li><B>日期格式：</B>YYYY.MM.DD HH:MI</li>
+    </div>
+    </td>
+    <SCRIPT LANGUAGE="JavaScript">
+    <!--
+      var objPro = document.all.Production_id.style
+      function ShowPro()
+      {
+        if (objPro.display == 'none')
+        {
+           objPro.display = '';
+           document.all.Href_id.innerHTML = '<b><font face=" " size="2"  color="white">^</font><font color="white">隐藏说明信息</font></b>';
+        }
+        else 
+        {
+          objPro.display = 'none';
+          document.all.Href_id.innerHTML = '<b><font face=" " size="2"  color="white">v</font><font color="white">显示说明信息</font></b>';
+        }
+      }
+    //-->
+    </SCRIPT>
+  </tr>
+  <tr class=searchtr2>
+    <TD colspan=6><a href="javascript:void(0)" onclick="ShowPro()" id="Href_id"><B><font face=" " size="2"  color="white">v</font><font color="white">显示说明信息</font></B></a></TD>
+    <td colspan=2 align=center>
+      <INPUT TYPE="hidden" name="NotFirst" value="1">
+      <input type="submit" name="sbtRunQuery" value=" 查询 " class="NormalSbt" onclick="return sb()">
+      <INPUT TYPE="reset" value=" 默认 " class="NormalSbt">
+    </td>
+</tr>
+</table>
+<BR>
+<SCRIPT LANGUAGE="JavaScript">
+  //保留查询条件
+  document.all.selModelGid.value = '<HDPrint Value=#selModelGid# Replace=#DBField2Js#>';
+  document.all.txtCreaterCode.value = '<HDPrint Value=#txtCreaterCode# Replace=#DBField2Js#>';
+  document.all.txtExecInfo.value = '<HDPrint Value=#txtExecInfo# Replace=#DBField2Js#>';
+  document.all.selStat.value = '<HDPrint Value=#selStat# Replace=#DBField2Js#>';
+  document.all.txtCreateDate1.value = '<HDPrint Value=#txtCreateDate1# Replace=#DBField2Js#>';
+  document.all.txtCreateDate2.value = '<HDPrint Value=#txtCreateDate2# Replace=#DBField2Js#>';
+  document.all.txtFinishDate1.value = '<HDPrint Value=#txtFinishDate1# Replace=#DBField2Js#>';
+  document.all.txtFinishDate2.value = '<HDPrint Value=#txtFinishDate2# Replace=#DBField2Js#>';
+  document.all.txtFlowNote.value = '<HDPrint Value=#txtFlowNote# Replace=#DBField2Js#>';
+  document.all.selModelName.value = '<HDPrint Value=#selModelName# Replace=#DBField2Js#>';
+  document.all.selModelType.value = '<HDPrint Value=#selModelType# Replace=#DBField2Js#>';
+  document.all.txtTsName.value = '<HDPrint Value=#txtTsName# Replace=#DBField2Js#>';
+  document.all.SelOrderBy.value = '<HDPrint Value=#SelOrderBy# Replace=#DBField2Js#>';
+
+  function sb()
+  {
+    if (!isValidDateTime(document.all.txtCreateDate1.value)){
+      alert('请输入正确的时间格式，YYYY.MM.DD HH24:MI！');
+      document.all.txtCreateDate1.focus();
+      return false;
+    }
+    if (!isValidDateTime(document.all.txtCreateDate2.value)){
+      alert('请输入正确的时间格式，YYYY.MM.DD HH24:MI！');
+      document.all.txtCreateDate2.focus();
+      return false;
+    }
+    if (!isValidDateTime(document.all.txtFinishDate1.value)){
+      alert('请输入正确的时间格式，YYYY.MM.DD HH24:MI！');
+      document.all.txtFinishDate1.focus();
+      return false;
+    }
+    if (!isValidDateTime(document.all.txtFinishDate2.value)){
+      alert('请输入正确的时间格式，YYYY.MM.DD HH24:MI！');
+      document.all.txtFinishDate2.focus();
+      return false;
+    }
+    return true;
+  }
+</SCRIPT>
+<HDPageBar>
+<table border=0 cellspacing=1 cellpadding=0 class=listtb  width="100%">
+  <col style="padding-left:2px;padding-right:2px;width:180">
+  <col style="padding-left:2px;padding-right:2px;width:300">
+  <col style="padding-left:2px;padding-right:2px;width:50">
+  <col style="padding-left:2px;padding-right:2px;width:140" align=center>
+  <col style="padding-left:2px;padding-right:2px;width:140" align=center>
+  <col style="padding-left:2px;padding-right:2px;width:50" align=center>
+  <col style="padding-left:2px;padding-right:2px;width:80" align=center>
+  <col style="padding-left:2px;padding-right:2px;width:65" align=center>
+  <tr class=listtr1>
+    <td>工作流程名称</td>
+    <td>实例备注</td>
+    <td>发起人</td>
+    <td>开始时间</td>
+    <td>结束时间</td>
+    <td>状态</td>
+    <td>待执行人</td>
+    <td>操作</td>
+  </tr>
+  <HDLoop>
+  <tr valign=top>
+    
+    <td class=newtd3>
+      <A HREF="##HDNet_AppName##/WFFlowPage?UsrGid=<HDPrint Value=#UsrGid#>&Url=<HDPrint Value=#ModelCode#>&ModelGid=<HDPrint Value=#ModelGid#>&FlowGid=<HDPrint Value=#FlowGid#>" target="_blank"><HDPrint Value=#ModelName#></A>
+    </td>
+    <td class=newtd3><HDPrint Value=#FlowNote# Replace=#None#></td>
+    <td class=newtd3><HDPrint Value=#CreaterName#></td>
+    <td class=newtd3><HDPrint Value=#FlowCreateDate#></td>
+    <td class=newtd3><HDPrint Value=#FlowFinishDate#></td>
+    <td class=newtd3><HDPrint Value=#Flowstat# Replace=#None#></td>
+    <td class=newtd3><HDPrint Value=#tsname# Replace=#None#></td>
+    <td class=newtd3>
+      <A HREF="##HDNet_AppName##/__ExplainModule?UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Input#>&url=WFFlowTrace&flowgid=<HDPrint Value=#flowgid#>&modelgid=<HDPrint Value=#modelgid#>" target="_blank">执行过程</A>
+    </td>
+  </tr>
+  </HDLoop>
+  <tr>
+    <td colspan=12 class=listtr1>
+      <INPUT class="NormalSbt" type="button" value=" 刷新 " onclick="location.reload();">
+    </td>
+  </tr>
+</table>
+</form>

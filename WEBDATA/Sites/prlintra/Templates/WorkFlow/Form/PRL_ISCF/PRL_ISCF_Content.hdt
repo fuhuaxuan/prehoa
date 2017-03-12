@@ -1,0 +1,320 @@
+<form name="frmDo" method="Post" action="">
+<!--<标准>-->
+
+  <INPUT TYPE="hidden" name="DeptGid" value="<HDPrint Value=#DeptGid#>">
+  <INPUT TYPE="hidden" name="DeptCode" value="<HDPrint Value=#DeptCode#>">
+  <INPUT TYPE="hidden" name="DeptName" value="<HDPrint Value=#DeptName#>">
+  <!-- 流程信息 -->
+  <INPUT TYPE="hidden" name="ModelGid" value="<HDPrint Value=#ModelGid#>">
+  <INPUT TYPE="hidden" name="FlowGid" value="<HDPrint Value=#NewGid#>">
+  <INPUT TYPE="hidden" name="Num" value="<HDPrint Value=#NewNum#>">
+  <INPUT TYPE="hidden" name="BudgetRate" value="">
+  <INPUT TYPE="hidden" name="PM" value="">
+<br>
+<HDPrint Value=#applist# Replace=#None#>
+  <br>
+ <table cellspacing="1">
+  <col style="padding-left:20px;width:200">
+  <tr class="listtr2"><td><b>单据内容</b></td></tr>
+</table>
+<table class="newtb" cellspacing="1" cellpadding="0" align=center width="100%">
+  <col style="padding-left:4px;padding-right:4px;width:100;">
+  <col style="padding-left:4px;padding-right:4px;width:120;">
+  <col style="padding-left:4px;padding-right:4px;width:100;">
+  <col style="padding-left:4px;padding-right:4px;width:120;">
+  <col style="padding-left:4px;padding-right:4px;width:100;">
+  <col style="padding-left:4px;padding-right:4px;width:120;">
+  <col style="padding-left:4px;padding-right:4px;width:100;">
+  <col style="padding-left:4px;padding-right:4px;width:120;">
+  <tr>
+    <td class=newtd2 colspan="1">Department :<br> 部门 </td>
+    <td class=newtd3 colspan="4"><HDPrint Value=#dept# Replace=#None#>&nbsp;</td>
+    <td class=newtd3  colspan="3" rowspan="2">
+      <table cellspacing="1" cellpadding="0" align=center style="width:100%">
+       <col style="padding-left:4px;padding-right:4px;width:100;">
+       <col style="padding-left:4px;padding-right:4px;width:120;">
+      <tr>
+        <td class=newtd2>Unit No. : <br>单位 </td>
+        <td class=newtd3><HDPrint Value=#unit# Replace=#None#>&nbsp;</td>
+      </tr>
+      <tr>
+        <td class=newtd2>Area : <br>面积</td>
+        <td class=newtd3><HDPrint Value=#area# Replace=#None#> sqm/平方米</td>
+      </tr>
+    <HDIF Equal(<HDPrint Value=#modarea1# Replace=#None#>, 是)>
+
+      <tr>
+        <td class=newtd2  style="color:blue">New Area : <br>新面积 </td>
+        <td class=newtd3  style="color:blue"><HDPrint Value=#newarea# Replace=#None#>sqm/平方米<br>
+        修改原因：<HDPrint Value=#modareareason# Replace=#None#>
+        </td>
+      </tr>
+    </HDIF>
+      <tr>
+        <td class=newtd2>Trade/Trade Code  : <br> 业态/ 业态代号</td>
+        <td class=newtd3><HDPrint Value=#tradename# Replace=#None#>&nbsp;</td>
+      </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td class=newtd2>Category : <br>类别: </td>
+    <td class=newtd3 colspan="4"><HDPrint Value=#atype# Replace=#None#>
+    <br>
+    <br><HDPrint Value=#categoryt# Replace=#None#><HDPrint Value=#categorytext# Replace=#None#>
+    </td>
+  </tr>
+  <tr>
+    <td class=newtd3 colspan="8">A.</td>
+  </tr>
+  <tr>
+    <td class=newtd2>Tenant/Licensee :<br>租户&nbsp;</td>
+    <td class=newtd3 colspan="3"><HDPrint Value=#lessee# Replace=#None#>&nbsp;</td>
+    <td class=newtd2>Trading Name :<br>商店营业名称&nbsp;</td>
+    <td class=newtd3 colspan="3"><HDPrint Value=#tradingname# Replace=#None#>&nbsp;</td>
+  </tr>
+  <tr>
+    <td class=newtd2>Address : <br>地址&nbsp;</td>
+    <td class=newtd3 colspan="7"><HDPrint Value=#address# Replace=#None#>&nbsp;</td>
+  </tr>
+  <tr>
+    <td class=newtd2>Contact Person :<br>联系人&nbsp;</td>
+    <td class=newtd3><HDPrint Value=#contactor# Replace=#None#>&nbsp;</td>
+    <td class=newtd2>Phone :<br>电话号码&nbsp;</td>
+    <td class=newtd3><HDPrint Value=#phone# Replace=#None#>&nbsp;</td>
+    <td class=newtd2>E-mail :<br>电子邮件&nbsp;</td>
+    <td class=newtd3><HDPrint Value=#email# Replace=#None#>&nbsp;</td>
+    <td class=newtd2>Fax :<br>传真号码&nbsp;</td>
+    <td class=newtd3><HDPrint Value=#fax# Replace=#None#>&nbsp;</td>
+  </tr>
+  <tr>
+    <td class=newtd3 colspan="8">B.</td>
+  </tr>
+  <tr>
+    <td class=newtd2>Lease Term :<br>租赁期限&nbsp; </td>
+    <td class=newtd3 colspan="2"><HDPrint Value=#leasetermy# Replace=#None#>年/
+      <HDPrint Value=#leasetermm# Replace=#None#> 月/
+       <HDPrint Value=#leasetermd# Replace=#None#> 日
+    </td>
+    <td class=newtd2>Handover Date :<br>交付日期&nbsp; </td>
+    <td class=newtd3><HDPrint Value=#handoverdate# Replace=#None#></td>
+    <td class=newtd2>Related Party :<br>牵连关系实体交易&nbsp;</td>
+    <td class=newtd3 colspan="3"><HDPrint Value=#related# Replace=#None#>&nbsp;</td>
+  </tr>
+  <tr>
+    <td class=newtd2>Free of rent Period :<br>免租期&nbsp;</td>
+    <td class=newtd3 colspan="1"><HDPrint Value=#freerentm# Replace=#None#> 月/
+    <HDPrint Value=#freerentd# Replace=#None#> 天</td>
+    <td class=newtd3 colspan="2">
+    （ <HDPrint Value=#freerentdate1# Replace=#None#> ~     <HDPrint Value=#freerentdate2# Replace=#None#>）</td>
+    <td class=newtd2>Fit-Out Period :<br>装修期&nbsp;</td>
+    <td class=newtd3 colspan="1"><HDPrint Value=#fitoutm# Replace=#None#> 月/<HDPrint Value=#fitoutd# Replace=#None#> 天</td>
+    <td class=newtd3 colspan="2">
+    （ <HDPrint Value=#fitoutdate1# Replace=#None#> ~ <HDPrint Value=#fitoutdate2# Replace=#None#>）</td>
+  </tr>
+  <tr>
+    <td class=newtd2>Contract start Date：<br>合同起始日期&nbsp; </td>
+    <td class=newtd3><HDPrint Value=#contractdate1# Replace=#None#></td>
+    <td class=newtd2>Expiry Date :<br>截止日期&nbsp; </td>
+    <td class=newtd3><HDPrint Value=#contractdate2# Replace=#None#></td>
+    <td class=newtd2>Details :<br>细节&nbsp;</td>
+    <td class=newtd3 colspan="3"><HDPrint Value=#detail# Replace=#None#></td>
+  </tr>
+  <tr>
+    <td class=newtd3 colspan="4"><HDPrint Value=#rate# Replace=#None#> &nbsp;    </td>
+    <td class=newtd2 colspan="1">Method of collection:<br>收银方式
+    <td class=newtd3 colspan="3"><HDPrint Value=#collection# Replace=#None#>
+
+    </td>
+  </tr>
+</table>
+<br>
+<table class="newtb" width="100%" cellspacing="1" cellpadding="0" align=center>
+  <colgroup>
+    <col width="130"  />
+    <col width="100"  />
+    <col width="100"  />
+    <col width="100"  />
+    <col width="100"  />
+    <col width="100"  />
+    <col width="100"  />
+    <col width="100"  />
+    <col width="100"  />
+    <col width="100"  />
+  </colgroup>
+  <tr class="newtd1">
+    <td colspan="3">
+    1st Term Base Rental (RMB)<br>
+    第一租赁期固定租金（人民币）</td>
+    <td colspan="2">物业管理费</td>
+    <td>A&P 市场推广费</td>
+    <td>GTO Rent Structure<br>
+    提成租金构造</td>
+    <td colspan="2" >
+    Projected GTO<br>
+    预估营业额</td>
+    <td >Projected GTO Rent<br>
+    预估提成租金</td>
+  </tr>
+  <tr class="newtd1">
+    <td>　</td>
+    <td>psm/day<br>
+    每平方米/天</td>
+    <td>total/mth<br>
+    每月总数</td>
+    <td>psm/day<br>
+    每平方米/天</td>
+    <td>total/mth<br>
+    每月总数</td>
+    <td>Details 
+    细节</td>
+    <td>Details 细节</td>
+    <td>psm/day<br>
+    每平方米/天</td>
+    <td>total/mth<br>
+    每月总数</td>
+    <td>psm/day<br>
+    每平方米/天</td>
+  </tr>
+    <HDLoop>
+    <tr class="newtd1"> 
+    <td >
+    <div style="display: <HDPrint Value=#displayfreerent# Replace=#None#>"><HDPrint Value=#freerentdate1# Replace=#None#> ~ <HDPrint Value=#freerentdate2# Replace=#None#></div>
+    <div style="display: <HDPrint Value=#displayyear# Replace=#None#>">Yr <HDPrint Value=#yeartypetext1# Replace=#None#><br>第<HDPrint Value=#yeartypetext1# Replace=#None#>年</div>
+    </td>
+    <td class="newtd3"><HDPrint Value=#tbrd# Replace=#None#></td>
+    <td class="newtd3"><HDPrint Value=#tbrm# Replace=#None#></td>
+    <td class="newtd3"><HDPrint Value=#pmfd# Replace=#None#></td>
+    <td class="newtd3"><HDPrint Value=#pmfm# Replace=#None#></td>
+    <td class="newtd3"><HDPrint Value=#apvalue# Replace=#None#> <HDPrint Value=#aptext# Replace=#None#> </td>
+    <td class="newtd3"><HDPrint Value=#gto# Replace=#None#> %</td>
+    <td class="newtd3"><HDPrint Value=#progtod# Replace=#None#></td>
+    <td class="newtd3"><HDPrint Value=#progtom# Replace=#None#></td>
+    <td class="newtd3"><HDPrint Value=#progtorent# Replace=#None#></td>
+  </tr>
+    </HDLoop>   
+
+
+
+</table><br>
+<table class="newtb" width="100%" cellspacing="1" cellpadding="0" align=center>
+  <colgroup>
+    <col width="100" />
+    <col width="80" />
+    <col width="80" />
+    <col width="120" />
+    <col width="80" />
+    <col width="50" />
+    <col width="100" />
+    <col width="120" />
+    <col width="80" />
+  </colgroup>
+  <tr> 
+    <td class="newtd2">RMB<br>人民币</td>
+    <td class="newtd2">psm/day<br>每平方米/天</td>
+    <td class="newtd2">total/mth<br>每月总数</td>
+    <td class="newtd3" colspan="4"></td>
+    <td class="newtd2">Gross Rental Comparison<br>    租金比拟</td>
+    <td class="newtd2">RMB<br/>人民币</td>
+  </tr>
+  <tr>
+    <td class="newtd2">Property Mgmt Fee :<br/>物业管理费</td>
+    <td class="newtd3"><HDPrint Value=#pmfd# Replace=#None#>&nbsp;</td>
+    <td class="newtd3"><HDPrint Value=#pmfm# Replace=#None#>&nbsp;</td>
+    <td class="newtd2">Advance Gross Rent :<br/>预付租金 + 物业管理费</td>
+    <td class="newtd3"><HDPrint Value=#agr# Replace=#None#> &nbsp;</td>
+    <td class="newtd3">RMB<br/>人民币</td>
+    <td class="newtd2"><font color="red">New :<br>新</font></td>
+    <td class="newtd3"><HDPrint Value=#brcnew# Replace=#None#> &nbsp;</td>
+    <td class="newtd3">psm/day<br>每平方米/天</td>
+  </tr>
+  <tr >
+    <td class="newtd2">POS Fee :<br >POS机使用费</td>
+    <td class="newtd3"><HDPrint Value=#posfeed# Replace=#None#> </td>
+    <td class="newtd3"><HDPrint Value=#posfeem# Replace=#None#> </td>
+    <td class="newtd2">Security Deposit (mths):<br>保证金</td>
+    <td class="newtd3"><HDPrint Value=#security# Replace=#None#> </td>
+    <td class="newtd3">RMB<br>人民币</td> 
+    <td class="newtd2">Existing :<br>目前</td>
+    <td class="newtd3"><HDPrint Value=#brcexist# Replace=#None#> </td>
+    <td class="newtd3">psm/day<br>每平方米/天</td>
+  </tr>
+  <tr>
+    <td class="newtd2">Legal Fee :<br>法律服务费</td>
+    <td class="newtd3"><HDPrint Value=#legalfeed# Replace=#None#></td>
+    <td class="newtd3"><HDPrint Value=#legalfeem# Replace=#None#></td>
+    <td class="newtd2">方式&nbsp;</td>
+    <td class="newtd3" colspan="2"><HDPrint Value=#incash# Replace=#None#></td>
+    <td class="newtd2"><font color="red">Budget :<br>批准预算</font></td>
+    <td class="newtd3"><HDPrint Value=#brcbudget# Replace=#None#></td>
+    <td class="newtd3">psm/day<br>每平方米/天</td>
+  </tr>
+  <tr>
+    <td class="newtd2">Total Charges :<br>总收费</td>
+    <td class="newtd3"><HDPrint Value=#totalfeed# Replace=#None#></td>
+    <td class="newtd3"><HDPrint Value=#totalfeem# Replace=#None#></td>
+    <HDIF Equal(<HDPrint Value=#modbud# Replace=#none# Replace=#None#>, 是)>
+
+
+    <td class="newtd2" style="color:blue">修改预算</td>
+    <td class="newtd3" colspan="2" style="color:blue"><HDPrint Value=#newbrcbudget# Replace=#None#></td>
+    <td class="newtd2" style="color:blue">计算公式</td>
+    <td class="newtd3" colspan="2" style="color:blue"><HDPrint Value=#brcbudgettext# Replace=#None#></td>
+    </HDIF>
+  </tr>
+  <tr >
+    <td class="newtd2">Construction Allowance<br />装修补贴:</td>
+    <td class="newtd3"><HDPrint Value=#FitAllowance# Replace=#None#></td>
+    <td class="newtd3">RMB/psm <br />元/平方米</td>
+    <td class="newtd2" >Total Fee<br />总金额：</td>
+    <td class="newtd3"><HDPrint Value=#TotalFee# Replace=#None#></td>
+    <td class="newtd3">RMB<br />人民币</td>
+  </tr>
+  <tr >
+    <td class="newtd2">OtherFee Name<br />其它费用名称:</td>
+    <td class="newtd3" colspan="2"><HDPrint Value=#OtherFeeName# Replace=#None#></td>
+    <td class="newtd2" >OtherFee<br />其它费用金额：</td>
+    <td class="newtd3"><HDPrint Value=#OtherFee# Replace=#None#></td>
+    <td class="newtd3">RMB/psm <br />元/平方米</td>
+    <td class="newtd2" >OtherFee<br />其它费用金额：</td>
+    <td class="newtd3"><HDPrint Value=#OtherTotalFee# Replace=#None#></td>
+    <td class="newtd3">RMB<br />人民币</td>
+  </tr>
+</table>
+
+<br>
+<table class="newtb" cellspacing="1" cellpadding="0" align=center width="100%">
+    <col width="80" />
+    <col width="120" />
+    <col width="100" />
+    <col width="80" />
+    <col width="120" />
+    <col width="100" />
+  <tr>
+    <td class=newtd2>Special Terms and Conditions/Remarks :<br>特别条件/评语<font color=gray>(2000字以内)</font></td>
+    <td class=newtd3  colspan="5"><HDPrint Value=#Memo# Replace=#None#>&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="newtd2">SD Top-Up :<br>增添保证金</td>
+    <td class="newtd3"><HDPrint Value=#sdtopup# Replace=#None#>&nbsp;</td>
+    <td class="newtd3">RMB<br>人民币</td>
+    <td class="newtd2">Admin Fee :<br>文本费</td>
+    <td class="newtd3"><HDPrint Value=#adminfee# Replace=#None#>&nbsp;</td>
+    <td class="newtd3">RMB<br>人民币</td>
+  </tr>
+  <tr style="display:">
+    <!-- <td class="newtd2">cc.<br>抄送<br>
+    </td>
+    <td class="newtd3" colspan=2>
+      <select name="selApp_" size=4 style="width:100%;"  ondblclick="selApp_click()" multiple>
+      </select>
+      <br>
+      <input type="button" class="normalsbt" name="btnSelectSend" value="click" onclick="DataInterface(frmDataInterface_App)">Finance 财务部&Lease Adm (HQ)租赁行政（总部） 
+    </td>
+ -->    <td class=newtd2>Attach :<br>附件</td>
+    <td class=newtd3 colspan="5">
+     <HDPrint Value=#AttachList# Replace=#None#>&nbsp;
+    </td>
+  </tr>
+</table>
+</form>

@@ -1,0 +1,73 @@
+<form name="frmQuery" method="Post" action="##HDNet_AppName##/__ExplainModule?Url=SysOrgTreeSearch&UsrGid=<HDPrint Value=#UsrGid#>&OrgRootSortID=<HDPrint Value=#RootSortID#>&OrgLayerCode=<HDPrint Value=#LayerCode#>" target="OrgTreeSearch">
+<table Class=searchtb Cellspacing="1" Cellpadding="0" >
+  <col style="padding-left:4px" width="10%">
+  <col style="padding-left:4px" width="25%">
+  <col style="padding-left:4px" width="10%">
+  <col style="padding-left:4px" width="25%">
+  <col style="padding-left:4px" width="40%">
+  <tr Class="searchtr2">
+    <td Colspan="5"><b><HDPrint Value=#RootSort#>-结构查询</b></td>
+  </tr>
+  <tr Class="searchtr3">
+    <td>组织代码</td>
+    <td><input Name="txtCode" style="width:120" Maxlength=16 value=""></td>
+    <td>组织名称</td>
+    <td><input Name="txtName" style="width:120" Maxlength=16 value=""></td>
+    <td class="SearchTd">
+      <input Type="submit" Name="btnQuery" Value=" 查询 " Class="NormalSbt" onclick="return OpenSearch()">
+      <input Type="reset" Name="btnReset" Value=" 默认 " Class="NormalSbt">
+    </td>
+  </tr>
+</table>
+
+<TABLE><TR><TD height=2></TD></TR></TABLE>
+
+<table Class="ListTb" Cellspacing="1" Cellpadding="0"  width="100%">
+  <tr> 
+    <td valign="top" width="30%" style="background-color:#FFFFFF;padding-left:0px" class="newtd3">
+      <iframe src="##HDNet_AppName##/__ExplainModule?Url=SysOrgTreeList&UsrGid=<HDPrint Value=#UsrGid#>&OrgGid=<HDPrint Value=#OrgGid#>&OrgLayerCode=<HDPrint Value=#LayerCode#>&ShowTop=1" style="width:100%" height="430" scrolling="auto" noresize="noresize" frameborder="0" name="OrgTreeList">
+      </iframe> 
+    </td>
+    <td valign="top" width="70%" style="background-color:#FFFFFF;padding-left:0px" class="newtd3">
+      <iframe src="##HDNet_AppName##/__ExplainModule?Url=SysOrgTreeDtl&UsrGid=<HDPrint Value=#UsrGid#>&OrgGid=<HDPrint Value=#OrgGid#>" style="width:100%" height="700" scrolling="no" noresize="noresize" frameborder="0" name="OrgTreeDtl">
+      </iframe>
+    </td>
+  </tr>
+</table>
+
+
+<div id="div_OrgSearch_Shadow" style="position:absolute;left=205;top=105;width:550;height:400;background-color:#C0C0C0;display:none">
+</div>
+<div id="div_OrgSearch" style="position:absolute;left=200;top=100;width:550;height:400;background-color:#FFFFFF;display:none">
+<table Class=newtb Cellspacing="1" Cellpadding="0" height=100%>
+  <col style="padding-left:4px" width="100%">
+  <col style="padding-left:4px" width="1">
+  <tr Class="newtd1">
+    <td align="left"><b>组织查询结果</b></td>
+    <td align="right"><INPUT TYPE="button" value="关闭查询" Class="NormalSbt" style="height:20" onclick="CloseSearch()"></td>
+  </tr>
+  <tr>
+    <td Class="newtd3" style="height:100%;padding-left:0px" colspan=2>
+      <iframe src="about:blank" style="width:100%" height="100%" scrolling="auto" noresize="noresize" frameborder="0" name="OrgTreeSearch">
+      </iframe>
+    </td>
+  </tr>
+</table>
+</div>
+</form>
+
+
+<SCRIPT LANGUAGE="JavaScript">
+function OpenSearch()
+{
+  div_OrgSearch_Shadow.style.display = '';
+  div_OrgSearch.style.display = '';
+  return true;
+}
+
+function CloseSearch()
+{
+  div_OrgSearch_Shadow.style.display = 'none';
+  div_OrgSearch.style.display = 'none';
+}
+</SCRIPT>

@@ -1,0 +1,44 @@
+[Permission]
+SQL1=
+Remind1=
+
+[Master]
+
+SQL=select t.Gid, t.year,pc.name CompanyName, decode(t.ACGCode, '', '<font color="red">不能为空!</font>', t.ACGCode) TACGCode, decode(pa.gid,'','<font color="red">记录不存在，此行不更新!</font>') IsNull, decode(t.LeftBudgutFee, '', '<font color="red">不能为空!</font>', t.LeftBudgutFee) TLeftBudgutFee from PRL_ACG_COMPANY_Temp t, PRL_ACG pa, PRL_COMPANY pc where t.entgid = __ENTGID__ and pa.entgid(+) = __ENTGID__ and pc.entgid = __ENTGID__ and t.companygid = pc.gid and lower(t.ACGCode) = lower(pa.code(+))  order by t.ACGCode
+
+Count=SELECT 1 from dual
+
+
+[Detail]
+SQL=
+;得到模型名称
+SqlForCondition1=select Code ModelCode, Name ModelName from wf_Model where EntGid = __ENTGID__ and  ModelGid = ##ModelGid##
+
+;循环显示：LoopSql:查询语句；LoopHDT:调用的页面模板；LoopVar:保存的变量
+LoopSQL1=select Gid,Code, name from prl_company where entgid = __ENTGID__ AND STAT = 10
+LoopHDT1=Templates\workflow\form\prl_fee\LoopSQL_companyUpLoad.hdt
+LoopVAR1=companyname
+
+[Where]
+1= 
+
+[DefaultWhere]
+DefaultWhere= 
+
+[OrderBy]
+1=
+
+[DefaultOrderBy]
+DefaultOrderBy=
+
+[GroupBy]
+
+[AddtionalSQL]
+
+
+[Title]
+Text1=预算金额导入
+
+ChangePage=0
+Log=
+PageKind=2

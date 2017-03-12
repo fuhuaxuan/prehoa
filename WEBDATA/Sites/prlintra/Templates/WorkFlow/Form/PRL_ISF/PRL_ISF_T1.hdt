@@ -1,0 +1,1426 @@
+<script language="javascript" src="##GetWebRootPath(/Scripts/MapJs/jquery.min.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/Common.js)##"></script>
+<!-- 日期控件引入 -->
+<script language="javascript" src="##GetWebRootPath(/Scripts/JSCalendar.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/DataInterface.js)##"></script>
+<!-- Datainterface -->
+<form name="frmDataInterface_Unit">
+  <input type="hidden" name="DataInterface_Title" value="Unit 单位选择列表">
+  <!--在实际应用中sql语句应该加密-->
+  <input type="hidden" id="unitsql" name="DataInterface_Sql" value="select fgid,fno,farea,floorno,fmr,FSTAT from prl_GROUNDH WHERE  deptsource = '<HDPrint Value=#deptsource#>' ">
+  <input type="hidden" id="unitcount" name="DataInterface_CountSql" value="select count(*) from prl_GROUNDH WHERE  deptsource = '<HDPrint Value=#deptsource#>'">
+
+  <input type="hidden" name="DataInterface_OrderSql" value="order by fno">
+  <input type="hidden" name="DataInterface_UsrGid" value="<HDPrint Value=#UsrGid#>">
+  <input type="hidden" name="DataInterface_AppName" value="##HDNet_AppName##">
+  <!--在实际应用中sql语句应该加密-->
+  <input type="hidden" name="DataInterface_Cols" value="2^单位编号^left^170">
+  <input type="hidden" name="DataInterface_Cols" value="3^面积^left^170">
+  <input type="hidden" name="DataInterface_Cols" value="4^楼层^left^170">
+  <input type="hidden" name="DataInterface_Cols" value="5^批准预算^left^120">
+  <input type="hidden" name="DataInterface_Cols" value="6^状态^left^80">
+  <input type="hidden" name="DataInterface_FieldTo" value="">
+  <INPUT TYPE="hidden" name="DataInterface_FieldBy" value="1^2^3^4^5">
+  <INPUT TYPE="hidden" name="DataInterface_CallBckFunc" value="CallBackUnit">
+  <input type="hidden" name="DataInterface_Close" value="false">
+  <input type="hidden" name="DataInterface_PerPageNum" value="20">
+  <input type="hidden" name="DataInterface_Search" value="fno^单位编号^1">
+  <input type="hidden" name="DataInterface_Search" value="floorno^部门^1">
+  <input type="hidden" name="DataInterface_Search_Sql" value="">
+  <input type="hidden" name="DataInterface_Search_Cols" value="">
+</form>
+<!-- 选择所属门店 -->
+<script language="JavaScript">
+<!--
+//类似于 附件上传的，在多数地方可以用到， 是否可以封装到common.js 中？
+//参数：sFileName：附件名称
+function AddAttach(sFileName)
+{
+  if (sFileName == '') return false;
+  for (j=0; j < frmDo.selFileList.length; j++)
+  {
+    if (frmDo.selFileList.options[j].value == sFileName)
+    {
+      alert('已经存在该附件！');
+      return false;
+    }
+  }
+  frmDo.selFileList.options.add(new Option(sFileName, sFileName));
+}
+//函数功能：双击删除选中附件
+//参数：obj:选中的对象
+function DelClick(obj)
+{
+  if (obj.selectedIndex >= 0) 
+    obj.remove(obj.selectedIndex);
+}
+
+//按Alt + 字符 可以快速进行
+function checkKeyEvent() {
+  //S
+  if (event.altKey && event.keyCode == 83 )
+    check('save');
+}
+
+document.onkeydown = checkKeyEvent;
+
+//判断是否为空的函数
+function showEr_IsNull(sname,str,flag)
+{
+  var obj = document.all(sname);
+  if (obj.value == '')
+  {
+    alert(str+'不可为空');
+    if (!flag) {
+      obj.style.backgroundColor = '#FFCCCC';
+      obj.focus();
+    }
+    else
+      obj.style.backgroundColor = '';//先使之前用于出错提示的背景色恢复正常
+    return false;
+  }
+  return true;
+}
+
+//提交函数
+function CheckSubmit(obj)
+{
+   document.all.wf_Stat.value = obj;
+  //保存
+  if (obj == '1')
+  {
+    if (!showEr_IsNull( 'unit','Unit No. :单位 ')) return false;
+  }
+  if (obj == '10')
+  {
+    if (!showEr_IsNull( 'dept','Department :部门 ')) return false;
+    if (!showEr_IsNull( 'unit','Unit No. :单位 ')) return false;
+    if (!showEr_IsNull( 'area','Area :面积 ')) return false;
+    if (document.all.modarea.value == '是')
+    {
+      if (!showEr_IsNull( 'newarea','New Area :新面积 ')) return false;
+      if (!showEr_IsNull( 'modareareason','修改面积的原因')) return false;
+    }
+    
+    if (!showEr_IsNull( 'category' ,'Category :类别 ','1')) return false;
+    if (!showEr_IsNull( 'atype' ,'Category :类别 ','1')) return false;
+    if (!showEr_IsNull( 'trade' ,'Trade/Trade Code : 业态/ 业态代号  ')) return false;
+    if (!showEr_IsNull( 'lessee' ,'Tenant/Licensee :租户 ')) return false;
+    if (!showEr_IsNull( 'tradingname' ,'Trading Name :商店营业名称 ')) return false;
+    if (!showEr_IsNull( 'address' ,'Address : 地址 ')) return false;
+    if (!showEr_IsNull( 'contactor' ,'Contact Person :联系人 ')) return false;
+    if (!showEr_IsNull( 'phone' ,'Phone :电话号码 ')) return false;
+    if (!showEr_IsNull( 'email' ,'E-mail :电子邮件 ')) return false;
+
+    frmDo.leasetermy.style.backgroundColor = '';//先使之前用于出错提示的背景色恢复正常
+    if (frmDo.leasetermy.value == '' && frmDo.leasetermd.value == '')
+    {
+      alert('Lease Term :租赁期限 不可为空');
+      frmDo.leasetermy.style.backgroundColor = '#FFCCCC';
+      frmDo.leasetermy.focus();
+      return false;
+    }
+
+    if (!showEr_IsNull( 'handoverdate' ,'Handover Date :交付日期 ')) return false;
+
+    frmDo.freerentm.style.backgroundColor = '';//先使之前用于出错提示的背景色恢复正常
+    if (frmDo.freerentm.value == '' && frmDo.freerentd.value == '')
+    {
+      alert('Free of rent Period :免租期 不可为空');
+      frmDo.freerentm.style.backgroundColor = '#FFCCCC';
+      frmDo.freerentm.focus();
+      return false;
+    }
+    //
+    if (document.all.freerentm.value != 0 || document.all.freerentd.value != 0)
+    {
+      var col = document.getElementsByName('freerent_1');
+
+      if (col.length == 0)
+      {
+        alert('请新增并填写免租期日期段！');
+        return false;
+      }
+    }
+
+    //装修期
+    frmDo.fitoutm.style.backgroundColor = '';//先使之前用于出错提示的背景色恢复正常
+    if (frmDo.fitoutm.value == '' && frmDo.fitoutd.value == '')
+    {
+      alert('Fit-Out Period :装修期 不可为空');
+      frmDo.fitoutm.style.backgroundColor = '#FFCCCC';
+      frmDo.fitoutm.focus();
+      return false;
+    }
+    if (!showEr_IsNull( 'fitoutdate1' ,'装修期开始日期')) return false;
+
+
+    if (!showEr_IsNull( 'rate' ,'联营形式还是租金形式！','1')) return false;
+    if ( document.all.rate.value == '租金形式')
+    {
+      alert('请确定租金形式的具体类型！');
+      return false;
+    }
+
+    if (!showEr_IsNull( 'collection' ,'Method of collection:收银方式！','1')) return false;
+
+    //判断表格内部的项目必须填情况
+    for (sRow = 2; sRow< document.all.tb_Task.rows.length ; sRow++ )
+     {
+      var sTable = document.all.tb_Task;
+
+      /*------------------------------
+      Yr1| A    | B | M      | N | C | D | E | F | G            |
+      Yr2| 租金 | B | 物业费 | N | C | D | E | F | 预估提成租金 |
+      -------------------------------*/
+      var cobjDate1 = sTable.rows[sRow].cells[0].children[0];
+      var cobjDate2 = sTable.rows[sRow].cells[0].children[1];
+      var cobjA = sTable.rows[sRow].cells[1].children[0];
+      var cobjM = sTable.rows[sRow].cells[3].children[0];
+      var cobjC1 = sTable.rows[sRow].cells[5].children[0];
+      var cobjC2 = sTable.rows[sRow].cells[5].children[1];
+      var cobjD = sTable.rows[sRow].cells[6].children[0];
+      var cobjF = sTable.rows[sRow].cells[8].children[0];
+      cobjDate1.style.backgroundColor = '';
+      cobjDate2.style.backgroundColor = '';
+      cobjA.style.backgroundColor = '';
+      cobjM.style.backgroundColor = '';
+      cobjC1.style.backgroundColor = '';
+      cobjC2.style.backgroundColor = '';
+      cobjD.style.backgroundColor = '';
+      cobjF.style.backgroundColor = '';
+      if (cobjDate1.style.display != 'none' )
+      {
+        if (cobjDate1.value == '')
+        {
+          alert('免租期开始日期不可为空');
+          cobjDate1.style.backgroundColor = '#FFCCCC';
+          cobjDate1.focus();
+          return false;
+        }
+        if (cobjDate2.value == '')
+        {
+          alert('免租期结束日期不可为空');
+          cobjDate2.style.backgroundColor = '#FFCCCC';
+          cobjDate2.focus();
+          return false;
+        }
+      }
+      if (cobjA.value == '')
+      {
+        alert('第一租赁期固定租金不可为空');
+        cobjA.style.backgroundColor = '#FFCCCC';
+        cobjA.focus();
+        return false;
+      }
+      if (cobjM.value == '')
+      {
+        alert('物业管理费不可为空');
+        cobjM.style.backgroundColor = '#FFCCCC';
+        cobjM.focus();
+        return false;
+      }
+      if (cobjC1.value == '' && cobjC2.value == '')
+      {
+        alert('A&P 市场推广费不可为空');
+        cobjC1.style.backgroundColor = '#FFCCCC';
+        cobjC1.focus();
+        return false;
+      }
+      if (cobjD.value == '')
+      {
+        alert('GTO Rent Structure 提成租金构造不可为空');
+        cobjD.style.backgroundColor = '#FFCCCC';
+        cobjD.focus();
+        return false;
+      }
+      if (cobjF.value == '')
+      {
+        alert('Projected GTO 预估营业额 的每月总数不可为空');
+        cobjF.style.backgroundColor = '#FFCCCC';
+        cobjF.focus();
+        return false;
+      }
+      
+     }
+    //if (!showEr_IsNull( 'pmfd_year1' ,'Property Mgmt Fee :物业管理费')) return false;
+    if (!showEr_IsNull( 'posfeed' ,'POS Fee :POS机使用费')) return false;
+    if (!showEr_IsNull( 'legalfeed' ,'Legal Fee :法律服务费')) return false;
+
+    if (!showEr_IsNull( 'agr' ,'Advance Gross Rent :预付租金 + 物业管理费')) return false;
+    if (!showEr_IsNull( 'security' ,'Security Deposit (mths):保证金')) return false;
+
+    if (!showEr_IsNull( 'incash' ,'保证金付款方式','1')) return false;
+    if (!showEr_IsNull( 'brcexist' ,'Existing :目前的租金比拟')) return false;
+
+    if (document.all.modbud.value == '是')
+    {
+      if (!showEr_IsNull( 'newbrcbudget','新批准预算')) return false;
+      if (!showEr_IsNull( 'brcbudgettext','计算公式')) return false;
+    }
+
+    if (!showEr_IsNull( 'Memo' ,'Special Terms and Conditions/Remarks : 特别条件/评语')) return false;
+    if (!showEr_IsNull( 'sdtopup','SD Top-Up :增添保证金')) return false;
+    if (!showEr_IsNull( 'adminfee','Admin Fee :文本费')) return false;
+ 
+  }
+  
+
+  if (document.all.Memo.value.length > 2000)
+    {
+      var sLen = document.all.Memo.value.length *1 - 2000;
+      alert('Special Terms and Conditions/Remarks : 特别条件/评语 您最多可以填写2000字，目前已超出'+sLen+'字，请确认！');
+      document.all.Memo.focus();
+      return false;
+    }
+
+
+     if (document.all.modarea.value == '是')
+      document.all.curarea.value = document.all.newarea.value;
+     else 
+       document.all.curarea.value = document.all.area.value;
+
+    if (document.all.modbud.value == '是')
+      document.all.curbud.value = document.all.newbrcbudget.value;
+    else 
+      document.all.curbud.value = document.all.brcbudget.value;
+  
+    if (!showEr_IsNull( 'FitAllowance','Construction Allowance：装修补贴')) return false;
+    if (!showEr_IsNull( 'OtherFeeName','OtherFee Name：其它费用名称')) return false;
+    if (!showEr_IsNull( 'OtherFee','OtherFee：其它费用金额')) return false;
+
+    TotalFunc();
+    //计算流转的逻辑标志字段
+    //计算时，可能出现n1 = 0 的情况 ，必须填写单位，填写与当前批准预算
+    // n1 批准预算；n2 new 
+    //P1 =（批准预算-New :新）/批准预算*100)
+    //P2 =（批准预算-New :新）*总面积*(365/12)
+    var n1 = 0,n2 = 0,n3 = 0;
+    if (document.all.curarea.value != '')
+      n3 = parseFloat(document.all.curarea.value)
+
+    if (document.all.brcnew.value != '')
+      n2 = parseFloat(document.all.brcnew.value)
+
+    if (document.all.curbud.value != '')
+    {
+      n1 = parseFloat(document.all.curbud.value);
+      if (n1 == 0)
+      {
+        n1 = 1;
+      }
+      document.all.BudgetRate.value = ((n1 - n2)/n1) *100; 
+    }
+
+    var sTemp = ((n1 - n2)*n3*(365/12)).toFixed(3);
+    document.all.PM.value = parseFloat(sTemp).toFixed(2);
+
+    //合并附件文件
+    for (i = 0; i < frmDo.selFileList.length; i++) 
+    {
+      frmDo.selFileList.options[i].selected = true;
+    }
+    //合并地理位置
+    for (i = 0; i < frmDo.sel_Ground_1.length; i++) 
+    {
+      frmDo.sel_Ground_1.options[i].selected = true;
+    }
+
+    frmDo.action=' ##HDNet_AppName##/WFFlowPage?URL=<HDPrint Value=#ModelCode#>_T1SAVE&UsrGid=<HDPrint Value=#UsrGid#>';
+    frmDo.target='_self';
+    frmDo.submit();
+  }
+
+
+
+  //只能输入数字
+  function checkNumber(obj) {
+    if (event.keyCode == null) return false;
+    if (event.keyCode > 57 || (event.keyCode < 48 && event.keyCode != 46 && event.keyCode != 45 )) return false;
+  }
+  
+  //商品数量：检查整数
+  function changeNumber(obj) {
+    //数字的判断
+    if(isNaN(obj.value)) {obj.value='0';}
+    }
+
+//点选，新出租还是续租，调整datainterface的条件
+function Changewhere(par1) {
+
+  document.all.unitsql.value = 'select fgid,fno,farea,floorno,fmr,fstat from prl_GROUNDH where  deptsource = \'<HDPrint Value=#deptsource#>\' ';
+  document.all.unitcount.value = 'select count(*) from prl_GROUNDH where  deptsource = \'<HDPrint Value=#deptsource#>\' ';
+
+  clearunit();
+
+}
+//函数：
+//功能：
+//参数：
+//结果：
+function TotalFunc() {
+   //装修期
+  CalcOtherDate('fitout');
+  //合同起始日期
+  CalcContract();
+  //计算每行租赁租金相关数值
+  for (sRow = 2; sRow< document.all.tb_Task.rows.length ; sRow++ ){
+    CalcGTO(sRow);
+  }
+  //新的租金比拟
+  CalcNew();
+  //物业管理费+POS机使用费+法律服务费
+  CalcOther2();
+  CalcTotalFee();
+  CalOtherTotalFee();
+}
+
+//添加地理位置（单位）
+//参数：sCode
+function GroundAdd(sGid,sCode)
+{
+  frmDo.sel_Ground_1.options.add(new Option(sCode, sGid));
+}
+//删除地理位置（单位）
+function GroundDel()
+{
+  frmDo.sel_Ground_1.options.length = 0;
+}
+//选择单位信息后的处理函数
+function CallBackUnit(s1,s2,s3,s4,s5) {
+  var sunit = document.all.unit.value;
+  if(sunit.indexOf(s2) != -1){
+   return false;
+  }
+  
+  document.all.dept.value = s4;
+  document.all.unit.value += s2 + '、';
+  document.all.unitgid.value += s1 + '\',\'';
+  //添加到单位列表框中
+  GroundAdd(s1,s2);
+  //计算面积
+  var sarea = document.all.area.value;
+  if (document.all.area.value =='')
+    sarea = 0;
+  sarea  = parseFloat(s3) + parseFloat(sarea);
+  document.all.area.value = sarea.toFixed(2);
+  document.all.curarea.value = sarea.toFixed(2);
+  //计算平均批准预算
+  var sbud =   document.all.unitbudget.value;
+  if (document.all.unitbudget.value =='')
+    sbud = 0;
+  sbud = (parseFloat(sbud) +  parseFloat(s5 * s3));
+  document.all.unitbudget.value = sbud;
+
+  document.all.brcbudget.value = (sbud/sarea).toFixed(2);
+  document.all.curbud.value = document.all.brcbudget.value;
+
+  TotalFunc();
+}
+//清除单位
+function clearunit(){
+document.all.dept.value = '';
+document.all.unit.value = '';
+document.all.unitgid.value = '';
+document.all.area.value = '0';
+document.all.curarea.value = '0';
+document.all.unitbudget.value = '0';
+document.all.brcbudget.value = '0';
+document.all.curbud.value = '0';
+
+GroundDel();
+}
+
+//计算合同起始日期
+//根据交付日期 + 装修期 + 1=  合同开始日期
+//合同开始日期 + 租赁期 = 合同截止日期
+function CalcContract() {
+
+  var smonths= document.all.fitoutm.value;
+  if (document.all.fitoutm.value == '')
+  smonths = 0;
+  var sdays= document.all.fitoutd.value;
+  if (document.all.fitoutd.value == '')
+  sdays = 0;
+
+  var sTemp = 1;
+  if (smonths == 0 && sdays == 0)
+  {
+    sTemp = 0
+  }
+  //交付日期
+  if (document.all.handoverdate.value != '')
+  {
+    var smonths= document.all('fitoutm').value;
+    if (document.all('fitoutm').value == '')
+      smonths = 0;
+    var sdays= document.all('fitoutd').value ;
+    if (document.all('fitoutd').value == ''){
+       sdays = 0;
+    }
+    if (smonths == 0 && sdays == 0)
+    {
+      document.all.fitoutdate1.value = '';
+    }
+    else 
+      document.all.fitoutdate1.value = document.all.handoverdate.value;
+
+    var sdate1 = document.all.handoverdate.value;
+    sdate1 = sdate1.replace('.','/').replace('.','/');
+    
+    var d = new Date(sdate1);
+     d.setMonth(d.getMonth() + parseFloat(smonths));
+     d.setDate(d.getDate()+parseFloat(sdays))
+
+    //合同起始日期
+    document.all.contractdate1.value = d.getFullYear() + '.' +  parseFloat(d.getMonth() + 1) + '.' + (d.getDate() + sTemp * 0)  ;
+
+    var syear= document.all.leasetermy.value;
+    if (document.all.leasetermy.value == '')
+    syear = 0;
+    var smon= document.all.leasetermm.value;
+    if (document.all.leasetermm.value == '')
+    smon = 0;
+    var sd= document.all.leasetermd.value;
+    if (document.all.leasetermd.value == '')
+    sd = 0;
+
+    if (syear != 0 || smon != 0 || sd != 0)
+    {
+      d.setYear(d.getFullYear() + parseFloat(syear));
+      d.setMonth(d.getMonth() + parseFloat(smon));
+      d.setDate(d.getDate()+parseFloat(sd)-1)
+      //合同截止日期
+      document.all.contractdate2.value = d.getFullYear() + '.' +  parseFloat(d.getMonth() + 1) + '.' + d.getDate() ;
+    }
+  }
+}
+
+//免租期和装修期的开始日期，计算结束日期
+function CalcOtherDate(str,A,B,C,D){
+  var objRA,objRB,objRC,objRD;
+    if (str == 'fitout')
+    {
+     objRA = document.all(str + 'm');
+     objRB = document.all(str + 'd');
+     objRC = document.all(str + 'date1');
+     objRD = document.all(str + 'date2');
+
+    }
+    else {
+     objRA = A;
+     objRB = B;
+     objRC = C;
+     objRD = D;
+    }
+
+    var smonths= objRA.value;
+    if (objRA.value == '')
+      smonths = 0;
+    var sdays= objRB.value ;
+    if (objRB.value == ''){
+      sdays = 0;
+    }
+
+  if (smonths == 0 && sdays == 0)
+  {
+    objRC.value = '';
+    objRD.value = '';
+  }
+  else {
+  
+    //免租期或者装修期的开始日期，计算结束日期
+
+    if (objRC.value != '')
+    {
+      if (!checkDateTime(objRC))
+      return false;
+
+      var sdate1 = objRC.value;
+      sdate1 = sdate1.replace('.','/').replace('.','/');
+      if (str == 'fitout' && document.all.fitoutdate1.value !='' && document.all.handoverdate.value != '')
+        document.all.fitoutdate1.value = document.all.handoverdate.value;
+
+      var d = new Date(sdate1);
+       d.setMonth(d.getMonth() + parseFloat(smonths));
+       d.setDate(d.getDate()+parseFloat(sdays));
+       d.setDate(d.getDate() - 1);
+
+      //通过开始时间计算结束日期
+      objRD.value = d.getFullYear() + '.' +  parseFloat(d.getMonth() + 1) + '.' + d.getDate() ;
+    }
+  }
+
+
+}
+
+//计算每行租赁租金相关数值
+function CalcGTO(sRow) {
+/*-------------------------------------
+Yr1| A    | B | M      | N | C | D | E | F | G            |
+Yr2| 租金 | B | 物业费 | N | C | D | E | F | 预估提成租金 |
+-------------------------------------*/
+var stemp;
+var sTable = document.all('tb_Task');
+//得到触发行的每一个列的input框
+var objA = sTable.rows[sRow].cells[1].children[0];
+var objB = sTable.rows[sRow].cells[2].children[0];
+var objM = sTable.rows[sRow].cells[3].children[0];
+var objN = sTable.rows[sRow].cells[4].children[0];
+//var objC = sTable.rows[sRow].cells[5].children[0];
+var objD = sTable.rows[sRow].cells[6].children[0];
+var objE = sTable.rows[sRow].cells[7].children[0];
+var objF = sTable.rows[sRow].cells[8].children[0];
+var objG = sTable.rows[sRow].cells[9].children[0];
+
+  var sA= objA.value;
+  if (objA.value == '')
+    sA = 0;
+
+  var sM= objM.value;
+  if (objM.value == '')
+    sM = 0;
+
+  var sD= objD.value;
+  if (objD.value == '')
+    sD = 0;
+
+  var sF= objF.value;
+  if (objF.value == '')
+    sF = 0;
+ var sarea = document.all.curarea.value;
+
+//B第二格子 每月总数 = 每平方米/天 * 365/12 * 面积
+stemp = (sA * (365/12) * sarea ).toFixed(3);
+objB.value = parseFloat(stemp).toFixed(2);
+
+
+//N第四格子 物业费每月总数 = 每平方米/天 * 365/12 * 面积
+stemp = (sM * (365/12) * sarea).toFixed(3);
+objN.value = parseFloat(stemp).toFixed(2);
+
+if (objM.id == 'pmfd_year1')
+{
+  document.all.pmfd.value = sM;
+  document.all.pmfm.value = objN.value;
+}
+//预估营业额的每平方米/天
+var sE = (sF / (365/12) / sarea).toFixed(3);
+objE.value =  parseFloat(sE).toFixed(4);
+
+stemp = ((sE * sD)/100).toFixed(3);
+
+objG.value = parseFloat(stemp).toFixed(4);
+
+if (sarea == '' || sarea == 0)
+  {
+   objE.value = 0;
+   objG.value = 0;
+  }
+
+}
+
+function AddTr(snum)
+{
+  var sTable = document.all('tb_Task');
+  var sRow = 0;
+  if (snum == '' || snum == 0)
+  {
+    snum = 1;
+  }
+  if (snum > 50)
+  {
+    alert('请检查您的输入！');
+    return false;
+  }
+  sRow = document.getElementsByName('year_1').length;
+  
+
+  //  alert(sRow)
+  if (sRow < snum)
+  {
+    for (i = sRow +1; i <= snum ;i++ )
+    {
+      var tr,td;
+      tr = sTable.insertRow(-1);
+      tr.className = 'newtd1';
+
+      td = tr.insertCell(-1);
+      td.insertAdjacentHTML('afterbegin','<input type="text" NAME="freerentdate1_1" style="display:none"><input type="text"  NAME="freerentdate2_1" style="display:none"><input type="hidden" NAME="year_1" >Yr '+ i + '<br>第'+ i + '年');
+      td.className="newtd3";
+      td.align="center";
+
+      td = tr.insertCell(-1);
+      td.insertAdjacentHTML('afterbegin','<input type="text" NAME="tbrd_1" id="tbrd_year'+ i +'" style="width:100%" maxlength="64" onblur="FixValue(this)" onkeypress="return checkNumber(this)" onchange="changeNumber(this);CalcGTO(this.parentNode.parentNode.rowIndex);CalcNew()" title="只能填写数字类型"><input type="hidden" NAME="yeartype_1" value="'+ i +'">');
+      td.className="newtd3";
+      td.align="center";
+
+
+      td = tr.insertCell(-1);
+      td.insertAdjacentHTML('afterbegin','<input type="text" NAME="tbrm_1" style="width:100%;border:0" maxlength="64" readonly>');
+      td.className="newtd3";
+      td.align="center";
+
+
+      td = tr.insertCell(-1);
+      td.insertAdjacentHTML('afterbegin','<input type="text" NAME="pmfd_1" id="pmfd_year' + i +'" style="width:100%" maxlength="64" onblur="FixValue(this)" onkeypress="return checkNumber(this)" onchange="changeNumber(this);CalcGTO(this.parentNode.parentNode.rowIndex);CalcNew()" title="只能填写数字类型">');
+      td.className="newtd3";
+      td.align="center";
+
+
+      td = tr.insertCell(-1);
+      td.insertAdjacentHTML('afterbegin','<input type="text" NAME="pmfm_1" style="width:100%;border:0" maxlength="64" readonly>');
+      td.className="newtd3";
+      td.align="center";
+
+
+
+      td = tr.insertCell(-1);
+      td.insertAdjacentHTML('afterbegin','<input type="text" NAME="apfixed_1" style="width:40" maxlength="64" onblur="FixValue(this)" onkeypress="return checkNumber(this)" onchange="changeNumber(this);CalcGTO(this.parentNode.parentNode.rowIndex);CalcNew();ChangeAP(this.parentNode.parentNode.rowIndex,this)" title="只能填写数字类型"> 元 (每平方米/月) / <input type="text" NAME="ap_1" style="width:40" maxlength="64" onkeypress="return checkNumber(this)" onchange="changeNumber(this);CalcGTO(this.parentNode.parentNode.rowIndex);CalcNew();ChangeAP(this.parentNode.parentNode.rowIndex,this)" title="只能填写数字类型"> %');
+      td.className="newtd3";
+      td.align="center";
+
+      td = tr.insertCell(-1);
+      td.insertAdjacentHTML('afterbegin','<input type="text" NAME="gto_1" style="width:80%" maxlength="64" onkeypress="return checkNumber(this)" onchange="changeNumber(this);CalcGTO(this.parentNode.parentNode.rowIndex);CalcNew()" title="只能填写数字类型"> %');
+      td.className="newtd3";
+      td.align="center";
+
+      td = tr.insertCell(-1);
+      td.insertAdjacentHTML('afterbegin','<input type="text" NAME="progtod_1" style="width:100%;border:0" maxlength="64" readonly>');
+      td.className="newtd3";
+      td.align="center";
+
+      td = tr.insertCell(-1);
+      td.insertAdjacentHTML('afterbegin','<input type="text" NAME="progtom_1" style="width:100%" maxlength="64" onkeypress="return checkNumber(this)" onchange="changeNumber(this);CalcGTO(this.parentNode.parentNode.rowIndex);CalcNew()" title="只能填写数字类型">');
+      td.className="newtd3";
+      td.align="center";
+
+      td = tr.insertCell(-1);
+      td.insertAdjacentHTML('afterbegin','<input type="text" NAME="progtorent_1" id="progtorent_year'+ i +'" style="width:100%;border:0" maxlength="64" readonly>');
+      td.className="newtd3";
+      td.align="center";
+    }
+  }
+  else if (sRow > snum)
+  {
+    col = document.getElementsByName('freerent_1');
+    snum++;
+    for(j = document.all.tb_Task.rows.length - 1 ; j > (snum + col.length) ;j--)
+    {
+      document.all.tb_Task.rows[j].removeNode(true);
+    }
+  }
+}
+  var iFreeNum = 0;
+
+function AddRentYearTr()
+{
+    col = document.getElementsByName('freerent_1');
+    
+
+    var sTable = document.all.tb_Task;
+    iFreeNum ++;  
+
+    var tr,td;
+    tr = sTable.insertRow(col.length+2);
+
+    td = tr.insertCell(-1);
+    td.insertAdjacentHTML('afterbegin','<input type="text" NAME="freerentdate1_1" value="<HDPrint Value=#freerentdate1# Replace=#DBField2Input#>" style="width:80" maxlength="10" onclick="showCalender(this,this);" onblur="checkDateTime(this);" > ~ <input type="text" NAME="freerentdate2_1" value="<HDPrint Value=#freerentdate1# Replace=#DBField2Input#>" style="width:80" maxlength="10" onclick="showCalender(this,this);" onblur="checkDateTime(this);" ><input type="hidden" NAME="freerent_1" >');
+    td.className="newtd3";
+
+    td = tr.insertCell(-1);
+    td.insertAdjacentHTML('afterbegin','<input type="text" NAME="tbrd_1" id="tbrd_freerent_' + iFreeNum +'" style="width:100%" maxlength="64" onblur="FixValue(this)" onkeypress="return checkNumber(this)" onchange="changeNumber(this);CalcGTO(this.parentNode.parentNode.rowIndex);" title="只能填写数字类型"><input type="hidden" NAME="yeartype_1" value="0">');
+    td.className="newtd3";
+    td.align="center";
+
+
+    td = tr.insertCell(-1);
+    td.insertAdjacentHTML('afterbegin','<input type="text" NAME="tbrm_1" style="width:100%;border:0" maxlength="64" readonly>');
+    td.className="newtd3";
+    td.align="center";
+
+
+    td = tr.insertCell(-1);
+    td.insertAdjacentHTML('afterbegin','<input type="text" NAME="pmfd_1" id="pmfd_freerent_' + iFreeNum +'" style="width:100%" onblur="FixValue(this)"  maxlength="64" onkeypress="return checkNumber(this)" onchange="changeNumber(this);CalcGTO(this.parentNode.parentNode.rowIndex);" title="只能填写数字类型">');
+    td.className="newtd3";
+    td.align="center";
+
+
+    td = tr.insertCell(-1);
+    td.insertAdjacentHTML('afterbegin','<input type="text" NAME="pmfm_1" style="width:100%;border:0" maxlength="64" readonly>');
+    td.className="newtd3";
+    td.align="center";
+
+
+
+    td = tr.insertCell(-1);
+    td.insertAdjacentHTML('afterbegin','<input type="text" NAME="apfixed_1" style="width:40" maxlength="64" onkeypress="return checkNumber(this)" onchange="changeNumber(this);CalcGTO(this.parentNode.parentNode.rowIndex);ChangeAP(this.parentNode.parentNode.rowIndex,this)" onblur="FixValue(this)"  title="只能填写数字类型"> 元 (每平方米/月) / <input type="text" NAME="ap_1" style="width:40" maxlength="64" onkeypress="return checkNumber(this)" onchange="changeNumber(this);CalcGTO(this.parentNode.parentNode.rowIndex);ChangeAP(this.parentNode.parentNode.rowIndex,this)" title="只能填写数字类型"> %');
+    td.className="newtd3";
+    td.align="center";
+
+    td = tr.insertCell(-1);
+    td.insertAdjacentHTML('afterbegin','<input type="text" NAME="gto_1" style="width:80%" maxlength="64" onkeypress="return checkNumber(this)" onchange="changeNumber(this);CalcGTO(this.parentNode.parentNode.rowIndex);" title="只能填写数字类型"> %');
+    td.className="newtd3";
+    td.align="center";
+
+    td = tr.insertCell(-1);
+    td.insertAdjacentHTML('afterbegin','<input type="text" NAME="progtod_1" style="width:100%;border:0" maxlength="64" readonly>');
+    td.className="newtd3";
+    td.align="center";
+
+    td = tr.insertCell(-1);
+    td.insertAdjacentHTML('afterbegin','<input type="text" NAME="progtom_1" style="width:100%" maxlength="64" onkeypress="return checkNumber(this)" onchange="changeNumber(this);CalcGTO(this.parentNode.parentNode.rowIndex);" title="只能填写数字类型">');
+    td.className="newtd3";
+    td.align="center";
+
+    td = tr.insertCell(-1);
+    td.insertAdjacentHTML('afterbegin','<input type="text" NAME="progtorent_1" id="progtorent_freerent'+ iFreeNum +'" style="width:100%;border:0" maxlength="64" readonly>');
+    td.className="newtd3";
+    td.align="center";
+  
+    td = tr.insertCell(-1);
+    td.insertAdjacentHTML('afterbegin','<a href="javascript:void(0)" onclick="DelTr(this)" >删除</a>');
+    td.className="newtd3";
+    td.align="center";
+  
+
+}
+  function DelTr(obj)
+  {
+    obj.parentElement.parentElement.removeNode(true);
+  }
+  
+
+function ChangeAP(sRow,obj){
+var sTable = document.all('tb_Task');
+
+//apfixed_1
+var objC1 = sTable.rows[sRow].cells[5].children[0];
+//ap_1
+var objC2 = sTable.rows[sRow].cells[5].children[1];
+
+
+	if (obj.name =='apfixed_1')
+	{
+		if (obj.value != '' )
+		{
+			objC2.value = '';
+		}
+	}
+	else  if (obj.value != '' )
+		{
+			objC1.value = '';
+		}
+ 
+}
+
+//计算新的租金比拟
+function CalcNew() {
+var str,sD,sB,sC,sA,sTemp;
+  sB=0;
+  sC=0;
+  sD=0;
+  str=0;
+
+  if (document.all.tbrd_year1)
+  {
+    var objA = document.all.brcnew;
+    if (document.all.rate.value != '')
+    str = document.all.rate.value;
+    if (document.all.pmfd.value != '')
+    sD = document.all.pmfd.value;
+
+    if (document.all.tbrd_year1 && document.all.tbrd_year1.value !='')
+       sB = document.all.tbrd_year1.value;
+    if (document.all.progtorent_year1 && document.all.progtorent_year1.value !='')
+       sC = document.all.progtorent_year1.value;
+    if (str == '联营形式')
+    {
+      sA = parseFloat(sC) + parseFloat(sD);
+      objA.value = parseFloat(sA).toFixed(4);
+    }
+
+    else if (str == '租金形式' || str == '')
+    { //
+    }
+    else {
+      if (str == '扣率')
+        sA = parseFloat(sC) + parseFloat(sD);
+      if (str == '固定租金')
+        sA = parseFloat(sB) + parseFloat(sD);
+      if (str == '租金+扣率')
+        sA = parseFloat(sB) + parseFloat(sC) + parseFloat(sD);
+      if (str == '固定租金与提成租金二者取高'){
+          sTemp = (parseFloat(sB) >= parseFloat(sC) ? parseFloat(sB) : parseFloat(sC));
+          sA = parseFloat(sTemp) + parseFloat(sD);
+      }
+      if (str == '租金（含物管费）扣率取高'){
+        sA = ((parseFloat(sB)+parseFloat(sD)) >= parseFloat(sC) ? (parseFloat(sB)+parseFloat(sD)) : parseFloat(sC));
+      }
+      objA.value = parseFloat(sA).toFixed(4);
+
+    }
+
+  }
+}
+
+//计算其它费用 总金额
+function CalOtherTotalFee()
+{
+  //如果面积 为空
+  var sArea = document.all.curarea.value;
+  if ( document.all.curarea.value == '')
+    sArea = 0;
+  //如果 装修补贴 为空 
+  var sOtherFee = document.all.OtherFee.value;
+  if ( document.all.OtherFee.value == '')
+    sOtherFee = 0;
+  
+  //计算总金额
+  document.all.OtherTotalFee.value = parseFloat(parseFloat(sArea) * parseFloat(sOtherFee)).toFixed(2);
+}
+//计算装修补贴 总金额
+function CalcTotalFee()
+{
+  //如果面积 为空
+  var sArea = document.all.curarea.value;
+  if ( document.all.curarea.value == '')
+    sArea = 0;
+  //如果 装修补贴 为空 
+  var sFitAllowance = document.all.FitAllowance.value;
+  if ( document.all.FitAllowance.value == '')
+    sFitAllowance = 0;
+  
+  //计算总金额
+  document.all.TotalFee.value = parseFloat(parseFloat(sArea) * parseFloat(sFitAllowance)).toFixed(2);
+}
+
+
+//计算物业管理费+POS机使用费+法律服务费
+function CalcOther() {
+
+  var stemp,stemp1,stemp2,stemp3;
+  var sarea = document.all.curarea.value;
+  if ( document.all.curarea.value == '')
+    sarea = 0;
+
+  var s1,s2,s3;
+  s1= document.all.pmfd.value;
+  if ( document.all.pmfd.value == '')
+    s1 = 0;
+  
+  stemp1 = (s1 * (365/12) * sarea ).toFixed(3);
+
+  s2 = document.all.posfeed.value;
+  if ( document.all.posfeed.value == '')
+    s2 = 0;
+  stemp2 = (s2 * (365/12)).toFixed(3);
+
+  document.all.posfeem.value = parseFloat(stemp2).toFixed(2);
+
+  s3 = document.all.legalfeed.value;
+  if ( document.all.legalfeed.value == '')
+    s3 = 0;
+  stemp3 = (s3 * (365/12) * sarea ).toFixed(3);
+
+
+  document.all.legalfeem.value = parseFloat(stemp3).toFixed(2);
+
+  document.all.totalfeed.value = parseFloat(s1)+parseFloat(s2)+parseFloat(s3);
+
+  stemp  = (parseFloat(stemp1)+parseFloat(stemp2)+parseFloat(stemp3)).toFixed(3);
+  
+  document.all.totalfeem.value = parseFloat(stemp).toFixed(2);
+}
+//计算物业管理费+POS机使用费+法律服务费
+function CalcOther2() {
+
+  var stemp,stemp1,stemp2,stemp3;
+  var sarea = document.all.curarea.value;
+  if ( document.all.curarea.value == '')
+    sarea = 0;
+
+  var s1,s2,s3;
+  s1= document.all.pmfd.value;
+  if ( document.all.pmfd.value == '')
+    s1 = 0;
+
+  stemp1 = (s1 * (365/12) * sarea ).toFixed(3);
+
+  stemp2 = document.all.posfeem.value;
+  if ( document.all.posfeem.value == '')
+    stemp2 = 0;
+
+  s2 = (stemp2 / (365/12)).toFixed(2);
+  
+  document.all.posfeed.value = parseFloat(s2).toFixed(2);
+
+  s3 = document.all.legalfeed.value;
+  if ( document.all.legalfeed.value == '')
+    s3 = 0;
+  stemp3 = (s3 * (365/12) * sarea ).toFixed(3);
+
+
+  document.all.legalfeem.value = parseFloat(stemp3).toFixed(2);
+
+  document.all.totalfeed.value = parseFloat(s1)+parseFloat(s2)+parseFloat(s3);
+
+  stemp  = (parseFloat(stemp1)+parseFloat(stemp2)+parseFloat(stemp3)).toFixed(3);
+  
+  document.all.totalfeem.value = parseFloat(stemp).toFixed(2);
+}
+
+  function AddWords(obj,str)
+{
+  //var obj = document.all.Crowd;
+  var sValue = obj.value;
+  if (sValue.indexOf(str) == -1)
+  {
+   if (sValue.length == 0)
+     obj.value = str;
+   else obj.value = sValue + ';' + str ;
+  }
+  else  obj.value = sValue.replace(str,'');
+
+  obj.value = obj.value.replace(';;',';');
+  if (obj.value == ';')
+   obj.value = '';
+}
+
+//-->
+</script>
+
+
+<form name="frmDo" method="Post" action="">
+<!--<标准>-->
+
+  <h3 class="TitleBar" >生成申请审批表</h3>
+  <TABLE width="100%" class="ButtonBar" cellpadding=0 cellspacing=0>
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A HREF="javascript:CheckSubmit('1');void(0)" title="ALT+S"><FONT style="font-family:Wingdings;font-size:14px">&#60;</FONT> 保存</A>　
+      <A HREF="javascript:CheckSubmit('10');void(0)" title="ALT+S"><FONT style="font-family:Wingdings;font-size:14px">&#254;</FONT> 提交</A>　
+    </TD>
+    <td  style="width:20%">
+      <!-- <A HREF="##HDNet_AppName##/Main?URL=&UsrGid=<HDPrint Value=#UsrGid#>"><FONT style="font-family:Wingdings ;font-size:14px">&#199;</FONT> 返回首页</A>　
+ -->    </TD>
+  </TR>
+  </TABLE>
+  <INPUT TYPE="hidden" name="DeptGid" value="<HDPrint Value=#DeptGid# Replace=#DBField2Input#>">
+  <INPUT TYPE="hidden" name="DeptCode" value="<HDPrint Value=#DeptCode# Replace=#DBField2Input#>">
+  <INPUT TYPE="hidden" name="DeptName" value="<HDPrint Value=#DeptName# Replace=#DBField2Input#>">
+  <!-- 流程信息 -->
+  <INPUT TYPE="hidden" name="ModelGid" value="<HDPrint Value=#ModelGid# Replace=#DBField2Input#>">
+  <INPUT TYPE="hidden" name="FlowGid" value="<HDPrint Value=#NewGid# Replace=#DBField2Input#>">
+  <INPUT TYPE="hidden" name="Num" value="<HDPrint Value=#NewNum# Replace=#DBField2Input#>">
+  <INPUT TYPE="hidden" name="BudgetRate" value="<HDPrint Value=#BudgetRate# Replace=#DBField2Input#>">
+  <INPUT TYPE="hidden" name="lesseeGid" value="<HDPrint Value=#tradingGid# Replace=#DBField2Input#>">
+  <INPUT TYPE="hidden" name="tradingGid" value="<HDPrint Value=#tradingGid# Replace=#DBField2Input#>">
+  <script>
+    document.all.lesseeGid.value = Math.floor(Math.random() * 10000000 + 1);
+    document.all.tradingGid.value = Math.floor(Math.random() * 10000000 + 1);
+  </script>
+  <INPUT TYPE="hidden" name="PM" value="<HDPrint Value=#PM# Replace=#DBField2Input#>">
+  <INPUT TYPE="hidden" name="wfflow" value="">
+  <INPUT TYPE="hidden" name="save" value="">
+  <INPUT TYPE="hidden" name="wf_Stat" value="1">
+
+
+<table width=100% cellspacing="1" cellpadding="0">
+  <col style="padding-left:4px;width:9%">
+  <col style="padding-left:4px;width:21%">
+  <col style="padding-left:4px;width:40%">
+  <col style="padding-left:4px;width:30%">
+  <TR>
+    <TD class="newtd2"><B>发起人</B></TD>
+    <td class="newtd3"><B>[<HDPrint Value=#CurUsrCode#>]<HDPrint Value=#CurUsrName#></B></td>
+    <td class=title rowspan="3"  align="center"><HDPrint Value=#ModelName#></td>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2"><B>单号</B></TD>
+    <TD class="newtd3"><B><HDPrint Value=#NewNum#></B></td>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2">发起时间</TD>
+    <td class="newtd3"><HDPrint Value=#CurDate#> <HDPrint Value=#CurTime#></td>
+    <TD></TD>
+  </TR>
+</table>
+<br>
+
+ <table cellspacing="1">
+  <col style="padding-left:20px;width:200">
+  <tr class="listtr2"><td><b>单据内容</b></td></tr>
+</table>
+<table width="100%" class="newtb" cellspacing="1" cellpadding="0" align=center>
+  <col style="padding-left:4px;padding-right:4px;width:100;">
+  <col style="padding-left:4px;padding-right:4px;width:120;">
+  <col style="padding-left:4px;padding-right:4px;width:100;">
+  <col style="padding-left:4px;padding-right:4px;width:120;">
+  <col style="padding-left:4px;padding-right:4px;width:100;">
+  <col style="padding-left:4px;padding-right:4px;width:120;">
+  <col style="padding-left:4px;padding-right:4px;width:100;">
+  <col style="padding-left:4px;padding-right:4px;width:120;">
+  <tr>
+    <td class=newtd2 colspan="1">Department :<br> 部门 <font color="red"> * </font></td>
+    <td class=newtd3 colspan="4"><input type="text" NAME="dept" style="width:100%" maxlength="64" value="<HDPrint Value=#dept# Replace=#DBField2Input#>">&nbsp;</td>
+    <td class=newtd3  colspan="3" rowspan="2">
+      <table cellspacing="1" cellpadding="0" align=center style="width:100%">
+       <col style="padding-left:4px;padding-right:4px;width:100;">
+       <col style="padding-left:4px;padding-right:4px;width:220;">
+      <tr>
+        <td class=newtd2>Unit No. : <br>单位 <font color="red"> * </font></td>
+        <td class=newtd3>
+        <input type="text" NAME="unit" style="width:70%" maxlength="250" onclick="DataInterface(frmDataInterface_Unit)" value="<HDPrint Value=#unit# Replace=#DBField2Input#>" readonly><a href="javascript:void(clearunit())">[清除]</a>
+        <input type="hidden" NAME="unitgid"  value="<HDPrint Value=#unitgid# Replace=#DBField2Input#>">
+        <input type="hidden" NAME="unitbudget"  value="<HDPrint Value=#unitbudget# Replace=#DBField2Input#>">
+        <SELECT NAME="sel_Ground_1" size="4" style="display:none;" multiple></SELECT>
+        </td>
+      </tr>
+      <tr>
+        <td class=newtd2>Area : <br>面积 <font color="red"> * </font></td>
+        <td class=newtd3><input type="text" NAME="area" style="width:50%;border:0" maxlength="64" onkeypress="return checkNumber(this)" value="<HDPrint Value=#area# Replace=#DBField2Input#>" onchange="return changeNumber(this)" title="只能填写数字类型" readonly><input type="hidden" NAME="curarea" value="<HDPrint Value=#curarea# Replace=#DBField2Input#>">sqm/平方米<br>是否需要更改面积  
+        <input type="radio" onclick="document.all.modarea.value='是';document.all.tr_area.style.display = '';document.all.curarea.value = '';TotalFunc();" name="modarea1" value="是">是
+        <input type="radio" onclick="document.all.modarea.value='否';document.all.tr_area.style.display = 'none';document.all.curarea.value = document.all.area.value;TotalFunc();"  name="modarea1" value="否">否
+        </td>
+      </tr>
+      <tr id="tr_area" style="display:none">
+        <td class=newtd2  style="color:blue">New Area : <br>新面积 <font color="red"> * </font></td>
+        <td class=newtd3  style="color:blue">
+        <input type="hidden" name="modarea" value="<HDPrint Value=#modarea# Replace=#DBField2Input#>">
+        
+        <input type="text" NAME="newarea" value="<HDPrint Value=#newarea# Replace=#DBField2Input#>" style="width:50%" maxlength="64" onkeypress="return checkNumber(this)" onchange="changeNumber(this);document.all.curarea.value = this.value;TotalFunc();" title="只能填写数字类型" >sqm/平方米<br>
+        修改原因<font color="red"> * </font>：<input type="text" NAME="modareareason"  value="<HDPrint Value=#modareareason# Replace=#DBField2Input#>" style="width:50%" maxlength="200" >
+        </td>
+      </tr>
+      <tr>
+        <td class=newtd2>Trade/Trade Code  : <br> 业态/ 业态代号 <font color="red"> * </font></td>
+        <td class=newtd3>
+          <select style="width:100%;" name="trade">
+          <option value=''>--请选择--</option>
+          <HDPrint Value=#busrangelist# Replace=#None#>
+          </select>
+        </td>
+      </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td class=newtd2>Category : <br>类别: <font color="red"> * </font></td>
+    <td class=newtd3 colspan="4">
+    <input type="radio" NAME="atype1" onclick="document.all.atype.value='New新租赁';Changewhere('未租')" value="New新租赁" checked> New 新租赁 <input type="radio" NAME="atype1"  onclick="document.all.atype.value='Renewal续约租赁';Changewhere('被租')" value="Renewal续约租赁"> Renewal 续约租赁
+    <input type="hidden" name="atype" value="New新租赁">
+    <br>
+    <br>
+    <input type="radio" NAME="category1" onclick="document.all.category.value='10';document.all.categorytext.style.display='none';" value="10">Rental 出租
+    <input type="radio" NAME="category1" onclick="document.all.category.value='20';document.all.categorytext.style.display='none';"  value="20">Licence  短期租约
+    <input type="radio" NAME="category1" onclick="document.all.category.value='30';document.all.categorytext.style.display='';"   value="30">Others (Pls specify)  其他（请指明）
+    <input type="hidden" name="category">
+
+    <input type="text" NAME="categorytext" style="width:200;display:none" maxlength="64">
+    </td>
+  </tr>
+  <tr>
+    <td class=newtd3 colspan="8">A.</td>
+  </tr>
+  <tr>
+    <td class=newtd2>Tenant/Licensee :<br>租户&nbsp;<font color="red"> * </font></td>
+    <td class=newtd3 colspan="3"><input type="text" NAME="lessee" style="width:100%" maxlength="250" value="<HDPrint Value=#lessee# Replace=#DBField2Input#>">&nbsp;</td>
+    <td class=newtd2>Trading Name :<br>商店营业名称 &nbsp;<font color="red"> * </font></td>
+    <td class=newtd3 colspan="3"><input type="text" NAME="tradingname" style="width:100%" maxlength="500" value="<HDPrint Value=#tradingname# Replace=#DBField2Input#>">&nbsp;</td>
+  </tr>
+  <tr>
+    <td class=newtd2>Address : <br>地址&nbsp;<font color="red"> * </font></td>
+    <td class=newtd3 colspan="7"><input type="text" NAME="address" style="width:100%" maxlength="250" value="<HDPrint Value=#address# Replace=#DBField2Input#>">&nbsp;</td>
+  </tr>
+  <tr>
+    <td class=newtd2>Contact Person :<br>联系人&nbsp;<font color="red"> * </font></td>
+    <td class=newtd3><input type="text" NAME="contactor" style="width:100%" maxlength="30" value="<HDPrint Value=#contactor# Replace=#DBField2Input#>">&nbsp;</td>
+    <td class=newtd2>Phone :<br>电话号码&nbsp;<font color="red"> * </font></td>
+    <td class=newtd3><input type="text" NAME="phone" style="width:100%" maxlength="30" value="<HDPrint Value=#phone# Replace=#DBField2Input#>">&nbsp;</td>
+    <td class=newtd2>E-mail :<br>电子邮件&nbsp;<font color="red"> * </font></td>
+    <td class=newtd3><input type="text" NAME="email" style="width:100%" maxlength="30" value="<HDPrint Value=#email# Replace=#DBField2Input#>">&nbsp;</td>
+    <td class=newtd2>Fax :<br>传真号码&nbsp;</td>
+    <td class=newtd3><input type="text" NAME="fax" style="width:100%" maxlength="30" value="<HDPrint Value=#fax# Replace=#DBField2Input#>">&nbsp;</td>
+  </tr>
+  <tr>
+    <td class=newtd3 colspan="8">B.</td>
+  </tr>
+  <tr>
+    <td class=newtd2>Lease Term :<br>租赁期限&nbsp; <font color =red>*</font></td>
+    <td class=newtd3 colspan="2">
+      <input type="text" NAME="leasetermy" onkeypress="return checkNumber(this)" onchange="changeNumber(this);AddTr(this.value);CalcContract();" title="只能填写数字类型" style="width:20%" value="<HDPrint Value=#leasetermy# Replace=#DBField2Input#>" maxlength="64" >年/
+      <input type="text" NAME="leasetermm" value="<HDPrint Value=#leasetermm# Replace=#DBField2Input#>" onkeypress="return checkNumber(this)" onchange=" changeNumber(this);AddTr(this.parentNode.firstChild.value);CalcContract()" title="只能填写数字类型" style="width:20%" maxlength="64">月/
+      <input type="text" NAME="leasetermd" value="<HDPrint Value=#leasetermd# Replace=#DBField2Input#>" onkeypress="return checkNumber(this)" onchange="changeNumber(this);AddTr(this.parentNode.firstChild.value);CalcContract()" title="只能填写数字类型" style="width:20%" maxlength="64">日
+    </td>
+    <td class=newtd2>Handover Date :<br>交付日期&nbsp; <font color =red>*</font></td>
+    <td class=newtd3><input type="text" NAME="handoverdate" value="<HDPrint Value=#handoverdate# Replace=#DBField2Input#>" style="width:100%" maxlength="10" onclick="showCalender(this,this);" onblur="checkDateTime(this);"></td>
+    <td class=newtd2>Related Party :<br>牵连关系实体交易&nbsp;</td>
+    <td class=newtd3 colspan="2"><input type="checkbox"  onclick="AddWords(document.all.related, this.value)" NAME="related1"  maxlength="64" value="有">
+    
+    <input type="hidden" NAME="related" value="<HDPrint Value=#related# Replace=#DBField2Input#>">
+    </td>
+  </tr> 
+  <tr>
+    <td class=newtd2  onclick="">Free of rent Period :<br>免租期&nbsp;<font color="red"> * </font> <a href="javascript:void(AddRentYearTr())">[新增日期段]</a></td>
+    <td class=newtd3 colspan="1"  onclick="">
+    <input type="text" NAME="freerentm" value="<HDPrint Value=#freerentm# Replace=#DBField2Input#>" onkeypress="return checkNumber(this)" onchange="changeNumber(this);" title="只能填写数字类型" style="width:40" maxlength="64">月/
+    <input type="text" NAME="freerentd" value="<HDPrint Value=#freerentd# Replace=#DBField2Input#>" onkeypress="return checkNumber(this)" onchange="changeNumber(this);" title="只能填写数字类型" style="width:40" maxlength="64">天</td>
+    <td class=newtd2 onclick="CalcContract();CalcOtherDate('fitout')">Fit-Out Period :<br>装修期&nbsp;<font color="red"> * </font></td>
+    <td class=newtd3 colspan="2" onclick="CalcContract();CalcOtherDate('fitout')">
+    <input type="text" NAME="fitoutm" value="<HDPrint Value=#fitoutm# Replace=#DBField2Input#>" onkeypress="return checkNumber(this)" onchange="changeNumber(this);CalcContract();CalcOtherDate('fitout')" title="只能填写数字类型" style="width:40" maxlength="64">月/
+    <input type="text" NAME="fitoutd" value="<HDPrint Value=#fitoutd# Replace=#DBField2Input#>" onkeypress="return checkNumber(this)" onchange="changeNumber(this);CalcContract();CalcOtherDate('fitout')" title="只能填写数字类型" style="width:40" maxlength="64">天
+    （<input type="text" NAME="fitoutdate1" value="<HDPrint Value=#fitoutdate1# Replace=#DBField2Input#>" onclick="CalcContract();CalcOtherDate('fitout')" style="width:80;border:0" readonly> ~ 
+    <input type="text" NAME="fitoutdate2" value="<HDPrint Value=#fitoutdate2# Replace=#DBField2Input#>" onclick="CalcContract();CalcOtherDate('fitout')" style="width:80;border:0" maxlength="10" readonly>）</td>
+    <td class=newtd2>Details :<br>细节&nbsp;</td>
+    <td class=newtd3 colspan="3"><input type="text" NAME="detail" value="<HDPrint Value=#detail# Replace=#DBField2Input#>" style="width:100%" maxlength="250"></td>
+  </tr> 
+  <tr  onclick="CalcContract()">
+    <td class=newtd2>Contract start Date：<br>合同起始日期&nbsp; <font color =red>*</font></td>
+    <td class=newtd3><input type="text" NAME="contractdate1" value="<HDPrint Value=#contractdate1# Replace=#DBField2Input#>" style="width:100%;border:0" maxlength="10"  readonly></td>
+    <td class=newtd2>Expiry Date :<br>截止日期&nbsp; <font color =red>*</font></td>
+    <td class=newtd3><input type="text" NAME="contractdate2" value="<HDPrint Value=#contractdate2# Replace=#DBField2Input#>" style="width:100%;border:0" maxlength="10"  readonly></td>
+  </tr>
+  <tr>
+    <td class=newtd3 colspan="5"><font color="red"> * </font>
+    <input type="radio" NAME="rate2"  maxlength="64" value="联营形式" onclick="document.all.rate.value = '联营形式';document.all.div_rate.style.display = 'none';CalcNew();">联营形式
+    <input type="radio" NAME="rate2"  maxlength="64" value="租金形式"  onclick="document.all.rate.value = '租金形式';document.all.div_rate.style.display = 'inline';">租金形式
+    <div id="div_rate" style="display:none">
+    （<input type="radio" NAME="rate1"  maxlength="64" value="固定租金与提成租金二者取高" onclick="document.all.rate.value = '固定租金与提成租金二者取高';CalcNew();">固定租金与提成租金二者取高
+      <input type="radio" NAME="rate1"  maxlength="64" value="租金（含物管费）扣率取高" onclick="document.all.rate.value = '租金（含物管费）扣率取高';CalcNew();">租金(含物管费)扣率取高
+    <input type="radio" NAME="rate1"  maxlength="64"value="租金+扣率"  onclick="document.all.rate.value = '租金+扣率';CalcNew();">租金+扣率
+    <input type="radio" NAME="rate1"  maxlength="64"value="固定租金"  onclick="document.all.rate.value = '固定租金';CalcNew();">固定租金
+    <input type="radio" NAME="rate1"  maxlength="64"value="扣率"  onclick="document.all.rate.value = '扣率';CalcNew();">扣率）
+    </div>
+    <input type="hidden" NAME="rate"  value="<HDPrint Value=#rate# Replace=#DBField2Input#>" maxlength="64">
+    </td>
+    <td class=newtd2 colspan="1">Method of collection:<br>收银方式 <font color="red"> * </font>
+    <td class=newtd3 colspan="3">
+    <input type="radio" onclick="document.all.collection.value = this.value;" NAME="collection1"  maxlength="64" value="中央收银">中央收银
+    <input type="radio" onclick="document.all.collection.value = this.value;" NAME="collection1"  maxlength="64" value="租用我司POS">租用我司POS
+    <input type="radio" onclick="document.all.collection.value = this.value;" NAME="collection1" maxlength="64" value="独立收银">独立收银
+    <input type="radio" onclick="document.all.collection.value = this.value;" NAME="collection1" maxlength="64" value="不用">不用
+    <input type="hidden" NAME="collection"  value="<HDPrint Value=#collection# Replace=#DBField2Input#>" maxlength="64">
+    </td>
+  </tr>
+
+</table><br>
+<table class="Newtb" width="100%" cellspacing="1" cellpadding="0" align=center id="tb_Task">
+  <colgroup>
+    <col width="120px"  />
+    <col width="50px"  />
+    <col width="50px"  />
+    <col width="50px"  />
+    <col width="50px"  />
+    <col width="140px"  />
+    <col width="65px"  />
+    <col width="65px"  />
+    <col width="65px"  />
+    <col width="70px"  />
+    <col width="30px"  />
+  </colgroup>
+  <tr class="newtd1">
+    <td colspan="3">
+    1st Term Base Rental (RMB)<br />
+    第一租赁期固定租金（人民币）</td>
+    <td colspan="2">
+    物业管理费 (RMB)</td>
+    <td>A&P 市场推广费</td>
+    <td>GTO Rent Structure<br />
+    提成租金构造</td>
+    <td colspan="2" >
+    Projected GTO<br />
+    预估营业额</td>
+    <td >Projected GTO Rent<br />
+    预估提成租金</td>
+    <td rowspan="2">操作</td>
+  </tr>
+  <tr class="newtd1">
+    <td>　</td>
+    <td>psm/day <font color="red"> * </font><br />
+    每平方米/天</td>
+    <td>total/mth<br />
+    每月总数</td>
+    <td>psm/day <font color="red"> * </font><br />
+    每平方米/天</td>
+    <td>total/mth<br />
+    每月总数</td>
+    <td>Details 
+    细节<font color="red"> * </font></td>
+    <td>Details 细节<font color="red"> * </font></td>
+    <td>psm/day<br />
+    每平方米/天</td>
+    <td>total/mth<font color="red"> * </font><br />
+    每月总数</td>
+    <td>psm/day<br />
+    每平方米/天</td>
+  </tr>
+</table><br>
+<table class="newtb" width="100%" cellspacing="1" cellpadding="0" align=center>
+  <colgroup>
+    <col width="100" />
+    <col width="120" />
+    <col width="100" />
+    <col width="120" />
+    <col width="100" />
+    <col width="50" />
+    <col width="100" />
+    <col width="120" />
+    <col width="50" />
+  </colgroup>
+  <tr> 
+    <td class="newtd2">RMB<br />人民币</td>
+    <td class="newtd2">/day<br />每天</td>
+    <td class="newtd2">total/mth<br />每月总数</td>
+    <td class="newtd3" colspan="4"></td>
+    <td class="newtd2">Gross Rental Comparison<br />    租金比拟</td>
+    <td class="newtd2">RMB<br/>人民币</td>
+  </tr>
+  <tr>
+     <td class="newtd2" style="display:none">Property Mgmt Fee :<br/>物业管理费 <font color="red"> * </font></td>
+    <td class="newtd3" style="display:none"><input type="text" NAME="pmfd" value="<HDPrint Value=#pmfd# Replace=#DBField2Input#>" style="width:100%;border:0" maxlength="64" onkeypress="return checkNumber(this)" readonly></td>
+    <td class="newtd3" style="display:none"><input type="text" NAME="pmfm" value="<HDPrint Value=#pmfm# Replace=#DBField2Input#>" style="width:100%;border:0" maxlength="64" readonly></td>
+
+    <td class="newtd2">POS Fee :<br />POS机使用费 <font color="red"> * </font></td>
+    <td class="newtd3"><input type="text" NAME="posfeed"  value="<HDPrint Value=#posfeed# Replace=#DBField2Input#>"style="width:100%" maxlength="10" onkeypress="return checkNumber(this)" onchange="changeNumber(this);CalcOther();" title="只能填写数字类型"></td>
+    <td class="newtd3"><input type="text" NAME="posfeem" value="<HDPrint Value=#posfeem# Replace=#DBField2Input#>" style="width:100%;" onchange="changeNumber(this);CalcOther2();" maxlength="10"></td>
+
+    <td class="newtd2">Advance Gross Rent :<br/>预付租金 + 物业管理费 <font color="red"> * </font></td>
+    <td class="newtd3"><input type="text" NAME="agr" value="<HDPrint Value=#agr# Replace=#DBField2Input#>" style="width:100%" maxlength="64" onkeypress="return checkNumber(this)" onchange="return changeNumber(this)" title="只能填写数字类型"></td>
+    <td class="newtd3">RMB<br/>人民币</td>
+    <td class="newtd2"><font  color="red">New :<br />新</font></td>
+    <td class="newtd3"><input type="text" NAME="brcnew" value="<HDPrint Value=#brcnew# Replace=#DBField2Input#>" style="width:100%;border:0" maxlength="64"  readonly></td>
+    <td class="newtd3">psm/day<br />每平方米/天</td>
+  </tr>
+  <tr >
+    <td class="newtd2">Legal Fee :<br />法律服务费 <font color="red"> * </font></td>
+    <td class="newtd3"><input type="text" NAME="legalfeed" value="<HDPrint Value=#legalfeed# Replace=#DBField2Input#>" style="width:100%" maxlength="64" onkeypress="return checkNumber(this)" onchange="changeNumber(this);CalcOther2()" title="只能填写数字类型"></td>
+    <td class="newtd3"><input type="text" NAME="legalfeem" value="<HDPrint Value=#legalfeem# Replace=#DBField2Input#>" style="width:100%;border:0" readonly></td>
+    <td class="newtd2">Security Deposit (mths):<br />保证金 <font color="red"> * </font></td>
+    <td class="newtd3"><input type="text" NAME="security" value="<HDPrint Value=#security# Replace=#DBField2Input#>" style="width:100%" maxlength="64" onkeypress="return checkNumber(this)" onchange="return changeNumber(this)" title="只能填写数字类型"></td>
+    <td class="newtd3">RMB<br />人民币</td> 
+    <td class="newtd2">Existing :<br />目前 <font color="red"> * </font></td>
+    <td class="newtd3"><input type="text" NAME="brcexist" onblur="FixValue(this)" value="<HDPrint Value=#brcexist# Replace=#DBField2Input#>" style="width:100%" maxlength="64" onkeypress="return checkNumber(this)" onchange="return changeNumber(this)" title="只能填写数字类型"></td>
+    <td class="newtd3">psm/day<br />每平方米/天</td>
+  </tr>
+  <tr>
+    <td class="newtd2">Total Charges :<br />总收费</td>
+    <td class="newtd3"><input type="text" NAME="totalfeed" value="<HDPrint Value=#totalfeed# Replace=#DBField2Input#>" style="width:100%;border:0" maxlength="64" readonly></td>
+    <td class="newtd3"><input type="text" NAME="totalfeem" value="<HDPrint Value=#totalfeem# Replace=#DBField2Input#>" style="width:100%;border:0" maxlength="64" readonly></td>
+    <td class="newtd2">方式&nbsp;<font color="red"> * </font></td>
+    <td class="newtd3">
+    
+    <input type="radio" name="incash1" value="现金" onclick="document.all.incash.value = '现金'">现金
+    <input type="radio" name="incash1" value="银行担保" onclick="document.all.incash.value = '银行担保'">银行担保
+    <input type="hidden" NAME="incash" value="<HDPrint Value=#incash# Replace=#DBField2Input#>">
+    
+    
+    
+    </td>
+    <td class="newtd3">RMB<br />人民币</td>
+    <td class="newtd2"><font color="red">Budget :<br />批准预算</font><font color =red>*</font></td>
+    <td class="newtd3"><input type="text" NAME="brcbudget" value="<HDPrint Value=#brcbudget# Replace=#DBField2Input#>" style="width:100%;border:0" maxlength="64" readonly>
+    <input type="hidden" name="curbud" value="<HDPrint Value=#curbud# Replace=#DBField2Input#>"><input type="hidden" name="modbud" value="<HDPrint Value=#modbud# Replace=#DBField2Input#>">
+    </td>
+    <td class="newtd3">psm/day<br />每平方米/天</td>
+  
+  <tr style="display:none;" id="tr_modbud0" >
+    <td class="newtd3" colspan="3"></td>
+    <td class="newtd2" id="tr_modbud1" style="display:none;color:blue">修改预算</td>
+    <td class="newtd3" id="tr_modbud2" colspan="2" style="display:none;color:blue"><input type="text" NAME="newbrcbudget" value="<HDPrint Value=#newbrcbudget# Replace=#DBField2Input#>" style="width:40%" maxlength="64" onkeypress="return checkNumber(this)" onchange="changeNumber(this);document.all.curbud.value = this.value;" title="只能填写数字类型" >psm/day 每平方米/天</td>
+    <td class="newtd2"  id="tr_modbud3"  style="display:none;color:blue">计算公式</td>
+    <td class="newtd3"  id="tr_modbud4"  style="display:none;color:blue" colspan="2"><input type="text" NAME="brcbudgettext" value="<HDPrint Value=#brcbudgettext# Replace=#DBField2Input#>" style="width:100%" maxlength="512" ></td>
+  </tr>
+  <tr >
+    <td class="newtd2">Construction Allowance<br />装修补贴:<font color="red"> * </font></td>
+    <td class="newtd3"><input type="text" NAME="FitAllowance"  style="width:100%" value="<HDPrint Value=#FitAllowance# Replace=#DBField2Input#>"  maxlength="10" onkeypress="return checkNumber(this)" onchange="changeNumber(this);CalcTotalFee();" title="只能填写数字类型" ></td>
+    <td class="newtd3">RMB/psm <br />元/平方米</td>
+    <td class="newtd2" >Total Fee<br />总金额：</td>
+    <td class="newtd3"><input type="text" NAME="TotalFee" value="<HDPrint Value=#TotalFee# Replace=#DBField2Input#>" style="width:100%" maxlength="10" style="border:0px;" readonly ></td>
+    <td class="newtd3">RMB<br />人民币</td>
+  </tr>
+  <tr >
+    <td class="newtd2">OtherFee Name<br />其它费用名称:<font color="red"> * </font></td>
+    <td class="newtd3" colspan="2"><input type="text" NAME="OtherFeeName" style="width:100%" value="<HDPrint Value=#OtherFeeName# Replace=#DBField2Input#>" maxlength="32"  ></td>
+    <td class="newtd2" >OtherFee<br />其它费用金额：<font color="red"> * </font></td>
+    <td class="newtd3"><input type="text" NAME="OtherFee" value="<HDPrint Value=#OtherFee# Replace=#DBField2Input#>" style="width:100%" maxlength="10" onkeypress="return checkNumber(this)" onchange="changeNumber(this);CalOtherTotalFee();" title="只能填写数字类型" ></td>
+    <td class="newtd3">RMB/psm <br />元/平方米</td>
+    <td class="newtd2" >OtherFee<br />其它费用金额：</td>
+    <td class="newtd3"><input type="text" NAME="OtherTotalFee" value="<HDPrint Value=#OtherTotalFee# Replace=#DBField2Input#>" style="width:100%" maxlength="10" style="border:0px;" readonly ></td>
+    <td class="newtd3">RMB<br />人民币</td>
+  </tr>
+</table>
+
+<br>
+<table class="newtb" width="100%" cellspacing="1" cellpadding="0" align=center>
+    <col width="80" />
+    <col width="120" />
+    <col width="100" />
+    <col width="80" />
+    <col width="120" />
+    <col width="100" />
+  <tr>
+    <td class=newtd2>Special Terms and Conditions/Remarks :<br>特别条件/评语 <font color="red"> * </font><font color=gray>(2000字以内)</font></td>
+    <td class=newtd3  colspan="5"><textarea type="text" rows=4 NAME="Memo" id="Memo" style="width:100%"></textarea></td>
+  </tr>
+  <tr>
+    <td class="newtd2">SD Top-Up :<br>增添保证金 <font color="red"> * </font></td>
+    <td class="newtd3"><input type="text" NAME="sdtopup" style="width:100%" maxlength="64" onkeypress="return checkNumber(this)" onchange="return changeNumber(this)" title="只能填写数字类型"></td>
+    <td class="newtd3">RMB<br>人民币 </td>
+    <td class="newtd2">Admin Fee :<br>文本费 <font color="red"> * </font></td>
+    <td class="newtd3"><input type="text" NAME="adminfee" style="width:100%" maxlength="64" onkeypress="return checkNumber(this)" onchange="return changeNumber(this)" title="只能填写数字类型"></td>
+    <td class="newtd3">RMB<br>人民币</td>
+  </tr>
+  <tr style="display:">
+    <!-- <td class="newtd2">cc.<br>抄送<br>
+    </td>
+    <td class="newtd3" colspan=2>
+      <select name="selApp_" size=4 style="width:100%;"  ondblclick="selApp_click()" multiple>
+      </select>
+      <br>
+      <input type="button" class="normalsbt" name="btnSelectSend" value="click" onclick="DataInterface(frmDataInterface_App)">Finance 财务部&Lease Adm (HQ)租赁行政（总部） 
+    </td>
+ -->    <td class=newtd2>Upload Attachment :<br>上传附件<br><br> double click to del :<br>双击删除</td>
+    <td class=newtd3 colspan="2">
+      <SELECT NAME="selFileList" size=4 style="width:100%;"  ondblclick="DelClick(this)" multiple>
+      </SELECT><br>
+      <input type="hidden" name="HDTempPath" value="<HDPrint Value=#NewGid#>">
+      <iframe FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid#>&CallBackFun=AddAttach" height=28></iframe>
+    </td>
+  </tr>
+</table>
+  <TABLE width="100%" class="ButtonBar" cellpadding=0 cellspacing=0>
+
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A HREF="javascript:CheckSubmit('1');void(0)" title="ALT+S"><FONT style="font-family:Wingdings;font-size:14px">&#60;</FONT> 保存</A>　
+      <A HREF="javascript:CheckSubmit('10');void(0)" title="ALT+S"><FONT style="font-family:Wingdings;font-size:14px">&#254;</FONT> 提交</A>　
+    </TD>
+    <td  style="width:20%">
+      <!-- <A HREF="##HDNet_AppName##/Main?URL=&UsrGid=<HDPrint Value=#UsrGid#>"><FONT style="font-family:Wingdings ;font-size:14px">&#199;</FONT> 返回首页</A>　
+ -->    </TD>
+  </TR>
+</table>
+</form>
+<script language="JavaScript">
+<!--
+  document.all.atype.value='New新租赁';
+  Changewhere('未租');
+
+
+//-->
+//将控件数字改为四位小数显示
+function FixValue(obj)
+{
+  str = obj.value;
+  if (str == '')
+  {
+    str = 0
+  }
+  obj.value = parseFloat(str).toFixed(4);
+}
+</script>

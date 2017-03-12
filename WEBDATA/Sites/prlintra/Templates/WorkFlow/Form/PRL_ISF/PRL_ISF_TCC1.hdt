@@ -1,0 +1,54 @@
+<form name="frmDo" method="Post" action=" ##HDNet_AppName##/WFFlowPage?URL=<HDPrint Value=#ModelCode#>_tccsave&UsrGid=<HDPrint Value=#UsrGid#>">
+  <script language="javascript">
+  //载入单据明细时，自动调整高度
+  function autoResize(obj) 
+  {
+    if (obj && !window.opera)
+    {
+      if (obj.contentDocument && obj.contentDocument.body.offsetHeight)
+         obj.height = obj.contentDocument.body.offsetHeight;
+      else if(obj.Document && obj.Document.body.scrollHeight)
+         obj.height = obj.Document.body.scrollHeight;
+    }
+  }
+  </script>
+  <h3 class="TitleBar" ><HDPrint Value=#ModelName#>明细</h3>
+  <TABLE width="100%" class="ButtonBar" cellpadding=0 cellspacing=0>
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A HREF="##HDNet_AppName##/Main?URL=&UsrGid=<HDPrint Value=#UsrGid#>"><FONT style="font-family:Wingdings;font-size:14px">&#199;</FONT> 返回首页</A>　
+    </TD>
+  </TR>
+  </TABLE>
+
+  <INPUT TYPE="hidden" name="ModelGid" value="<HDPrint Value=#ModelGid# Replace=#DBField2Input#>">
+  <INPUT TYPE="hidden" name="FlowGid" value="<HDPrint Value=#FlowGid# Replace=#DBField2Input#>">
+
+<table width=100% cellspacing="1" cellpadding="0">
+  <col style="padding-left:4px;width:9%">
+  <col style="padding-left:4px;width:21%">
+  <col style="padding-left:4px;width:40%">
+  <col style="padding-left:4px;width:30%">
+  <TR>
+    <TD class="newtd2"><B>发起人</B></TD>
+    <td class="newtd3"><B>[<HDPrint Value=#FillUsrCode#>]<HDPrint Value=#FillUsrName#></B></td>
+    <td rowspan="3"  align="center"><font class=title ><HDPrint Value=#ModelName#></font><br> 已阅读</td>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2"><B>单号</B></TD>
+    <TD class="newtd3"><B><HDPrint Value=#Num#></B></td>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2">发起时间</TD>
+    <td class="newtd3"><HDPrint Value=#CreateDate#></td>
+    <TD></TD>
+  </TR>
+</table>
+<iframe onload="autoResize(this)"  frameborder ='0' scrolling="no" style="width:100%" src="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_Content&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid#>&IsDtl=1"></iframe>
+<BR>
+</form>
+
+

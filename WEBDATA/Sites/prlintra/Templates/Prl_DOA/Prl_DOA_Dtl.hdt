@@ -1,0 +1,201 @@
+<!--Js引入-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/DateControl.js)##"></script>
+<form name="frmDo" method="Post" action="">
+<h3 class="TitleBar" ><HDPrint Value=#ModeleAtype#>-<HDPrint Value=#ModeleName#></h3>
+<TABLE width="100%" class="ButtonBar" cellpadding=0 cellspacing=0>
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A Href="javascript:CheckSubmit('保存');void(0);" name="btn_1"><FONT class="IconSave">　&nbsp;</FONT> 保存 </A>
+     |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+      <A HREF="##HDNet_AppName##/MainPage?URL=&UsrGid=<HDPrint Value=#UsrGid#>"><FONT class="IconBack">　&nbsp;</FONT> 返回首页</A>
+    </TD>
+  </TR>
+</TABLE>
+<INPUT TYPE="hidden" NAME="ACGGID" maxlength="32" value="<HDPrint Value=#ACGGID# Replace=#DBField2Input#>" class="JQText">
+<INPUT TYPE="hidden" NAME="ComGID" maxlength="32" value="<HDPrint Value=#ComGID# Replace=#DBField2Input#>" class="JQText">
+<table  width="100%" class="ListBar" cellspacing="1" id="tb_ACG">
+  <colgroup>
+    <col style="padding-left:4px;width:15%">
+    <col style="padding-left:4px;width:35%">
+    <col style="padding-left:4px;width:15%">
+    <col style="padding-left:4px;width:35%">
+  </colgroup>
+  <tr>
+    <td class="DtlBarTitle">公司名称:</td>
+    <td class="listtd"><HDPrint Value=#ComName#></td>
+    <td class="DtlBarTitle">父项目:</td>
+    <td class="listtd"><HDPrint Value=#ParentName#></td>
+  </tr>
+  <tr>
+    <td class="DtlBarTitle">当前项目:</td>
+    <td class="listtd">[<HDPrint Value=#ACGcode#>]<HDPrint Value=#ACGName#></td>
+    <td class="DtlBarTitle">项目类型:</td>
+    <td class="listtd"><HDPrint Value=#ACGType#></td>
+  </tr>
+  <tr>
+    <td class="DtlBarTitle">费用单在用:</td>
+    <td class="listtd"><HDPrint Value=#feeflag#></td>
+    <td class="DtlBarTitle">付款单在用:</td>
+    <td class="listtd"><HDPrint Value=#payflag#></td>
+  </tr>
+</table>
+<h3 class="SubTitleBar" >
+<TABLE cellspacing="1" cellpadding="0" width="100%">
+  <col style="padding-left:4px;">
+  <col style="width:20px;" align="center">
+  <TR>
+    <TD align="left" style="padding-left:10px;"><b>预算费用使用情况</b></TD>
+    <TD onclick="JQExpand('tb_Fee');" style="cursor:hand" class="IconUp">　&nbsp;</TD>
+  </TR>
+</TABLE>
+</h3>
+<div id="tb_Fee">
+<table class=ListBar width="100%" cellspacing="1" id="tb_Fee1" style="margin-bottom:10px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <tr class="listtr">
+    <td rowspan="2">年份</td>
+    <td rowspan="2">剩余预算[元]<font color="red">*</font></td>
+    <td colspan="4">使用中预算[元]</td>
+  </tr>
+  <tr class="listtr">
+    <td>费用单</td>
+    <td>付款单</td>
+    <td>个人报销单</td>
+    <td>合计</td>
+  </tr>
+  <HDPrint Value=#FeeList# Replace=#None#>
+</table>
+
+<HDPageBar>
+<table class=ListBar width="100%" cellspacing="1" id="tb_Rcd">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <tr class="listtr">
+    <td>年份</td>
+    <td>操作人</td>
+    <td>操作时间</td>
+    <td>操作前费用</td>
+    <td>操作后费用</td>
+    <td>操作费用</td>
+    <td>备注</td>
+  </tr>
+  <HDLoop>
+  <tr class="listtd" onmouseover="this.className='listtdfocus';" onmouseout="this.className='listtd'" align="center">
+    <td><HDPrint Value=#Year#></td>
+    <td><HDPrint Value=#OpUsrName#></td>
+    <td><HDPrint Value=#OpDate#></td>
+    <td><HDPrint Value=#OpPFee#></td>
+    <td><HDPrint Value=#OpCFee#></td>
+    <td><HDPrint Value=#OpFee#></td>
+    <td  align="left"><HDPrint Value=#OpMemo#><a href="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#OpModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&ModelCode=<HDPrint Value=#OpModelCode#>&FlowGid=<HDPrint Value=#OpFlowGid#>" target="_blank"><HDPrint Value=#OpNum#></a></td>
+  </tr>
+  </HDLoop>
+</table>
+</div>
+<h3 class="SubTitleBar" >
+<TABLE cellspacing="1" cellpadding="0" width="100%">
+  <col style="padding-left:4px;">
+  <col style="width:20px;" align="center">
+  <TR>
+    <TD align="left" style="padding-left:10px;"><b>DOA流转情况</b></TD>
+    <TD onclick="JQExpand('tb_DOA');" style="cursor:hand" class="IconUp">　&nbsp;</TD>
+  </TR>
+</TABLE>
+</h3>
+<table  width="100%" class="ListBar" cellspacing="1" id="tb_DOA">
+  <colgroup>
+     <col style="width:7%">
+     <col style="width:5%">
+     <col style="width:40%">
+     <col style="width:8%">
+     <col style="width:8%">
+     <col style="width:8%">
+     <col style="width:8%">
+     <col style="width:8%">
+     <col style="width:8%">
+  </colgroup>
+  <thead>
+  <tr class="listtr">
+    <td>应用流程</td>
+    <td>DOA代码</td>
+    <td>DOA信息</td>
+    <td>E[元]</td>
+    <td>D[元]</td>
+    <td>C[元]</td>
+    <td>B[元]</td>
+    <td>A[元]</td>
+    <td>流程结束步骤</td>
+  </tr>
+  </thead>
+  <tbody>
+  <HDPrint Value=#DOAList# Replace=#None#>
+  </tbody>
+</table>
+<FieldSet width="100%" style="padding-left:4px">
+  <legend><font color="red"><B>特别提醒</B></font></legend>
+    <li><b>A</b>:商场总经理</li>
+    <li><b>B</b>:资产总监</li>
+    <li><b>C</b>:首席财务官CFO</li>
+    <li><b>D</b>:首席执行官CEO</li>
+    <li><b>E</b>:执行委员会</li>
+</FieldSet>
+
+</form>
+
+<script>
+  //提交函数
+  function CheckSubmit(){
+    //定义 提交提示文字
+    var sConfirm = '您确定已经填写完成，并保存吗？';
+    //提交时，验证必填项
+    if (!JQcheck("JQMust")){
+      return false;
+    }
+    //提交时，提示
+    if (!(confirm(sConfirm)))
+      return false;
+    
+    //获取当前表单对象 
+    var JqObj = $("form[name=frmDo]");
+    //表单参数设定
+    JqObj.attr({
+      "action":'##HDNet_AppName##/__ExplainModule?Url=<HDPrint Value=#Url#>Save&UsrGid=<HDPrint Value=#UsrGid#>',
+      "target":'_self'
+    });
+    //表单提交
+    JqObj.submit();
+
+    //操作按钮变为不可用
+    $("a[name=btn_1]").each(function(){
+      $(this).prop("disabled",true);
+    });
+    //本函数失效
+    CheckSubmit = function() {return false;}
+  }
+</script>

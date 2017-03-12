@@ -1,0 +1,69 @@
+[Permission]
+LIMIT1=FlowGid
+LIMITDesc1=StringSize[,0]
+LIMITRemind1=您选择的流程数据有误，请返回重新选择！
+
+ ;判断是否有该条信息
+SQL1=select 1 from wf_PRL_ISF where EntGid=__ENTGID__ and FlowGid=##FlowGid##
+Remind1=您指定的[ISF]没有找到！<script>alert('您指定的[ISF]没有找到！');window.close()</script>
+
+[Master]
+SQL=select a.*,yeartype yeartypetext1,nvl(ap,apfixed) apvalue,decode(ap,null,'元 (每平方米/月)','%') aptext,decode(TbID,'tb_Dtl10','none','inline') displayyear,decode(TbID,'tb_Dtl10','','none') displayfreerent,decode(TbID,'tb_Dtl10','freerent','year') sflag from wf_^^ModelCode^^_dtl a where EntGid=__ENTGID__ and FlowGid = ##FlowGid##
+count=select count(*) from wf_^^ModelCode^^_dtl where EntGid=__ENTGID__ and FlowGid = ##FlowGid##
+[Detail]
+;得到模型名称
+SqlForCondition1=select Code ModelCode, Name ModelName from wf_Model where EntGid = __ENTGID__ and  ModelGid = ##ModelGid##
+SqlForCondition2=select A.*,decode(category,'10','Rental 出租','20','Licence 短期租约','30','Others 其他:') categoryt from wf_^^ModelCode^^ A where  EntGid=__ENTGID__ and FlowGid = ##FlowGid##
+
+;取出附件
+LoopSQL1=select replace(Attach_Url,' ','%20') Attach_Url,Attach_Title Attach_Title from wf_^^ModelCode^^_Attach where EntGid = __ENTGID__ and  FlowGid = ##FlowGid## order by attach_title
+LoopHDT1=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_Attach.hdt
+LoopVAR1=AttachList
+
+;取出单位
+LoopSQL2=select * from wf_^^ModelCode^^_ground where EntGid = __ENTGID__ and  FlowGid = ##FlowGid## order by fgid
+LoopHDT2=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_Unit.hdt
+LoopVAR2=UnitList
+
+;取出审批人信息
+LoopSQL3=select a.*,decode(a.apptype,'10','招商经理/LM','20','行政经理','30','财务经理/FM','40','商场总经理/CM','50','区域总监','60','常务理事/COO','70','资产总监/Hd Invest ','80','资产总监/Hd Invest ','90','首席财务官/CFO','100','首席执行官/CEO') apptypetext from WF_^^ModelCode^^_App a where FlowGid = ##FlowGid##  order by AppDate
+LoopHDT3=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_app.hdt
+LoopVAR3=applist
+
+[Where]
+1= 
+2= 
+3= 
+4= 
+5= 
+
+[DefaultWhere]
+DefaultWhere= 
+
+[OrderBy]
+1=tbid, yeartype
+
+[DefaultOrderBy]
+DefaultOrderBy=
+
+[GroupBy]
+
+[LoopSQL]
+
+
+[Title]
+ChangePage=0
+Log=
+pagekind=2
+Text1=明细
+Text2=
+Text3=
+Text4=
+Text5=
+
+[Link]
+URL1=
+URL2=
+URL3=
+URL4=
+URL5=

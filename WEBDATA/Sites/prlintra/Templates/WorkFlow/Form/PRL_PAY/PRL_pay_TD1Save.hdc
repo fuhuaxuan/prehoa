@@ -1,0 +1,88 @@
+[Permission]
+LIMIT1=FlowGid
+LIMITDesc1=StringSize[,0]
+LIMITRemind1=您选择的流程数据有误，请返回重新选择！
+
+;判断是否有该条信息
+SQL1=select 1 from wf_prl_pay where EntGid=__ENTGID__ and FlowGid=##FlowGid##
+Remind1=您指定的付款流程没有找到！<script>alert('您指定的付款流程没有找到！');window.close()</script>
+
+;检查判断的Sql语句，查不到结果是报错，从SQL1～SQL5，共可以写5句
+SQL2=select 1 from dual where ##AppAssign## = '否决' union select 1 from v_WF_Model_App v where v.EntGid = __ENTGID__ and v.ModelGid = ##ModelGid## and lower(v.ModelCode) like '%' || lower('_TD') and ##AppAssign## = '同意'
+Remind2=对不起，下一步审批人首席执行官/CEO未设置，请与管理员联系。<script>alert('对不起，下一步审批人首席执行官/CEO未设置，请与管理员联系。');history.back()</script>
+
+[Master]
+
+[Detail]
+;得到模型名称
+SqlForCondition1=select Code ModelCode, Name ModelName from wf_Model where ModelGid = ##ModelGid##
+
+;得到业务单据信息
+SqlForCondition2=select decode(feenum,null,'付款单单号：'||num,'付款单单号：'||feeNum||'-'||partnum) flownote,PAYFEE,nvl(AVALUE,0) avalue,nvl(bVALUE,0) bvalue,nvl(cVALUE,0) cvalue,nvl(dVALUE,0) dvalue,nvl(eVALUE,0) evalue,(nvl(eVALUE,0)) allvalue,fillusrdeptgid,fillusrgid from WF_^^ModelCode^^ where FlowGid = ##FlowGid##
+
+SqlForCondition3=select b.usrgid usrA1 from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##fillusrdeptgid## and b.gid = a.empgidex and atype=30 and b.usrgid is not null
+
+SqlForCondition7= select a.acgother acgothertemp from wf_^^ModelCode^^ A where  EntGid=__ENTGID__ and FlowGid = ##FlowGid##
+
+Sql2=select A.* , decode(isend,10,'是尾款','不是尾款') isendtext,decode(a.acgother,null,'none','') acgotherdis,substr(acgtwoname,0,16) acgtwonametext  from wf_^^ModelCode^^ A where  EntGid=__ENTGID__ and FlowGid = ##FlowGid##
+
+
+Sql3=select b.Email thisemail from  hr_emp b ,v_org_usr a,(select ExecGidEx from WF_Task_Define_Exec where TaskDefGid = (select TaskDefGid from WF_Task_Define where LOWER(Code) = 'prl_pay_td' and EntGid = __ENTGID__) ) c where a.usrgid = b.usrgid and c.ExecGidEx = a.orggid
+
+
+sql7=select name acgothertext from prl_doa where code='^^acgothertemp^^'
+
+
+
+[Where]
+
+[DefaultWhere]
+DefaultWhere= 
+
+[OrderBy]
+1=
+
+[DefaultOrderBy]
+DefaultOrderBy=
+
+[GroupBy]
+
+[AddtionalSQL]
+;全部审批完成后更新流程主表
+SQL1=insert into WF_^^ModelCode^^_App (EntGid,FlowGid, DtlGid,AppStat, AppGid,AppName, AppAssign, Note,AppDate,apptype) values(__ENTGID__,##FlowGid##, sys_guid(),decode(##AppAssign##,'同意','12','13'), __USRGID__, __USRNAME__ || '[' || __USRCODE__ || ']', ##AppAssign##, ##Note##,sysdate,80)
+
+
+Sql2=update WF_^^ModelCode^^ set Stat = '13', LastUpdDate = sysdate where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## and ##AppAssign## = '否决'
+
+
+Sql3=update WF_^^ModelCode^^ set Stat = '12', LastUpdDate = sysdate where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## and ##AppAssign## = '同意' and (##PAYFEE## - ##evalue## <=0 or ##allvalue## - 0  = 0)
+
+
+[Title]
+Text1=^^ModelName^^
+Text2=
+Text3=
+Text4=
+Text5=
+
+ChangePage=0
+WF1=WFFlowRun( ^^ModelCode^^_TD1 | ^^ModelCode^^_TD | NULL | and ##AppAssign## = '同意' | 资产总监/Hd Invest:同意 - ^^flownote^^)
+
+WF2=WFFlowRun( ^^ModelCode^^_TD1 | ^^ModelCode^^_TMOD | NULL | and ##AppAssign## = '否决' | 资产总监/Hd Invest:否决 - ^^flownote^^)
+;否决后，还有个抄送给相关人员没有做
+
+
+
+
+
+[Link]
+URL1=
+URL2=
+URL3=
+URL4=
+URL5=
+URL6=
+URL7=
+URL8=
+URL9=
+URL10=

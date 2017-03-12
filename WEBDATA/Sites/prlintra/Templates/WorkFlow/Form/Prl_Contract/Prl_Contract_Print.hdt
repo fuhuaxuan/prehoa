@@ -1,0 +1,40 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<style type="text/css">
+.PrintTitle{
+  font-size: 18.0pt;
+  font-family: "楷体","Times New Roman";
+  LINE-HEIGHT: 30pt;
+}
+.PrintText{
+  font-size: 14.0pt;
+  font-family: "楷体","Times New Roman";
+  LINE-HEIGHT: 20pt;
+}
+</style>
+<p class="PrintTitle" align="center"><b><u>鹏瑞利<HDPrint Value=#DeptName#>广场</u>房屋租赁合同</b></p>
+<p class="PrintTitle" align="center"><b>备注条款</b></p>
+
+<hdloop>
+<p class="PrintText">
+<script language="javascript">
+      if ('<HDPrint Value=#OpMod# Replace=#DBField2Js#>' == '其他'){
+        document.write('<b>本合同<HDPrint Value=#CNum# Replace=#DBField2Js#>修改为：<HDPrint Value=#OpModOther# Replace=#DBField2Js#>');
+      }
+      else if ('<HDPrint Value=#OpMod# Replace=#DBField2Js#>' == '删除'){
+        document.write('<b>本合同<HDPrint Value=#CNum# Replace=#DBField2Js#></b>删除不予执行');
+      }
+      else{
+        document.write('<b>本合同<HDPrint Value=#CNum# Replace=#DBField2Js#>修改为：</b><HDPrint Value=#OpMod# Replace=#DBField2Js#>');
+      }
+    </script>
+</p>
+</hdloop>
+
+<HDPrint Value=#OtherList# Replace=#None#>
+<p class="PrintText">结束</p>
+
+<script language="javascript">
+ window.print();
+</script>

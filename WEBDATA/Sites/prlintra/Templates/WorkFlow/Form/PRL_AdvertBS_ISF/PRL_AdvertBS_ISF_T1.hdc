@@ -1,0 +1,72 @@
+;版本号：2013年3月份（此行不允许删除）
+[Permission]
+SQL1=select 1 from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid in (select a.gid from Dept a, HR_Emp b where a.EntGid=__ENTGID__ and b.EntGid=__ENTGID__ and b.UsrGid = __USRGID__ and a.Gid = b.DeptGid) and b.gid = a.empgidex and atype=10  and b.usrgid is not null
+Remind1=您好， 您所在的部门还未设置有效的部门经理一职，请联系管理员设置后，再进行流程的申请！<script language="JavaScript">alert('您所在的部门还未设置有效的部门经理一职，请联系管理员设置后，再进行流程的申请！');window.close();</script>
+
+[Master]
+SQL=
+Count=
+
+[Detail]
+;得到模型代码及名称
+SqlForCondition1=select Code ModelCode, Name ModelName from wf_Model where EntGid = __ENTGID__ and  ModelGid = ##ModelGid##
+
+;得到当前用户的部门名称
+SqlForCondition2=select a.Gid DeptGid, a.Code2 DeptCode, a.Name DeptName,substr(a.code1,0,length(a.code1) - 4) parentlayercode from Dept a, HR_Emp b where a.EntGid=__ENTGID__ and b.EntGid=__ENTGID__ and b.UsrGid = __USRGID__ and a.Gid = b.DeptGid
+
+;取出部门层级代码
+Sql1=select code2 deptsource from dept where EntGid=__ENTGID__ and code1 = ##parentlayercode##
+
+;生成每天的流水号
+SQL3=select to_char(sysdate,'YYYY') ||'-'|| (select to_char(nvl(max(substr(SerialNo,9,4)),0)+1, 'FM0999') from Wf_^^ModelCode^^ where nvl(substr(SerialNo,4,4),to_char(sysdate,'YYYY')) = to_char(sysdate,'YYYY')) sSerialNo from dual
+
+
+[Where]
+1= 
+2= 
+3= 
+4= 
+5= 
+6= 
+7= 
+
+[DefaultWhere]
+DefaultWhere= 
+
+[OrderBy]
+1=
+
+[DefaultOrderBy]
+DefaultOrderBy=
+
+[GroupBy]
+
+[AddtionalSQL]
+SQL1=
+
+[Title]
+Text1=^^ModelName^^_填写
+Text2=
+Text3=
+Text4=
+Text5=
+
+ChangePage=0
+Log=
+PageKind=0
+
+
+[Link]
+URL1=
+URL2=
+URL3=
+URL4=
+URL5=
+URL6=
+URL7=
+URL8=
+URL9=
+URL10=
+
+[AJAX]
+Detail1=

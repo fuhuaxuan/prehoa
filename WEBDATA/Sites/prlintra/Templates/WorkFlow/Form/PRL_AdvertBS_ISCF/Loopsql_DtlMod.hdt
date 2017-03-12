@@ -1,0 +1,18 @@
+<!--版本号：2013年3月份;此行不允许删除-->
+<HDLoop>
+<script>
+  var Obj = document.all.tb_Income;
+  var i = Obj.rows.length;
+    var iRow = Math.floor(Math.random() * (1 + 100000 - 1) + 1);
+    //调用公用函数，新增一行
+    Common_Tr_Add(Obj,'listtd','0',
+    i+'<input type="hidden" class="SearchBox" name="Line_1" value="'+ i +'" maxlength="2" style="width:90%;">',
+    '<HDPrint Value=#SerialNo#><input type="hidden" class="SearchBox" id="SerialNo_'+iRow+'" name="SerialNo_0" maxlength="32" style="width:90%" value = "<HDPrint Value=#SerialNo# Replace=#DBField2Js#>"><input type="hidden" class="SearchBox" name="Gid_1" value="<HDPrint Value=#GroundGid# Replace=#DBField2Js#>" maxlength="32"><input type="hidden" class="SearchBox" id="IRow_'+iRow+'" name="IRow_0" value="'+iRow+'" maxlength="32">',
+    '<input type="text" class="SearchBox" id="LeaseTerm_'+iRow+'" name="LeaseTerm_0" maxlength="64" style="width:90%;border:0px;" value = "<HDPrint Value=#LeaseTerm# Replace=#DBField2Js#>" readonly>',
+    '<input type="text" class="SearchBox" id="AreaSize_'+iRow+'" name="AreaSize_0" maxlength="64" style="width:90%;border:0px;" value = "<HDPrint Value=#AreaSize# Replace=#DBField2Js#>" readonly>',
+    '<input type="text" class="SearchBox" id="UnitRate_'+iRow+'" name="UnitRate_0" maxlength="64" style="width:90%" onblur="showEr_IsNumber(this,\'Unit Rate 租赁单价\');SumAll(\''+ iRow +'\');" value = "<HDPrint Value=#UnitRate# Replace=#DBField2Js#>">',
+    '<input type="text" class="SearchBox" id="Total_'+iRow+'" name="Total_0" maxlength="64" style="width:90%;border:0px;" readonly value="<HDPrint Value=#Total# Replace=#DBField2Js#>">',
+    '<input type="text" class="SearchBox" id="FundModelRate_'+iRow+'" name="FundModelRate_0"  maxlength="64" style="width:90%;border:0px;" value = "<HDPrint Value=#FundModelRate# Replace=#DBField2Js#>" readonly>',
+    '<input type="text" class="SearchBox" id="Remark_1" name="Remark_0" maxlength="64" style="width:90%" value="<HDPrint Value=#Remark# Replace=#DBField2Js#>">');
+</script>
+</HDLoop>

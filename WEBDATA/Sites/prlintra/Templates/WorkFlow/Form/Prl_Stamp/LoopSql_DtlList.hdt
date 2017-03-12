@@ -1,0 +1,34 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script>
+  var sTbId = 'tb_Dtl';
+  var sTrClass = 'listtd';
+  var tdArr = new Array();
+    
+  <hdloop>
+    var iRow = Math.floor(Math.random() * (1 + 100000 - 1) + 1);
+    var k = 0;
+
+    tdArr[k++] = '<td align="center"><HDPrint Value=#Line#></td>';
+    tdArr[k++] = '<td align="right"><HDPrint Value=#Dtl1#></td>';
+    tdArr[k++] = '<td align="right"><HDPrint Value=#Dtl2#></td>';
+    tdArr[k++] = '<td align="right"><HDPrint Value=#Dtl3#></td>';
+    tdArr[k++] = '<td align="right"><HDPrint Value=#Dtl4#></td>';
+    tdArr[k++] = '<td align="right"><HDPrint Value=#Dtl5#></td>';
+
+    //新增一行
+    JQTr_Add(sTbId,sTrClass,tdArr);
+  </hdloop>
+</script>
+
+<!--写法2，直接写，可参考
+<hdloop>
+  <tr class="listtd" valign="top" onmouseover="this.className='listtdfocus';" onmouseout="this.className='listtd'">
+    <td align="center"><HDPrint Value=#Line#></td>
+    <td align="right"><HDPrint Value=#Dtl1#></td>
+    <td align="right"><HDPrint Value=#Dtl2#></td>
+    <td align="right"><HDPrint Value=#Dtl3#></td>
+    <td align="right"><HDPrint Value=#Dtl4#></td>
+    <td align="right"><HDPrint Value=#Dtl5#></td>
+  </tr>
+</hdloop>
+-->

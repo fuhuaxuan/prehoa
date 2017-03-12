@@ -1,0 +1,521 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JSCalendar.js)##"></script>
+<script>
+  /*
+  *函数名称：新增附件添加到附件列表中
+  *参数：sFileName-附件名称
+  */
+  function AddAttach(JsFileName){
+    if (JsFileName == '')
+      return false;
+    //唯一性判断
+    if (!JQgetSingle("selFileList_1",JsFileName)){
+      alert('对不起，已经存在该附件！');
+      return false;
+    }
+    //添加到列表框中
+    var JsOption = '<option value="'+JsFileName+'">'+JsFileName+'</option>';
+    $("select[name=selFileList_1]").append(JsOption);
+  }
+  //清除信息
+  function clearInfo(){
+    //清除
+    $("input[name=DOACode]").val('');
+    $("input[name=AValue]").val('');
+    $("input[name=BValue]").val('');
+    $("input[name=CValue]").val('');
+    $("input[name=DValue]").val('');
+    $("input[name=EValue]").val('');
+    $("input[name=TStart]").val('');
+    $("input[name=TEnd]").val('');
+    $("input[name=AreaFlag]").val('');
+  }
+  //获取小项目列表
+  function getAcgTwoList(JsStr){
+    //调用路径
+    //若在报表(RepDisplay)中使用，则标记Rep=1
+    //若在流程(WFFlowPage)中使用，则标记Flow=1
+    var url = '##HDNet_AppName##/__ExplainAjax?Url=<HDPrint Value=#Url#>&UsrGid=<HDPrint Value=#UsrGid#>&OpAtype=3&Flow=1';
+
+    //参数
+    var data = {
+      ParentGid : JsStr
+    };
+    //回调函数
+    var cb = {
+      //成功，处理函数
+      success : function (ret){
+        clearInfo();
+        var $select = $("select[name=AcgTwoGid]");
+
+        $select.empty();
+        $select.append('<option value="">--请选择--</option>');
+
+        $.each(ret.Master,function (i,item){
+          //添加到列表框中
+          var JsOption = '<option value="'+item.GID+'">'+item.NAME+'</option>';
+          $select.append(JsOption);
+        });
+        return true;
+      },
+      //失败，处理函数
+      failed : function (ret){
+        clearInfo();
+        return false;
+      }
+    };
+    //调用Ajax函数
+    JQAjax(url,data,cb);
+  }
+  //获取第三级DOA列表
+  function getAcgOtherList(JsStr){
+    //调用路径
+    //若在报表(RepDisplay)中使用，则标记Rep=1
+    //若在流程(WFFlowPage)中使用，则标记Flow=1
+    var url = '##HDNet_AppName##/__ExplainAjax?Url=<HDPrint Value=#ModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&OpAtype=3&Flow=1';
+
+    //参数
+    var data = {
+      AcgGid : JsStr
+    };
+    //回调函数
+    var cb = {
+      //成功，处理函数
+      success : function (ret){
+        clearInfo();
+
+        var $select = $("select[name=AcgOther]");
+
+        $select.empty();
+        $select.append('<option value="">--请选择--</option>');
+        $.each(ret.Master,function (i,item){
+          //添加到列表框中
+          var JsOption = '<option value="'+item.DOACODE+'">'+item.DOANAME+'</option>';
+          $select.append(JsOption);
+        });
+        if (ret.Master.length == 1){
+          $("select[name=AcgOther] option[value='"+ret.Master[0].DOACODE+"']").prop("selected",true);
+          $("#AcgOther").hide();
+          $select.removeClass('JQMust');
+          getDOAInfo(ret.Master[0].DOACODE);
+        }
+        if (ret.Master.length > 1){
+          $("#AcgOther").show();
+          $select.addClass('JQMust');
+        }
+        return true;
+      },
+      //失败，处理函数
+      failed : function (ret){
+        clearInfo();
+        return false;
+      }
+    };
+    //调用Ajax函数
+    JQAjax(url,data,cb);
+  }
+  //获取第三级DOA列表
+  function getDOAInfo(JsStr){
+    //调用路径
+    //若在报表(RepDisplay)中使用，则标记Rep=1
+    //若在流程(WFFlowPage)中使用，则标记Flow=1
+    var url = '##HDNet_AppName##/__ExplainAjax?Url=<HDPrint Value=#Url#>&UsrGid=<HDPrint Value=#UsrGid#>&OpAtype=1&Flow=1';
+    //参数
+    var data = {
+      DOACode : JsStr
+    };
+    //回调函数
+    var cb = {
+      //成功，处理函数
+      success : function (ret){
+        $("input[name=DOACode]").val(JsStr);
+        $("input[name=AValue]").val(ret.Detail[0].AVALUE);
+        $("input[name=BValue]").val(ret.Detail[0].BVALUE);
+        $("input[name=CValue]").val(ret.Detail[0].CVALUE);
+        $("input[name=DValue]").val(ret.Detail[0].DVALUE);
+        $("input[name=EValue]").val(ret.Detail[0].EVALUE);
+        $("input[name=TStart]").val(ret.Detail[0].TSTART);
+        $("input[name=TEnd]").val(ret.Detail[0].TEND);
+        $("input[name=AreaFlag]").val(ret.Detail[0].AREAFLAG);
+        return true;
+      },
+      //失败，处理函数
+      failed : function (ret){
+        clearInfo();
+        return false;
+      }
+    };
+    //调用Ajax函数
+    JQAjax(url,data,cb);
+  }
+  //获取剩余预算
+  function getLeftFee(){
+    var AcgGid = $("select[name=AcgTwoGid]").val();
+    var CompanyGid = $("select[name=CompanyGid]").val();
+    if (AcgGid == ''){
+      return false;
+    }
+    if (CompanyGid == ''){
+      return false;
+    }
+    //调用路径
+    //若在报表(RepDisplay)中使用，则标记Rep=1
+    //若在流程(WFFlowPage)中使用，则标记Flow=1
+    var url = '##HDNet_AppName##/__ExplainAjax?Url=<HDPrint Value=#ModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&OpAtype=1&Flow=1';
+
+    //参数
+    var data = {
+      AcgGid : AcgGid,
+      ComGid : CompanyGid
+    };
+    //回调函数
+    var cb = {
+      //成功，处理函数
+      success : function (ret){
+        $("input[name=ControlFee]").val(ret.Detail[0].LEFTFEE);
+        return true;
+      },
+      //失败，处理函数
+      failed : function (ret){
+        return false;
+      }
+    };
+    //调用Ajax函数
+    JQAjax(url,data,cb);
+  }
+</script>
+
+<form name="frmDo" method="post" action="">
+<!--当前流程路径-->
+<INPUT type="text" style="display:none" name="CurUrl" value="<HDPrint Value=#Url# Replace=#DBField2Input#>">
+<!--当前流程ModelGid-->
+<input type="text" style="display:none" name="ModelGid" value="<HDPrint Value=#ModelGid# Replace=#DBField2Input#>">
+<!--当前流程FlowGid-->
+<input type="text" style="display:none" name="FlowGid" value="<HDPrint Value=#FlowGid# Replace=#DBField2Input#>">
+<!--当前流程单号-->
+<INPUT type="text" style="display:none" name="Num" value="<HDPrint Value=#Num# Replace=#DBField2Input#>">
+<!--发起人部门信息-->
+<input type="text" style="display:none" name="FillUsrDeptGid" value="<HDPrint Value=#FillUsrDeptGid# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="FillUsrDeptCode" value="<HDPrint Value=#FillUsrDeptCode# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="FillUsrDept" value="<HDPrint Value=#FillUsrDept# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="CreateDate" value="<HDPrint Value=#CreateDate# Replace=#DBField2Input#>">
+<!--当前流程状态-->
+<input type="text" style="display:none" name="Stat" value="">
+<!--当前流程：0：发起 1：修改-->
+<input type="text" style="display:none" name="IsNew" value="<HDPrint Value=#IsNew# Replace=#DBField2Input#>">
+
+<input type="text" style="display:none" name="AValue" value="<HDPrint Value=#AValue# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="BValue" value="<HDPrint Value=#BValue# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="CValue" value="<HDPrint Value=#CValue# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="DValue" value="<HDPrint Value=#DValue# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="EValue" value="<HDPrint Value=#EValue# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="TStart" value="<HDPrint Value=#TStart# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="TEnd" value="<HDPrint Value=#TEnd# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="AreaFlag" value="<HDPrint Value=#AreaFlag# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="FillUsrName" value="<HDPrint Value=#FillUsrName# Replace=#DBField2Input#>">
+
+<!--当前流程是否发起-->
+<input type="text" style="display:none" name="WFCreate" value="">
+<!--当前流程是否流转-->
+<input type="text" style="display:none" name="WF" value="">
+
+<h3 class="TitleBar" ><HDPrint Value=#ModelName#>-><HDPrint Value=#StepName#></h3>
+<div id="JQ_ToolBar">
+<TABLE width="100%" class="ButtonBar" cellpadding="0" cellspacing="0">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A name="btn_1" HREF="javascript:CheckSubmit('保存');void(0)"><FONT class="IconSave">　&nbsp;</FONT> 保存 </A>
+      <A name="btn_1" HREF="javascript:CheckSubmit('提交');void(0)"><FONT class="IconCheck">　&nbsp;</FONT> 提交 </A>
+      <A name="btn_1" HREF="javascript:CheckSubmit('终止');void(0)" JQ="TMod_1" style="display:none"><FONT class="IconEnd">　&nbsp;</FONT> 终止 </A>
+    |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+      <A HREF="javascript:window.close();void(0)"><FONT class="IconClose">　&nbsp;</FONT> 关闭</A>
+    </TD>
+  </TR>
+</TABLE>
+</div>
+<table cellpadding="0" cellspacing="1" align="center" width="100%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:20%">
+  <col style="padding-left:4px;width:40%">
+  <col style="padding-left:4px;width:30%">
+  <TR>
+    <TD class="newtd2">单号:</TD>
+    <TD class="newtd3"><HDPrint Value=#Num#></td>
+    <td class="title" rowspan="3" align="center"><HDPrint Value=#ModelName#></td>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2">发起人:</TD>
+    <TD class="newtd3"><HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillUsrDept#>]</td>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2">发起日期:</TD>
+    <TD class="newtd3"><HDPrint Value=#CreateDate#></td>
+    <TD><font color="blue">状态:填写中</font></TD>
+  </TR>
+</table>
+
+<!--显示审批人信息-->
+<HDIF EqualNot(<HDPrint Value=#IsShow# Replace=#None#>, 0)>
+<HDPrint Value=#AppList# Replace=#None#>
+</HDIF>
+
+<h3 class="SubTitleBar" >
+<TABLE cellspacing="1" cellpadding="0" width="100%">
+  <col style="padding-left:4px;">
+  <col style="width:20px;" align="center">
+  <TR>
+    <TD align="left" style="padding-left:10px;"><b>单据信息</b></TD>
+    <TD onclick="JQExpand('tb_Order');" style="cursor:hand" class="IconUp">　&nbsp;</TD>
+  </TR>
+</TABLE>
+</h3>
+
+<table cellpadding="0" cellspacing="1" class="ListBar" width="100%" id="Order">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:40%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:40%">
+  <tr valign="top">
+    <td class="DtlBarTitle">公司名称:<font color="red">*</font></td>
+    <td class="listtd" colspan="3">
+      <select name="CompanyGid" class="JQSelect JQSave JQMust" style="width:300px;" onchange="getLeftFee()">
+        <option value="">--请选择--</option>
+        <HDPrint Value=#CompanyList# Replace=#None#>
+      </select>
+      <INPUT TYPE="hidden" NAME="CompanyName" maxlength="32" value="<HDPrint Value=#CompanyName# Replace=#DBField2Input#>" class="JQText" JQSelectName="CompanyGid">
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">项目信息:<font color="red">*</font></td>
+    <td class="listtd" colspan="3">
+      <select name="AcgOneGid" class="JQSelect JQSave JQMust" style="width:300px;" onchange="getAcgTwoList(this.value)">
+        <option value="">--请选择--</option>
+        <HDPrint Value=#AcgOneList# Replace=#None#>
+      </select>
+      <INPUT TYPE="hidden" NAME="AcgOneName" maxlength="32" value="<HDPrint Value=#AcgOneName# Replace=#DBField2Input#>" class="JQText" JQSelectName="AcgOneGid">
+
+      <select name="AcgTwoGid" class="JQSelect JQSave JQMust" style="width:300px;" onchange="getAcgOtherList(this.value);getLeftFee()">
+        <option value="">--请选择--</option>
+        <HDPrint Value=#AcgTwoList# Replace=#None#>
+      </select>
+      <INPUT TYPE="hidden" NAME="AcgTwoName" maxlength="32" value="<HDPrint Value=#AcgTwoName# Replace=#DBField2Input#>" class="JQText" JQSelectName="AcgTwoGid">
+
+      <font id="AcgOther" style="display:none">
+        细节勾选：<select name="AcgOther" class="JQSelect" style="width:300px;" onchange="getDOAInfo(this.value)">
+        <option value="">--请选择--</option>
+        <HDPrint Value=#AcgOtherList# Replace=#None#>
+      </select>
+      </font>
+      <INPUT TYPE="hidden" NAME="DOAName" maxlength="32" value="<HDPrint Value=#DOAName# Replace=#DBField2Input#>" class="JQText" JQSelectName="AcgOther">
+      DOA信息：
+      <INPUT TYPE="text" NAME="DOACode" maxlength="32" value="<HDPrint Value=#DOACode# Replace=#DBField2Input#>" class="JQText" readonly style="border:0px;width:50px;">
+
+      <script language="javascript">
+        $("select[name=CompanyGid] option[value='<HDPrint Value=#CompanyGid# Replace=#DBField2Js#>']").prop("selected",true);
+        $("select[name=AcgOneGid] option[value='<HDPrint Value=#AcgOneGid# Replace=#DBField2Js#>']").prop("selected",true);
+        $("select[name=AcgTwoGid] option[value='<HDPrint Value=#AcgTwoGid# Replace=#DBField2Js#>']").prop("selected",true);
+        $("select[name=AcgOther] option[value='<HDPrint Value=#DOACode# Replace=#DBField2Js#>']").prop("selected",true);
+        if ($("select[name=AcgOther]").children().length > 2){
+          $("#AcgOther").show();
+          $("select[name=AcgOther]").addClass("JQMust");
+        }
+      </script>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">申请目的:<font color="red">*</font><br><font color="gray">(1000字以内)</font></td>
+    <td class="listtd"><textarea rows="5" name="Target" class="JQText JQMust" maxlength="1000"><HDPrint Value=#Target# Replace=#DBField2InputField#></textarea></td>
+    <td class="DtlBarTitle">申请项目内容:<br><font color="gray">(1000字以内)</font></td>
+    <td class="listtd"><textarea rows="5" name="Memo" class="JQText" maxlength="1000"><HDPrint Value=#Memo# Replace=#DBField2InputField#></textarea></td>
+  </tr>
+</table>
+<table width="100%" class="ListBar JQMust" cellpadding="0"  cellspacing="1" id="tb_Dtl" style="margin:2px 0px;">
+  <colgroup>
+     <col style="width:10%">
+     <col style="width:15%">
+     <col style="width:15%">
+     <col style="width:15%">
+     <col style="width:15%">
+     <col style="width:15%">
+     <col style="width:15%">
+  </colgroup>
+  <thead>
+  <tr class="DtlBarTitle" align="center">
+    <td colspan="7">供应商报价QUOTATION BY VENDOR（按例采购需采取货比三家 As a rule, purchase should have quotation from 3 vendors）</td>
+  </tr>
+  <tr class="DtlBarTitle" align="center">
+    <td></td>
+    <td>供应商 Vendor1:</td>
+    <td>供应商 Vendor2:</td>
+    <td>供应商 Vendor3:</td>
+    <td>供应商 Vendor4:</td>
+    <td>供应商 Vendor5:</td>
+    <td>供应商 Vendor6:</td>
+  </tr>
+  </thead>
+  <tbody>
+  <tr class="DtlBarTitle" align="center">
+    <td>供应商</td>
+    <td><INPUT TYPE="text" NAME="VendorName1" maxlength="32" value="<HDPrint Value=#VendorName1# Replace=#DBField2Input#>" class="JQText"></td>
+    <td><INPUT TYPE="text" NAME="VendorName2" maxlength="32" value="<HDPrint Value=#VendorName2# Replace=#DBField2Input#>" class="JQText"></td>
+    <td><INPUT TYPE="text" NAME="VendorName3" maxlength="32" value="<HDPrint Value=#VendorName3# Replace=#DBField2Input#>" class="JQText"></td>
+    <td><INPUT TYPE="text" NAME="VendorName4" maxlength="32" value="<HDPrint Value=#VendorName4# Replace=#DBField2Input#>" class="JQText"></td>
+    <td><INPUT TYPE="text" NAME="VendorName5" maxlength="32" value="<HDPrint Value=#VendorName5# Replace=#DBField2Input#>" class="JQText"></td>
+    <td><INPUT TYPE="text" NAME="VendorName6" maxlength="32" value="<HDPrint Value=#VendorName6# Replace=#DBField2Input#>" class="JQText"></td>
+  </tr>
+  <tr class="DtlBarTitle" align="center">
+    <td>报价</td>
+    <td><INPUT TYPE="text" NAME="VendorFee1" maxlength="20" value="<HDPrint Value=#VendorFee1# Replace=#DBField2Input#>" class="JQFloat"></td>
+    <td><INPUT TYPE="text" NAME="VendorFee2" maxlength="20" value="<HDPrint Value=#VendorFee2# Replace=#DBField2Input#>" class="JQFloat"></td>
+    <td><INPUT TYPE="text" NAME="VendorFee3" maxlength="20" value="<HDPrint Value=#VendorFee3# Replace=#DBField2Input#>" class="JQFloat"></td>
+    <td><INPUT TYPE="text" NAME="VendorFee4" maxlength="20" value="<HDPrint Value=#VendorFee4# Replace=#DBField2Input#>" class="JQFloat"></td>
+    <td><INPUT TYPE="text" NAME="VendorFee5" maxlength="20" value="<HDPrint Value=#VendorFee5# Replace=#DBField2Input#>" class="JQFloat"></td>
+    <td><INPUT TYPE="text" NAME="VendorFee6" maxlength="20" value="<HDPrint Value=#VendorFee6# Replace=#DBField2Input#>" class="JQFloat"></td>
+  </tr>
+  </tbody>
+</table>
+<table cellpadding="0" cellspacing="1" class="ListBar" width="100%" id="Order">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:90%">
+  <tr valign="top">
+    <td class="DtlBarTitle">推荐及理由:<font color="red">*</font><br><font color="gray">(1000字以内)</font></td>
+    <td class="listtd" colspan="3"><textarea rows="5" name="Reason" class="JQText JQMust" maxlength="1000"><HDPrint Value=#Reason# Replace=#DBField2InputField#></textarea></td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">本次申请金额:<font color="red">*</font></td>
+    <td class="listtd" colspan="3">
+      今年：<INPUT TYPE="text" NAME="Askfee" maxlength="20" value="<HDPrint Value=#Askfee# Replace=#DBField2Input#>" class="JQFloat JQMust" style="width:100px;">
+      明年：<INPUT TYPE="text" NAME="NAskfee" maxlength="20" value="<HDPrint Value=#NAskfee# Replace=#DBField2Input#>" class="JQFloat" style="width:100px;">
+      剩余预算：<INPUT TYPE="text" NAME="ControlFee" maxlength="20" value="<HDPrint Value=#ControlFee# Replace=#DBField2Input#>" class="JQFloat" style="width:100px;border:0px;" readonly>
+    </td>
+  </tr>
+  <tr>
+    <td class="DtlBarTitle">发起人备注:<br><font color="gray">(500字内)</font></td>
+    <td class="listtd" colspan="3"><textarea class="JQText JQNo" rows="5" id="AppMemo" name="AppMemo" maxlength="500"></textarea></td>
+  </tr>
+  <tr JQ="TMod_1" style="display:none">
+    <td class="DtlBarTitle">终止原因:<font color="red">*</font></td>
+    <td class="listtd" colspan="3"><textarea rows="5" id ="EndMemo" name="EndMemo" class="JQText JQEnd" maxlength="1000"><HDPrint Value=#EndMemo# Replace=#DBField2InputField#></textarea></td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">附件信息:<font color="red">*</font><br><font color="gray">(双击删除)</font></td>
+    <td class="listtd" colspan="3">
+      <font color="gray">(本处请附预算控制表和合同或报价)</font><br>
+      <SELECT NAME="selFileList_1" size="3" style="width:250;" multiple class="JQMust"><HDPrint Value=#AttachList# Replace=#None#></SELECT><br>
+      <input type="hidden" name="HDTempPath" value="<HDPrint Value=#NewGid# Replace=#DBField2Input#>">
+      <iframe FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid# Replace=#DBField2Input#>&CallBackFun=AddAttach" height=28></iframe>
+    </td>
+  </tr>
+</table>
+</form>
+
+<script language="javascript">
+  //复制一个工具栏
+  var $ToolBar = $("div#JQ_ToolBar");
+  $("form[name=frmDo]").append($ToolBar.html());
+
+  if ('<HDPrint Value=#IsNew# Replace=#DBField2Js#>' == '0'){
+    //T1时，加载FlowGid的数据
+    $("input[name=FlowGid]").val('<HDPrint Value=#NewGid# Replace=#DBField2Js#>');
+    $("input[name=WFCreate]").val('WF');
+  }
+  else{
+    //Tmod时，显示Tmod的数据
+    $("[JQ=TMod_1]").show();
+  }
+  //提交函数
+  function CheckSubmit(OpText){
+    //定义 必填验证的 值
+    var sCss = '';
+    //定义 提交提示文字
+    var sConfirm = '';
+    //流转状态初始化
+    $("input[name=WF]").val('WF');
+    if (OpText == '保存'){
+      sCss = 'JQSave';
+      $("input[name=WF]").val('');
+    }
+    else if (OpText == '提交'){
+      sCss = 'JQMust';
+      sConfirm = '您确定已经填写完申请单，并提交吗？';
+    }
+    else if (OpText == '终止'){
+      sCss = 'JQEnd';
+      sConfirm = '你确定要终止该流程吗？';
+    }
+    //验证必填项
+    if (!JQcheck(sCss)){
+      return false;
+    }
+    if (OpText != '终止'){
+      var AskFee = $("input[name=Askfee]").val();
+      var LeftFee = $("input[name=ControlFee]").val();
+      if (AskFee == ''){
+        AskFee = 0;
+      }
+      if (LeftFee == ''){
+        LeftFee = 0;
+      }
+      if (parseFloat(AskFee) > parseFloat(LeftFee)){
+        alert('本次申请金额不能超过剩余预算金额，请调整!');
+        $("input[name=AskFee]").val(LeftFee);
+        return false;
+      }
+    }
+    //提交时，提示
+    if (OpText != '保存'){
+      if (!(confirm(sConfirm)))
+        return false;
+    }
+    //状态赋值
+    $("input[name=Stat]").val(OpText);
+
+    //获取当前表单对象
+    var JqObj = $("form[name=frmDo]");
+    //表单参数设定
+    JqObj.attr({
+      "action":'##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#Url#>Save&UsrGid=<HDPrint Value=#UsrGid#>',
+      "target":'_self'
+    });
+    //表单提交
+    JqObj.submit();
+
+    //操作按钮变为不可用
+    $("a[name=btn_1]").prop("disabled",true);
+
+    //本函数失效
+    CheckSubmit = function() {return false;}
+  }
+</script>
+
+<script language="javascript" src="##GetWebRootPath(/Scripts/DataInterface.js)##"></script>
+<!--选择审批人调用-->
+<FORM NAME="frmDataInterface_App" ACTION="">
+  <INPUT TYPE="hidden" name="DataInterface_Title" ID="t_App" value="审批人列表">
+
+  <INPUT TYPE="hidden" name="DataInterface_Sql" ID="s_App" value="select u.gid, u.code, u.name, u.atype from v_usr u, v_org_usr v, org o where u.EntGid = '<HDPrint Value=#EntGid#>' and u.EntGid = v.EntGid and u.EntGid = o.EntGid and u.Gid = v.Usrgid and v.OrgGid = o.Gid and lower(o.Code) = lower('all_usr_grp')">
+  <INPUT TYPE="hidden" name="DataInterface_CountSql" ID="c_App" value="select count(*) from v_usr u, v_org_usr v, org o where u.EntGid = '<HDPrint Value=#EntGid#>' and u.EntGid = v.EntGid and u.EntGid = o.EntGid and u.Gid = v.Usrgid and v.OrgGid = o.Gid and lower(o.Code) = lower('all_usr_grp')">
+  <INPUT TYPE="hidden" name="DataInterface_OrderSql" value="order by u.code">
+  <INPUT TYPE="hidden" name="DataInterface_UsrGid" value="<HDPrint Value=#UsrGid#>">
+  <INPUT TYPE="hidden" name="DataInterface_AppName" value="##HDNet_AppName##">
+
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="2^代码^left^100">
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="3^姓名^left^100">
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="4^类别^left^100">
+
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="u.code^用户代码^1">
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="u.name^用户姓名^1">
+  <input TYPE="hidden" name="DataInterface_Search_Sql" value="">
+  <input TYPE="hidden" name="DataInterface_Search_Cols" value="">
+
+  <INPUT TYPE="hidden" name="DataInterface_FieldTo" value="">
+  <INPUT TYPE="hidden" name="DataInterface_FieldBy" value="1^2^3">
+  <INPUT TYPE="hidden" name="DataInterface_CallBckFunc" value="CallApp">
+  <INPUT TYPE="hidden" name="DataInterface_Close" value="true">
+</FORM>

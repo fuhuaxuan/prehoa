@@ -1,0 +1,941 @@
+<!--版本号：2013年3月份;此行不允许删除-->
+<script language="javascript" src="##GetWebRootPath(/Scripts/MapJs/jquery.min.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/Common.js)##"></script>
+<!-- 日期控件引入 -->
+<script language="javascript" src="##GetWebRootPath(/Scripts/JSCalendar.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/DataInterface.js)##"></script>
+<!-- Datainterface -->
+<form name="frmDataInterface_GD">
+  <input type="hidden" name="DataInterface_Title" value="Position 地理位置选择列表">
+  <!--在实际应用中sql语句应该加密-->
+  <input type="hidden" id="unitsql" name="DataInterface_Sql" value="select fgid,fno,farea,AreaSize,fmr from prl_AdvertBS_GROUNDH WHERE FSTAT='未租' and deptsource = '<HDPrint Value=#deptsource#>' ">
+  <input type="hidden" id="unitcount" name="DataInterface_CountSql" value="select count(*) from prl_AdvertBS_GROUNDH WHERE FSTAT='未租' and deptsource = '<HDPrint Value=#deptsource#>'">
+
+  <input type="hidden" name="DataInterface_OrderSql" value="order by fno">
+  <input type="hidden" name="DataInterface_UsrGid" value="<HDPrint Value=#UsrGid#>">
+  <input type="hidden" name="DataInterface_AppName" value="##HDNet_AppName##">
+  <!--在实际应用中sql语句应该加密-->
+  <input type="hidden" name="DataInterface_Cols" value="2^单位编号^left^170">
+  <input type="hidden" name="DataInterface_Cols" value="3^面积^left^170">
+  <input type="hidden" name="DataInterface_Cols" value="4^面积尺寸^left^170">
+  <input type="hidden" name="DataInterface_Cols" value="5^批准预算^left^120">
+  <input type="hidden" name="DataInterface_FieldTo" value="">
+  <INPUT TYPE="hidden" name="DataInterface_FieldBy" value="1^2^3^4^5">
+  <INPUT TYPE="hidden" name="DataInterface_CallBckFunc" value="Add_Unit">
+  <input type="hidden" name="DataInterface_Close" value="false">
+  <input type="hidden" name="DataInterface_PerPageNum" value="20">
+  <input type="hidden" name="DataInterface_Search" value="fno^单位编号^1">
+  <input type="hidden" name="DataInterface_Search" value="floorno^部门^1">
+  <input type="hidden" name="DataInterface_Search_Sql" value="">
+  <input type="hidden" name="DataInterface_Search_Cols" value="">
+</form>
+
+<form name="frmDataInterface_ISF">
+  <input type="hidden" name="DataInterface_Title" value="ISF 广告位_临时场地导入列表">
+  <!--在实际应用中sql语句应该加密-->
+  <input type="hidden" id="ISFsql" name="DataInterface_Sql" value="select wp.ModelGid, wp.FlowGid,wp.Num, wp.fillusrname,to_char(wp.createdate,'YYYY.MM.DD HH24:MI'),SerialNo,decode(FlowType,'10','ISF','ISCF') from WF_PRL_AdvertBS_ISF wp, wf_flow wf where wp.stat = 20 and wp.entgid = '<HDPrint Value=#entgid#>' and wf.entgid = '<HDPrint Value=#entgid#>' and wp.flowgid = wf.flowgid and wf.stat = 3  and not exists (select 1 from WF_PRL_AdvertBS_ISF wpi where wpi.entgid = '<HDPrint Value=#entgid#>' and wpi.stat in ('11', '12', '20') and wpi.ISFflowgid = wp.flowgid and wpi.FlowType = 20)"> <!--15已终止合同-->
+  <input type="hidden" id="ISFcount" name="DataInterface_CountSql" value="select count(*) from WF_PRL_AdvertBS_ISF wp, wf_flow wf where wp.stat = 20 and wp.entgid = '<HDPrint Value=#entgid#>' and wf.entgid = '<HDPrint Value=#entgid#>' and wp.flowgid = wf.flowgid and wf.stat = 3  and not exists (select 1 from WF_PRL_AdvertBS_ISF wpi where wpi.entgid = '<HDPrint Value=#entgid#>' and wpi.stat in ('11', '12', '20') and wpi.ISFflowgid = wp.flowgid and wpi.FlowType = 20)">
+
+  <input type="hidden" name="DataInterface_OrderSql" value="order by wp.num">
+  <input type="hidden" name="DataInterface_UsrGid" value="<HDPrint Value=#UsrGid#>">
+  <input type="hidden" name="DataInterface_AppName" value="##HDNet_AppName##">
+  <!--在实际应用中sql语句应该加密-->
+  <input type="hidden" name="DataInterface_Cols" value="3^单号^left^200">
+  <input type="hidden" name="DataInterface_Cols" value="4^发起人^left^90">
+  <input type="hidden" name="DataInterface_Cols" value="5^日期^left^120">
+  <input type="hidden" name="DataInterface_Cols" value="6^编号^left^120">
+  <input type="hidden" name="DataInterface_Cols" value="7^类别^left^70">
+  <input type="hidden" name="DataInterface_FieldTo" value="">
+  <INPUT TYPE="hidden" name="DataInterface_FieldBy" value="2">
+  <INPUT TYPE="hidden" name="DataInterface_CallBckFunc" value="CallBackISF">
+  <input type="hidden" name="DataInterface_Close" value="ture">
+  <input type="hidden" name="DataInterface_PerPageNum" value="20">
+  <input type="hidden" name="DataInterface_Search" value="FillUsrName^发起人^1">
+  <input type="hidden" name="DataInterface_Search" value="Num^单号^1">
+  <input type="hidden" name="DataInterface_Search_Sql" value="">
+  <input type="hidden" name="DataInterface_Search_Cols" value="">
+</form>
+<script language="JavaScript">
+<!--
+//选择广告位_临时场地后导入 Ajax 实现 
+function CallBackISF(sflowgid)
+{
+  frmOther.action=' ##HDNet_AppName##/WFFlowPage?URL=<HDPrint Value=#ModelCode#>_T1&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ModelGid#>&sFlowGid=' + sflowgid + '';
+  frmOther.target='_self';
+  frmOther.submit();
+}
+
+//类似于 附件上传的，在多数地方可以用到， 是否可以封装到common.js 中？
+//参数：sFileName：附件名称
+function AddAttach(sFileName)
+{
+  if (sFileName == '') return false;
+  for (j=0; j < frmDo.selFileList.length; j++)
+  {
+    if (frmDo.selFileList.options[j].value == sFileName)
+    {
+      alert('已经存在该附件！');
+      return false;
+    }
+  }
+  frmDo.selFileList.options.add(new Option(sFileName, sFileName));
+}
+//函数功能：双击删除选中附件
+//参数：obj:选中的对象
+
+function DelClick(obj)
+{
+  if (obj.selectedIndex >= 0) 
+    obj.remove(obj.selectedIndex);
+}
+
+
+//按Alt + 字符 可以快速进行
+function checkKeyEvent() {
+  //S
+  if (event.altKey && event.keyCode == 83 )
+    check('save');
+}
+
+document.onkeydown = checkKeyEvent;
+
+function showEr_IsNull(sname,str,flag)
+{
+  var obj = document.all(sname);
+  if (obj.value == '')
+  {
+    alert(str+'不可为空');
+    if (!flag) {
+      obj.style.backgroundColor = '#FFCCCC';
+      obj.focus();
+    }
+    else
+      obj.style.backgroundColor = '';//先使之前用于出错提示的背景色恢复正常
+    return false;
+  }
+  return true;
+}
+//输入应当为数字
+function showEr_IsNumber(obj,str)
+{
+  obj.style.backgroundColor = '';
+  if (!isNumber(obj.value))
+  {
+    alert(str+'必须为数字');
+    obj.style.backgroundColor = '#FFFFCC';
+    obj.value = '';
+    obj.focus();
+    return false;
+  }
+  return true;
+}
+  //只能输入数字
+  function checkNumber(obj) {
+    if (event.keyCode == null) return false;
+    if (event.keyCode > 57 || (event.keyCode < 48 && event.keyCode != 46 && event.keyCode != 45 )) return false;
+  }
+  
+  //商品数量：检查整数
+  function changeNumber(obj) {
+    //数字的判断
+    if(isNaN(obj.value)) {obj.value='0';}
+    }
+
+//更改类别时的操作
+function changeRadio(str)
+{
+  var sPointCode = '';
+  document.all.Category.value = str;
+  //其它的说明显示、隐藏
+  if(str == 'Others 其他')
+    document.all.CategoryText.style.display = '';
+  else
+    document.all.CategoryText.style.display = 'none';
+  //获取点位代码
+  if(str == 'Advertisement Panel 广告位')
+    sPointCode = 'AP';
+  else if(str == 'Promotion Area 促销区')
+    sPointCode = 'PA';
+  else if(str == 'Event 活动')
+    sPointCode = 'EI';
+  else
+    sPointCode = 'OT';
+  //更新编号
+  document.all.SerialNo.value = sPointCode+'-<HDPrint Value=#sSerialNo# Replace=#DBField2Input#>';
+}
+//获取租赁的年月差
+  function getYM()
+  {
+    if (document.all.RentWay.value == '按月收取')
+    {
+      return false;
+    }
+    //var objY = document.all.LeaseTermY;
+    var objM = document.all.LeaseTermM;
+    var objD = document.all.LeaseTermD;
+    var objB = document.all.LeasePeriodBDate;
+    var objE = document.all.LeasePeriodEDate;
+
+    if(objB.value == '' )
+    {
+      alert('租赁期开始时间为空!');
+      return false;
+    }
+    if(objE.value == '')
+    {
+      alert('租赁期结束时间为空!');
+      return false;
+    }
+    if(DatesCompare(frmDo.LeasePeriodEDate.value,frmDo.LeasePeriodBDate.value) <= 0)
+    {
+      alert("租赁期限开始日期必须小于租赁期限结束日期,请重新选择!");
+      return false;
+    }
+    //分钟
+    var minute = 1000 * 60;
+    //小时
+    var hour = minute * 60;
+    //天
+    var day = hour * 24;
+    //月
+    var month = day * (365/12);
+    //年
+    var year = month * 12;
+    //把开始结束日期的年月份分开
+    var sBDate = objB.value.split(".");
+    var sEDate = objE.value.split(".");
+    //创建js 日期格式
+    var s1 = new Date(sBDate[0],sBDate[1]-1,sBDate[2]);
+    var s2 = new Date(sEDate[0],sEDate[1]-1,sEDate[2]);
+    //作两个日期的差
+    var sValue = s2 - s1 + (1*day);
+    //计算并赋值
+    //objY.value = parseFloat(sValue/year);
+    objM.value = parseFloat(sValue/month).toFixed(0);
+    objD.value = parseFloat(sValue/day).toFixed(0);
+    //parseFloat(parseFloat(sValue/month) - parseFloat(sValue/year) * 12);
+    if(document.getElementsByName('IRow_0') != null)
+    {
+      var objR = document.getElementsByName('IRow_0');
+      var sSum = 0;
+      for(var i = objR.length - 1;i >= 0 ;i--)
+      {
+        var iRow = objR[i].value;
+        var sLeaseTerm = parseFloat(sValue/day).toFixed(0);
+        
+        var sUnitRate = document.getElementById('UnitRate_' + iRow).value;
+        if (sUnitRate == '')
+        {
+          sUnitRate = 0;
+        }
+        
+        document.getElementById('LeaseTerm_' + iRow).value = sLeaseTerm;
+        
+        document.getElementById('Total_' + iRow).value = parseFloat(parseFloat(sLeaseTerm) * parseFloat(sUnitRate)).toFixed(2);
+        
+        sSum += parseFloat(parseFloat(sLeaseTerm) * parseFloat(sUnitRate));
+      }
+      document.all.RentalIncash.value = parseFloat(sSum).toFixed(2);
+    }
+  }
+  //保证只新增一次
+  //参数1：比对的值
+  //参数2：进行比较的对象
+  function GetSingle(sGid,obj)
+  {
+    //在指定的控件中查询值 = sGid 的控件
+    if (obj != null)
+    {
+      if (obj.length == null )
+      {
+        if (obj.value == sGid) 
+        {
+          alert('您选择的信息已经存在，不能重复添加。');
+          return false;
+        }
+      }
+      else
+      {
+        for (i = 0; i < obj.length; i++)
+        {
+          if (obj[i].value == sGid) 
+          {
+            alert('您选择的信息已经存在，不能重复添加。');
+            return false;
+          }
+        }
+      }
+    }
+    return true;
+  }
+  //计算总价
+  function SumAll(iGid)
+  {
+    var iUnitRate = document.getElementById('UnitRate_' + iGid).value;//单价
+    if (document.all.RentWay.value == '按日收取')
+    {
+      var iLeaseTermD = document.all.LeaseTermD.value;//租赁期天数
+    }
+    if (document.all.RentWay.value == '按月收取')
+    {
+      var iLeaseTermD = document.all.LeaseTermM.value;//租赁期天数
+    }
+    
+    if (iUnitRate == '') {iUnitRate = 0}
+    if (iLeaseTermD == '') {iLeaseTermD = 0}
+    
+    document.getElementById('LeaseTerm_' + iGid).value = iLeaseTermD;
+    document.getElementById('Total_' + iGid).value = parseFloat(parseFloat(iUnitRate) * parseFloat(iLeaseTermD)).toFixed(2);
+
+    var objR = document.getElementsByName('IRow_0');
+    var sSum = 0;
+    var sSum2 = 0;
+    for(var i = objR.length - 1;i >= 0 ;i--)
+    {
+      var iRow = objR[i].value;
+      var sUnitRate = document.getElementById('UnitRate_' + iRow).value;
+      var sFundModelRate = document.getElementById('FundModelRate_' + iRow).value;
+      if (sUnitRate == '')
+      {
+        sUnitRate = 0;
+      }
+      
+      document.getElementById('LeaseTerm_' + iRow).value = iLeaseTermD;
+      
+      document.getElementById('Total_' + iRow).value = parseFloat(parseFloat(iLeaseTermD) * parseFloat(sUnitRate)).toFixed(2);
+      
+      sSum += parseFloat(parseFloat(iLeaseTermD) * parseFloat(sUnitRate));
+      sSum2 += parseFloat(sFundModelRate);
+    }
+    //合计
+    document.all.RentalIncash.value = parseFloat(sSum).toFixed(2);
+    //预算
+    document.all.Budget.value = parseFloat(sSum2).toFixed(2);
+    //PI = 合计 - 预算
+    document.all.PI.value = parseFloat(parseFloat(sSum) - parseFloat(sSum2)).toFixed(2);
+  }
+  //新增联系人
+  function Add_Unit(sGid,sNo,sArea,sAreaSize,sRmb)
+  {
+    //判断字段是否重新，不重复则新增一行
+    if (!(GetSingle(sGid,document.all.Gid_1)))
+      return false;
+    var Obj = document.all.tb_Income;
+    var sLeaseTerm = 0;
+    if (document.all.RentWay.value == '按日收取')
+    {
+      sLeaseTerm = document.all.LeaseTermD.value;
+    }
+    if (document.all.RentWay.value == '按月收取')
+    {
+      sLeaseTerm = document.all.LeaseTermM.value;
+    }
+    if(sLeaseTerm == '')
+      sLeaseTerm = 0.00;
+    else
+      sLeaseTerm = parseFloat(sLeaseTerm).toFixed(0);
+    var i = Obj.rows.length;
+    var iRow = Math.floor(Math.random() * (1 + 100000 - 1) + 1);
+    //调用公用函数，新增一行
+    Common_Tr_Add(Obj,'listtd','0',
+    i+'<input type="hidden" class="SearchBox" name="Line_1" value="'+ i +'" maxlength="2" style="width:90%;">',
+    sNo+'<input type="hidden" class="SearchBox" id="SerialNo_'+iRow+'" name="SerialNo_0" maxlength="32" style="width:90%" value = "'+sNo+'"><input type="hidden" class="SearchBox" name="Gid_1" value="'+sGid+'" maxlength="32"><input type="hidden" class="SearchBox" id="IRow_'+iRow+'" name="IRow_0" value="'+iRow+'" maxlength="32">',
+    '<input type="text" class="SearchBox" id="LeaseTerm_'+iRow+'" name="LeaseTerm_0" maxlength="64" style="width:90%;border:0px;" value = "'+sLeaseTerm+'" readonly>',
+    '<input type="text" class="SearchBox" id="AreaSize_'+iRow+'" name="AreaSize_0" maxlength="64" style="width:90%;border:0px;" value = "'+sAreaSize+'" readonly>',
+    '<input type="text" class="SearchBox" id="UnitRate_'+iRow+'" name="UnitRate_0" maxlength="64" style="width:90%" onblur="showEr_IsNumber(this,\'Unit Rate 租赁单价\');SumAll(\''+ iRow +'\');">',
+    '<input type="text" class="SearchBox" id="Total_'+iRow+'" name="Total_0" maxlength="64" style="width:90%;border:0px;" readonly>',
+    '<input type="text" class="SearchBox" id="FundModelRate_'+iRow+'" name="FundModelRate_0"  maxlength="64" style="width:90%;border:0px;" value = "'+sRmb+'" readonly>',
+    '<input type="text" class="SearchBox" id="Remark_1" name="Remark_0" maxlength="64" style="width:90%" >');
+
+  }
+//删除行
+  //参数0：链接a
+  //参数1：删除的表的ID
+  //参数2：类别：(10:显示字段表，20：查询字段表，30：过滤条件表，40：默认条件)
+  function delTr(obj,str)
+  {
+    //调用公用函数，删除一行、或obj.parentElement.parentElement.removeNode(true);
+    Common_Tr_Del();
+    
+    //重新计算行号
+    changeRow(str);
+    sum();
+  }
+  //重新计算行号
+  function changeRow(str)
+  {
+    //根据传过来的参数，重新计算不同表的行号
+    for(i=1; i < document.all(str).rows.length;i++)
+    {
+      document.all(str).rows[i].cells[0].innerHTML = i+'<input type="hidden" value="'+ i +'" name="Line_1" style="border:0px;width:100%">';
+    }
+  }
+  function sum()
+  {
+    if (document.all.RentWay.value == '按日收取')
+    {
+      var iLeaseTermD = document.all.LeaseTermD.value;//租赁期天数
+    }
+    if (document.all.RentWay.value == '按月收取')
+    {
+      var iLeaseTermD = document.all.LeaseTermM.value;//租赁期天数
+    }
+    
+    if (iLeaseTermD == '') {iLeaseTermD = 0}
+    
+    var objR = document.getElementsByName('IRow_0');
+    var sSum = 0;
+    var sSum2 = 0;
+    for(var i = objR.length - 1;i >= 0 ;i--)
+    {
+      var iRow = objR[i].value;
+      var sUnitRate = document.getElementById('UnitRate_' + iRow).value;
+      var sFundModelRate = document.getElementById('FundModelRate_' + iRow).value;
+      if (sUnitRate == '')
+      {
+        sUnitRate = 0;
+      }
+      
+      document.getElementById('LeaseTerm_' + iRow).value = iLeaseTermD;
+      
+      document.getElementById('Total_' + iRow).value = parseFloat(parseFloat(iLeaseTermD) * parseFloat(sUnitRate)).toFixed(2);
+      
+      sSum += parseFloat(parseFloat(iLeaseTermD) * parseFloat(sUnitRate));
+      sSum2 += parseFloat(sFundModelRate);
+    }
+    //合计
+    document.all.RentalIncash.value = parseFloat(sSum).toFixed(2);
+    //预算
+    document.all.Budget.value = parseFloat(sSum2).toFixed(2);
+    //PI = 合计 - 预算
+    document.all.PI.value = parseFloat(parseFloat(sSum) - parseFloat(sSum2)).toFixed(2);
+  }
+  function CheckSubmit(str1)
+{
+  var str = '';
+  var strMax = '';
+  var LoopStr1 ='';
+  document.all.Wf_Stat.value = str1;
+  for (i = 0;i < frmDo.length;i++ )
+  {
+    s = frmDo[i].name;
+    if (s =='') continue;
+    frmDo[i].style.backgroundColor = '';
+    if ((s == 'CategoryText') && (frmDo[i].value == '') && document.all.Category.value == '40')
+    {
+      str += 'Category：Others 类别：其它;';
+      frmDo[i].style.backgroundColor = '#FFFFCC';
+    }
+    if ((s == 'RentWay') && (frmDo[i].value == ''))
+    {
+      str += 'Rent Price Charge Way租金单价收取方式:';
+      //document.all.RentWay1.style.backgroundColor = '#FFFFCC';
+    }
+    if ((s == 'TenantLicensee') && (frmDo[i].value == ''))
+    {
+      str += 'Tenant Licensee 租户;';
+      frmDo[i].style.backgroundColor = '#FFFFCC';
+    }
+    //保存时必填
+
+    if(str1 == '11')
+    {
+      if ((s == 'TradingName') && (frmDo[i].value == ''))
+      {
+        str += 'Trading Name 商店营业名称;';
+        frmDo[i].style.backgroundColor = '#FFFFCC';
+      }
+      if ((s == 'Address') && (frmDo[i].value == ''))
+      {
+        str += 'Address 地址;';
+        frmDo[i].style.backgroundColor = '#FFFFCC';
+      }
+      
+      if ((s == 'ContactPerson') && (frmDo[i].value == ''))
+      {
+        str += 'Contact Person 接洽人;';
+        frmDo[i].style.backgroundColor = '#FFFFCC';
+      }
+      if ((s == 'Phone') && (frmDo[i].value == ''))
+      {
+        str += 'Phone 电话号码;';
+        frmDo[i].style.backgroundColor = '#FFFFCC';
+      }
+      if ((s == 'Email') && (frmDo[i].value == ''))
+      {
+        str += 'E-mail 电子邮件;';
+        frmDo[i].style.backgroundColor = '#FFFFCC';
+      }
+      if ((s == 'LeasePeriodBDate') && (frmDo[i].value == ''))
+      {
+        str += '租赁开始日期;';
+        frmDo[i].style.backgroundColor = '#FFFFCC';
+      }
+      if ((s == 'LeasePeriodEDate') && (frmDo[i].value == ''))
+      {
+        str += '租赁结束日期;';
+        frmDo[i].style.backgroundColor = '#FFFFCC';
+      }
+      if ((s == 'LeaseTermM') && (frmDo[i].value == ''))
+      {
+        str += 'Lease Term 租赁期限;';
+        frmDo[i].style.backgroundColor = '#FFFFCC';
+      }
+      
+      //循环判断
+      if ((s.substr(0,9) == 'UnitRate_') && (frmDo[i].value== ''))
+      {
+        LoopStr1 += 'Unit Rate 租赁单价;';
+        frmDo[i].style.backgroundColor = '#FFFFCC';
+      }
+
+      
+      if ((s == 'SecurityDeposit') && (frmDo[i].value == ''))
+      {
+        str += 'Security Deposit 保证金;';
+        frmDo[i].style.backgroundColor = '#FFFFCC';
+      }
+      
+      if ((s == 'sOthers') && (frmDo[i].value == ''))
+      {
+        str += 'Others 其他;';
+        frmDo[i].style.backgroundColor = '#FFFFCC';
+      }
+      
+      if ((s == 'PowerRate') && (frmDo[i].value == ''))
+      {
+        str += 'PowerRate 电费;';
+        frmDo[i].style.backgroundColor = '#FFFFCC';
+      }
+      
+
+    }
+    
+    //字数>2000判断
+    if ((s == 'Remarks') && (frmDo[i].value.length > 2000))
+    {
+      strMax += 'Special Terms and Conditions/Remarks 特别条件/说明;';
+      frmDo[i].style.backgroundColor = '#FFFFCC';
+    }
+  }
+  //必填判断
+  if(str != '' || LoopStr1 != '')
+  {
+    if(LoopStr1!='')
+      str += 'Unit Rate 租赁单价;';
+    alert('请输入黄色必填字段:'+str);
+    return false;
+  }
+  if(str1 == '11')
+  {
+    if(document.all.tb_Income.rows.length < 2)
+    {
+      alert('Income 收入至少输入一行！');
+      return false;
+    }
+  }
+  //字数>2000判断
+  if(strMax != '')
+  {
+    alert('您填写的备注的字数超过2000个字,请调整!');
+    return false;
+  }
+  //合并附件文件
+  for (i = 0; i < frmDo.selFileList.length; i++) 
+  {
+    frmDo.selFileList.options[i].selected = true;
+  }
+  frmDo.LeasePeriodEDate.disabled = false;
+  frmDo.target='_self';
+  frmDo.submit();
+
+  document.all.btn_Save1.disabled = true;
+  document.all.btn_Save2.disabled = true;
+  document.all.btn_Submit1.disabled = true;
+  document.all.btn_Submit2.disabled = true;
+  }
+  //改变租金单价收取方式
+  function setLease(str)
+  {
+    document.all.RentWay.value=str;
+    if (str == '按日收取')
+    {
+      frmDo.LeasePeriodEDate.disabled = false;
+      frmDo.LeaseTermM.readOnly = true;
+      getYM();
+    }
+    if (str == '按月收取')
+    {
+      frmDo.LeasePeriodEDate.disabled = true;
+      frmDo.LeaseTermM.readOnly = false;
+      getELeasePeriod();
+    }
+    sum();
+  }
+  function getELeasePeriod()
+  {
+    if (document.all.RentWay.value == '按日收取')
+    {
+      return false;
+    }
+    var objM = document.all.LeaseTermM;
+    var objD = document.all.LeaseTermD;
+    var objB = document.all.LeasePeriodBDate;
+    var objE = document.all.LeasePeriodEDate;
+
+    if(objB.value == '' )
+    {
+      alert('租赁期开始时间不能为空!');
+      return false;
+    }
+    if(objM.value == '' )
+    {
+      alert('租赁期限不能为空!');
+      return false;
+    }
+    var reg = /^\d+$/;
+    if (!reg.test(objM.value)){
+      alert('租赁期限只能为整数!');
+      objM.value = '';
+      return false;
+    }
+    //分钟
+    var minute = 1000 * 60;
+    //小时
+    var hour = minute * 60;
+    //天
+    var day = hour * 24;
+    //月
+    var month = day * (365/12);
+    //年
+    var year = month * 12;
+    //把开始结束日期的年月份分开
+    var sBDate = objB.value.split(".");
+    //var sEDate = objE.value.split(".");
+    //创建js 日期格式
+    var sM = parseFloat(parseFloat(sBDate[1]-1)+parseFloat(objM.value)).toFixed(0);
+    var sEDate = new Date(sBDate[0],sM,sBDate[2]-1);
+    //计算并赋值
+    objE.value = sEDate.getFullYear() + '.' + parseFloat(sEDate.getMonth() + 1).toFixed(0) + '.'+ sEDate.getDate();
+    objD.value = parseFloat(objM.value * 30).toFixed(0);
+    if(document.getElementsByName('IRow_0') != null)
+    {
+      var objR = document.getElementsByName('IRow_0');
+      var sSum = 0;
+      for(var i = objR.length - 1;i >= 0 ;i--)
+      {
+        var iRow = objR[i].value;
+        var sLeaseTerm = parseFloat(objM.value).toFixed(0);
+        
+        var sUnitRate = document.getElementById('UnitRate_' + iRow).value;
+        if (sUnitRate == '')
+        {
+          sUnitRate = 0;
+        }
+        
+        document.getElementById('LeaseTerm_' + iRow).value = sLeaseTerm;
+        
+        document.getElementById('Total_' + iRow).value = parseFloat(parseFloat(sLeaseTerm) * parseFloat(sUnitRate)).toFixed(2);
+        
+        sSum += parseFloat(parseFloat(sLeaseTerm) * parseFloat(sUnitRate));
+      }
+      document.all.RentalIncash.value = parseFloat(sSum).toFixed(2);
+    }
+  }
+//-->
+</script>
+<form name="frmOther" method="Post" action="">
+</form>
+<form name="frmDo" method="post" action="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#Modelcode#>_T1Save&UsrGid=<HDPrint Value=#UsrGid#>">
+<h3 class="TitleBar" >生成审批表</h3>
+<TABLE width="100%" class="ButtonBar" cellpadding=0 cellspacing=0>
+<TR>
+  <TD>
+    <B>工具栏：</B>
+    <A HREF="javascript:CheckSubmit('10');void(0)" title="ALT+S" id="btn_Save1"><FONT style="font-family:Wingdings;font-size:14px">&#60;</FONT> <b>保存</b>　</A>
+    <A HREF="javascript:CheckSubmit('11');void(0)" title="ALT+S" id="btn_Submit1"><FONT style="font-family:Wingdings;font-size:14px">&#254;</FONT> <b>提交</b>　</A>
+    <A HREF="javascript:window.close();"><FONT style="font-family:Wingdings ;font-size:14px">&#251;</FONT> <b>关闭</b>　</A>
+  </TD>
+  <td  style="width:20%"><!--<A HREF="##HDNet_AppName##/MainPage?URL=&UsrGid=<HDPrint Value=#UsrGid#>"><FONT style="font-family:Wingdings;font-size:14px">&#199;</FONT> 返回首页</A>　--></TD>
+</TR>
+</TABLE>
+  <input type="hidden" name="ModelGid" value="<HDPrint Value=#ModelGid# Replace=#DBField2Input#>">
+  <input type="hidden" name="FlowGid" value="<HDPrint Value=#NewGid# Replace=#DBField2Input#>">
+  <INPUT TYPE="hidden" name="Num" value="<HDPrint Value=#NewNum#>">
+  <input type="hidden" name="FillUsrDeptGid" value="<HDPrint Value=#DeptGid# Replace=#DBField2Input#>">
+  <INPUT TYPE="hidden" name="DeptGid" value="<HDPrint Value=#DeptGid# Replace=#DBField2Input#>">
+  <input type="hidden" name="FillUsrDeptCode" value="<HDPrint Value=#DeptCode# Replace=#DBField2Input#>">
+  <input type="hidden" name="FillUsrDept" value="<HDPrint Value=#DeptName# Replace=#DBField2Input#>">
+  <input type="hidden" name="FillUsrGid" value="<HDPrint Value=#UsrGid# Replace=#DBField2Input#>">
+  <input type="hidden" name="FillUsrName" value="<HDPrint Value=#CurUsrName# Replace=#DBField2Input#>">
+  <input type="hidden" name="mallNum" value="<HDPrint Value=#mallNum# Replace=#DBField2Input#>">
+  <input type="hidden" name="Wf_Stat" value="1">
+  <INPUT TYPE="hidden" name="Budget" value="<HDPrint Value=#Budget# Replace=#DBField2Input#>">
+  <INPUT TYPE="hidden" name="PI" value="<HDPrint Value=#PI# Replace=#DBField2Input#>">
+  <INPUT TYPE="hidden" name="lesseeGid" value="<HDPrint Value=#tradingGid# Replace=#DBField2Input#>">
+  <INPUT TYPE="hidden" name="tradingGid" value="<HDPrint Value=#tradingGid# Replace=#DBField2Input#>">
+<table cellpadding="0" cellspacing="1" align="center" width="100%">
+  <col style="padding-left:4px;width:9%">
+  <col style="padding-left:4px;width:21%">
+  <col style="padding-left:4px;width:50%">
+  <col style="padding-left:4px;width:20%">
+  <TR>
+    <TD class="newtd2">单号</TD>
+    <TD class="newtd3"><HDPrint Value=#NewNum#></td>
+    <td class="title" rowspan="3"  align="center"><HDPrint Value=#ModelName#></td>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2">申请人</TD>
+    <TD class="newtd3"><HDPrint Value=#CurUsrName#></td>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2">申请人部门</TD>
+    <td class="newtd3"><HDPrint Value=#DeptName#>&nbsp;</td>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2">申请日期</TD>
+    <td class="newtd3"><HDPrint Value=#CurDate#> <HDPrint Value=#CurTime#></td>
+    <TD></TD>
+  </TR>
+</table>
+<br>
+<table cellspacing="1">
+  <col style="padding-left:20px;width:200">
+  <tr class="listtr2"><td><b>单据内容</b> </td></tr>
+</table>
+
+<table cellpadding="0" cellspacing="1" class="ListBar" width="100%">
+  <col style="padding-left:4px;width:20%" valign="top">
+  <col style="padding-left:4px;width:30%" valign="top">
+  <col style="padding-left:4px;width:20%" valign="top">
+  <col style="padding-left:4px;width:30%" valign="top">
+  <tr>
+    <td class="newtd2" >ISF 单号:　<a href="javascript:DataInterface(frmDataInterface_ISF)">[Pls Choose 请选择]</a></td>
+    <td class="listtd" colspan="3"><input type="text" name="ISFNum" style="width:90%" class="SearchBox" maxlength="32" value="<HDPrint Value=#ISFNum# Replace=#DBField2Input#>" style="border:0px;" readonly><input type="hidden" name="ISFFlowGid" style="width:90%" class="SearchBox" maxlength="32" value="<HDPrint Value=#ISFFlowGid# Replace=#DBField2Input#>" ></td>
+  </tr>
+  <tr>
+    <td class="newtd2">Date 日期:</td>
+    <td class="listtd"><HDPrint Value=#CurDate#></td>
+    <td class="newtd2">Serial No 编号:</td>
+    <td class="listtd"><input type="text" name="SerialNo" style="width:90%" class="SearchBox" maxlength="32" value="AP-<HDPrint Value=#sSerialNo# Replace=#DBField2Input#>" style="border:0px;" readonly></td>
+  </tr>
+  <tr>
+    <td class="newtd2" rowspan="2">Category 类别:<font color="red">*</font></td>
+    <td class="listtd" rowspan="2">
+      <input type="radio" NAME="Category1" onclick="changeRadio(this.value);" value="Advertisement Panel 广告位">Advertisement Panel 广告位<br>
+      <input type="radio" NAME="Category1" onclick="changeRadio(this.value);" value="Promotion Area 促销区">Promotion Area 促销区<br>
+      <input type="radio" NAME="Category1" onclick="changeRadio(this.value);" value="Event 活动">Event 活动<br>
+      <input type="radio" NAME="Category1" onclick="changeRadio(this.value);" value="Others 其他">Others (Pls specify) 其他（请指明）
+      <input type="hidden" name="Category" value='Advertisement Panel 广告位'>
+      <input type="text" NAME="CategoryText" style="width:80%;display:none" maxlength="64" value="<HDPrint Value=#CategoryText# Replace=#DBField2Input#>">
+    </td>
+    <script language="JavaScript">
+      if('<HDPrint Value=#Category# Replace=#DBField2Js#>' != '')
+      {
+        $("input[name='Category1'][value='<HDPrint Value=#Category# Replace=#DBField2Input#>']").attr("checked",true);
+        if ('<HDPrint Value=#Category# Replace=#DBField2Js#>' == 'Others 其他')
+          document.all.CategoryText.style.display = '';
+        else
+          document.all.CategoryText.style.display = 'none';
+        document.all.Category.value = '<HDPrint Value=#Category# Replace=#DBField2Input#>';
+      }
+      else
+      {
+        $("input[name='Category1'][value='Advertisement Panel 广告位']").attr("checked",true);
+        document.all.CategoryText.style.display = 'none';
+        document.all.Category.value = 'Advertisement Panel 广告位';
+      }
+    </script>
+    <td class="newtd2">AType 租赁类别:<font color="red">*</font></td>
+    <td class="listtd">
+      <input type="radio" NAME="Atype1" onclick="document.all.Atype.value='New 新租赁';" value="New 新租赁" checked> New 新租赁 <br>
+      <input type="radio" NAME="Atype1"  onclick="document.all.Atype.value='Renewal 续约租赁';" value="Renewal 续约租赁"> Renewal 续约租赁
+      <input type="hidden" name="Atype" value="New 新租赁">
+    </td>
+    <script language="JavaScript">
+      if('<HDPrint Value=#Atype# Replace=#DBField2Js#>' != '')
+      {
+        $("input[name='Atype1'][value='<HDPrint Value=#Atype# Replace=#DBField2Input#>']").attr("checked",true);
+         document.all.Atype.value = '<HDPrint Value=#Atype# Replace=#DBField2Input#>';
+      }
+      else
+      {
+        $("input[name='Atype1'][value='New 新租赁']").attr("checked",true);
+        document.all.Atype.value = 'New 新租赁';
+      }
+    </script>
+  </tr>
+  
+  <tr>
+    <td class="newtd2">Rent Price Charge Way租金单价收取方式:<font color="red">*</font></td>
+    <td class="listtd">
+      <input type="radio" NAME="RentWay1" onclick="setLease(this.value)" value="按日收取"> 按日收取 <br>
+      <input type="radio" NAME="RentWay1"  onclick="setLease(this.value)" value="按月收取"> 按月收取
+      <input type="hidden" name="RentWay" value="<HDPrint Value=#RentWay# Replace=#DBField2Input#>">
+      <script language="JavaScript">
+      $("input[name='RentWay1'][value='<HDPrint Value=#RentWay# Replace=#DBField2Input#>']").attr("checked",true);
+    </script>
+    </td>
+  </tr>
+  <tr>
+    <td class="newtd2">Tenant/Licensee 租户:<font color="red">*</font></td>
+    <td class="listtd"><input type="text" NAME="TenantLicensee" style="width:80%" maxlength="250" value="<HDPrint Value=#TenantLicensee# Replace=#DBField2Input#>"></td>
+    <td class="newtd2">Trading Name 商店营业名称:<font color="red">*</font></td>
+    <td class="listtd" ><input type="text" NAME="TradingName" style="width:80%" maxlength="500" value="<HDPrint Value=#TradingName# Replace=#DBField2Input#>"></td>
+  </tr>
+  <tr>
+    <td class="newtd2">Address 地址:<font color="red">*</font></td>
+    <td class="listtd" colspan="3"><input type="text" NAME="Address" style="width:80%" maxlength="250" value="<HDPrint Value=#Address# Replace=#DBField2Input#>"></td>
+  </tr>
+  <tr>
+    <td class="newtd2">Contact Person 接洽人:<font color="red">*</font></td>
+    <td class="listtd"><input type="text" NAME="ContactPerson" style="width:80%" maxlength="30" value="<HDPrint Value=#ContactPerson# Replace=#DBField2Input#>"></td>
+    <td class="newtd2">Phone 电话号码:<font color="red">*</font></td>
+    <td class="listtd"><input type="text" NAME="Phone" style="width:80%" maxlength="30" value="<HDPrint Value=#Phone# Replace=#DBField2Input#>"></td>
+  </tr>
+  <tr>
+    <td class="newtd2">E-mail 电子邮件:<font color="red">*</font></td>
+    <td class="listtd"><input type="text" NAME="Email" style="width:80%" maxlength="30" value="<HDPrint Value=#Email# Replace=#DBField2Input#>"></td>
+    <td class="newtd2">Fax 传真号码:</td>
+    <td class="listtd"><input type="text" NAME="Fax" style="width:80%" maxlength="30" value="<HDPrint Value=#Fax# Replace=#DBField2Input#>"></td>
+  </tr>
+  <tr>
+    <td class="newtd2">Lease Period 租赁起止日:<font color =red>*</font></td>
+    <td class="listtd">
+     <INPUT TYPE="text" NAME="LeasePeriodBDate" maxlength="10" onclick='showCalender(this,this)' onblur="checkDate(this);" style="width:30%" value="<HDPrint Value=#LeasePeriodBDate# Replace=#DBField2Input#>">&nbsp;&nbsp;至&nbsp;&nbsp;<INPUT TYPE="text" NAME="LeasePeriodEDate" maxlength="10" onblur="checkDate(this);" onclick='showCalender(this,this)' style="width:30%" value="<HDPrint Value=#LeasePeriodEDate# Replace=#DBField2Input#>">
+    </td>
+    <td class="newtd2">Lease Term 租赁期限:<font color =red>*</font></td>
+    <td class="listtd">
+      <input type="text" NAME="LeaseTermM" value="<HDPrint Value=#LeaseTermM# Replace=#DBField2Input#>" onkeypress="return checkNumber(this)" onclick='getYM()'  title="只能填写数字类型" onblur="getELeasePeriod()" readonly style="width:20%" maxlength="64">Months 个月<input type="hidden" NAME="LeaseTermD" value="<HDPrint Value=#LeaseTermD# Replace=#DBField2Input#>"style="width:20%" maxlength="64">
+    </td>
+  </tr>
+  <tr>
+    <td class="newtd2">LeaseType 租户类别:<font color="red">*</font></td>
+    <td class="listtd">
+      <input type="radio" NAME="LeaseType1" onclick="document.all.LeaseType.value='Leasee 租户';" value="Leasee 租户">Leasee 租户
+      <input type="radio" NAME="LeaseType1" onclick="document.all.LeaseType.value='Not Leasee 非租户';" value="Not Leasee 非租户">Not Leasee 非租户
+      <input type="hidden" name="LeaseType" value='Leasee 租户'>
+    </td>
+    <script language="JavaScript">
+      if('<HDPrint Value=#LeaseType# Replace=#DBField2Js#>' != '')
+      {
+        $("input[name='LeaseType1'][value='<HDPrint Value=#LeaseType# Replace=#DBField2Input#>']").attr("checked",true);
+         document.all.LeaseType.value = '<HDPrint Value=#LeaseType# Replace=#DBField2Input#>';
+      }
+      else
+      {
+        $("input[name='LeaseType1'][value='Leasee 租户']").attr("checked",true);
+        document.all.LeaseType.value = 'Leasee 租户';
+      }
+    </script>
+    <td class="newtd2">ConditionForExemption 租金减免条件:</td>
+    <td class="listtd"><input type="text" name="ConditionForExemption" value="<HDPrint Value=#ConditionForExemption# Replace=#DBField2Input#>" maxlength="128" style="width:80%"></td>
+  </tr>
+</table>
+<h3 class="TitleBar" >
+  <table width="100%" style="width:100%" cellpadding="0" cellspacing="0">
+  <tr>
+    <td>
+      <B>Income 收入　<!--[ <A HREF="javascript:DataInterface(frmDataInterface_GD)">新增</A> ]--></B>
+    </td>
+    </tr>
+</table>
+</h3>
+<table  width="100%" class="ListBar" cellspacing="1" id="tb_Income">
+    <colgroup>
+      <col style="padding-left:4px;width:8%">
+      <col style="padding-left:4px;width:12%">
+      <col style="padding-left:4px;width:12%">
+      <col style="padding-left:4px;width:12%">
+      <col style="padding-left:4px;width:12%">
+      <col style="padding-left:4px;width:10%">
+      <col style="padding-left:4px;width:15%">
+      <col style="padding-left:4px;width:25%">
+    </colgroup>
+    <tr class="listtr">
+      <td align="center">No. 序号</td>
+      <td align="center">Serial No. 编号</td>
+      <td align="center">Lease Term 租赁期</td>
+      <td align="center">Area Size 面积尺寸</td>
+      <td align="center">Unit Rate 租赁单价<font color="red">*</font></td>
+      <td align="center">Total 总金额</td>
+      <td align="center">Fund Model Rate 租金底价</td>
+      <td align="center">Remark 备注</td>
+    </tr>
+    <HDPrint Value=#IncomeList# Replace=#None#>
+  </table>
+<br>
+<table cellpadding="0" cellspacing="1" class="ListBar" width="100%">
+  <col style="padding-left:4px;width:20%" valign="top">
+  <col style="padding-left:4px;width:30%" valign="top">
+  <col style="padding-left:4px;width:20%" valign="top">
+  <col style="padding-left:4px;width:30%" valign="top">
+  <tr>
+    <td class="newtd2">Rental In cash 现金租金:[RMB 人民币]</td>
+    <td class="listtd"><input type="text" name="RentalIncash" style="width:90%" class="SearchBox" maxlength="32" value="<HDPrint Value=#RentalIncash# Replace=#DBField2Input#>" style="border:0px;" readonly></td>
+    <td class="newtd2">GTO Rent 销售提成:</td>
+    <td class="listtd"><input type="text" name="GTORent" style="width:90%" class="SearchBox" maxlength="32" value="<HDPrint Value=#GTORent# Replace=#DBField2Input#>" onblur="showEr_IsNumber(this,'GTO Rent 销售提成')"></td>
+  </tr>
+  <tr>
+    <td class="newtd2">Security Deposit 保证金:[RMB 人民币]<font color="red">*</font></td>
+    <td class="listtd"><input type="text" name="SecurityDeposit" style="width:90%" class="SearchBox" maxlength="32" value="<HDPrint Value=#SecurityDeposit# Replace=#DBField2Input#>" onblur="showEr_IsNumber(this,'Security Deposit 保证金')"></td>
+    <td class="newtd2">Total Sales 销售额:</td>
+    <td class="listtd"><input type="text" name="TotalSales" style="width:90%" class="SearchBox" maxlength="32" value="<HDPrint Value=#TotalSales# Replace=#DBField2Input#>" onblur="showEr_IsNumber(this,'Total Sales 销售额')"></td>
+  </tr>
+  <tr>
+    <td class="newtd2">Others 其他:<font color="red">*</font></td>
+    <td class="listtd"><input type="text" name="sOthers" style="width:90%" class="SearchBox" maxlength="32" value="<HDPrint Value=#sOthers# Replace=#DBField2Input#>" ></td>
+    <td class="newtd2">GTO % 提成百分比:</td>
+    <td class="listtd"><input type="text" name="GTO" style="width:90%" class="SearchBox" maxlength="32" value="<HDPrint Value=#GTO# Replace=#DBField2Input#>" onblur="showEr_IsNumber(this,'GTO % 提成百分比')"></td>
+  </tr>
+  <tr>
+    <td class="newtd2">PowerRate 电费:<font color="red">*</font></td>
+    <td class="listtd">
+      <input type="radio" NAME="PowerRate1" onclick="document.all.PowerRate.value='Charges 收取';" value="Charges 收取" checked>Charges 收取
+      <input type="radio" NAME="PowerRate1" onclick="document.all.PowerRate.value='Not Charges 不收取';" value="Not Charges 不收取">Not Charges 不收取
+      <input type="hidden" name="PowerRate" value='Charges 收取'>
+    </td>
+    <script language="JavaScript">
+      if('<HDPrint Value=#PowerRate# Replace=#DBField2Js#>' != '')
+      {
+        $("input[name='PowerRate1'][value='<HDPrint Value=#PowerRate# Replace=#DBField2Input#>']").attr("checked",true);
+         document.all.PowerRate.value = '<HDPrint Value=#PowerRate# Replace=#DBField2Input#>';
+      }
+      else
+      {
+        $("input[name='PowerRate1'][value='Charges 收取']").attr("checked",true);
+        document.all.PowerRate.value = 'Charges 收取';
+      }
+    </script>
+    <td class="newtd2">GTO Rent Fee 销售提成金额:</td>
+    <td class="listtd"><input type="text" name="GTORentFee" style="width:90%" class="SearchBox" maxlength="32" value="<HDPrint Value=#GTORentFee# Replace=#DBField2Input#>" onblur="showEr_IsNumber(this,'GTO Rent Fee 销售提成金额')"></td>
+  </tr>
+  <tr>
+    <td class="newtd2">Special Terms and Conditions/Remarks <br>特别条件/说明:</td>
+    <td class="listtd" colspan="3"><textarea type="text" rows=4 NAME="Remarks" id="Remarks" style="width:80%"><HDPrint Value=#Remarks# Replace=#DBField2InputField#></textarea></td>
+  </tr>
+  <tr> 
+    <td class=newtd2>Upload Attachment :<br>上传附件<br><br> double click to del :<br>双击删除</td>
+    <td class=newtd3 colspan="3">
+      <SELECT NAME="selFileList" size="3" style="width:250;"  ondblclick="DelClick(this)" multiple></SELECT><br>
+      <input type="hidden" name="HDTempPath" value="<HDPrint Value=#NewGid#>">
+      <iframe FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid#>&CallBackFun=AddAttach" height=28></iframe>
+    </td>
+  </tr>
+</table>
+
+<TABLE width="100%" class="ButtonBar" cellpadding=0 cellspacing=0>
+<TR>
+  <TD>
+    <B>工具栏：</B>
+    <A HREF="javascript:CheckSubmit('10');void(0)" title="ALT+S" id="btn_Save2"><FONT style="font-family:Wingdings;font-size:14px">&#60;</FONT> <b>保存</b>　</A>
+    <A HREF="javascript:CheckSubmit('11');void(0)" title="ALT+S" id="btn_Submit2"><FONT style="font-family:Wingdings;font-size:14px">&#254;</FONT> <b>提交</b>　</A>
+    <A HREF="javascript:window.close();"><FONT style="font-family:Wingdings ;font-size:14px">&#251;</FONT> <b>关闭</b>　</A>
+  </TD>
+  <td  style="width:20%"><!--<A HREF="##HDNet_AppName##/MainPage?URL=&UsrGid=<HDPrint Value=#UsrGid#>"><FONT style="font-family:Wingdings;font-size:14px">&#199;</FONT> 返回首页</A>　--></TD>
+</TR>
+</TABLE>
+</form>

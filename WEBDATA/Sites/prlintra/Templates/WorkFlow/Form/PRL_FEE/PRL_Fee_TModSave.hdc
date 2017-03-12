@@ -1,0 +1,106 @@
+[Permission]
+LIMIT1=FlowGid
+LIMITDesc1=StringSize[,0]
+LIMITRemind1=您选择的流程数据有误，请返回重新选择！
+
+LIMIT2=Memo
+LIMITDesc2=StringSize[1000,]
+LIMITRemind2=备注不能超过1000汉字！
+
+;判断是否有该条信息
+SQL1=select 1 from wf_PRL_Fee where EntGid=__ENTGID__ and FlowGid=##FlowGid##
+Remind1=您指定的费用申请单没有找到！<script>alert('您指定的费用申请单没有找到！');window.close()</script>
+
+
+;检查判断的Sql语句，查不到结果是报错，从SQL1～SQL5，共可以写5句
+SQL2=select 1 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##DeptGid## and v.atype=10
+Remind2=对不起，下一步审批人部门经理未找到，请与管理员联系。<script>alert('对不起，下一步审批人部门经理未找到，请与管理员联系。');history.back()</script>
+
+[Master]
+[Detail]
+SqlForCondition1=select Code ModelCode, Name ModelName from wf_Model where ModelGid = ##ModelGid##
+
+;鹏瑞利管辖部门的扩展性：
+;5:部门助理;
+;10:部门经理(招商经理);
+;20:区域财务经理;
+;25:财务会计;
+;30:财务经理;
+;31:出纳付款;
+;35:执行总经理;
+;40:商场总经理;
+;50:区域总监;
+;71:资产经理 AssetManager
+SqlForCondition3=select v.PostGid T2Gid,v.Email ThisEmail from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##DeptGid## and v.atype=10
+
+SqlForCondition4=select name acgtwonametext from v_acg where entgid = __ENTGID__ AND GID = ##acglist2##
+
+SqlForCondition5=select name acgonenametext from v_acg where entgid = __ENTGID__ AND GID = ##acglist1##
+
+[Where]
+
+[DefaultWhere]
+DefaultWhere= 
+
+[OrderBy]
+1=
+
+[DefaultOrderBy]
+DefaultOrderBy=
+
+[GroupBy]
+
+[AddtionalSQL]
+SQL1= update Wf_^^ModelCode^^ set (companygid,companyname,acgonegid,acgonename,acgtwogid,target,memo,vendorname1,vendorname2,vendorname3,vendorname4,vendorname5,vendorname6,vendorfee1,vendorfee2,vendorfee3,vendorfee4,vendorfee5,vendorfee6,reason,controlfee,askfee,Avalue,Bvalue,Cvalue,Dvalue,EVALUE,doacode,tstart,tend,acgother,Naskfee) = (select  pc.gid,pc.name ,##acglist1##,v.NAME,##acglist2##,##targettext##,##memo##,##vendorname1##,##vendorname2##,##vendorname3##,##vendorname4##,##vendorname5##,##vendorname6##,##vendorfee1_1##,##vendorfee2_1##,##vendorfee3_1##,##vendorfee4_1##,##vendorfee5_1##,##vendorfee6_1##,##reason##,##controlfee##,##askfee##,##Avalue##,##Bvalue##,##Cvalue##,##Dvalue##,##EVALUE##,##doacode##,##tstart##,##tend##,##acgother##,##Naskfee## from  v_acg v,PRL_COMPANY pc where v.entgid = __ENTGID__ AND v.GID = ##acglist1## and pc.entgid = __ENTGID__ and pc.gid = ##companyname##) where entgid = __ENTGID__ and flowgid = ##FlowGid## and ##save## is null
+
+
+sql2=update Wf_^^ModelCode^^ set acgtwoname = (select name from v_acg where entgid = __ENTGID__ AND GID = ##acglist2##) where EntGid = __ENTGID__ and flowgid = ##FlowGid## and ##save## is null
+
+sql4=delete from Wf_^^ModelCode^^_Attach  where entgid = __ENTGID__ and flowgid = ##FlowGid## and ##save## is null
+
+SQL6=UPDATE Wf_^^ModelCode^^ SET STAT = 10 where entgid = __ENTGID__ and flowgid = ##FlowGid## and lower(##WFFLOW##) = 'wf'
+
+
+SQL7=UPDATE Wf_^^ModelCode^^ SET STAT = 100 where entgid = __ENTGID__ and flowgid = ##FlowGid## and lower(##save##) = 'wf'
+
+sql8=update wf_flow set FLOWNOTE = '单号：'||##Num##||'；本次申请金额：'||##askfee##||'；申请目的：['||##targettext##||']' where entgid = __ENTGID__ AND flowgid = ##FlowGid## And ##save## is null
+
+AttachSqlAdd1=insert into Wf_^^ModelCode^^_Attach (EntGid,modelgid,FlowGid,Attach_Gid,Attach_Title,Attach_Url,Attach_Size) select   __ENTGID__ , ##modelgid##,##FlowGid##, @@AttachID@@, @@FileName@@, @@FilePath@@,@@FileSize@@ from dual  where ##save## is null
+
+
+[Title]
+Text1=^^ModelName^^
+Text2=
+Text3=
+Text4=
+Text5=
+AttachCtrl=selFileList
+AttachPath=^^ModelCode^^
+
+ChangePage=0
+Log=
+PageKind=0
+
+
+
+;创建流程
+
+^^WFFLOW^^2=WFFlowRun( PRL_Fee_TMod | PRL_Fee_T2 | T2Gid | | 待审批(发起人：^^CurUsrName^^；申请目的：[^^targettext^^]))
+
+
+
+^^save^^5=WFFlowFinish( PRL_Fee_TMod | )
+
+
+
+[Link]
+URL1=
+URL2=
+URL3=
+URL4=
+URL5=
+URL6=
+URL7=
+URL8=
+URL9=
+URL10=

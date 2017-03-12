@@ -1,0 +1,162 @@
+;;*************************设定左右两栏的宽度*****************************************
+[COL_WIDTH]
+COL1=50%
+COL2=50%
+
+
+
+;;*************************以下是在左边显示的内容**************************************
+;需要在星期一，星期二，星期三进行生日提醒
+;同时只显示当前时间后的7天内生日的人
+[RemindBirthList]
+Title=本周寿星，祝生日快乐！
+Active=True
+AutoHide=True
+RT=
+Row=128
+Height=100
+Position=left
+SQL=select replace(A.PHOTO,' ','%20') PHOTO , A.NAME || '（' || trim(leading 0 from to_char(A.BIRTHDAY, 'MM')) || '月' || trim(leading 0 from to_char(A.BIRTHDAY, 'DD')) || '日）',(select name from dept where EntGid = '{##entgid##}' and gid = a.deptgid) from HR_EMP a where a.entgid = '{##entgid##}' and a.stat in (0,1,6,7,8,9) and a.BIRTHDAY is not null and to_char(a.BIRTHDAY, 'MMDD') in (to_char(sysdate - decode(to_number(to_char(sysdate, 'D'))-1, 0, 7, to_number(to_char(sysdate, 'D'))-1) + 1, 'MMDD'), to_char(sysdate - decode(to_number(to_char(sysdate, 'D'))-1, 0, 7, to_number(to_char(sysdate, 'D'))-1) + 2, 'MMDD'), to_char(sysdate - decode(to_number(to_char(sysdate, 'D'))-1, 0, 7, to_number(to_char(sysdate, 'D'))-1) + 3, 'MMDD'), to_char(sysdate - decode(to_number(to_char(sysdate, 'D'))-1, 0, 7, to_number(to_char(sysdate, 'D'))-1) + 4, 'MMDD'), to_char(sysdate - decode(to_number(to_char(sysdate, 'D'))-1, 0, 7, to_number(to_char(sysdate, 'D'))-1) + 5, 'MMDD'), to_char(sysdate - decode(to_number(to_char(sysdate, 'D'))-1, 0, 7, to_number(to_char(sysdate, 'D'))-1) + 6, 'MMDD'), to_char(sysdate - decode(to_number(to_char(sysdate, 'D'))-1, 0, 7, to_number(to_char(sysdate, 'D'))-1) + 7, 'MMDD')) order by to_char(a.BIRTHDAY, 'MM-DD'), a.NAME
+Remind=##param2## ##param3##
+RemindDefault=(空)
+
+[RemindWFFlow]
+Title=<a href="##HDNet_AppName##/__ExplainModule?Url=wftodotasklist&usrgid={##usrgid##}">工作流程待执行任务提醒</a>
+Active=True
+AutoHide=False
+RT=wftodotasklist
+Row=500
+Height=10
+Position=left
+Function=
+sql=select a.FlowGid, a.ModelGid, a.Code, a.Name, b.Name, decode(a.memo, null, '', '：' || a.memo) from WF_task a, WF_Model b,wf_flow c where a.EntGid = '{##entgid##}' and b.EntGid = '{##entgid##}' and c.EntGid = '{##entgid##}' and a.ExecGid = '{##usrgid##}' and a.Stat in (1, 2) and nvl(a.DeadLine,SYSDATE) >= sysdate and a.ModelGid = b.ModelGid and a.flowgid = c.flowgid and c.stat < 4 and a.BTime <= sysdate order by a.BTime Desc
+
+Remind=<a href="##HDNet_AppName##/WFFlowPage?UsrGid={##usrgid##}&Url=##param3##&ModelGid=##param2##&FlowGid=##param1##" target="_blank">【##param5##】##param4####param6##</a>
+RemindDefault=(空)
+
+[RemindBBS_gonggongluntan]
+Title=<a href="##HDNet_AppName##/__ExplainModule?Url=BBSList&UsrGid={##usrgid##}" target="_blank">论坛</a>&nbsp;&nbsp;<a href="##HDNet_AppName##/__ExplainModule?Url=BBSAdd&UsrGid={##usrgid##}&GroupGid=systemsort" target="_blank">新贴</a>
+Active=True
+AutoHide=false
+RT=BBSList
+Row=16
+Height=8
+Position=left
+SQL=select  a.gid, nvl(a.replyname, a.usrname), decode(a.replyname, null, 'none', ''), decode(a.stat, 1, '', 'none'), decode(a.upstat, 1, '', 'none'), a.title, decode(trunc(a.lastupddate), trunc(sysdate), '今天', trunc(sysdate) - 1, '昨天', to_char(a.lastupddate, 'mm.dd')), decode(trunc(a.lastupddate), trunc(sysdate), 'font-weight:bold', trunc(sysdate) - 1, 'font-weight:bold', ''), decode(sign(a.replycount - 19.9), 1, 'color:red', ''), decode(sign(a.replycount - 29.9), 1, 'font-weight:bold', ''), trunc(a.replycount / 50), trunc((a.replycount - 50 * trunc(a.replycount / 50)) / 10),  b.sortname from bbs a, bbs_sort b, bbs_group c where a.entgid = b.entgid and b.entgid = c.entgid and c.entgid = '{##entgid##}' and a.gid = a.discuss and a.sortgid = b.gid and b.groupgid = c.gid and a.stat <> 3 and b.display = 1 and b.gid in (select a.gid from bbs_sort a, bbs_group b where a.entgid=b.entgid and b.entgid = '{##entgid##}' and a.display = 1 and a.stat = 0 and a.groupgid = b.gid union select a.gid from bbs_sort a, bbs_group b where a.entgid=b.entgid and b.entgid = '{##entgid##}' and a.display = 1 and a.stat = 1 and a.groupgid = b.gid and a.gid in (select sortgid from bbs_rt a, v_org_usr b where  a.entgid=b.entgid and b.entgid ='{##entgid##}' and a.usrgidex = b.orggid and b.usrgid = '{##UsrGid##}' and a.rtid like '1%')) order by upstat desc, a.lastupddate desc
+
+Remind=<a href="##HDNet_AppName##/BBSRead?UsrGid={##usrgid##}&gid=##param1##" target="_blank" style="##param8##"><font style="color:#707070;font-family:arial;font-size:8pt;padding-right:3">##param7##</font><font style="color:red"><script>for (i = 0; i < ##param11##; i++) document.write('<img src="/images/diamond.gif" align=absmiddle>'); for (i = 0; i < ##param12##; i++) document.write('★');</script></font>&nbsp;##param2##<font color=#707070 style="display:##param3##">(回复)</font>：<font color=red style="display:##param4##">[精]</font><font color=red style="display:##param5##">[顶]</font><font style="##param9##;##param10##">##param6##</font></a><font color=gray>----(##param13##)</font> 
+RemindDefault=(空)
+
+
+
+[RemindWorkLog_today]
+Title=<a href="##HDNet_AppName##/__WorkLogMod?URL=WorkLogMod&UsrGid={##usrgid##}&FillUsrGid={##usrgid##}&aDate={##year##}.{##month##}.{##today##}" target="_blank">今天工作日志</a>
+Active=True
+AutoHide=False
+RT=WorkLogMod
+Row=5
+Height=
+Position=left
+SQL=select b.content from worklog a, worklog_dtl b where a.entgid = '{##entgid##}' and a.fillusrgid = '{##usrgid##}' and a.adate = to_date('{##year##}.{##month##}.{##today##}', 'YYYY.MM.DD') and a.entgid = b.entgid and a.gid = b.wid order by b.pid 
+Remind=##param1##
+RemindDefault=(空)
+
+[RemindVote]
+Title=<a href="##HDNet_AppName##/VotePrjList?UsrGid={##usrgid##}" target="MainPage">投票提醒</a>
+Active=True
+AutoHide=false
+RT=VotePrjList
+Row=2
+Height=
+Position=left
+sql=SELECT DISTINCT A.Gid, A.NAME FROM VOTE_PROJECT A, VOTE_USR B, v_Org_Usr C WHERE a.EntGid = '{##entgid##}' and b.EntGid = '{##entgid##}' and c.EntGid = '{##entgid##}' and A.Gid = B.PROJECTGid AND B.USRGIDEx = C.OrgGid AND A.STAT = 0 AND STARTTIME < SYSDATE AND ENDTIME > SYSDATE - 1 AND C.UsrGid = '{##UsrGid##}' AND NOT EXISTS (SELECT 1 FROM VOTE WHERE PROJECTGid = A.Gid AND UsrGid = '{##UsrGid##}')
+Remind=<a href="##HDNet_AppName##/Vote?VotePrjNO=##param1##&UsrGid={##usrgid##}" target="_blank">##param2##</a>
+RemindDefault=(空)
+
+[RemindCanlendar]
+Title=<a href="##HDNet_AppName##/__ExplainModule?Url=WorkCalendarList&UsrGid={##usrgid##}" target="_blank">日程安排提醒</a>
+Active=True
+AutoHide=False
+RT=
+Row=
+Height=
+Position=left
+Refresh=15
+Function=Null
+SQL=select distinct 1 from ((select b.theme, b.resourse, b.attachonesname, b.sflag, b.pid, b.AheadRemind, b.content, b.dtlstat, to_char(b.btime, 'yyyy.mm.dd hh24:mi') btime, to_char(b.etime, 'yyyy.mm.dd hh24:mi') etime from WorkCalendar a, WorkCalendar_Dtl b where a.entgid = '{##entgid##}' and b.entgid = '{##entgid##}' and a.gid = b.wid and b.sflag in ('0','1') and b.AheadRemind <> 0 and a.fillusrgid = '{##usrgid##}' and a.adate >= trunc(sysdate) and round(b.btime, 'MI') between round(sysdate, 'MI') and round(sysdate, 'MI') + b.aheadremind / 1440) union (select b.theme, b.resourse, b.attachonesname, b.sflag, b.pid, b.AheadRemind, b.content, b.dtlstat, to_char(b.btime, 'yyyy.mm.dd hh24:mi') btime, to_char(b.etime, 'yyyy.mm.dd hh24:mi') etime from WorkCalendar a, WorkCalendar_Dtl b, workcalendar_dtl_ex c where a.entgid = '{##entgid##}' and b.entgid = '{##entgid##}' and c.entgid = '{##entgid##}' and b.aheadremind <> 0 and b.dtlstat ='2000' and b.sflag not in ('0','1') and a.gid = b.wid and b.pid = c.pid and c.ausrgid = '{##usrgid##}' and c.acceptstat <> '30' and a.adate >= trunc(sysdate) and b.AheadRemind <> 0 and round(b.btime, 'MI') between round(sysdate, 'MI') and round(sysdate, 'MI') + b.aheadremind / 1440)) m
+
+Remind=<a href="##HDNet_AppName##/__ExplainModule?Url=WorkCalendarMainRemind&UsrGid={##usrgid##}" target="_blank">请关注今天的日程安排</a><SCRIPT>showModelessDialog("##HDNet_AppName##/__ExplainModule?UsrGid={##usrgid##}&Url=WorkCalendarMainRemind",'','dialogWidth:600px;dialogheight:550px;status:no;help:no');</SCRIPT>
+RemindDefault=(空)
+
+
+;;***************************以下是在右边显示的内容*****************************************
+[RemindDoc]
+Title=<a href="##HDNet_AppName##/__ExplainModule?url=DocReceiveList&UsrGid={##usrgid##}" target=_blank>公告栏</a>
+Active=True
+AutoHide=false
+RT=DocReceiveList
+Row=20
+Height=10
+Position=right
+
+Function=
+SQL=select distinct a.gid, decode(d.usrcode,'','[新]','' ), decode(trunc(a.createdate), trunc(sysdate), '今天', trunc(sysdate) - 1, '昨天', to_char(a.createdate, 'mm.dd')), decode(a.attachcount, 0, 'none', ''), a.title, decode(a.Alevel, 10, '！'), a.CreateDate, decode(d.usrcode, '', 'font-weight:bold', ''),decode(substr(c.rtid,3,1), '1', '[必读]', ''),b.sortname from doc a, doc_sort b,doc_rt c,doc_read d ,v_org_usr e where a.entgid='{##entgid##}' and b.entgid='{##entgid##}' and c.entgid='{##entgid##}' and c.sortgid=b.gid and d.entgid(+)='{##entgid##}' and  d.usrgid(+)='{##usrgid##}' and  e.entgid='{##entgid##}' and e.usrgid='{##usrgid##}' and a.gid=d.gid(+) and c.usrgidex=e.ORGGID and (substr(c.rtid,3,1) = '1' or substr (c.rtid,2,1) = '1') and b.display='1' and b.gid=a.sortgid and b.stat='1'and a.stat = 2 and expiredate > sysdate order by a.CreateDate desc
+Remind=<a href="##HDNet_AppName##/__ExplainModule?url=DocReceiveDtl&UsrGid={##usrgid##}&hdDocID=##param1##" target="_blank" style="##param8##"><font style="color:#707070;font-family:arial;font-size:8pt;padding-right:3">##param3##</font><font color=red>##param2##</font> ##param5## <img src="/Images/Attach.gif" style="display:##param4##"> <font color=red>##param6##</font></a><font color=red>##param9##</font><font color=gray>----(##param10##)</font> 
+
+;sql=select distinct a.gid, decode(d.usrcode,'','[新]','' ) ,to_char(a.createdate,'yyyy.mm.dd'), decode(a.attachcount, 0, 'none', ''), a.title, decode(a.Alevel, 10, '！'), decode(substr(c.rtid,3,1), '1', '[必读]', ''), a.CreateDate,b.sortname from doc a, doc_sort b,doc_rt c,doc_read d ,v_org_usr e where a.entgid='{##entgid##}' and b.entgid='{##entgid##}' and c.entgid='{##entgid##}' and c.sortgid=b.gid and d.entgid(+)='{##entgid##}' and  d.usrgid(+)='{##usrgid##}' and  e.entgid='{##entgid##}' and e.usrgid='{##usrgid##}' and a.gid=d.gid(+) and c.usrgidex=e.ORGGID and (substr(c.rtid,3,1) = '1' or substr (c.rtid,2,1) = '1') and b.display='1' and b.gid=a.sortgid and b.stat='1' and a.stat in (2,6) order by a.CreateDate desc
+
+;Remind=<a href="##HDNet_AppName##/__ExplainModule?url=DocReceiveDtl&UsrGid={##usrgid##}&hdDocID=##param1##" target="_blank"><font color=red>##param2##</font> ##param5## <img src="/Images/Attach.gif" style="display:##param4##"> <font color=red>##param6##</font> <font color=red>##param7##</font></a>  <font color=gray>----(##param9##)</font> 
+RemindDefault=(空)
+
+
+[Remind_Weather]
+Title=天气预报
+Active=True
+AutoHide=False
+RT=
+Row=2
+Position=right
+SQL=select getWeatherUrl from dual
+Remind=<iframe src="##param1##" width="100%" height="30" marginwidth="0" marginheight="0" hspace="0" vspace="0" frameborder="0" scrolling="no"></iframe>
+
+RemindDefault=(空)
+
+
+[RemindCal]
+Title=日常查询应用
+Active=True
+AutoHide=false
+RT=
+Row=5
+Height=
+Position=right
+RemindOther1=<a href="#" onclick="window.open('##GetWebRootPath(HDCalendar.htm)##','newwidow','height=500, width=580, top=0, left=0, toolbar=no, menubar=no, scrollbars=yes,resizable=no,location=no, status=no');">万年历查询</a>
+
+
+[RemindMailReceiveList]
+Title=<a href="##HDNet_AppName##/__ExplainModule?url=MailReceiveList&usrgid={##usrgid##}" target="_blank">信件收件箱</a>&nbsp;&nbsp;<a href="##HDNet_AppName##/__ExplainModule?url=MailAdd&usrgid={##usrgid##}" target=_blank>写新信件</a>
+Active=True
+AutoHide=false
+RT=MailReceiveList
+Row=8
+Height=
+Position=right
+SQL=select a.gid, decode(b.stat, 2, 'font-weight:bold', ''), a.sendername, a.title, decode(a.attachcount, 0, 'none', ''), decode(a.Alevel, 10, '！', '') from mail a, mail_in b where a.entgid = b.entgid and a.entgid = '{##entgid##}' and b.usrgid = '{##usrgid##}' and b.stat in (2, 3, 5, 6) and b.abolished = 0 and a.gid = b.gid and (a.createdate > sysdate - 30 or b.stat = 2)Order By a.sendertime desc
+Remind=<a href="##HDNet_AppName##/__ExplainModule?url=MailReceiveRead&UsrGid={##usrgid##}&MailGID=##param1##" style="##param2##" target="_blank">##param3##：##param4##&nbsp;<img src="/Images/Attach.gif" style="display:##param5##"> <font color=red>##param6##</font></a>
+RemindDefault=(空)
+
+
+
+
+
+[Remind_Discuss]
+Title=<a href="##HDNet_AppName##/__ExplainModule?Url=DiscussList&usrgid={##usrgid##}" target="_blank">公共讨论</a>  <a href="##HDNet_AppName##/__ExplainModule?Url=DiscussAdd&usrgid={##usrgid##}" target="_blank">发起讨论
+Active=True
+AutoHide=False
+RT=
+Row=10
+Position=right
+SQL=select c.Atype, c.Title, c.CreateDate, c.UrlCode, c.DiscussGid, c.ReadFlag, decode(c.Alevel, 0, '', 1, '！'), decode(c.AttachCount, 0, 'none', '') from ((select '参与讨论' Atype, a.Title Title, to_char(a.CreateDate, 'yyyy.mm.dd') CreateDate, 'DiscussAct' UrlCode, a.Gid DiscussGid, a.lastupddate lastupddate, decode(b.ReadStat, 10, 'font-weight:bold', 20, '') ReadFlag, a.Alevel Alevel, (select count(1) from Discuss_Actor_Attach where EntGid = '{##entgid##}' and DiscussGid = a.Gid and Atype = 0) AttachCount from Discuss a, Discuss_Actor b where a.EntGid = '{##entgid##}' and b.EntGid = '{##entgid##}' and a.Gid = b.DiscussGid and a.Tag = 0 and b.atype = 0 and b.ActorGid = '{##UsrGid##}') union (select '阅读讨论' Atype, a.Title Title, to_char(a.CreateDate, 'yyyy.mm.dd') CreateDate, 'DiscussRead' UrlCodeode, a.Gid DiscussGid, a.lastupddate lastupddate, decode(b.ReadStat, 10, 'font-weight:bold', 20, '') ReadFlag, a.Alevel Alevel, (select count(1) from Discuss_Actor_Attach where EntGid = '{##entgid##}' and DiscussGid = a.Gid and Atype = 0) AttachCount from Discuss a, Discuss_Actor b where a.EntGid = '{##entgid##}' and b.EntGid = '{##entgid##}' and a.Gid = b.DiscussGid and a.Tag = 0 and b.atype = 1 and b.ReadStat = 10 and b.ActorGid = '{##UsrGid##}')) c order by c.Atype, c.lastupddate desc
+Remind=<a href="##HDNet_AppName##/__ExplainModule?UsrGid={##usrgid##}&Url=##param4##&DiscussGid=##param5##" target="_blank"><font style="##param6##;">##param3## ##param1##--##param2##</font> <img src="/Images/Attach.gif" style="display:##param8##"> <font color=red>##param7##</font></a>
+RemindDefault=(空)
+

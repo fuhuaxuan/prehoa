@@ -1,0 +1,2412 @@
+DROP TABLE SYS_VER;			
+CREATE TABLE SYS_VER		(	
+--	框架版本信息		
+	SYSENAME	VARCHAR2(256)	NOT NULL,
+	SYSCNAME	VARCHAR2(256)	NOT NULL,
+	SYSVER	VARCHAR2(256)	NOT NULL,
+	SYSUPDINFO	VARCHAR2(1028)	NULL,
+--	应用版本信息		
+	APPENAME	VARCHAR2(256)	NULL,
+	APPCNAME	VARCHAR2(256)	NULL,
+	APPVER	VARCHAR2(256)	NULL,
+	APPUPDINFO	VARCHAR2(1028)	NULL,
+--	系统信息		
+	EMAIL	VARCHAR2(64)	NULL,
+	HOMEPAGE	VARCHAR2(256)	NULL,
+	SUPPORT	VARCHAR2(256)	NULL,
+	COPYRIGHT	VARCHAR2(256)	NULL,
+	USERINFO	VARCHAR2(256)	NULL,
+	THANKS	VARCHAR2(1028)	NULL,
+	MEMO	VARCHAR2(1028)	NULL,
+	CREATEDATE	DATE	NOT NULL,
+	LASTUPDDATE	DATE	NOT NULL,
+--	系统限制信息		
+	LIMITCOUNT	INT	DEFAULT 0 NOT NULL,
+	LIMITBDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LIMITEDATE	DATE	DEFAULT SYSDATE + 18000 NOT NULL,
+	LIMITSECURE	VARCHAR2(64)	NULL
+	);		
+
+--***日志表***--			
+DROP TABLE LOG;			
+CREATE TABLE LOG		(	
+	ENTGID	VARCHAR2(32)	NULL,
+	ENTCODE	VARCHAR2(256)	NULL,
+	ENTNAME	VARCHAR2(256)	NULL,
+	USRGID	VARCHAR2(32)	NULL,
+	USRCODE	VARCHAR2(64)	NULL,
+	USRNAME	VARCHAR2(64)	NULL,
+	CREATEDATE	DATE	NOT NULL,
+	ATYPE	NUMBER(2)	DEFAULT 10 NOT NULL,
+	ACONTENT	VARCHAR2(2048)	NULL,
+	IP	VARCHAR2(32)	NULL,
+	WebAddr	varchar2(1024),
+	Memo1	varchar2(1024),
+	Memo2	varchar2(1024)
+	);		
+CREATE INDEX IDX_LOG1 ON LOG(CREATEDATE);			
+
+--***SESSION变量***			
+DROP TABLE SSN;			
+CREATE TABLE SSN		(	
+	ID	VARCHAR2(32)	NOT NULL,
+	USRGID	VARCHAR2(32)	NULL,
+	EXPIREDATE	DATE	NOT NULL,
+	SESSIONEXPIRE	NUMBER(6)	DEFAULT 60 NOT NULL,
+	STAT	NUMBER(2)	DEFAULT 10 NOT NULL,
+	CREATEDATE	DATE	NOT NULL,
+	LASTUPDDATE	DATE	NOT NULL,
+	CONSTRAINT PK_SSN PRIMARY KEY(ID)		
+	);		
+
+DROP TABLE RT;			
+CREATE TABLE RT		(	
+	ID	VARCHAR2(64)	NOT NULL,
+	NAME	VARCHAR2(256)	NOT NULL,
+	ATYPE	VARCHAR2(256)	NOT NULL,
+	ALEVEL	NUMBER(2)	DEFAULT 10 NOT NULL,
+	URL	VARCHAR2(256)	NOT NULL,
+	AORDER	VARCHAR2(64)	NOT NULL,
+	MEMO	VARCHAR2(256)	NULL,
+	CONSTRAINT PK_RT PRIMARY KEY(ID)		
+	);		
+CREATE INDEX IDX_RT1 ON RT (URL);			
+
+			
+DROP TABLE ENT;			
+CREATE TABLE ENT		(	
+	GID	VARCHAR2(32)	NOT NULL,
+	HDCODE	VARCHAR2(32)	NOT NULL,
+	CODE	VARCHAR2(256)	NOT NULL,
+	NAME	VARCHAR2(256)	NULL,
+	STAT	NUMBER(2)	DEFAULT 10 NOT NULL,
+	ATYPE	NUMBER(2)	DEFAULT 10 NOT NULL,
+	SHORTNAME	VARCHAR2(32)	NULL,
+	PASSWORD	VARCHAR2(32)	DEFAULT 'hd123.com' NOT NULL,
+	PHONE	VARCHAR2(64)	NULL,
+	EMAIL	VARCHAR2(64)	NULL,
+	MEMO	VARCHAR2(1028)	NULL,
+--	Url信息		
+	URL	VARCHAR2(256)	NULL,
+	URLLOGIN	VARCHAR2(256)	NULL,
+	URLLOGOUT	VARCHAR2(256)	NULL,
+	CREATEDATE	DATE	NOT NULL,
+	LASTUPDDATE	DATE	NOT NULL,
+--	系统限制信息		
+	LIMITCOUNT	INT	DEFAULT 0 NOT NULL,
+	LIMITBDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LIMITEDATE	DATE	DEFAULT SYSDATE + 18000 NOT NULL,
+	LIMITSPACE	NUMBER(12)	DEFAULT 0 NOT NULL,
+	USESPACE	NUMBER(12)	DEFAULT 0 NOT NULL,
+--	其他自定义属性		
+	PWDCHANGEDAY	INT	DEFAULT 30 NOT NULL,
+	USEUSRCODE	NUMBER(2)	DEFAULT 10 NOT NULL,
+	CONSTRAINT PK_ENT PRIMARY KEY(GID)		
+	);		
+			
+DROP TABLE ENT_AUTHMODE;			
+CREATE TABLE ENT_AUTHMODE (			
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	ATYPE	NUMBER(2)	NOT NULL,
+	ISUSE	NUMBER(2)	DEFAULT 10 NOT NULL,
+	MULTIASSIGN	NUMBER(2)	DEFAULT 10 NOT NULL,
+	CONSTRAINT PK_ENT_AUTHMODE PRIMARY KEY(ENTGID, ATYPE)		
+	);		
+			
+DROP TABLE ENT_RT;			
+CREATE TABLE ENT_RT (			
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	RTID	VARCHAR2(64)	NOT NULL,
+	CONSTRAINT PK_ENT_RT PRIMARY KEY(ENTGID, RTID)		
+	);		
+
+DROP TABLE USR_ALIAS;			
+CREATE TABLE USR_ALIAS		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	CODE	VARCHAR2(64)	NOT NULL,
+	PASSWORD	VARCHAR2(64)	DEFAULT '123456' NOT NULL,
+	PSDMODDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LOGINTIMES	INT	DEFAULT 0 NOT NULL,
+	LASTLOGINDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	CONSTRAINT PK_USR_ALIAS PRIMARY KEY(ENTGID, GID, CODE)		
+	);		
+create index IDX_Usr_Alias1 on Usr_Alias (Gid);			
+create index IDX_Usr_Alias2 on Usr_Alias (Code);			
+
+DROP TABLE USR;			
+CREATE TABLE USR		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	CODE	VARCHAR2(64)	NOT NULL,
+	NAME	VARCHAR2(64)	NULL,
+	STAT	NUMBER(2)	DEFAULT 10 NOT NULL,
+	ALEVEL	NUMBER(2)	DEFAULT 10 NOT NULL,
+	PHONE	VARCHAR2(64)	NULL,
+	EMAIL	VARCHAR2(64)	NULL,
+	MEMO	VARCHAR2(256)	NULL,
+	SignPicture	VARCHAR2(1024)	NULL,
+--	系统信息		
+	SESSIONEXPIRE	NUMBER(6)	DEFAULT 60 NOT NULL,
+	PASSWORD	VARCHAR2(64)	DEFAULT '123456' NOT NULL,
+	PSDMODDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	STOPED	INT	DEFAULT 10 NOT NULL,
+	LOCKED	INT	DEFAULT 10 NOT NULL,
+	LOCKERRORTIMES	INT	DEFAULT 0 NOT NULL,
+	LOGINTIMES	INT	DEFAULT 0 NOT NULL,
+	LASTLOGINDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LIMITBDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LIMITEDATE	DATE	DEFAULT SYSDATE + 18000 NOT NULL,
+	CONSTRAINT PK_USR PRIMARY KEY(ENTGID, GID),		
+	CONSTRAINT UNQ_USR UNIQUE(GID)		
+	);		
+CREATE INDEX IDX_USR1 ON USR(CODE);			
+CREATE INDEX IDX_USR2 ON USR(NAME);			
+
+DROP TABLE USR_AUTHMODE;			
+CREATE TABLE USR_AUTHMODE (			
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	USRGID	VARCHAR2(32)	NOT NULL,
+	USRCODE	VARCHAR2(64)	NOT NULL,
+	ATYPE	NUMBER(2)	NOT NULL,
+	ISUSE	NUMBER(2)	DEFAULT 10 NOT NULL,
+	SN	VARCHAR2(32)	NULL,
+	PIN	VARCHAR2(32)	NULL,
+	CONSTRAINT PK_USR_AUTHMODE PRIMARY KEY(ENTGID, USRGID, USRCODE, ATYPE)		
+	);		
+create index IDX_USR_AUTHMODE1 on USR_AUTHMODE (UsrGid);			
+create index IDX_USR_AUTHMODE2 on USR_AUTHMODE (UsrCode);			
+			
+DROP TABLE USR_RT;			
+CREATE TABLE USR_RT (			
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	USRGID	VARCHAR2(32)	NOT NULL,
+	RTID	VARCHAR2(64)	NOT NULL,
+	ATYPE	NUMBER(2)	NOT NULL,
+	CONSTRAINT PK_USR_RT PRIMARY KEY(ENTGID, USRGID, RTID, ATYPE)		
+	);		
+			
+DROP TABLE USR_USR;			
+CREATE TABLE USR_USR (			
+	ENTGIDMAIN	VARCHAR2(32)	NOT NULL,
+	USRGIDMAIN	VARCHAR2(32)	NOT NULL,
+	ENTGIDBY	VARCHAR2(32)	NOT NULL,
+	USRGIDBY	VARCHAR2(32)	NOT NULL,
+	CONSTRAINT PK_USR_USR PRIMARY KEY(ENTGIDMAIN, USRGIDMAIN, ENTGIDBY, USRGIDBY)		
+	);		
+			
+DROP TABLE USR_LoginLimit;			
+CREATE TABLE USR_LoginLimit (			
+	EntGid	Varchar2(32)	Not Null,
+	Gid	Varchar2(32)	Not Null,
+	UsrGid	Varchar2(32)	Not Null,
+	NetBSegment 	Varchar2(32)	Null,
+	FirstBSegIP	Varchar2(3)	default '000' not null,
+	SecondBSegIP	Varchar2(3)	default '000' not null,
+	ThirdBSegIP	Varchar2(3)	default '000' not null,
+	FourthBSegIP	Varchar2(3)	default '000' not null,
+	NetESegment 	Varchar2(32)	Null,
+	FirstESegIP	Varchar2(3)	default '000' not null,
+	SecondESegIP	Varchar2(3)	default '000' not null,
+	ThirdESegIP	Varchar2(3)	default '000' not null,
+	FourthESegIP	Varchar2(3)	default '000' not null,
+	CONSTRAINT USR_LoginLimit PRIMARY KEY(ENTGID,Gid)		
+	);		
+			
+			
+DROP TABLE ORG;			
+CREATE TABLE ORG (			
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	LAYERCODE	VARCHAR2(256)	NOT NULL,
+	CODE	VARCHAR2(256)	NOT NULL,
+	NAME	VARCHAR2(256)	NOT NULL,
+	ATYPE	NUMBER(2)	NULL,
+	ISUSR	NUMBER(2)	DEFAULT 10 NOT NULL,
+	ISDEL	NUMBER(2)	DEFAULT 10 NOT NULL,
+	ISROOT	NUMBER(2)	DEFAULT 10 NOT NULL,
+	ROOTSORTID	VARCHAR2(4)	NULL,
+	SORTID	VARCHAR2(32)	NOT NULL,
+	PARENTGID	VARCHAR2(32)	NULL,
+	CHILDCOUNT	INT	DEFAULT 0 NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	CONSTRAINT PK_ORG PRIMARY KEY(ENTGID, GID)		
+	);		
+CREATE INDEX IDX_ORG1 ON ORG(LAYERCODE);			
+CREATE INDEX IDX_ORG2 ON ORG(CODE);			
+CREATE INDEX IDX_ORG3 ON ORG(NAME);			
+			
+DROP TABLE ORG_EX;			
+CREATE TABLE ORG_EX (			
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	ORGGID	VARCHAR2(32)	NOT NULL,
+	OrgLayerCode	VARCHAR2(256)	NOT NULL,
+	UsrGIDEX	VARCHAR2(32)	NOT NULL,
+	RTID	VARCHAR2(32)	NULL,
+	CONSTRAINT PK_ORG_EX PRIMARY KEY(ENTGID, ORGGID, OrgLayerCode, UsrGIDEX)		
+	);		
+
+
+DROP TABLE ORG_ROOT_SORT;			
+CREATE TABLE ORG_ROOT_SORT (			
+	ID	VARCHAR2(4)	NOT NULL,
+	NAME	VARCHAR2(64)	NOT NULL,
+	CONSTRAINT PK_ORG_ROOT_SORT PRIMARY KEY(ID)		
+	);		
+			
+DROP TABLE ORG_SORT;			
+CREATE TABLE ORG_SORT(			
+	ID	VARCHAR2(4)	NOT NULL,
+	NAME	VARCHAR2(256)	NOT NULL,
+	CONSTRAINT PK_ORG_SORT PRIMARY KEY(ID)		
+	);		
+
+DROP TABLE ORG_SORT_RELATION;			
+CREATE TABLE ORG_SORT_RELATION (			
+	ROOTSORTID	VARCHAR2(4)	NOT NULL,
+	SORTID	VARCHAR2(4)	NOT NULL,
+	CONSTRAINT PK_ORG_SORT_RELATION PRIMARY KEY(ROOTSORTID, SORTID)		
+	);		
+			
+--组织权限关系			
+DROP TABLE ORG_RT_RELATION;			
+CREATE TABLE ORG_RT_RELATION (			
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	ORGGID	VARCHAR2(32)	NOT NULL,
+	ATYPE	NUMBER(2)	DEFAULT 10 NOT NULL,
+	CONSTRAINT PK_ORG_RT_RELATION PRIMARY KEY(ENTGID, ORGGID)		
+	);		
+
+DROP TABLE ORG_RT;			
+CREATE TABLE ORG_RT (			
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	ORGGID	VARCHAR2(32)	NOT NULL,
+	RTID	VARCHAR2(64)	NOT NULL,
+	ATYPE	NUMBER(2)	NOT NULL,
+	CONSTRAINT PK_ORG_RT PRIMARY KEY(ENTGID, ORGGID, RTID, ATYPE)		
+	);		
+			
+DROP TABLE ORG_RT_All;			
+CREATE TABLE ORG_RT_All (			
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	ORGGID	VARCHAR2(32)	NOT NULL,
+	RTID	VARCHAR2(64)	NOT NULL,
+	ATYPE	NUMBER(2)	NOT NULL,
+	CONSTRAINT PK_ORG_RT_ALL PRIMARY KEY(ENTGID, ORGGID, RTID, ATYPE)		
+	);		
+
+--组织用户关系			
+DROP TABLE ORG_USR;			
+CREATE TABLE ORG_USR (			
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	ORGGID	VARCHAR2(32)	NOT NULL,
+	USRGID	VARCHAR2(32)	NOT NULL,
+	CONSTRAINT PK_ORG_USR PRIMARY KEY(ENTGID, ORGGID, USRGID)		
+	);		
+CREATE INDEX IDX_ORG_USR1 ON ORG_USR(ENTGID, USRGID);			
+
+--组织实体对象			
+DROP TABLE ORG_COMMON;			
+CREATE TABLE ORG_COMMON		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	CODE	VARCHAR2(256)	NOT NULL,
+	NAME	VARCHAR2(256)	NOT NULL,
+	SORTID	VARCHAR2(32)	NOT NULL,
+	MEMO	VARCHAR2(256)	NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	CONSTRAINT PK_ORG_COMMON PRIMARY KEY(ENTGID, GID)		
+	);		
+
+DROP TABLE ORG_DEPT;			
+CREATE TABLE ORG_DEPT 		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	ORIGINGID	INT	NULL,
+	CODE	VARCHAR2(256)	NOT NULL,
+	NAME	VARCHAR2(256)	NOT NULL,
+	SORTID	VARCHAR2(32)	NOT NULL,
+	DEPTTYPE	INT	DEFAULT 10 NOT NULL,
+	ADDRESS	VARCHAR2(256)	NULL,
+	PHONE	VARCHAR2(256)	NULL,
+	FAXNO	VARCHAR2(256)	NULL,
+	CONTACTOR	VARCHAR2(256)	NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	CONSTRAINT PK_ORG_DEPT PRIMARY KEY(ENTGID, GID)		
+	);		
+			
+DROP TABLE SMS_MP;			
+CREATE TABLE SMS_MP		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	USRGID	VARCHAR2(32)	NOT NULL,
+	MP	VARCHAR2(32)	NOT NULL,
+	ISUSE	INT	DEFAULT 10 NOT NULL,
+	ISIA	INT	DEFAULT 10 NOT NULL,
+	CONSTRAINT PK_SMS_MP PRIMARY KEY(ENTGID, USRGID)		
+	);		
+
+DROP TABLE SMS_SERVER;			
+CREATE TABLE SMS_SERVER		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	USRGID	VARCHAR2(32)	NOT NULL,
+	SMSID	INT	NOT NULL,
+	ORDERTIME	DATE	NOT NULL,
+	MP	VARCHAR2(32)	NULL,
+	CONSTRAINT PK_SMS_SERVER PRIMARY KEY(ENTGID, USRGID, SMSID, ORDERTIME)		
+	);		
+
+DROP VIEW V_USR;	
+CREATE OR REPLACE VIEW V_USR AS	
+	SELECT ORG.ENTGID ENTGID, ORG.GID GID, ORG.CODE CODE, ORG.NAME NAME, '' PHONE, '' EMAIL, ORG_SORT.NAME ATYPE, 0 SORTID FROM ORG, ORG_SORT WHERE ORG.SORTID = ORG_SORT.ID
+	UNION
+	SELECT ENTGID, GID, CODE, NAME, PHONE, EMAIL, '用户' ATYPE, 1 SORTID FROM USR WHERE STAT = 10 AND STOPED = 20;
+	
+DROP VIEW V_ORG_USR;	
+CREATE OR REPLACE VIEW V_ORG_USR AS	
+	SELECT a.ENTGID, ORGGID, USRGID FROM ORG_USR a, usr b where a.entgid = b.entgid and a.usrgid = b.gid and b.stat = 10 and b.stoped = 20
+	UNION
+	SELECT ENTGID, GID ORGGID, GID USRGID FROM USR WHERE STAT = 10 and STOPED = 20;
+	
+	
+	
+			
+DROP TABLE RepDemandApp;			
+CREATE TABLE RepDemandApp		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	CreateDate	date	default sysdate not null,
+	LastUpdDate	date	default sysdate not null,
+	Num	varchar2(32)	not null,
+	Stat	Int	null,
+	CONSTRAINT PK_RepDemandApp PRIMARY KEY (EntGid, Num)		
+	);		
+DROP TABLE RepDemandApp_Dtl;			
+CREATE TABLE RepDemandApp_Dtl		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	Num	varchar2(32)	not null,
+	RepGid	varchar2(32)	not null,
+	NAME	VARCHAR2(64)	NOT NULL,
+	Memo	varchar2(1024)	NULL,
+	FillUsrGid	varchar2(32)	null,
+	FillUsrCode	varchar2(64)	null,
+	FillUsrName	varchar2(64)	null,
+	RepUseStat	Int	null,
+	UnitPrice	decimal(20,4)	NULL,
+	LimitMonths	Int	null,
+	Bdate	varchar2(10)	null,
+	Edate	varchar2(10)	null,
+	CONSTRAINT PK_RepDemandApp_Dtl PRIMARY KEY (EntGid, Num,RepGid,FillUsrGid)		
+	);		
+
+
+DROP TABLE REP_LIST;			
+CREATE TABLE REP_LIST		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	Gid	varchar2(32)	not null,
+	CreateDate	date	default sysdate not null,
+	LastUpdDate	date	default sysdate not null,
+	--		
+	NAME	VARCHAR2(64)	NOT NULL,
+	CLASSIFY	VARCHAR2(64)	NULL,
+	HDCName	varchar2(1024)	NULL,
+	HDTName	varchar2(1024)	NULL,
+	HDTDownName	varchar2(1024)	NULL,
+	RepFlag	Int	default 10 not null,
+	UnitPrice	decimal(20,4)	NULL,
+	Memo	varchar2(1024)	NULL,
+	constraint UQ_REP_List Unique(EntGid, Name),		
+	CONSTRAINT PK_REP_LIST PRIMARY KEY (EntGid, Gid)		
+	);		
+DROP TABLE REP_RT;			
+CREATE TABLE REP_RT		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	RepGid	VARCHAR2(32)	NOT NULL,
+	UsrGidEx	VARCHAR2(32)	NOT NULL,
+	SourceNum	varchar2(32)	null,
+	CONSTRAINT PK_REP_RT PRIMARY KEY (EntGid, RepGid, UsrGidEx)		
+	);		
+
+DROP TABLE REP_RT_admin;			
+CREATE TABLE REP_RT_admin		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	RepGid	VARCHAR2(32)	NOT NULL,
+	UsrGidEx	VARCHAR2(32)	NOT NULL,
+	SourceNum	varchar2(32)	null,
+	CONSTRAINT PK_REP_RT_admin PRIMARY KEY (EntGid, RepGid, UsrGidEx)		
+	);		
+
+DROP TABLE SMS_SENDLIST;			
+CREATE TABLE SMS_SENDLIST		(	
+	GID	VARCHAR2(32)	NOT NULL,
+	RTELNUM	VARCHAR2(4000)	NOT NULL,
+	STELNUM	VARCHAR2(32)	NULL,
+	ORGCODE	VARCHAR2(16)	NOT NULL,
+	ACONTENT	VARCHAR2(256)	NOT NULL,
+	IPADDRESS	VARCHAR2(16)	NULL,
+	REQSENDDATE	DATE	NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	CONSTRAINT PK_SMS_SENDLIST PRIMARY KEY(GID)		
+	);		
+			
+DROP TABLE SMS_HISTORY;			
+CREATE TABLE SMS_HISTORY		(	
+	GID	VARCHAR2(32)	NOT NULL,
+	RTELNUM	VARCHAR2(4000)	NOT NULL,
+	STELNUM	VARCHAR2(32)	NULL,
+	ORGCODE	VARCHAR2(16)	NOT NULL,
+	ACONTENT	VARCHAR2(256)	NOT NULL,
+	IPADDRESS	VARCHAR2(16)	NULL,
+	REQSENDDATE	DATE	NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	SENDRESULT	NUMBER(1,0)	NOT NULL,
+	RETURNCONTENT	VARCHAR2(256)	NULL,
+	CONSTRAINT PK_SMS_HISTORY PRIMARY KEY(GID)		
+	);		
+			
+			
+DROP TABLE SMS_STATEREPORT;			
+CREATE TABLE SMS_STATEREPORT		(	
+	GID	VARCHAR2(32)	NOT NULL,
+	ORIGINGID	VARCHAR2(32)	NOT NULL,
+	RTELNUM	VARCHAR2(32)	NOT NULL,
+	TRANSACTIONID	VARCHAR2(256)	NOT NULL,
+	FINALLYRESULT	NUMBER(1,0)	NULL,
+	RETURNCONTENT	VARCHAR2(256)	NULL,
+	RECEIVEDATE	DATE	NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL
+	);		
+CREATE INDEX IDX_SMS_STATEREPORT1 ON SMS_STATEREPORT(GID);			
+			
+DROP TABLE SMS_CHARGEMODE;			
+CREATE TABLE SMS_CHARGEMODE		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	CODE	VARCHAR2(32)	NOT NULL,
+	STAT	NUMBER(2,0)	NOT NULL,
+	RENT	NUMBER(12,0)	DEFAULT 0 NOT NULL,
+	FREENUM	NUMBER(12,0)	DEFAULT 0 NOT NULL,
+	PRICE	NUMBER(12,0)	NOT NULL,
+	CONSTRAINT PK_SMS_CHARGEMODE PRIMARY KEY(EntGid, GID)		
+	);		
+			
+DROP TABLE SMS_CHARGEMODE_Dtl;			
+CREATE TABLE SMS_CHARGEMODE_Dtl		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	DtlGid	VARCHAR2(32)	NOT NULL,
+	ChargeModeGID	VARCHAR2(32)	NOT NULL,
+	STARTTELSECT	VARCHAR2(32)	NOT NULL,
+	ENDTELSECT	VARCHAR2(32)	NOT NULL,
+	CONSTRAINT PK_SMS_CHARGEMODE_Dtl PRIMARY KEY(EntGid, DtlGID)		
+	);		
+Create index IDX_SMS_ChargeMode_Dtl1 on Sms_ChargeMode_Dtl(ChargeModeGid);			
+			
+DROP TABLE SMS_ORGINFO;			
+CREATE TABLE SMS_ORGINFO		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	ORGGID	VARCHAR2(32)	NOT NULL,
+	ORGCODE	VARCHAR2(256)	NOT NULL,
+	 --CHARGEMODEGID	 --VARCHAR2(32)	 --NOT NULL,
+	LEASTMONEY	NUMBER(12,0)	DEFAULT 0 NOT NULL,
+	CLEWSTAT	NUMBER(1,0)	DEFAULT 0 NOT NULL,
+	ISCLEW	NUMBER(1,0)	DEFAULT 0 NOT NULL,
+	CLEWTEL	VARCHAR2(1024)	NULL,
+	MLEASTMONEY	NUMBER(12,0)	DEFAULT 0 NOT NULL,
+	MCLEWSTAT	NUMBER(1,0)	DEFAULT 0 NOT NULL,
+	MISCLEW	NUMBER(1,0)	DEFAULT 0 NOT NULL,
+	MCLEWTEL	VARCHAR2(1024)	NULL,
+	TRYTIME	NUMBER(1,0)	DEFAULT 3 NOT NULL,
+	TRANSMIT	NUMBER(1,0)	DEFAULT 0 NOT NULL,
+	ISUSE	NUMBER(1,0)	DEFAULT 0 NOT NULL,
+	CONSTRAINT PK_SMS_ORGINFO PRIMARY KEY(EntGid, GID)		
+	);		
+			
+DROP TABLE SMS_ORGINFO_Dtl;			
+CREATE TABLE SMS_ORGINFO_Dtl		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	DtlGID	VARCHAR2(32)	NOT NULL,
+	OrgGID	VARCHAR2(32)	NOT NULL,
+	CHARGEMODEGID	VARCHAR2(32)	NOT NULL,
+	CONSTRAINT PK_SMS_ORGINFO_Dtl PRIMARY KEY(EntGid, DtlGID)		
+	);		
+Create index IDX_SMS_OrgInfo_Dtl1 on Sms_OrgInfo_Dtl(OrgGid, ChargeModeGid);			
+			
+DROP TABLE SMS_NONCECHARGE;			
+CREATE TABLE SMS_NONCECHARGE		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	ORGGID	VARCHAR2(32)	NOT NULL,
+	USEMONEY	NUMBER(12,0)	DEFAULT 0 NOT NULL,
+	NONCEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	CONSTRAINT PK_SMS_NONCECHARGE PRIMARY KEY(GID)		
+	);		
+Create index IDX_SMS_NONCECHARGE1 on SMS_NONCECHARGE(OrgGid);			
+			
+DROP TABLE SMS_NONCECHARGE_Dtl;			
+CREATE TABLE SMS_NONCECHARGE_Dtl		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	DtlGID	VARCHAR2(32)	NOT NULL,
+	ORGGID	VARCHAR2(32)	NOT NULL,
+	CHARGEMODEGID	VARCHAR2(32)	NOT NULL,
+	FREENUM	NUMBER(12,0)	DEFAULT 0 NOT NULL,
+	SENDINGNUM	NUMBER(12,0)	NULL,
+	RIGHTUSE	NUMBER(1,0)	NOT NULL,
+	CONSTRAINT PK_SMS_NONCECHARGE_Dtl PRIMARY KEY(EntGid,DtlGID)		
+	);		
+Create index IDX_SMS_NONCECHARGE_Dtl1 on SMS_NONCECHARGE_Dtl(OrgGid,ChargeModeGid);			
+			
+DROP TABLE SMS_PLUSCHARGE;			
+CREATE TABLE SMS_PLUSCHARGE		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	ORGGID	VARCHAR2(32)	NOT NULL,
+	PLUSMONEY	NUMBER(12,0)	DEFAULT 0 NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	CONSTRAINT PK_SMS_PLUSCHARGE PRIMARY KEY(EntGid, GID)		
+	);		
+			
+DROP TABLE SMS_BILLINFO;			
+CREATE TABLE SMS_BILLINFO		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	ORGGID	VARCHAR2(32)	NOT NULL,
+	BILLTYPE	NUMBER(2,0)	NOT NULL,
+	CHARGEMODEGID	VARCHAR2(32)	NOT NULL,
+	ORIGINGID	VARCHAR2(32)	NULL,
+	RTELNUM	VARCHAR2(32)	NULL,
+	USEMONEY	NUMBER(12,0)	DEFAULT 0 NOT NULL,
+	LEAVEMONEY	NUMBER(12,0)	DEFAULT 0 NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	CONSTRAINT PK_SMS_BILLINFO PRIMARY KEY(EntGid, GID)		
+	);		
+			
+DROP TABLE SMS_ACCOUNT;			
+CREATE TABLE SMS_ACCOUNT		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	ORGGID	VARCHAR2(32)	NOT NULL,
+	ACCOUNT	VARCHAR2(64)	NOT NULL,
+	PASSWORD	VARCHAR2(64)	NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	CONSTRAINT PK_SMS_ACCOUNT PRIMARY KEY(EntGid, GID)		
+	);		
+			
+DROP TABLE SMS_CHANNEL;			
+CREATE TABLE SMS_CHANNEL		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	CODE	VARCHAR2(32)	NOT NULL,
+	DESCRIPTION	VARCHAR2(256)	NULL,
+	LANGUAGE	VARCHAR2(64)	NULL,
+	ADDRESS	VARCHAR2(256)	NULL,
+	ACCOUNT	VARCHAR2(64)	NULL,
+	PASSWORD	VARCHAR2(64)	NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	CONSTRAINT PK_SMS_CHANNEL PRIMARY KEY(EntGid, GID)		
+	);		
+			
+DROP TABLE SMS_RULE;			
+CREATE TABLE SMS_RULE		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	ORGGID	VARCHAR2(32)	NOT NULL,
+	CHANNELGID	VARCHAR2(32)	NOT NULL,
+	STARTTELSECT	VARCHAR2(32)	NOT NULL,
+	ENDTELSECT	VARCHAR2(32)	NOT NULL,
+	PRICE	NUMBER(12,0)	DEFAULT 0 NOT NULL,
+	ALEVEL	NUMBER(4,0)	DEFAULT 0 NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	CONSTRAINT PK_SMS_RULE PRIMARY KEY(EntGid, GID)		
+	);		
+			
+			
+DROP TABLE SMS_Order;			
+CREATE TABLE SMS_Order		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	--	--	--
+	ShortNo	VARCHAR2(32)	NULL,
+	prefix	VARCHAR2(8)	NULL,
+	Interface	VARCHAR2(1024)	NULL,
+	Note	VARCHAR2(4000)	NULL,
+	CONSTRAINT PK_SMS_Order PRIMARY KEY(EntGid, GID)		
+	);		
+			
+DROP TABLE SMS_Order_Dtl;			
+CREATE TABLE SMS_Order_Dtl		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	OrderGID	VARCHAR2(32)	NOT NULL,
+	DtlGid	VARCHAR2(33)	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	--	--	--
+	SMSDtl	VARCHAR2(256)	NULL,
+	CONSTRAINT PK_SMS_Order_Dtl PRIMARY KEY(EntGid,OrderGID,DtlGid)		
+	);		
+			
+--组织-收费模式-号码段的视图,方便Java程序调用		
+create or replace view v_Sms_OrgInfo_Dtl as		
+	select a.EntGid, a.OrgGid, a.ChargeModeGid, 	
+		b.StartTelSect, b.EndTelSect,
+		c.Stat, c.Rent, c.FreeNum, c.Price
+	from Sms_OrgInfo_Dtl a, SMS_CHARGEMODE_Dtl b, Sms_ChargeMode c	
+	where a.EntGid = b.EntGid and a.EntGid = c.EntGid and a.ChargeModeGid = b.ChargeModeGid and a.ChargeModeGid = c.Gid;	
+
+drop table WF_Model;			
+create table WF_Model		(	
+	EntGid	varchar2(32)	not null,
+	ModelGid	varchar2(32)	not null,
+	CreateDate	date	default sysdate not null,
+	LastUpdDate	date	default sysdate not null,
+	--		
+	Code	varchar2(32)	not null,
+	Name	varchar2(128)	not null,
+	STAT	int	default 0 not null,
+	CLASSIFY	varchar2(32)	null,
+	VERSION	varchar2(32)	null,
+	AP1	int	null,
+	AP2	int	null,
+	constraint PK_WF_Model primary key (EntGid, ModelGid)		
+	);		
+
+drop table WF_Task_Define;			
+create table WF_Task_Define		(	
+	EntGid	varchar2(32)	not null,
+	ModelGid	varchar2(32)	not null,
+	TaskDefGid	varchar2(32)	not null,
+	CreateDate	date	default sysdate not null,
+	LastUpdDate	date	default sysdate not null,
+	--		
+	Code	varchar2(32)	not null,
+	Name	varchar2(128)	not null,
+	Note	varchar2(128)	null,
+	OrderValue	int	default 0 not null,
+	IsStart	int	default 0 not null,
+	IsEnd	int	default 0 not null,
+	IsMCF	int	default 0 not null,
+	constraint PK_WF_Task_Define primary key (EntGid, ModelGid, TaskDefGid)		
+	);		
+
+drop table WF_Task_Define_Exec;			
+create table Wf_Task_Define_Exec(			
+	EntGid	varchar2(32)	not null,
+	ModelGid	varchar2(32)	not null,
+	TaskDefGid	varchar2(32)	not null,
+	CreateDate	date	default sysdate not null,
+	LastUpdDate	date	default sysdate not null,
+	--		
+	ExecGidEx	varchar2(32)	not null,
+	ExecCodeEx	varchar2(64)	null,
+	ExecNameEx	varchar2(64)	null,
+	OwnerValue	int	default 0 not null,
+	ExecNote	varchar2(256)	null,
+	constraint PK_WF_Task_Define_Exec primary key (EntGid, ModelGid, TaskDefGid, ExecGidEx)		
+	);		
+--	alter table WF_Task_Define_Exec(ExecNote varchar2(256));		
+
+drop table WF_Task_Define_Condition;			
+create table WF_Task_Define_Condition (			
+	EntGid	varchar2(32)	not null,
+	ModelGid	varchar2(32)	not null,
+	FromTaskDef	varchar2(32)	not null,
+	ToTaskDef	varchar2(32)	not null,
+	ConditionNote	varchar2(256)	null,
+	constraint PK_WF_Condition primary key (EntGid, ModelGid, FromTaskDef, ToTaskDef)		
+	);		
+
+			
+drop table WF_RT;			
+create table WF_RT		(	
+	EntGid	varchar2(32)	not null,
+	ModelGid	varchar2(32)	not null,
+	UsrGidEX	varchar2(32)	not null,
+	RTID	varchar2(32)	null,
+	constraint PK_WF_RIGHTS primary key (ModelGid, UsrGidEX)		
+	);		
+			
+			
+drop table WF_Flow;			
+create table WF_Flow		(	
+	EntGid	varchar2(32)	not null,
+	ModelGid	varchar2(32)	not null,
+	FlowGid	varchar2(32)	not null,
+	CreateDate	date	default sysdate not null,
+	LastUpdDate	date	default sysdate not null,
+	--		
+	STAT	int	default 1 not null,
+	createRGid	varchar2(32)	null,
+	createRCODE	varchar2(64)	null,
+	createRName	varchar2(64)	null,
+	FINISHDATE	date	null,
+	--		
+	FlowNote	varchar2(1024)	null,
+	constraint PK_WF_Flow primary key (EntGid, FlowGid)		
+	);		
+--	alter table WF_Flow add(FlowNote varchar2(1024));		
+			
+			
+drop table WF_Task;			
+create table WF_Task		(	
+	EntGid	varchar2(32)	not null,
+	ModelGid	varchar2(32)	not null,
+	FlowGid	varchar2(32)	not null,
+	TaskDefGid	varchar2(32)	not null,
+	TaskGid	varchar2(32)	not null,
+	CreateDate	date	default sysdate not null,
+	LastUpdDate	date	default sysdate not null,
+	--		
+	Code	varchar2(32)	not null,
+	Name	varchar2(128)	not null,
+	Note	varchar2(128)	null,
+	STAT	int	default 0 not null,
+	--		
+	ExecGid	varchar2(32)	null,
+	ExecCode	varchar2(64)	null,
+	ExecName	varchar2(64)	null,
+	MEMO	varchar2(1024)	null,
+	Btime	date	default sysdate not null,
+	Etime	date	null,
+	DEADLINE	date	null,
+	--		
+	OrderValue	int	default 0 not null,
+	OwnerValue	int	default 0 not null,
+	IsMCF	int	default 0 not null,
+	constraint PK_WF_Task primary key (EntGid, FlowGid, TaskGid)		
+	);		
+create index IDX_WF_Task_1 ON WF_Task(ExecGid);			
+drop table WF_Task_History;			
+create table WF_Task_History		(	
+	EntGid	varchar2(32)	not null,
+	ModelGid	varchar2(32)	not null,
+	FlowGid	varchar2(32)	not null,
+	TaskDefGid	varchar2(32)	not null,
+	TaskGid	varchar2(32)	not null,
+	CreateDate	date	default sysdate not null,
+	LastUpdDate	date	default sysdate not null,
+	--		
+	Code	varchar2(32)	not null,
+	Name	varchar2(128)	not null,
+	Note	varchar2(128)	null,
+	STAT	int	default 0 not null,
+	--		
+	ExecGid	varchar2(32)	null,
+	ExecCode	varchar2(64)	null,
+	ExecName	varchar2(64)	null,
+	MEMO	varchar2(1024)	null,
+	Btime	date	default sysdate not null,
+	Etime	date	null,
+	DEADLINE	date	null,
+	--		
+	OrderValue	int	default 0 not null,
+	OwnerValue	int	default 0 not null,
+	IsMCF	int	default 0 not null,
+	constraint PK_WF_Task_History primary key (EntGid, FlowGid, TaskGid)		
+	);		
+create index IDX_WF_Task_History_1 ON WF_Task_History(ExecGid);			
+drop view v_WF_Task;			
+create view v_WF_Task as select * from WF_Task union select * from WF_Task_History;			
+
+drop table Doc;			
+create table Doc		(	
+	EntGid	varchar2(32)	not null,
+	Gid	varchar2(32)	not null,
+	CreateDate	date	default sysdate not null,
+	LastUpdDate	date	default sysdate not null,
+	--		
+	ExpireDate	date	default sysdate+30 not null,
+	Stat	int	default 2 null,
+	Title	varchar2(256)	null,
+	Content	varchar2(4000)	null,
+	--		
+	SenderGid	varchar2(32)	null,
+	SenderCode	varchar2(64)	null,
+	SenderName	varchar2(64)	null,
+	Object	int	default 0 null,
+	Read	int	default 0 null,
+	Alevel	int	default 5 null,
+	AttachCount	int	default 0 null,
+	SortGid	varchar2(32)	null,
+	constraint PK_Doc primary key(EntGid, Gid)		
+	);		
+create index IDX_DOC_TITLE ON Doc(TITLE);			
+create index IDX_DOC_STAT on Doc (stat);			
+
+--	drop table Doc_Receiver;		
+--	create table Doc_Receiver		(
+--		EntGid	varchar2(32)
+--		Gid	varchar2(32)
+--		--	
+--		UsrGidEx	varchar2(32)
+--		UsrCodeEx	varchar2(64)
+--		UsrNameEx	varchar2(64) 
+--		constraint PK_Doc_Receiver primary key (EntGid, Gid, UsrGidEx)	
+--		);	
+
+drop table Doc_Read;			
+create table Doc_Read		(	
+	EntGid	varchar2(32)	not null,
+	Gid	varchar2(32)	not null,
+	--		
+	UsrGid	varchar2(32)	not null,
+	UsrCode	varchar2(64)	null,
+	UsrName	varchar2(64) 	null,
+	ReadTime	date	default sysdate not null,
+	constraint PK_Doc_Read primary key (EntGid, Gid, UsrGid)		
+	);		
+
+drop table Doc_ATTACH;			
+create table Doc_ATTACH		(	
+	EntGid	varchar2(32)	not null,
+	Gid	varchar2(32)	not null,
+	CreateDate	date	default sysdate not null,
+	LastUpdDate	date	default sysdate not null,
+	--		
+	AttachID	varchar2(32)	not null,
+	Title	varchar2(256)	null,
+	Atype	int	default 0 not null,
+	Url	varchar2(1024)	not null,
+	AttachSize	int	default 0 not null,
+	constraint PK_DOC_ATTACH primary key(EntGid, Gid, ATTACHID)		
+	);		
+
+drop table Doc_SORT;			
+create table Doc_SORT		(	
+	EntGid	varchar2(32)	not null,
+	Gid	varchar2(32)	not null,
+	CreateDate	date	default sysdate not null,
+	LastUpdDate	date	default sysdate not null,
+	--		
+	SORTNAME	varchar2(64)	null,
+	SmsRemind	int	default 0 not null,
+	SmsReTime	date	null,
+	STAT	int	default 0 not null,
+	DISPLAY	int	default 0 not null,
+	constraint PK_DOC_SORT primary key (EntGid, Gid)		
+	);		
+
+drop table Doc_RT;			
+create table Doc_RT		(	
+	EntGid	varchar2(32)	not null,
+	SORTGid	varchar2(32)	not null,
+	UsrGidEx	varchar2(32)	not null,
+	RTID	varchar2(64)	null,
+	constraint DocRIGHT primary key (EntGid, SortGid, UsrGidEx)		
+	);		
+
+drop table Discuss;			
+create table Discuss (			
+	EntGid 	varchar2(32)	not null,
+	Gid	varchar2(32)	not null,
+	Num	varchar2(32)	null,
+	CreateDate	date	default sysdate not null,
+	LastUpdDate	date	default sysdate not null,
+	--		
+	Stat	int	null,
+	--		
+	FillUsrGid	varchar2(32)	null,
+	FillUsrCode	varchar2(64)	null,
+	FillUsrName	varchar2(64)	null,
+	FillDeptName	varchar2(64)	null,
+	--		
+	Title	varchar2(64)	null,
+	SortGid	varchar2(32)	null,
+	SortCode	varchar2(64)	null,
+	SortName	varchar2(64)	null,
+	ValidityBTime	date	null,
+	ValidityETime	date	null,
+	Alevel	int	default 0 null,
+	Content	varchar2(4000)	null,
+	AttachOnesName	VARCHAR2(4000)	NULL,
+	Tag	int	default 0 null,
+	constraint PK_Discuss primary key(EntGid, Gid)		
+	);		
+create index idx_Discuss_1 on Discuss(FillUsrGid);			
+create index idx_Discuss_2 on Discuss(Num);			
+			
+drop table Discuss_Actor;			
+create table Discuss_Actor (			
+	EntGid 	varchar2(32)	not null,
+	DiscussGid	varchar2(32)	not null,
+	--		
+	ActorGid	varchar2(32)	not null,
+	ActorCode	varchar2(64)	null,
+	ActorName	varchar2(64)	null,
+	Atype	int	not null,
+	ReadStat	varchar2(32)	default 10 Not NULL,
+	ReadTime	date	null,
+	--		
+	ReadNum	int	default 1 Not NULL,
+	--		
+	constraint PK_Discuss_Actor primary key(EntGid, DiscussGid, ActorGid, Atype)		
+	);		
+			
+drop table Discuss_Actor_Dtl;			
+create table Discuss_Actor_Dtl (			
+	EntGid 	varchar2(32)	not null,
+	DiscussGid	varchar2(32)	not null,
+	DtlGid	varchar2(32)	not null,
+	--		
+	ActorGid	varchar2(32)	null,
+	ActorCode	varchar2(64)	null,
+	ActorName	varchar2(64)	null,
+	--		
+	Content	varchar2(4000)	null,
+	ActDate	date	null,
+	constraint PK_Discuss_Actor_Dtl primary key(EntGid, DiscussGid, DtlGid)		
+	);		
+			
+drop table Discuss_Actor_Attach;			
+create table Discuss_Actor_Attach (			
+	EntGid 	varchar2(32)	not null,
+	DiscussGid	varchar2(32)	not null,
+	DtlGid	varchar2(32)	not null,
+	CreateDate	date	default sysdate not null,
+	LastUpdDate	date	default sysdate not null,
+	--		
+	AttachID	varchar2(32)	not null,
+	Atype	int	default 0 not null,
+	Flag	int	default 0 not null,
+	AttachTitle	varchar2(256)	null,
+	AttachUrl	varchar2(1024)	not null,
+	AttachSize	number(24)	default 0 not null,
+	constraint PK_Discuss_Actor_Attach primary key (EntGid, DiscussGid,DtlGid,AttachID)		
+	);		
+			
+drop table DiscussSort;			
+create table DiscussSort  (			
+	EntGid	Varchar2(32)	not null,
+	Createdate	date	default sysdate not null,
+	Lastupddate	date	default sysdate not null,
+	--		
+	SortGid	Varchar2(32)	not null,
+	SortCode	Varchar2(32)	Null,
+	SortName	Varchar2(64)	Null,
+	constraint PK_DiscussSort primary key (EntGid,SortGid)		
+	);		
+			
+			
+DROP TABLE BBS;			
+CREATE TABLE BBS		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	--		
+	USRGID	VARCHAR2(32)	NULL,
+	USRCODE	VARCHAR2(64)	NULL,
+	USRNAME	VARCHAR2(64)	NULL,
+	Layer	int	default 0 not null,
+	--		
+	TITLE	VARCHAR2(256)	NULL,
+	CONTENT	VARCHAR2(256)	NULL,
+	SORTGID	VARCHAR2(32)	NULL,
+	STAT	INT	DEFAULT 0 NOT NULL,
+	UPSTAT	INT	DEFAULT 0 NOT NULL,
+	SPSTAT	INT	DEFAULT 0 NOT NULL,
+	DISCUSS	VARCHAR2(32)	NULL,
+	VIEWCOUNT	INT	DEFAULT 0 NOT NULL,
+	REPLYCOUNT	INT	DEFAULT 0 NOT NULL,
+	ATTACHCOUNT	INT	DEFAULT 0 NOT NULL,
+	REPLYNAME	VARCHAR2(64)	NULL,
+	HotStat	INT	DEFAULT 0 NOT NULL,
+	FavStat	INT	DEFAULT 0 NOT NULL,
+	atype	INT	DEFAULT 0 NOT NULL,
+	GoodCount	int	DEFAULT 0 NOT NULL,
+	limitDate	date	NULL,
+	CONSTRAINT PK_BBS PRIMARY KEY (ENTGID, GID)		
+	);		
+CREATE INDEX IDX_BBS_discuss ON BBS (DISCUSS);			
+CREATE INDEX IDX_BBS_SortGid ON BBS (SORTGID);			
+CREATE INDEX IDX_BBS_Title ON BBS (TITLE);			
+
+DROP TABLE bbs_VOTE_ITEM;			
+CREATE TABLE bbs_VOTE_ITEM		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	--		
+	bbsGid	VARCHAR2(32)	NOT NULL,
+	Line	int	NULL,
+	note	VARCHAR2(512)	NULL,
+	CONSTRAINT PK_bbs_VOTE_ITEM PRIMARY KEY (EntGid, bbsGid, Gid)		
+	);		
+			
+			
+DROP TABLE bbs_VOTE;			
+CREATE TABLE bbs_VOTE		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	bbsGid	VARCHAR2(32)	NOT NULL,
+	ItemGid	VARCHAR2(32)	NOT NULL,
+	UsrGid	VARCHAR2(32)	NOT NULL,
+	UsrCode	VARCHAR2(64)	NULL,
+	UsrName	VARCHAR2(64)	NULL,
+	CreateDate	DATE	DEFAULT SYSDATE NOT NULL,
+	CONSTRAINT PK_bbs_VOTE PRIMARY KEY(EntGid, bbsGid,ItemGid, UsrGid)		
+	);		
+			
+			
+DROP TABLE bbs_UsrScore;			
+CREATE TABLE bbs_usrscore		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	bbsGid	VARCHAR2(32)	NOT NULL,
+	sortgid	VARCHAR2(32)	NULL,
+	usrGid	VARCHAR2(32)	NULL,
+	score	VARCHAR2(32)	NULL,
+	CreateDate	DATE	DEFAULT SYSDATE NOT NULL,
+	atype	VARCHAR2(32)	NULL
+	);		
+			
+			
+DROP TABLE bbs_GoodCount;			
+CREATE TABLE bbs_GoodCount		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	bbsGid	VARCHAR2(32)	NOT NULL,
+	sortgid	VARCHAR2(32)	NULL,
+	usrGid	VARCHAR2(32)	NULL,
+	CreateDate	DATE	DEFAULT SYSDATE NOT NULL
+	);		
+			
+
+
+
+DROP TABLE BBS_ATTACH;			
+CREATE TABLE BBS_ATTACH		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	--		
+	ATTACHID	VARCHAR2(32)	NOT NULL,
+	ATYPE	INT	DEFAULT 0 NOT NULL,
+	TITLE	VARCHAR2(256)	NULL,
+	URL	VARCHAR2(1024)	NOT NULL,
+	AttachSize	int	DEFAULT 0 NOT NULL,
+	CONSTRAINT PK_BBS_ATTACH PRIMARY KEY(ENTGID, GID, ATTACHID)		
+	);		
+			
+drop table BBS_Group;			
+create table BBS_Group(			
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	--		
+	GroupName	Varchar2(64)	Null,
+	CONSTRAINT PK_BBS_Group PRIMARY KEY (ENTGID, GID)		
+	);		
+			
+DROP TABLE BBS_SORT;			
+CREATE TABLE BBS_SORT		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	--		
+	GroupGid	varchar2(32)	NULL,
+	SORTNAME	VARCHAR2(64)	NULL,
+	STAT	INT	DEFAULT 0 NOT NULL,
+	DISPLAY	VARCHAR2(2)	DEFAULT 1 NULL,
+	Anonymous	int	DEFAULT 0 NOT NULL,
+	CONSTRAINT PK_BBS_SORT PRIMARY KEY (ENTGID, GID)		
+	);		
+			
+			
+DROP TABLE BBS_RT;			
+CREATE TABLE BBS_RT		(	
+	EntGid	varchar2(32)	NOT NULL,
+	SortGid	varchar2(32)	NOT NULL,
+	UsrGidEx	varchar2(32)	NOT NULL,
+	RTID	VARCHAR2(64)	NULL,
+	CONSTRAINT PK_BBS_RT PRIMARY KEY (EntGid,SORTGid,USRGIDEx)		
+	);		
+ --说明：BBS_RT中RTID域从第一位到开始依次代表查看帖子，新增帖子，回复帖子,置精华，作废，置顶，挂起贴,分类转移共8位			
+
+DROP TABLE VOTE_PROJECT;			
+CREATE TABLE VOTE_PROJECT		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	--		
+	NAME	VARCHAR2(256)	NULL,
+	DESCRIPTION	VARCHAR2(4000)	NULL,
+	STAT	INT	DEFAULT 0 NOT NULL,
+	CREATORGID	VARCHAR2(32)	NULL,
+	CREATORCODE	VARCHAR2(64)	NULL,
+	CREATORNAME	VARCHAR2(64)	NULL,
+	STARTTIME	DATE	NULL,
+	ENDTIME	DATE	NULL,
+	ISSCORE	INT	DEFAULT 0 NOT NULL,
+	ISCOMMENT	INT	DEFAULT 0 NOT NULL,
+	ISVIEWRESULT	INT	DEFAULT 0 NOT NULL,
+	ITEMCOUNT	INT	DEFAULT 0 NOT NULL,
+	COMMENTORDER	VARCHAR2(4000)	NULL,
+	CONSTRAINT PK_VOTE_PROJECT PRIMARY KEY (EntGid,Gid)		
+	);		
+
+DROP TABLE VOTE_ITEM;			
+CREATE TABLE VOTE_ITEM		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	--		
+	ProjectGid	VARCHAR2(32)	NOT NULL,
+	Line	int	NULL,
+	DESCRIPTION	VARCHAR2(4000)	NULL,
+	URL	VARCHAR2(1024)	NULL,
+	ANSWERCOUNT	INT	DEFAULT 1 NOT NULL,
+	VALIDCOUNT	INT	DEFAULT 1 NOT NULL,
+	CONSTRAINT PK_VOTE_ITEM PRIMARY KEY (EntGid, ProjectGid, Gid)		
+	);		
+
+DROP TABLE VOTE_ITEM_ANSWER;			
+CREATE TABLE VOTE_ITEM_ANSWER		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	--		
+	ItemGid	VARCHAR2(32)	NOT NULL,
+	Line	int	NULL,
+	DESCRIPTION	VARCHAR2(4000)	NULL,
+	SCORE	INT	DEFAULT 0 NOT NULL,
+	CONSTRAINT PK_VOTE_ITEM_ANSWER PRIMARY KEY(EntGid, ItemGid, Gid)		
+	);		
+
+DROP TABLE VOTE_USR;			
+CREATE TABLE VOTE_USR		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	ProjectGid	VARCHAR2(32)	NOT NULL,
+	--		
+	UsrGidEx	VARCHAR2(32)	NOT NULL,
+	UsrCodeEx	VARCHAR2(64)	NULL,
+	UsrNameEx	VARCHAR2(64)	NULL,
+	CONSTRAINT PK_VOTE_USR PRIMARY KEY (EntGid, ProjectGid, UsrGidEx)		
+	);		
+			
+DROP TABLE VOTE_ATTACH;			
+CREATE TABLE VOTE_ATTACH		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	ProjectGid	VARCHAR2(32) 	NOT NULL,
+	ATTACHID	VARCHAR2(32) 	NOT NULL,
+	TITLE	VARCHAR2(256)	NULL,
+	URL	VARCHAR2(1024)	NOT NULL,
+	AttachSize	Int	Default 0 not null,
+	CONSTRAINT PK_VOTE_ATTACH PRIMARY KEY(EntGid, ProjectGid, AttachID)		
+	);		
+			
+DROP TABLE VOTE;			
+CREATE TABLE VOTE		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	ProjectGid	VARCHAR2(32)	NOT NULL,
+	ItemGid	VARCHAR2(32)	NOT NULL,
+	ItemAnswerGid	VARCHAR2(32)	NOT NULL,
+	UsrGid	VARCHAR2(32)	NOT NULL,
+	UsrCode	VARCHAR2(64)	NULL,
+	UsrName	VARCHAR2(64)	NULL,
+	CreateDate	DATE	DEFAULT SYSDATE NOT NULL,
+	CONSTRAINT PK_VOTE PRIMARY KEY(EntGid, ProjectGid,ItemGid,ItemAnswerGid, UsrGid)		
+	);		
+
+DROP TABLE VOTE_COMMENT;			
+CREATE TABLE VOTE_COMMENT		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	PROJECTGID	VARCHAR2(32)	NOT NULL,
+	COMMENTGID	VARCHAR2(32)	NOT NULL,
+	UsrGid	VARCHAR2(32)	NOT NULL,
+	UsrCode	VARCHAR2(64)	NULL,
+	UsrName	VARCHAR2(64)	NULL,
+	REVIEW	VARCHAR2(4000)	NULL,
+	CreateDate	DATE	DEFAULT SYSDATE NOT NULL,
+	CONSTRAINT PK_VOTE_COMMENT PRIMARY KEY(EntGid, ProjectGid,COMMENTGid,USRGID)		
+	);		
+
+DROP TABLE Mail;			
+CREATE TABLE Mail		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	--		
+	SenderGID	VARCHAR2(32)	NULL,
+	SenderCODE	VARCHAR2(64)	NULL,
+	SenderNAME	VARCHAR2(64)	NULL,
+	SenderTime	Date	DEFAULT SYSDATE NOT NULL,
+	--		
+	TITLE	VARCHAR2(256)	NULL,
+	Content	VARCHAR2(256)	NULL,
+	Object	INT	DEFAULT 0 NULL,
+	Read	INT	DEFAULT 0 NULL,
+	ALEVEL	INT	DEFAULT 5 NULL,
+	ATTACHCOUNT	INT	DEFAULT 0 NULL,
+	MailSize	number(12)	NULL,
+	CONSTRAINT PK_Mail PRIMARY KEY(ENTGID, GID)		
+	);		
+CREATE INDEX idx_MAIL_1 ON Mail (TITLE);			
+create index idx_Mail_2 on Mail (SenderGid);			
+create index idx_Mail_3 on Mail (Gid);			
+
+DROP TABLE Mail_Receiver;			
+CREATE TABLE Mail_Receiver		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	--		
+	UsrGidEx	VARCHAR2(32)	NOT NULL,
+	UsrCodeEx	VARCHAR2(64)	NULL,
+	UsrNameEx	VARCHAR2(64)	NULL,
+	CONSTRAINT PK_Mail_Receiver PRIMARY KEY(ENTGID, GID, UsrGidEx)		
+	);		
+create index IDX_Mail_Receiver1 on Mail_Receiver(Gid);			
+			
+			
+DROP TABLE Mail_Out;			
+CREATE TABLE Mail_Out		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	--		
+	STAT	INT	DEFAULT 2 NULL,
+	Abolished	INT	DEFAULT 0 NULL,
+	CONSTRAINT PK_Mail_Out PRIMARY KEY(ENTGID, GID)		
+	);		
+create index IDX_Mail_Out1 on Mail_Out(Gid);			
+			
+DROP TABLE Mail_In;			
+CREATE TABLE Mail_In		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	--		
+	USRGID	VARCHAR2(32)	NOT NULL,
+	USRCODE	VARCHAR2(64)	NULL,
+	USRNAME	VARCHAR2(64) 	NULL,
+	--		
+	STAT	INT	DEFAULT 2 NULL,
+	Abolished	INT	DEFAULT 0 NULL,
+	CONSTRAINT PK_Mail_In PRIMARY KEY (ENTGID, GID, USRGID)		
+	);		
+CREATE INDEX IDX_Mail_In_1 ON Mail_In(USRGID);			
+CREATE INDEX IDX_Mail_In_2 ON Mail_In(Gid);			
+			
+DROP TABLE Mail_Attach;			
+CREATE TABLE Mail_Attach		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	--		
+	ATTACHID	VARCHAR2(32)	NOT NULL,
+	TITLE	VARCHAR2(256)	NULL,
+	ATYPE	INT	DEFAULT 0 NOT NULL,
+	AttachSize	int	default 0 not null,
+	URL	VARCHAR2(1024)	NOT NULL,
+	CONSTRAINT PK_Mail_ATTACH PRIMARY KEY(ENTGID, GID, ATTACHID)		
+	);		
+			
+DROP TABLE Mail_Config;			
+CREATE TABLE Mail_Config		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	USRGID	VARCHAR2(32)	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	--		
+	Cfg_Size	number(12)	DEFAULT 5242880 NOT NULL,
+	Cur_Size	number(12)	DEFAULT 0 NOT NULL,
+	CONSTRAINT PK_Mail_Config PRIMARY KEY (EntGid, USRGID)		
+	);		
+CREATE INDEX IDX_Mail_Config_1 ON Mail_Config(USRGID);			
+
+Drop table KMS_Point;			
+Create table KMS_Point (			
+	ENTGID	Varchar2(32)	Not Null,
+	GID	Varchar2(32)	Not Null,
+	--		
+	CreateDate	Date	Default SysDate Not Null,
+	CreatorGid	Varchar2(32)	Null,
+	CreatorCode	Varchar2(32)	Null,
+	CreatorName	Varchar2(32)	Null,
+	LastUpdDate	Date	Default SysDate Not Null,
+	LastModifyGid	Varchar2(32)	Null,
+	LastModifyCode	Varchar2(33)	Null,
+	LastModifyName	Varchar2(34)	Null,
+	--		
+	Stat	Int	Null,
+	--		
+	ReadCount	INT	Default 0 Not Null,
+	Title	Varchar2(256)	Null,
+	Abstract	Varchar2(2048)	Null,
+	KeyWords	Varchar2(512)	Null,
+	Content	Varchar2(256)	Null,
+	Src	Varchar2(2048)	Null,
+	--		
+	ApproverGid	varchar2(32)	null,
+	ApproverCode	varchar2(32)	null,
+	ApproverName	varchar2(32)	null,
+	ApproverDate	date	Default SysDate Not Null,
+	ApproveContent	varchar2(256)	null,
+	Constraint PK_KMS_Point Primary Key(ENTGID, GID)		
+	);		
+Create INDEX IDX_KMS_Point1 ON KMS_Point(TITLE);			
+Create INDEX IDX_KMS_Point2 ON KMS_Point(KEYWORDS);			
+			
+Drop table KMS_Point_Attach;			
+Create table KMS_Point_Attach (			
+	ENTGID	Varchar2(32)	Not Null,
+	GID	Varchar2(32)	Not Null,
+	--		
+	AttachId	Varchar2(32)	Not Null,
+	aType	INT	Default 0 Not Null,
+	Title	Varchar2(256)	Null,
+	URL	Varchar2(1024)	Not Null,
+	AttachSize	int	Default 0 Not Null,
+	Constraint PK_KMS_Point_Attach Primary Key(ENTGID, GID,ATTACHID)		
+	);		
+			
+Drop table KMS_Sort;			
+Create table KMS_Sort (			
+	ENTGID	Varchar2(32)	Not Null,
+	GID	Varchar2(32)	Not Null,
+	CreateDate	Date	Default SysDate Not Null,
+	CreatorGid	Varchar2(32)	Null,
+	CreatorCode	Varchar2(32)	Null,
+	CreatorName	Varchar2(32)	Null,
+	LastUpdDate	Date	Default SysDate Not Null,
+	LastModifyGid	Varchar2(32)	Null,
+	LastModifyCode	Varchar2(33)	Null,
+	LastModifyName	Varchar2(34)	Null,
+	--		
+	SerialNum	INT	Default 0 Not Null,
+	LayerCode	Varchar2(256)	Null,
+	Name	Varchar2(256)	Not Null,
+	Details	Varchar2(1024)	Null,
+	ParentGid	Varchar2(32)	Null,
+	ISROOT	INT	DEFAULT 0 NOT NULL,
+	ChildCount	INT	Default 0 Not Null,
+	PointCount	INT	Default 0 Not Null,
+	Constraint PK_KMS_SORT Primary Key(ENTGID, GID)		
+	);		
+Create INDEX IDX_KMS_SORT1 ON KMS_Sort(LAYERCODE);			
+Create INDEX IDX_KMS_SORT2 ON KMS_Sort(NAME);			
+			
+Drop table KMS_SortIndex;			
+Create table KMS_SortIndex (			
+	ENTGID	Varchar2(32)	Not Null,
+	KGID	Varchar2(32)	Not Null,
+	SortGid	Varchar2(32)	Not Null,
+	SortLayerCode	Varchar2(256)	Null,
+	Constraint PK_KMS_SortIndex Primary Key(ENTGID, KGID,SortGid)		
+	);		
+			
+Drop table KMS_RT;			
+Create table KMS_RT		(	
+	ENTGID	Varchar2(32)	Not Null,
+	SortGid	Varchar2(32)	Not Null,
+	UsrGidEx	Varchar2(32)	Not Null,
+	ARTID	Int	Null,
+	FRTID	Int	Null,
+	SRTID	Varchar2(32)	Null,
+	KRTID	Varchar2(32)	Null,
+	Constraint PK_KMS_RT Primary Key (ENTGID,SORTGID,USRGIDEX)		
+	);		
+ --说明：KMS_RT中SRTID域从第一位到开始依次代表:分类全操作、修改分类基本信息、新增分类			
+ --说明：KMS_RT中KRTID域从第一位到开始依次代表知识点全操作、修改知识点、新增知识点			
+
+			
+Drop table KMS_PointCount;			
+Create table KMS_PointCount (			
+	ENTGID	Varchar2(32)	Not Null,
+	PointCount	INT	Default 0 Not Null,
+	Constraint PK_KMS_PointCount Primary Key(ENTGID, PointCount)		
+	);		
+			
+Drop table KMS_InitializeSet;			
+Create table KMS_InitializeSet (			
+	ENTGID	Varchar2(32)	Not Null,
+	IsAutoApprove	INT	Default 1 Not Null,
+	LatestPointNum	INT	Default 0 Not Null,
+	AccessPointNum	INT	Default 0 Not Null,
+	Constraint PK_KMS_InitializeSet Primary Key(ENTGID)		
+	);		
+			
+DROP TABLE WORKLOG;			
+CREATE TABLE WORKLOG		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	--		
+	FillUsrGID	VARCHAR2(32)	NOT NULL,
+  	FillUsrCODE	VARCHAR2(64)	NULL,
+	FillUsrNAME	VARCHAR2(64)	NULL,
+	ADATE	DATE	NOT NULL,
+	--		
+	LOAD	DECIMAL(4,2)	DEFAULT 0 NOT NULL,
+	OVERTIME	INT	DEFAULT 0 NOT NULL,
+	WORKBTIME	DATE	DEFAULT TO_DATE('9:00','HH24:MI') NOT NULL,
+	WORKETIME	DATE	DEFAULT TO_DATE('17:30','HH24:MI') NOT NULL,
+	--		
+	CommentUsrGID	VARCHAR2(32)	NULL,
+  	CommentUsrCODE	VARCHAR2(64)	NULL,
+	CommentUsrNAME	VARCHAR2(64)	NULL,
+	CDATE	DATE	NULL,
+	--		
+	CommentContent	VARCHAR2(1024)	NULL,
+	--		
+	constraint PK_WorkLog PRIMARY KEY (EntGid, Gid)		
+	);		
+create index idx_worklog_1 on worklog(FillUsrGid);			
+create index idx_worklog_2 on worklog(adate);			
+			
+DROP TABLE WORKLOG_DTL;			
+CREATE TABLE WORKLOG_DTL(			
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	WID	VARCHAR2(32)	NOT NULL,
+	PID	VARCHAR2(32)	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	--		
+	Line	Int	DEFAULT 0 NOT NULL,
+	Content	VARCHAR2(4000)	NULL,
+	FUNSCODE	INT	DEFAULT 0 NOT NULL,
+	--		
+	WORKLOAD	DECIMAL(4,2)	DEFAULT 0 NOT NULL,
+	BTIME	DATE	NULL,
+	ETIME	DATE	NULL,
+	CLIENT	INT	DEFAULT 0 NOT NULL,
+	constraint PK_WorkLog_Dtl PRIMARY KEY (EntGid, WID,PID)		
+	);		
+			
+DROP TABLE WorkLog_Dtl_Ex;			
+CREATE TABLE WorkLog_Dtl_Ex (			
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	WID	VARCHAR2(32)	NOT NULL,
+	PID	VARCHAR2(32)	NOT NULL,
+	--		
+	AttrName1	VARCHAR2(256)	NULL,
+	AttrValue1	VARCHAR2(256)	NULL,
+	AttrName2	VARCHAR2(256)	NULL,
+	AttrValue2	VARCHAR2(256)	NULL,
+	AttrName3	VARCHAR2(256)	NULL,
+	AttrValue3	VARCHAR2(256)	NULL,
+	AttrName4	VARCHAR2(256)	NULL,
+	AttrValue4	VARCHAR2(256)	NULL,
+	AttrName5	VARCHAR2(256)	NULL,
+	AttrValue5	VARCHAR2(256)	NULL,
+	AttrName6	VARCHAR2(256)	NULL,
+	AttrValue6	VARCHAR2(256)	NULL,
+	AttrName7	VARCHAR2(256)	NULL,
+	AttrValue7	VARCHAR2(256)	NULL,
+	AttrName8	VARCHAR2(256)	NULL,
+	AttrValue8	VARCHAR2(256)	NULL,
+	AttrName9	VARCHAR2(256)	NULL,
+	AttrValue9	VARCHAR2(256)	NULL,
+	AttrName10	VARCHAR2(256)	NULL,
+	AttrValue10	VARCHAR2(256)	NULL,
+	constraint PK_WorkLog_Dtl_Ex PRIMARY KEY (EntGid, WID, PID)		
+	);		
+create index idx_worklog_dtl_ex_pid on worklog_dtl_ex (pid);			
+			
+DROP TABLE WORKLOG_FILLRT;			
+CREATE TABLE WORKLOG_FILLRT(			
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	USRGIDEx	VARCHAR2(32)	NOT NULL,
+	WorkLogSort	varchar2(256)	null,
+	PRIMARY KEY(EntGid, USRGIDEx)		
+	);		
+
+DROP TABLE WORKLOG_VIEWRT;			
+CREATE TABLE WORKLOG_VIEWRT(			
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	CurUsrGidEx	VARCHAR2(32)	NOT NULL,
+	TargetUsrGidEx	VARCHAR2(32)	NOT NULL,
+	PRIMARY KEY(EntGid, CurUsrGidEx, TargetUsrGidEx)		
+	);		
+
+DROP TABLE WORKLOG_Config;			
+CREATE TABLE WORKLOG_Config(			
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	Sdate	int	default 0 NOT NULL,
+	Edate	int	default 0 NOT NULL,
+	PRIMARY KEY(EntGid)		
+	);
+
+drop view v_workrt;	
+CREATE OR REPLACE VIEW v_workrt AS	
+	SELECT distinct vo.entgid, vo.gid MgrGid, vo.name MgrName, vo.code Mgrcode, vu.name UNAME, vu.gid UGid, vo.SORTID MGRSORTID, vu.SORTID USORTID, vu.code Ucode from v_usr vo, WORKLOG_VIEWRT w, v_usr vu where vo.gid = w.CurUsrGidEx and w.TargetUsrGidEx = vu.gid;
+
+DROP VIEW v_Worklog_Config;			
+create or replace view v_Worklog_Config as    			
+ select entgid, 			
+         to_date(decode(sdate, 0, to_char(sysdate, 'yyyy.mm') || '.01', to_char(date1,'yyyy.mm.dd')),'yyyy.mm.dd') date1, 			
+         to_date(decode(edate, 0, to_char(last_day(sysdate), 'yyyy.mm.dd'), to_char(date2,'yyyy.mm.dd')),'yyyy.mm.dd') date2,      			
+         to_date(decode(sdate, 0, to_char(sysdate, 'yyyy.mm') || '.03', to_char(date1+2,'yyyy.mm.dd')),'yyyy.mm.dd') kdate1,       			
+         to_date(decode(edate, 0, to_char(last_day(sysdate)+2, 'yyyy.mm.dd'), to_char(date2+2,'yyyy.mm.dd')),'yyyy.mm.dd') kdate2       			
+  from (select to_date(decode(sign(to_char(sysdate, 'dd') - sdate),			
+                              -1,			
+                              to_char(add_months(sysdate, -1), 'yyyy.mm'),			
+                              to_char(add_months(sysdate, 0), 'yyyy.mm')) || '.' ||			
+                       sdate,			
+                       'yyyy.mm.dd') Date1,			
+               to_date(decode(sign(to_char(sysdate, 'dd') - edate),			
+                              1,			
+                              to_char(add_months(sysdate, 1), 'yyyy.mm'),			
+                              to_char(sysdate, 'yyyy.mm')) || '.' || edate,			
+                       'yyyy.mm.dd') Date2,			
+               sdate,			
+               edate,			
+               entgid			
+          from worklog_config);			
+
+
+DROP TABLE WORKLOG_CommentRT;			
+CREATE TABLE WORKLOG_CommentRT(			
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	CurUsrGidEx	VARCHAR2(32)	NOT NULL,
+	TargetUsrGidEx	VARCHAR2(32)	NOT NULL,
+	PRIMARY KEY(EntGid, CurUsrGidEx, TargetUsrGidEx)		
+	);		
+			
+			
+			
+DROP TABLE HR_EMP;			
+CREATE TABLE HR_EMP		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	USRGID	VARCHAR2(32)	NULL,
+	USRCODE	VARCHAR2(64)	NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	--		
+	CODE	VARCHAR2(64)	NOT NULL,
+	NAME	VARCHAR2(64)	NULL,
+	DEPTGID	VARCHAR2(32)	NOT NULL,
+	SEX	VARCHAR2(4)	NULL,
+	POSITIONLEVEL	VARCHAR2(8)	NULL,
+	POSITION	VARCHAR2(32)	NULL,
+	WORKADDRESS	VARCHAR2(128)	NULL,
+	SHIFT	VARCHAR2(32)	NULL,
+	PHONE	VARCHAR2(32)	NULL,
+	BP	VARCHAR2(32)	NULL,
+	MOBILEPHONE	VARCHAR2(32)	NULL,
+	EMAIL	VARCHAR2(64)	NULL,
+	PHOTO	VARCHAR2(1024)	NULL,
+	STAT	INT	NULL,
+	--		
+	IDCARD	VARCHAR2(32)	NULL,
+	DRIVECARD	VARCHAR2(64)	NULL,
+	PASSPORT	VARCHAR2(64)	NULL,
+	FILECODE	VARCHAR2(64)	NULL,
+	DOCADDRESS	VARCHAR2(128)	NULL,
+	DOCTIME	DATE	NULL,
+	--		
+	STATURE	INT	NULL,
+	MARRIEDDATE	DATE	NULL,
+	ENAME	VARCHAR2(64)	NULL,
+	OLDNAME	VARCHAR2(32)	NULL,
+	HOMETOWN	VARCHAR2(64)	NULL,
+	HOMEPLACE	VARCHAR2(64)	NULL,
+	BIRTHDAY	DATE	NULL,
+	HEALTH	VARCHAR2(8)	NULL,
+	POLITICAL	VARCHAR2(32)	NULL,
+	RTDAY	DATE	NULL,
+	RDDAY	DATE	NULL,
+	NATION	VARCHAR2(32)	NULL,
+	LIVEADDRESS	VARCHAR2(128)	NULL,
+	SHLIVEADDRESS	VARCHAR2(128)	NULL,
+	ZIPCODE	VARCHAR2(8)	NULL,
+	PERSONALTEL	VARCHAR2(32)	NULL,
+	STREET	VARCHAR2(128)	NULL,
+	DOMICILE	VARCHAR2(128)	NULL,
+	CURHK	VARCHAR2(256)	NULL,
+	CURHKZIPCODE	VARCHAR2(8)	NULL,
+	OLDHK	VARCHAR2(256)	NULL,
+	HKDATE	DATE	NULL,
+	HOBBY	VARCHAR2(2048)	NULL,
+	ISMARRIED	INT	NULL,
+	FAMILY	VARCHAR2(2048)	NULL,
+	PARTNERNAME	VARCHAR2(32)	NULL,
+	PARTNERIDCARD	VARCHAR2(32)	NULL,
+	WORKSPACE	VARCHAR2(256)	NULL,
+	CHILDREN_NUM	INT	NULL,
+--			
+	EDUCATION	INT	NULL,
+	SCHOOL	VARCHAR2(64)	NULL,
+	MAJOR	VARCHAR2(64)	NULL,
+	GRDATE	DATE	NULL,
+	LANGUAGE	VARCHAR2(64)	NULL,
+	HOWINLANGUAGE	INT	NULL,
+	COMPUTER	VARCHAR2(64)	NULL,
+	ZHICHENG	VARCHAR2(32)	NULL,
+--			
+	EVALUATE	VARCHAR2(4000)	NULL,
+	EXPECT	VARCHAR2(4000)	NULL,
+--			
+	OLDORG	VARCHAR2(256)	NULL,
+	OLDORGADDRESS	VARCHAR2(256)	NULL,
+	OLDORGTEL	VARCHAR2(64)	NULL,
+	OLDORGDATE	DATE	NULL,
+	WORKRELATION	VARCHAR2(64)	NULL,
+	WORKSTARTDATE	DATE	NULL,
+	JOINDATE	DATE	NULL,
+	ZHUANZHENGDATE	DATE	NULL,
+	LEAVEDATE	DATE	NULL,
+	LEAVEREASON	VARCHAR2(128)	NULL,
+	PROBATION	INT	NULL,
+--			
+	SALARYCARD	VARCHAR2(64)	NULL,
+	HEALTHCARD	VARCHAR2(128)	NULL,
+	OLDAGECARD	VARCHAR2(32)	NULL,
+	PUBLICCARD	VARCHAR2(32)	NULL,
+	ACCOUNTCARD	VARCHAR2(128)	NULL,
+	SALARY	NUMBER(20,4)	NULL,
+	CURRENCY	VARCHAR2(16)	NULL,
+	PAYTYPE	INT	NULL,
+	TAX	VARCHAR2(128)	NULL,
+	VACATION	VARCHAR2(32)	NULL,
+	FULI	VARCHAR2(128)	NULL,
+	FULI_STARTDATE	DATE	NULL,
+	COMPANY_NAME	VARCHAR2(64)	NULL,
+	COMPANY_SHEBAO	VARCHAR2(64)	NULL,
+	COMPANY_NONGBAO	VARCHAR2(64)	NULL,
+	COMPANY_XUHAO	VARCHAR2(64)	NULL,
+	FULI_ENDDATE	DATE	NULL,
+--			
+	JOINMETHOD	VARCHAR2(16)	NULL,
+	RCMNAME	VARCHAR2(16)	NULL,
+	RCMTEL	VARCHAR2(256)	NULL,
+	RCMRLT	VARCHAR2(32)	NULL,
+	URGENCY	VARCHAR2(256)	NULL,
+	MEMO	VARCHAR2(256)	NULL,
+--			
+	FamilyBirth	VARCHAR2(64)	NULL,
+	FstEDUCATION	INT	NULL,
+	CONSTRAINT PK_HR_EMP PRIMARY KEY(ENTGID,GID)		
+	);		
+create index idx_HR_emp_usrgid on HR_emp(UsrGid);			
+create index idx_HR_emp_deptgid on HR_emp(deptgid);			
+			
+DROP TABLE HR_WORKXP;			
+CREATE TABLE HR_WORKXP		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	LINE	INT	NOT NULL,
+	COMPANY	VARCHAR2(128)	NULL,
+	STARTDATE	DATE	NULL,
+	ENDDATE	DATE	NULL,
+	POSITION	VARCHAR2(64)	NULL,
+	PROVE_PERSON	VARCHAR2(64)	NULL,
+	PHONE	VARCHAR2(64)	NULL,
+	MEMO	VARCHAR2(256)	NULL,
+	CONSTRAINT PK_HR_WORKXP PRIMARY KEY (ENTGID,GID,LINE)		
+	);		
+			
+DROP TABLE HR_EDUCATIONXP;			
+CREATE TABLE HR_EDUCATIONXP		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	LINE	INT	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	SCHOOL	VARCHAR2(256)	NULL,
+	TYPE	VARCHAR2(256)	NULL,
+	STARTDATE	DATE	NULL,
+	ENDDATE	DATE	NULL,
+	MAJOR	VARCHAR2(256)	NULL,
+	CERTIFICATION	VARCHAR2(256)	NULL,
+	PROVE_PERSON	VARCHAR2(256)	NULL,
+	PHONE	VARCHAR2(256)	NULL,
+	MEMO	VARCHAR2(256)	NULL,
+	CONSTRAINT PK_HR_EDUCATIONXP PRIMARY KEY (ENTGID,GID,LINE)		
+	);		
+			
+DROP TABLE HR_FAMILY;			
+CREATE TABLE HR_FAMILY		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	LINE	INT	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	NAME	VARCHAR2(64)	NULL,
+	EDUCATION	VARCHAR2(64)	NULL,
+	BIRTHYEAR	VARCHAR2(16)	NULL,
+	BIRTHDAY	DATE	NULL,
+	RELATION	VARCHAR2(16)	NULL,
+	WORK_UNIT	VARCHAR2(64)	NULL,
+	POSITION	VARCHAR2(64)	NULL,
+	PHONE	VARCHAR2(64)	NULL,
+	IDCARD	VARCHAR2(64)	NULL,
+	MARRIEDDATE	DATE	NULL,
+	CONSTRAINT PK_HR_FAMILY PRIMARY KEY (ENTGID,GID,LINE)		
+	);		
+			
+DROP TABLE HR_TRAIN;			
+CREATE TABLE HR_TRAIN		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	LINE	INT	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	COURSE	VARCHAR2(256)	NULL,
+	TRAINORGAN	VARCHAR2(256)	NULL,
+	TRAINBTIME	DATE	NULL,
+	TRAINETIME	DATE	NULL,
+	TEACHERNAME	VARCHAR2(64)	NULL,
+	RESULT	VARCHAR2(16)	NULL,
+	COST	NUMBER(10,2)	NULL,
+	COSTSOURCE	VARCHAR2(256)	NULL,
+	MEMO	VARCHAR2(256)	NULL,
+	CONSTRAINT PK_HR_TRAIN PRIMARY KEY (ENTGID,GID,LINE)		
+	);		
+
+DROP TABLE HR_VACATION;			
+CREATE TABLE HR_VACATION		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	LINE	INT	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	TYPE	VARCHAR2(32)	NULL,
+	STARTDATE	DATE	NULL,
+	ENDDATE	DATE	NULL,
+	TOTALDATE	NUMBER(20,4)	NULL,
+	WORKTRAN	VARCHAR2(1024)	NULL,
+	MEMO	VARCHAR2(256)	NULL,
+	CONSTRAINT PK_HR_VACATION PRIMARY KEY (ENTGID,GID,LINE)		
+	);		
+
+DROP TABLE HR_REWARD;			
+CREATE TABLE HR_REWARD		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	LINE	INT	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	REWARDDATE	DATE	NULL,
+	TYPE	VARCHAR2(32)	NULL,
+	COST	NUMBER(10,2)	NULL,
+	MEMO	VARCHAR2(256)	NULL,
+	CONSTRAINT PK_HR_REWARD PRIMARY KEY (ENTGID,GID,LINE)		
+	);		
+
+DROP TABLE HR_CONTRACT;			
+CREATE TABLE HR_CONTRACT		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	LINE	INT	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	TYPE	VARCHAR2(64)	NULL,
+	COMPANY	VARCHAR2(64)	NULL,
+	STARTDATE	DATE	NULL,
+	ENDDATE	DATE	NULL,
+	PROBATION	INT	NULL,
+	ENDDATE2	DATE	NULL,
+	DOCADDRESS	VARCHAR2(64)	NULL,
+	MEMO	VARCHAR2(256)	NULL,
+	CONSTRAINT PK_HR_CONTRACT PRIMARY KEY (ENTGID,GID,LINE)		
+	);		
+			
+DROP TABLE HR_SIJIN;			
+CREATE TABLE HR_SIJIN		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	LINE	INT	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	BASE_MONEY	NUMBER(20,4)	NULL,
+	PERSON	NUMBER(20,4)	NULL,
+	COMPANY	NUMBER(20,4)	NULL,
+	STARTDATE	VARCHAR2(16)	NULL,
+	ENDDATE	VARCHAR2(16)	NULL,
+	MEMO	VARCHAR2(256)	NULL,
+	CONSTRAINT PK_HR_SIJIN PRIMARY KEY (ENTGID,GID,LINE)		
+	);		
+			
+DROP TABLE HR_SALARY;			
+CREATE TABLE HR_SALARY		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	LINE	INT	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	SALARY1	NUMBER(20,4)	NULL,
+	ADJUST	INT	NULL,
+	ADJUSTDATE	DATE	NULL,
+	SALARY2	NUMBER(20,4)	NULL,
+	MEMO	VARCHAR2(256)	NULL,
+	CONSTRAINT PK_HR_SALARY PRIMARY KEY (ENTGID,GID,LINE)		
+	);		
+
+DROP TABLE HR_PROBATION;			
+CREATE TABLE HR_PROBATION		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	LINE	INT	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	ATYPE	VARCHAR2(32)	NULL,
+	LENGTH	INT	NULL,
+	STARTDATE	DATE	NULL,
+	ENDDATE	DATE	NULL,
+	RESULT	VARCHAR2(32)	NULL,
+	CONSTRAINT PK_HR_PROBATION PRIMARY KEY (ENTGID,GID,LINE)		
+	);		
+
+DROP TABLE HR_TRANSFER;			
+CREATE TABLE HR_TRANSFER		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	LINE	INT	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	TransDate	date	DEFAULT SYSDATE NOT NULL,
+	TransferType	Varchar2(32)	NULL,
+	TransferStat	Varchar2(32)	NULL,
+--			
+	STAT1	INT	NULL,
+	STAT2	INT	NULL,
+	DEPTGID1	VARCHAR2(32)	NULL,
+	DEPTGID2	VARCHAR2(32)	NULL,
+	POSITIONLEVEL1	VARCHAR2(8)	NULL,
+	POSITIONLEVEL2	VARCHAR2(8)	NULL,
+	POSITION1	VARCHAR2(32)	NULL,
+	POSITION2	VARCHAR2(32)	NULL,
+--			
+	LeaveReason	VARCHAR2(1024)	NULL,
+--			
+	WorkTran	VARCHAR2(1024)	NULL,
+--			
+	REASON	VARCHAR2(1024)	NULL,
+	MEMO	VARCHAR2(1024)	NULL,
+	CONSTRAINT PK_HR_TRANSFER PRIMARY KEY (ENTGID,GID,LINE)		
+	);		
+
+DROP TABLE HR_RT;			
+CREATE TABLE HR_RT		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	UsrGidEx	VARCHAR2(32)	NOT NULL,
+	--		
+	DEPT	VARCHAR2(32)	NOT NULL,
+	Atype	Int	default 0 not null,
+	--		
+	RTID	INT	default 0 not null
+	);		
+create index idx_HR_RT on HR_RT(ENTGID,UsrGidEx);			
+create index idx_HR_RT1 on HR_RT(ENTGID,UsrGidEx, Dept);			
+
+DROP VIEW DEPT;			
+CREATE OR REPLACE VIEW DEPT AS			
+	select a.entgid, a.gid gid,a.code code2,a.name name,decode(a.depttype,'10','部门',20,'门店','30','地区','40','督区','50','公司',a.depttype)   		
+	 type ,b.layercode code1  		
+	from org_dept a,org b where a.entgid=b.entgid and a.gid=b.gid ;		
+
+DROP TABLE HR_EMPREPORTDEFINE;			
+CREATE TABLE HR_EMPREPORTDEFINE		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	REPORTID	VARCHAR2(32)	NOT NULL,
+	CREATERGID	VARCHAR2(32)	NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NULL,
+	REPORTNAME	VARCHAR2(64)	NOT NULL,
+	DESCRIPTION	VARCHAR2(512)	NULL,
+	NULL_FIELD	VARCHAR2(4000)	NULL,
+	ORDERBY	VARCHAR2(4000)	NULL,
+	SEARCH	VARCHAR2(4000)	NULL,
+	SEARCHNAME	VARCHAR2(4000)	NULL,
+	DISPLAY	VARCHAR2(4000)	NULL,
+	FIELDNAME	VARCHAR2(4000)	NULL,
+	FILTER	VARCHAR2(4000)	NULL,
+	QUERY_PANEL	VARCHAR2(1)	NULL,
+	CHANGE_PAGE	VARCHAR2(1)	NULL,
+	COUNT	VARCHAR2(1)	NULL,
+	RIGHT	VARCHAR2(1)	NULL,
+	DEPTCODE1	VARCHAR2(64)	NULL,
+	CONSTRAINT PK_HR_EMPREPORTDEFINE PRIMARY KEY(REPORTID)		
+	);		
+			
+DROP TABLE HR_EMP_Del;			
+CREATE TABLE HR_EMP_Del		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	USRGID	VARCHAR2(32)	NULL,
+	USRCODE	VARCHAR2(64)	NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	--		
+	CODE	VARCHAR2(64)	NOT NULL,
+	NAME	VARCHAR2(64)	NULL,
+	DEPTGID	VARCHAR2(32)	NOT NULL,
+	CONSTRAINT PK_HR_EMP_DEL PRIMARY KEY (ENTGID,GID)		
+	);		
+
+drop table FT;			
+create table FT		(	
+	EntGid	varchar2(32)	not null,
+	Gid	varchar2(32)	not null,
+	CreateDate	date	default sysdate not null,
+	LastUpdDate	date	default sysdate not null,
+	--		
+	Vpath	varchar2(1024)	not null,
+	Rpath	varchar2(1024)	not null,
+	FileName	varchar2(256)	NULL,
+	Atype	int	Default 0 not null,
+	FileSize	int	Default 0 not null,
+	Info	varchar2(500)	NULL,
+	Parent	varchar2(32)	NULL,
+	Alevel	int	Default 0 not null,
+	HasChild	int	Default 1 not null,
+	constraint pk_ft primary key (EntGid, Gid)		
+	);		
+create index idx_ft_vpath on FT(Vpath);			
+create index idx_ft_parent on FT (Parent);			
+create unique index idx_ft_objname on FT (EntGid, Vpath, FileNamE);			
+
+drop table FT_RT;			
+create table FT_RT		(	
+	EntGid	varchar2(32)	not null,
+	FTGid	varchar2(32)	not null,
+	UsrGidEx	varchar2(32)	not null,
+	SEC	int	not null,
+	constraint PK_FT_RT primary key (EntGid, FTGid, UsrGidEx)		
+	);		
+
+DROP TABLE KH_WAC;			
+CREATE TABLE KH_WAC		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	--		
+	UsrGID	VARCHAR2(32)	NOT NULL,
+	UsrCODE	VARCHAR2(64)	NULL,
+	UsrNAME	VARCHAR2(64)	NULL,
+	AYEAR	INT	NOT NULL,
+	AMONTH	INT	NOT NULL,
+	STAT	INT	DEFAULT 0 NOT NULL,
+	SubmitLate	INT	DEFAULT 10 NOT NULL,
+	--		
+	ATYPE	VARCHAR2(64)	NULL,
+	VER	VARCHAR2(64)	NULL,
+	--		
+	A1	DECIMAL(20,4)	NULL,
+	A2	DECIMAL(20,4)	NULL,
+	A3	DECIMAL(20,4)	NULL,
+	A4	DECIMAL(20,4)	NULL,
+	A5	DECIMAL(20,4)	NULL,
+	A6	DECIMAL(20,4)	NULL,
+	A7	DECIMAL(20,4)	NULL,
+	A8	DECIMAL(20,4)	NULL,
+	A9	DECIMAL(20,4)	NULL,
+	A10	DECIMAL(20,4)	NULL,
+	A11	DECIMAL(20,4)	NULL,
+	A12	DECIMAL(20,4)	NULL,
+	A13	DECIMAL(20,4)	NULL,
+	A14	DECIMAL(20,4)	NULL,
+	A15	DECIMAL(20,4)	NULL,
+	A16	DECIMAL(20,4)	NULL,
+	A17	DECIMAL(20,4)	NULL,
+	A18	DECIMAL(20,4)	NULL,
+	A19	DECIMAL(20,4)	NULL,
+	A20	DECIMAL(20,4)	NULL,
+	A21	DECIMAL(20,4)	NULL,
+	A22	DECIMAL(20,4)	NULL,
+	A23	DECIMAL(20,4)	NULL,
+	A24	DECIMAL(20,4)	NULL,
+	A25	DECIMAL(20,4)	NULL,
+	A26	DECIMAL(20,4)	NULL,
+	A27	DECIMAL(20,4)	NULL,
+	A28	DECIMAL(20,4)	NULL,
+	A29	DECIMAL(20,4)	NULL,
+	A30	DECIMAL(20,4)	NULL,
+	B1	VARCHAR2(4000)	NULL,
+	B2	VARCHAR2(4000)	NULL,
+	B3	VARCHAR2(4000)	NULL,
+	B4	VARCHAR2(4000)	NULL,
+	B5	VARCHAR2(4000)	NULL,
+	B6	VARCHAR2(4000)	NULL,
+	B7	VARCHAR2(4000)	NULL,
+	B8	VARCHAR2(4000)	NULL,
+	B9	VARCHAR2(4000)	NULL,
+	B10	VARCHAR2(4000)	NULL,
+	B11	VARCHAR2(4000)	NULL,
+	B12	VARCHAR2(4000)	NULL,
+	B13	VARCHAR2(4000)	NULL,
+	B14	VARCHAR2(4000)	NULL,
+	B15	VARCHAR2(4000)	NULL,
+	SCORE	DECIMAL(20,4)	DEFAULT 0 NOT NULL,
+	Constraint PK_KH_WAC PRIMARY KEY(EntGid, UsrGID, AYEAR, AMONTH)		
+	);		
+
+DROP TABLE KH_WBC;			
+CREATE TABLE KH_WBC		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	--		
+	UsrGID	VARCHAR2(32)	NOT NULL,
+	UsrCODE	VARCHAR2(64)	NULL,
+	UsrNAME	VARCHAR2(64)	NULL,
+	AYEAR	INT	NOT NULL,
+	AMONTH	INT	NOT NULL,
+	STAT	INT	DEFAULT 0 NOT NULL,
+	SubmitLate	INT	DEFAULT 10 NOT NULL,
+	--		
+	MGRGID	VARCHAR2(32)	NULL,
+	MGRCODE	VARCHAR2(64)	NULL,
+	MGRNAME	VARCHAR2(64)	NULL,
+	--		
+	ATYPE	VARCHAR2(64)	NULL,
+	VER	VARCHAR2(64)	NULL,
+	--		
+	A1	DECIMAL(20,4)	NULL,
+	A2	DECIMAL(20,4)	NULL,
+	A3	DECIMAL(20,4)	NULL,
+	A4	DECIMAL(20,4)	NULL,
+	A5	DECIMAL(20,4)	NULL,
+	A6	DECIMAL(20,4)	NULL,
+	A7	DECIMAL(20,4)	NULL,
+	A8	DECIMAL(20,4)	NULL,
+	A9	DECIMAL(20,4)	NULL,
+	A10	DECIMAL(20,4)	NULL,
+	A11	DECIMAL(20,4)	NULL,
+	A12	DECIMAL(20,4)	NULL,
+	A13	DECIMAL(20,4)	NULL,
+	A14	DECIMAL(20,4)	NULL,
+	A15	DECIMAL(20,4)	NULL,
+	A16	DECIMAL(20,4)	NULL,
+	A17	DECIMAL(20,4)	NULL,
+	A18	DECIMAL(20,4)	NULL,
+	A19	DECIMAL(20,4)	NULL,
+	A20	DECIMAL(20,4)	NULL,
+	A21	DECIMAL(20,4)	NULL,
+	A22	DECIMAL(20,4)	NULL,
+	A23	DECIMAL(20,4)	NULL,
+	A24	DECIMAL(20,4)	NULL,
+	A25	DECIMAL(20,4)	NULL,
+	A26	DECIMAL(20,4)	NULL,
+	A27	DECIMAL(20,4)	NULL,
+	A28	DECIMAL(20,4)	NULL,
+	A29	DECIMAL(20,4)	NULL,
+	A30	DECIMAL(20,4)	NULL,
+	B1	VARCHAR2(4000)	NULL,
+	B2	VARCHAR2(4000)	NULL,
+	B3	VARCHAR2(4000)	NULL,
+	B4	VARCHAR2(4000)	NULL,
+	B5	VARCHAR2(4000)	NULL,
+	B6	VARCHAR2(4000)	NULL,
+	B7	VARCHAR2(4000)	NULL,
+	B8	VARCHAR2(4000)	NULL,
+	B9	VARCHAR2(4000)	NULL,
+	B10	VARCHAR2(4000)	NULL,
+	B11	VARCHAR2(4000)	NULL,
+	B12	VARCHAR2(4000)	NULL,
+	B13	VARCHAR2(4000)	NULL,
+	B14	VARCHAR2(4000)	NULL,
+	B15	VARCHAR2(4000)	NULL,
+	SCORE	DECIMAL(20,4)	DEFAULT 0 NOT NULL,
+	Constraint PK_KH_WBC PRIMARY KEY(EntGid, UsrGID, AYEAR, AMONTH)		
+	);		
+
+DROP TABLE KH_SET;			
+CREATE TABLE KH_SET		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	UsrGID	VARCHAR2(32)	NOT NULL,
+	USEWAC	INT	NOT NULL,
+	USEWBC	INT	NOT NULL,
+	--		
+	WAC_ATYPE	VARCHAR2(64)	NULL,
+	WAC_VER	VARCHAR2(64)	NULL,
+	WBC_ATYPE	VARCHAR2(64)	NULL,
+	WBC_VER	VARCHAR2(64)	NULL,
+	PRIMARY KEY(EntGid, UsrGID)		
+	);		
+
+DROP TABLE KH_RT;			
+CREATE TABLE KH_RT		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	UsrGIDEx	VARCHAR2(32)	NOT NULL,
+	MgrGIDEx	VARCHAR2(32)	NOT NULL,
+	ATYPE	INT	NOT NULL,
+	PRIMARY KEY (EntGid, UsrGIDEx, MGRGIDEx, ATYPE)		
+	);		
+			
+drop view v_KH;	
+CREATE OR REPLACE VIEW v_KH AS	
+	SELECT distinct vo.entgid, vo.gid MgrGid, vo.name MgrName, vo.Sortid MgrSortid, vu.gid Ugid, vu.name UNAME, vu.Sortid Usortid, k.ATYPE from v_usr vo, KH_RT k, v_usr vu where vo.gid = k.MgrGIDEx and k.UsrGIDEx = vu.gid;
+
+DROP TABLE HOLIDAY;			
+CREATE TABLE HOLIDAY		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	ADATE	DATE	NOT NULL,
+	PROP	INT	DEFAULT 1 NOT NULL,
+	PRIMARY KEY (EntGid, ADATE)		
+	);		
+
+DROP TABLE holidaytype;			
+CREATE TABLE holidaytype		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	ADATE	DATE	NOT NULL,
+	TYPE	INT	DEFAULT 1 NOT NULL,
+	PRIMARY KEY (EntGid, ADATE)		
+	);		
+
+drop table TRC;			
+create table TRC (			
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	SORT	varchar2(64)	null,
+	--		
+	CONSTRAINT PK_TRC PRIMARY KEY(ENTGID,GID)		
+	);		
+
+DROP TABLE TRC_BOOK;			
+CREATE TABLE TRC_BOOK (			
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	--		
+	NAME	VARCHAR2(256)	NOT NULL,
+	AUTHER	VARCHAR2(256)	NOT NULL,
+	AUTHERINTRO	VARCHAR2(4000)	NULL,
+	PUBLISH	VARCHAR2(256)	NOT NULL,
+	PUBLISHDATE	DATE	NULL,
+	TRANSLATER	VARCHAR2(256)	NULL,
+	BookSort	VARCHAR2(32)	NULL,
+	BookNumber	VARCHAR2(64)	NULL,
+	BookInumber	VARCHAR2(64)	NULL,
+	BUYTIME	DATE 	NULL,
+	PRICE	DECIMAL(10,2)	NULL,
+	BOOKTYPE	INT	NULL,
+	ISSUE	VARCHAR2(64)	NULL,
+	CONTENT	VARCHAR2(4000)	NULL,
+	STATUS	INT	NULL,
+--			
+	RECOMMANDER	VARCHAR2(64)	NULL,
+	RECOMMANDREASON	VARCHAR2(4000)	NULL,
+	BUYER	VARCHAR2(64)	NULL,
+	LENDGID	VARCHAR2(32)	null,
+	LENDCODE	VARCHAR2(64)	NULL,
+	LENDNAME	VARCHAR2(64)	NULL,
+	LENDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+--			
+	ISLEND	INT	NULL,
+--			
+	NEEDBUY	INT	NULL,
+	NEEDMAN	VARCHAR2(256)	NULL,
+	NEEDTIME	DATE	NULL,
+	MEMO	VARCHAR2(4000)	NULL,
+	CONSTRAINT PK_TRC_Book PRIMARY KEY(ENTGID,GID)		
+	);		
+
+
+DROP TABLE TRC_RECORD;			
+CREATE TABLE TRC_RECORD (			
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	LINE	VARCHAR2(32)	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	--		
+	SORT	varchar2(64)	null,
+	NAME	VARCHAR2(256)	null,
+	LENDGID	VARCHAR2(32)	null,
+	LENDCODE	VARCHAR2(64)	NULL,
+	LENDNAME	VARCHAR2(64)	NULL,
+	LENDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	RETURNDATE1	DATE	DEFAULT SYSDATE + 30 NOT NULL,
+	RETURNDATE2	DATE	NULL,
+	CONTINUE	INT	DEFAULT 0 NOT NULL ,
+	DriverNAME	VARCHAR2(64)	NULL,
+	Memo	VARCHAR2(512)	null,
+	Note	VARCHAR2(256)	null,
+	CONSTRAINT PK_TRC_Record PRIMARY KEY (EntGid,GID,LINE)		
+	);		
+
+DROP TABLE TRC_Room;			
+CREATE TABLE TRC_Room (			
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	--		
+	NAME	VARCHAR2(256)	NOT NULL,
+	Num	VARCHAR2(256)	NOT NULL,
+	STATUS	INT	NULL,
+	Place	VARCHAR2(256)	NULL,
+	Area	DECIMAL(8,2)	NULL,
+	EquipMemo	VARCHAR2(256)	NULL,
+	MEMO	VARCHAR2(2000)	NULL,
+	CONSTRAINT PK_TRC_Room PRIMARY KEY(ENTGID,GID)		
+	);		
+			
+			
+DROP TABLE TRC_car;			
+CREATE TABLE TRC_car (			
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	--		
+	NAME	VARCHAR2(256)	NULL,
+	Num	VARCHAR2(256)	NULL,
+	Atype	VARCHAR2(64)	NULL,
+	STATUS	INT	NULL,
+	ABuyDate	VARCHAR2(32)	NULL,
+	DriverName	VARCHAR2(32)	NULL,
+	Price	VARCHAR2(32)	NULL,
+	Load	VARCHAR2(32)	NULL,
+	Seat	VARCHAR2(32)	NULL,
+	MEMO	VARCHAR2(2000)	NULL,
+	CONSTRAINT PK_TRC_car PRIMARY KEY(ENTGID,GID)		
+	);		
+			
+DROP TABLE TRC_Equipment;			
+CREATE TABLE TRC_Equipment (			
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	--		
+	NAME	VARCHAR2(256)	NULL,
+	Num	VARCHAR2(256)	NULL,
+	ABuyDate	VARCHAR2(32)	NULL,
+	STATUS	INT	NULL,
+	Info	VARCHAR2(64)	NULL,
+	Config	VARCHAR2(64)	NULL,
+	MEMO	VARCHAR2(2000)	NULL,
+	CONSTRAINT PK_TRC_Equipment PRIMARY KEY(ENTGID,GID)		
+	);		
+
+
+
+DROP TABLE WorkCalendar;			
+CREATE TABLE WorkCalendar		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	GID	VARCHAR2(32)	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	--		
+	FillUsrGID	VARCHAR2(32)	NOT NULL,
+  	FillUsrCODE	VARCHAR2(64)	NULL,
+	FillUsrNAME	VARCHAR2(64)	NULL,
+	ADATE	DATE	NOT NULL,
+	constraint PK_WorkCalendar PRIMARY KEY (EntGid, Gid)		
+	);		
+create index idx_WorkCalendar_1 on WorkCalendar(FillUsrGid);			
+create index idx_WorkCalendar_2 on WorkCalendar(adate);			
+
+DROP TABLE WorkCalendar_DTL;			
+CREATE TABLE WorkCalendar_Dtl		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	WID	VARCHAR2(32)	NOT NULL,
+	PID	VARCHAR2(32)	NOT NULL,
+	CREATEDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	LASTUPDDATE	DATE	DEFAULT SYSDATE NOT NULL,
+	--		
+	Theme	VARCHAR2(256)	NULL,
+	Resourse	VARCHAR2(256)	NULL,
+	AttachOnesName	VARCHAR2(4000)	NULL,
+	Content	VARCHAR2(4000)	NULL,
+	DtlStat	INT	DEFAULT 0 NOT NULL,
+	sFlag	VARCHAR2(16)	NULL,
+	--		
+	BTIME	DATE	NULL,
+	ETIME	DATE	NULL,
+	AheadRemind	INT	NULL,
+	constraint PK_WorkCalendar_Dtl PRIMARY KEY (EntGid, WID,PID)		
+	);		
+
+DROP TABLE WorkCalendar_Dtl_Ex;			
+CREATE TABLE WorkCalendar_Dtl_Ex (			
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	PID	VARCHAR2(32)	NOT NULL,
+	--		
+	AUsrGid	VARCHAR2(32)	NOT NULL,
+	AUsrCode	VARCHAR2(32)	NULL,
+	AUsrName	VARCHAR2(32)	NULL,
+	AcceptStat	VARCHAR2(32)	default 10 Not NULL,
+	constraint PK_WorkCalendar_Dtl_Ex PRIMARY KEY (EntGid,PID,AUsrGid)		
+	);		
+create index idx_WorkCalendar_dtl_ex_pid on WorkCalendar_dtl_ex (pid);			
+
+DROP TABLE hr_DeptPost;	
+CREATE TABLE hr_DeptPost		(	
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	deptgid	VARCHAR2(32)	NOT NULL,
+	empgidex	VARCHAR2(32)	NOT NULL,
+	empcodeex  VARCHAR2(32)  NOT NULL,
+  empnameex  VARCHAR2(32)  NOT NULL,
+  Atype  Int  not null
+  );    
+create index idx_hr_DeptPost on hr_DeptPost(ENTGID,empGidEx, Deptgid);      
+drop table Plot_PSW;			
+create table Plot_PSW (			
+	ENTGID	VARCHAR2(32)	NOT NULL,
+	CreateDate	date	default sysdate not null,
+	LastUpdDate	date	default sysdate not null,
+	--		
+	ISUSE	NUMBER(2)	DEFAULT 20 NOT NULL,
+	--		
+	WeakPSW	varchar2(4000)	null,
+	CONSTRAINT PK_PLOT_PSW PRIMARY KEY(ENTGID)		
+	);		
+
+
+prompt HDNet函数：策略_密码强度策略
+create or replace function HDNet_Plot_PSW (
+  piPassword in varchar2                --传入的明文密码
+  ) 
+  return int                            --返回0：通过判断；返回1：密码强度不足
+is
+  v_IsUse int;
+  v_WeakPsw varchar2(4000);
+
+  v_PasswordLength int;
+  v_PasswordFirst varchar2(1);
+  v_PasswordNew varchar2(64);
+begin
+  --检查 策略_整体密码强度策略表 是否开启
+  select IsUse, WeakPSW || ',' into v_IsUse, v_WeakPsw from Plot_PSW where EntGid = getEntGid();
+
+  --如果未开启
+  if v_IsUse <> 10 then
+    return 0;
+  end if;
+
+  --以下为开启时，作出的一系列判断
+  --默认策略：所有字符相等，则认定为弱密码
+  v_PasswordLength := length(piPassword);
+  v_PasswordFirst := substr(piPassword, 1, 1);
+  v_PasswordNew := '';
+  loop
+    exit when v_PasswordLength = 0;
+    v_PasswordLength := v_PasswordLength - 1;
+    v_PasswordNew := v_PasswordNew || v_PasswordFirst;
+  end loop;
+  if v_PasswordNew = piPassword then
+    return 1;
+  end if;
+
+  --默认策略：其他
+
+  --枚举密码判断
+  if instr(v_WeakPsw, piPassword || ',') > 0 then
+    return 1;
+  else
+    return 0;
+  end if;
+
+  exception
+    when others then 
+      return 0;
+end;
+/
+

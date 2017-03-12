@@ -1,0 +1,35 @@
+[Permission]
+SQL1=select 1 from Org where EntGid = __ENTGID__ and LayerCode = '^^OrgLayerCode^^' and Gid = '^^OrgGid^^'
+Remind1=您所新增组织的上级组织信息不存在！<script language="JavaScript">alert('您所新增组织的上级组织信息不存在！'); history.back();</script>
+
+[Master]
+SQL=
+Count=
+
+[Detail]
+SQL1=select ID, Name from org_root_sort where id in (select distinct ROOTSORTID from Org where EntGid = __ENTGID__ and GID = ##OrgGid##)
+SQL2=select Name OrgName, Code OrgCode,layercode from Org where EntGid = __ENTGID__ and Gid = ##OrgGid##
+
+LoopSQL1=select a.empgidex empgidex,b.code empcodeex,b.name empnameex,a.atype from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##OrgGid## and b.gid = a.empgidex
+LoopHDT1=Templates\sys\sysorg\LoopSql_EmpMod.hdt
+LoopVAR1=empList
+
+[Where]
+1=
+
+
+[DefaultWhere]
+DefaultWhere= 
+
+[OrderBy]
+1=
+
+[DefaultOrderBy]
+DefaultOrderBy=
+
+[GroupBy]
+
+[Title]
+Text1=系统-组织信息新增
+
+PageKind=2

@@ -1,0 +1,112 @@
+[Permission]
+LIMIT1=FlowGid
+LIMITDesc1=StringSize[,0]
+LIMITRemind1=您选择的流程数据有误，请返回重新选择！
+
+;判断是否有该条信息
+SQL1=select 1 from wf_prl_pay where EntGid=__ENTGID__ and FlowGid=##FlowGid##
+Remind1=您指定的付款流程没有找到！<script>alert('您指定的付款流程没有找到！');window.close()</script>
+
+;检查判断的Sql语句，查不到结果是报错，从SQL1～SQL5，共可以写5句
+SQL2=select 1 from dual where ##AppAssign## <> '同意' union select 1 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##DeptGid## and v.atype=20 and ##AppAssign## = '同意' and  ##ACGCODEQYCW## in ('1.01','1.02','1.03','2.01','2.02','2.03') union select 1 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##DeptGid## and v.atype=50 and ##AppAssign## = '同意' and ##ACGCODEQYCW## NOT in ('1.01','1.02','1.03','2.01','2.02','2.03')
+Remind2=对不起，下一步审批人未找到，请与管理员联系。<script>alert('对不起，下一步审批人未找到，请与管理员联系。');history.back()</script>
+[Master]
+
+[Detail]
+;得到模型名称
+SqlForCondition1=select Code ModelCode, Name ModelName from wf_Model where ModelGid = ##ModelGid##
+
+;得到业务单据信息
+SqlForCondition2= select '发起人：'||fillusrname||'；付款单号：'||decode(feenum,null,Num,feenum||'-'||partnum)||'；付款金额：'||payfee||'元' flownote,PAYFEE,nvl(AVALUE,0) avalue,nvl(bVALUE,0) bvalue,nvl(cVALUE,0) cvalue,nvl(dVALUE,0) dvalue,nvl(eVALUE,0) evalue,(nvl(bVALUE,0) +nvl(cVALUE,0) +nvl(dVALUE,0)+nvl(eVALUE,0)) allvalue,fillusrdeptgid,fillusrgid,doacode from WF_^^ModelCode^^ where FlowGid = ##FlowGid##
+
+;鹏瑞利管辖部门的扩展性：
+;5:部门助理;
+;10:部门经理(招商经理);
+;20:区域财务经理;
+;25:财务会计;
+;30:财务经理;
+;31:出纳付款;
+;35:执行总经理;
+;40:商场总经理;
+;50:区域总监;
+;71:资产经理 AssetManager
+SqlForCondition3=select v.PostGid TccGid from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##DeptGid## and v.atype=30
+
+SqlForCondition4=select v.PostGid TA3Gid,v.Email thisemail3 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##DeptGid## and v.atype=20
+
+SqlForCondition5=select v.PostGid TB1Gid,v.Email thisemail2 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##DeptGid## and v.atype=50
+
+SqlForCondition6=select areaflag from prl_doa where code=##doacode##
+
+SqlForCondition7= select a.acgother acgothertemp from wf_^^ModelCode^^ A where  EntGid=__ENTGID__ and FlowGid = ##FlowGid##
+
+;1 TA3, 0- TB1
+SqlForCondition8=select count(*) IsTB1 from dual where ##ACGCODEQYCW## in ('1.01','1.02','1.03','2.01','2.02','2.03')
+
+Sql2=select A.* , decode(isend,10,'是尾款','不是尾款') isendtext,decode(a.acgother,null,'none','') acgotherdis,substr(acgtwoname,0,16) acgtwonametext  from wf_^^ModelCode^^ A where  EntGid=__ENTGID__ and FlowGid = ##FlowGid##
+
+sql7=select name acgothertext from prl_doa where code='^^acgothertemp^^'
+
+
+[Where]
+
+[DefaultWhere]
+DefaultWhere= 
+
+[OrderBy]
+1=
+
+[DefaultOrderBy]
+DefaultOrderBy=
+
+[GroupBy]
+
+[AddtionalSQL]
+;全部审批完成后更新流程主表
+SQL1=insert into WF_^^ModelCode^^_App (EntGid,FlowGid, DtlGid,AppStat, AppGid,AppName, AppAssign, Note,AppDate,apptype) values(__ENTGID__,##FlowGid##, sys_guid(),decode(##AppAssign##,'同意','12','13'), __USRGID__, __USRNAME__ || '[' || __USRCODE__ || ']', ##AppAssign##, ##Note##,sysdate,40)
+
+
+Sql2=update WF_^^ModelCode^^ set Stat = '12', LastUpdDate = sysdate where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## and ##AppAssign## = '同意' and (##PAYFEE## - ##bvalue## <=0 or ##allvalue## - 0  = 0)
+
+Sql3=update WF_^^ModelCode^^ set Stat = '13', LastUpdDate = sysdate where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## and ##AppAssign## = '否决'
+
+[Title]
+Text1=^^ModelName^^
+Text2=
+Text3=
+Text4=
+Text5=
+log=^^ModelCode^^_TA2:flowgid:##flowgid##; ACGCODE:##ACGCODEQYCW## ; payfee:##PAYFEE## - bvalue:##bvalue##;allvalue:##allvalue##
+ChangePage=0
+
+;acgcode 不是 ('1.01','1.02','1.03','2.01','2.02','2.03')
+WF1=WFFlowRun( ^^ModelCode^^_TA2 | ^^ModelCode^^_TB1 | TB1Gid | and  ##ACGCODEQYCW## NOT in ('1.01','1.02','1.03','2.01','2.02','2.03') and ##PAYFEE## - ##bvalue## > 0 and ##allvalue## - 0  != 0 and ##AppAssign## = '同意'  | 商场总经理/CM:同意 - ^^flownote^^)
+
+;acgcode 是 ('1.01','1.02','1.03','2.01','2.02','2.03') 商场总经理后面加入区域财务经理审批节点
+WF2=WFFlowRun( ^^ModelCode^^_TA2 | ^^ModelCode^^_TA3 | TA3Gid | and  ##ACGCODEQYCW## in ('1.01','1.02','1.03','2.01','2.02','2.03') and ##PAYFEE## - ##bvalue## > 0 and ##allvalue## - 0  != 0 and ##AppAssign## = '同意' | 商场总经理/CM:同意 - ^^flownote^^)
+
+
+WF3=WFFlowRun( ^^ModelCode^^_TA2 | ^^ModelCode^^_TMOD | NULL | and ##AppAssign## = '否决' | 商场总经理/CM:否决 - ^^flownote^^)
+;否决后，还有个抄送给相关人员没有做
+
+
+WF4=WFFlowRun( ^^ModelCode^^_TA2 | ^^ModelCode^^_Tconfirm | NULL | and ##AppAssign## = '同意' and (##PAYFEE## - ##bvalue## <=0 or ##allvalue## - 0 = 0) | 审批通过，请确认 - ^^flownote^^)
+
+
+
+WF5=WFFlowRun( ^^ModelCode^^_TA2 | ^^ModelCode^^_TCC2 | TccGid | and (##PAYFEE## - ##bvalue## <=0 or ##allvalue## - 0  = 0) | 商场总经理/CM:^^AppAssign^^ - ^^flownote^^)
+
+
+
+;---------------------------------
+[Link]
+URL1=
+URL2=
+URL3=
+URL4=
+URL5=
+URL6=
+URL7=
+URL8=
+URL9=
+URL10=

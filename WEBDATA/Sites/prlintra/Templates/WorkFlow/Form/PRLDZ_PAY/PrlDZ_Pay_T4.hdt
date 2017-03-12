@@ -1,0 +1,98 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<SCRIPT LANGUAGE="JavaScript">
+  
+</script>
+
+<form name="frmDo" method="Post" action="">
+
+  <!-- 流程信息 -->
+  <INPUT type="text" style="display:none" name="ModelGid" value="<HDPrint Value=#ModelGid# Replace=#DBField2Input#>">
+  <INPUT type="text" style="display:none" name="FlowGid" value="<HDPrint Value=#FlowGid# Replace=#DBField2Input#>">
+  <INPUT type="text" style="display:none" name="CurUrl" value="<HDPrint Value=#Url# Replace=#DBField2Input#>">
+  <!--发起人UsrGid-->
+  <INPUT type="text" style="display:none" name="T1Gid" value="<HDPrint Value=#FillUsrGid# Replace=#DBField2Input#>">
+  <input type="text" style="display:none" name="FillUsrDeptGid" value="<HDPrint Value=#FillUsrDeptGid# Replace=#DBField2Input#>">
+  <!--意见标志：同意；否决-->
+  <input type="text" style="display:none" name="AppAssign" value="">
+
+  <h3 class="TitleBar">
+    <a href="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid#>" target="_blank"><HDPrint Value=#ModelName#></a>->
+    <HDPrint Value=#StepName#>
+  </h3>
+  <div id="JQ_ToolBar">
+  <TABLE width="100%" class="ButtonBar" cellpadding="0" cellspacing="0">
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A name="btn_1" HREF="javascript:CheckSubmit('确认');void(0)"><FONT class="IconRead">　&nbsp;</FONT> 确认 </A>
+      <!--<A HREF="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_Print&UsrGid=<HDPrint Value=#UsrGid#>&FlowGid=<HDPrint Value=#FlowGid#>&ModelGid=<HDPrint Value=#ModelGid#>" target="_blank"><FONT class="IconPrint">　&nbsp;</FONT> 打印</A>-->
+      |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+      <A HREF="javascript:window.close();void(0)"><FONT class="IconClose">　&nbsp;</FONT> 关闭</A>
+    </TD>
+  </TR>
+</TABLE>
+</div>
+<iframe onload="JQAutoHeight(this)" id="iframeDtl" frameborder ='0' width="100%"  scrolling="no" style="width:100%" src="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_Content&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid#>"></iframe>
+<br>
+<h3 class="SubTitleBar"><FONT style="padding-left:10px">确认信息</FONT></h3>
+<table cellpadding="0" cellspacing="1" class="ListBar" width="100%">
+  <col style="padding-left:4px;width:10%" valign="top">
+  <col style="padding-left:4px;width:40%" valign="top">
+  <col style="padding-left:4px;width:10%" valign="top">
+  <col style="padding-left:4px;width:40%" valign="top">
+  <tr>
+    <td class="DtlBarTitle">确认人:</td>
+    <td class="listtd">[<HDPrint Value=#CurUsrCode#>]<HDPrint Value=#CurUsrName#></td>
+    <td class="DtlBarTitle">确认时间:</td>
+    <td class="listtd"><HDPrint Value=#CurDate#> <HDPrint Value=#CurTime#></td>
+  </tr>
+  <tr>
+    <td class="DtlBarTitle">确认内容:<br><font color="gray">(500字内)</font></td>
+    <td class="listtd" colspan="3"><textarea class="JQText" rows="5" name="note" maxlength="500"></textarea></td>
+  </tr>
+</table>
+</form>
+
+<script language="javascript">
+  //复制一个工具栏
+  var $ToolBar = $("div#JQ_ToolBar");
+  $("form[name=frmDo]").append($ToolBar.html());
+
+  function CheckSubmit(OpText){
+    //定义 必填验证的 值
+    var sCss = 'JQMust';
+    //定义 提交提示文字
+    var sConfirm = '您确定已经阅读完毕这份申请单，并“' + OpText + '”吗？';
+    //提交时，验证必填项
+    if (!JQcheck(sCss)){
+      return false;
+    }
+    //审批意见赋值
+    $("input[name=AppAssign]").val(OpText);
+
+    //提交时，提示文字
+    if (!confirm(sConfirm)){
+      return false;
+    }
+    
+    //获取当前表单对象 
+    var JqObj = $("form[name=frmDo]");
+    //表单参数设定
+    JqObj.attr({
+      "action":'##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#Url#>Save&UsrGid=<HDPrint Value=#UsrGid#>',
+      "target":'_self'
+    });
+    //表单提交
+    JqObj.submit();
+
+    //操作按钮变为不可用
+    $("a[name=btn_1]").prop("disabled",true);
+
+    //本函数失效
+    CheckSubmit = function() {return false;}
+  }
+</script>

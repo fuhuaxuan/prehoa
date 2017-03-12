@@ -1,0 +1,44 @@
+<!-- JQuery函数引入 -->
+<script language="javascript" src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<form name="frmMail" method="POST" action="/bin/hdmailsend.dll/send" target="_self">
+<input type="hidden" name="Title" maxlength="100" style="width:100%" value="<HDPrint Value=#MCode# Replace=#DBField2Input#>提醒:<HDPrint Value=#fillusrdept# Replace=#DBField2Input#>">
+<input type="hidden" name="Email" maxlength="400" style="width:100%" value="<HDPrint Value=#AppEmail# Replace=#DBField2InputField#>;">
+<input type="hidden" name="fAddr" maxlength="400" style="width:100%" value="pcrtoa@hd123.net">
+<input type="hidden" name="fName" maxlength="400" style="width:100%" value="OA系统邮件提醒">
+<input type="hidden" name="RplEmail" maxlength="400" style="width:100%" value="pcrtoa@hd123.net">
+<input type="hidden" name="isHTML" value="y">
+<textarea name="Content" style="width:100%;height:400;display:none">
+<table border="0" style="width:100%">
+<tr><td>您好 :</td></tr>
+<tr><td>[流程名称] : <HDPrint Value=#ModelName#>；</td></tr>
+<tr><td>[单号] : <HDPrint Value=#Num#>；</td></tr>
+<tr><td>[发起人] : <HDPrint Value=#FillUsrName#>[<HDPrint Value=#fillusrdept#>]；</td></tr>
+<tr><td>[发起时间] : <HDPrint Value=#CreateDate#>]；</td></tr>
+<tr><td>[Category 类别] : <HDPrint Value=#atype#> <HDPrint Value=#Category#> <HDPrint Value=#CategoryText#>；</td></tr>
+<tr><td>[Unit No. 单位] : <HDPrint Value=#unitList# Replace=#None#></td></tr>
+<tr><td>[Area 面积] : <HDPrint Value=#Area#>；</td></tr>
+<tr><td>[Tenant/Licensee 租户] : <HDPrint Value=#lessee#>；</td></tr>
+<tr><td>[Trading Name 商店营业名称] : <HDPrint Value=#tradingname#>；</td></tr>
+<tr><td>[Lease Term 租赁期限] : <HDPrint Value=#leasetermy#> 年/ <HDPrint Value=#leasetermm#> 月/ <HDPrint Value=#leasetermd#> 日；</td></tr>
+<tr><td>[Handover Date 交付日期] : <HDPrint Value=#handoverdate#>；</td></tr>
+<tr><td>[Contract Date 合同起始日期] : <HDPrint Value=#contractdate1#>~<HDPrint Value=#contractdate2#></td></tr>
+<tr><td>[Free of rent Period 免租期] : <HDPrint Value=#freerentm#> 月/ <HDPrint Value=#freerentd#>天；</td></tr>
+<tr><td>[Fit-Out Period 装修期] : <HDPrint Value=#fitoutm#> 月/ <HDPrint Value=#fitoutd#> 天（<HDPrint Value=#fitoutdate1#> ~ <HDPrint Value=#fitoutdate2#>）；</td></tr>
+<tr><td><HDPrint Value=#Rate1#> ( <HDPrint Value=#Rate#>)</td></tr>
+<tr><td><HDPrint Value=#EmailDtl# Replace=#None#></td></tr>
+<tr><td>[New 新] : <HDPrint Value=#brcnew#> RMB/㎡/天；</td></tr>
+<tr><td>[Existing 目前] : <HDPrint Value=#brcexist#> RMB/㎡/天；</td></tr>
+<tr><td>[Budget 批准预算] : <HDPrint Value=#brcbudget#> RMB/㎡/天；</td></tr>
+<tr><td>[Special Terms and Conditions/Remarks :特别条件/评语] : <HDPrint Value=#Memo# Replace=#DBField2InputField#>；</td></tr>
+<tr><td>-----------内容展示完毕<font color="red" id="td_End">（待审批）</font>-----------</td></tr>
+</table>
+</textarea>
+</form>
+<script language="javascript">
+  var JsEmail = '';
+  <HDLoop>
+  JsEmail += '<HDPrint value=#Email# Replace=#DBField2Js#>;';
+  </HDLoop>
+  frmMail.Email.value = JsEmail;
+</script>

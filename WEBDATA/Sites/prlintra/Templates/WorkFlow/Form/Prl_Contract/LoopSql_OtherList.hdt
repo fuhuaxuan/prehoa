@@ -1,0 +1,8 @@
+<hdloop>
+  <tr class="listtd" valign="top">
+    <td><HDPrint Value=#Line#></td>
+    <td><HDPrint Value=#Content#></td>
+    <td><HDPrint Value=#OtherMemo#></td>
+    <td><HDPrint Value=#OtherAppMemo#></td>
+  </tr>
+</hdloop>

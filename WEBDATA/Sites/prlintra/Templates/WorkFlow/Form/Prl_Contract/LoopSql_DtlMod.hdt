@@ -1,0 +1,26 @@
+<script>
+  <hdloop>
+    CallContract('<HDPrint Value=#CGid# Replace=#DBField2Js#>',
+      '<HDPrint Value=#Line# Replace=#DBField2Js#>',
+      '<HDPrint Value=#CType# Replace=#DBField2Js#>',
+      '<HDPrint Value=#CNum# Replace=#DBField2Js#>',
+      '<HDPrint Value=#Content# Replace=#DBField2Js#>',
+      '<HDPrint Value=#OpApp2# Replace=#DBField2Js#>',
+      '<HDPrint Value=#OpMod2# Replace=#DBField2Js#>',
+      '<HDPrint Value=#OpApp3# Replace=#DBField2Js#>',
+      '<HDPrint Value=#OpMod3# Replace=#DBField2Js#>',
+      '<HDPrint Value=#OpApp4# Replace=#DBField2Js#>',
+      '<HDPrint Value=#OpMod4# Replace=#DBField2Js#>',
+      '<HDPrint Value=#OpApp5# Replace=#DBField2Js#>',
+      '<HDPrint Value=#OpMod5# Replace=#DBField2Js#>',
+      '<HDPrint Value=#OpApp6# Replace=#DBField2Js#>',
+      '<HDPrint Value=#OpMod6# Replace=#DBField2Js#>',
+      '',
+      '<HDPrint Value=#OpIndex# Replace=#DBField2Js#>',
+      '<HDPrint Value=#OpApp# Replace=#DBField2Js#>',
+      '<HDPrint Value=#OpMod# Replace=#DBField2Js#>',
+      '<HDPrint Value=#OpModOther# Replace=#DBField2Js#>',
+      '<HDPrint Value=#Memo# Replace=#DBField2Js#>',
+      '<HDPrint Value=#AppMemo# Replace=#DBField2Js#>');
+  </hdloop>
+</script>

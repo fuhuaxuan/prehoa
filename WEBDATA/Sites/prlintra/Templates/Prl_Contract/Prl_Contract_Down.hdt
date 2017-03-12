@@ -1,0 +1,16 @@
+[Rep_BeginLine]
+标题
+日期
+发布人
+发布日期
+备注
+[Rep_EndLine]
+<HDLoop>
+[Rep_BeginLine]
+<HDPrint Value=#Title# Replace=#None#>
+<HDPrint Value=#ApplyDate# Replace=#None#>
+[<HDPrint Value=#FillUsrCode# Replace=#None#>]<HDPrint Value=#FillUsrName# Replace=#None#>
+<HDPrint Value=#CreateDate# Replace=#None#>
+#NoForm#<HDPrint Value=#Memo# Replace=#DBField2Excel#>
+[Rep_EndLine]
+</HDLoop>

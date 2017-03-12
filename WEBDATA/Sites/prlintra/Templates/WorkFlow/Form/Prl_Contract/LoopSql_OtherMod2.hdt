@@ -1,0 +1,8 @@
+<hdloop>
+  <tr class="listtd" valign="top">
+    <td><HDPrint Value=#Line#><INPUT TYPE="hidden" NAME="OtherGid_1" maxlength="32" value="<HDPrint Value=#Gid# Replace=#DBField2Input#>" class="JQText"></td>
+    <td><HDPrint Value=#Content#></td>
+    <td><HDPrint Value=#OtherMemo#></td>
+    <td><textarea rows="5" id ="OtherAppMemo_1<HDPrint Value=#Gid# Replace=#DBField2Input#>" name="OtherAppMemo_1" class="JQText" maxlength="1000" ><HDPrint Value=#OtherAppMemo# Replace=#DBField2InputField#></textarea></td>
+  </tr>
+</hdloop>

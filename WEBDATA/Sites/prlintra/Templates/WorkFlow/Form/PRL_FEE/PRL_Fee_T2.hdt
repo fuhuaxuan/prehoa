@@ -1,0 +1,76 @@
+<script language="javascript" src="##GetWebRootPath(/Scripts/Common.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JSCalendar.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/DataInterface.js)##"></script>
+<SCRIPT LANGUAGE="JavaScript">
+function check(sAssign) {
+  if (!confirm('您确定已经阅读完毕这条单据，并作出 “' + sAssign + '” 的审核意见吗？' )) {
+    return false;
+  }
+  frmDo.AppAssign.value  = sAssign;
+  frmDo.submit();
+}
+
+</SCRIPT>
+
+
+<form name="frmDo" method="Post" action=" ##HDNet_AppName##/WFFlowPage?URL=<HDPrint Value=#Url#>save&UsrGid=<HDPrint Value=#UsrGid#>">
+  <h3 class="TitleBar" >审批</h3>
+  <TABLE width="100%" class="ButtonBar" cellpadding=0 cellspacing=0>
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A HREF="javascript:check('同意');void(0)"> √  同意</A>　
+      <A HREF="javascript:check('否决');void(0)"> X 否决</A>　
+      <A HREF="##HDNet_AppName##/Main?URL=&UsrGid=<HDPrint Value=#UsrGid#>"><FONT style="font-family:Wingdings;font-size:14px">&#199;</FONT> 返回首页</A>　
+    </TD>
+  </TR>
+  </TABLE>
+  <INPUT TYPE="hidden" name="DeptGid" value="<HDPrint Value=#FillUsrDeptGid# Replace=#DBField2Input#>">
+  <INPUT TYPE="hidden" name="DeptCode" value="<HDPrint Value=#DeptCode#>">
+  <INPUT TYPE="hidden" name="DeptName" value="<HDPrint Value=#DeptName#>">
+  <INPUT TYPE="hidden" name="fillusrdept" value="<HDPrint Value=#fillusrdept# Replace=#DBField2Input#>">
+  <INPUT TYPE="hidden" name="FillUsrDeptGid" value="<HDPrint Value=Value=#FillUsrDeptGid#  Replace=#DBField2Input#>">
+  <!-- 流程信息 -->
+  <INPUT TYPE="hidden" name="ModelGid" value="<HDPrint Value=#ModelGid#>">
+  <INPUT TYPE="hidden" name="FlowGid" value="<HDPrint Value=#FlowGid#>">
+  <INPUT TYPE="hidden" name="StoreName" value="<HDPrint Value=#StoreName#>">
+      <input type="hidden" name="AppAssign" value=""><!--意见标志：同意；否决-->
+
+<table width=100% cellspacing="1" cellpadding="0">
+  <col style="padding-left:4px;width:9%">
+  <col style="padding-left:4px;width:21%">
+  <col style="padding-left:4px;width:40%">
+  <col style="padding-left:4px;width:30%">
+  <TR>
+    <TD class="newtd2"><B>发起人</B></TD>
+    <td class="newtd3"><B>[<HDPrint Value=#FillUsrCode#>]<HDPrint Value=#FillUsrName#></B></td>
+    <td class=title rowspan="3"  align="center"><HDPrint Value=#ModelName#></td>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2"><B>单号</B></TD>
+    <TD class="newtd3"><B><HDPrint Value=#Num#></B></td>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2">发起时间</TD>
+    <td class="newtd3"><HDPrint Value=#CreateDate#></td>
+    <TD></TD>
+  </TR>
+</table>
+<br>
+<table cellspacing="0" cellpadding="0">
+  <col style="padding-left:20px;width:200">
+  <tr><td class="listtr2">审核意见 (500字以内)</td></tr>
+</table>
+<table width="100%" class="newtb" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="newtd3"><textarea style="width:100%;height:100" name="Note" onpropertychange="if(value.length>500) value=value.substr(0,500)"></textarea></td>
+  </tr>
+</table>
+<iframe class="newtb" style="height:500;width:100%" src="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_Content&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid#>"></iframe>
+<BR>
+
+</form>
+
+

@@ -1,0 +1,69 @@
+[Permission]
+LIMIT1=FlowGid
+LIMITDesc1=StringSize[,0]
+LIMITRemind1=您选择的流程数据有误，请返回重新选择！
+
+ ;判断是否有该条信息
+SQL1=select 1 from wf_PRL_ISF where EntGid=__ENTGID__ and FlowGid=##FlowGid##
+Remind1=您指定的[ISF]没有找到！<script>alert('您指定的[ISF]没有找到！');window.close()</script>
+
+[Master]
+[Detail]
+;得到模型名称
+SqlForCondition1=select Code ModelCode, Name ModelName from wf_Model where ModelGid = ##ModelGid##
+
+;得到业务单据信息
+SqlForCondition2=select a.*,decode(mallstat,0,'已发送至Mall，处理失败',10,'已发送至Mall,未接收',100,'已发送至Mall，成功') mallstattext,a.mallModDate mallModDateText from WF_^^ModelCode^^ a where FlowGid = ##FlowGid##
+
+LoopSQL2=select a.*,decode(a.apptype,'10','招商经理/LM','20','行政经理','30','财务经理/FM','40','商场总经理/CM','50','区域总监','60','常务理事/COO','70','资产总监/Hd Invest ','80','资产总监/Hd Invest ','90','首席财务官/CFO','100','首席执行官/CEO') apptypetext from WF_^^ModelCode^^_App a where FlowGid = ##FlowGid##  order by AppDate
+LoopHDT2=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_app.hdt
+LoopVAR2=applist
+
+Sql2=select a.stat AppStat from WF_^^ModelCode^^ a,wf_flow w where a.entgid = w.entgid and a.flowgid = w.flowgid and w.stat = 3 and a.flowgid = ##FlowGid##
+
+;财务经理
+Sql3=select b.usrgid CWUsrGid from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##fillusrdeptgid## and b.gid = a.empgidex and atype=30 and b.usrgid is not null
+---10:部门经理； 20:行政经理； 30:财务经理； 40:商场总经理； 50:区域总监； 60:常务理事； 70:资产总监； 80:资产总监； 90:CFO； 100:CEO；
+
+SQL4=select f.ModelGid ISCFModelGid,m.code ISCFModelCode,f.flowgid ISCFFlowGid,f.num ISCFNum from WF_PRL_ISF f,wf_Model m where f.EntGid = m.EntGid and f.EntGid = __ENTGID__ and f.ModelGid = m.ModelGid and f.oldflowGid = ##FlowGid## and f.FlowType =20 order by f.createdate desc
+
+
+[Where]
+1= 
+2= 
+3= 
+4= 
+5= 
+
+[DefaultWhere]
+DefaultWhere= 
+
+[OrderBy]
+1= 
+
+[DefaultOrderBy]
+DefaultOrderBy=
+
+[GroupBy]
+
+[LoopSQL]
+
+
+[Title]
+ChangePage=0
+Log=
+PageKind=0
+Text1=^^ModelName^^
+Text2=
+Text3=
+Text4=
+Text5=
+
+[Link]
+URL1=
+URL2=
+URL3=
+URL4=
+URL5=
+[AJAX]
+AddtionalSQL1=update WF_PRL_ISF set mallstat = 10,LastUpdDate = sysdate where  FlowGid = ##thisFlowGid##

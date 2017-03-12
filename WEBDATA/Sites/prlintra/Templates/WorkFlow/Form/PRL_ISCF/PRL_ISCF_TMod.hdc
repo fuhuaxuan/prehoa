@@ -1,0 +1,96 @@
+[Permission]
+DEFAULT1=sFlowGid
+DEFAULTValue1=
+
+LIMIT1=FlowGid
+LIMITDesc1=StringSize[,0]
+LIMITRemind1=您选择的流程数据有误，请返回重新选择！
+
+;判断是否有该条信息
+SQL1=select 1 from wf_PRL_ISF where EntGid=__ENTGID__ and FlowGid=##FlowGid##
+Remind1=您指定的[ISCF]没有找到！<script>alert('您指定的[ISCF]没有找到！');window.close()</script>
+
+;判断WF_FLOW表中该流程是否在流转中的状态
+SQL2=select 1 from wf_Flow where EntGid=__ENTGID__ and FlowGid=##FlowGid## and Stat in ('1','2')
+Remind2=您指定的[ISCF]申请单目前不是审批阶段，不允许您再操作了。<script>alert('您指定的[ISCF]申请单目前不是审批阶段，不允许您再操作了。');window.close()</script>
+
+;判断WF_Task表中当前用户是否有该流程的待执行(stat=1)的任务
+SQL3=select 1 from wf_Task where EntGid=__ENTGID__ and FlowGid=##FlowGid## and ExecGid = __USRGID__ and stat=1
+Remind3=您暂时无法操作本页面，请与管理员联系！<script>alert('您暂时无法操作本页面，请与管理员联系！');window.close()</script>
+
+[Master]
+
+SQL=select a.*,yeartype yeartypetext1,decode(yeartype,0,'none','inline') displayyear,decode(yeartype,0,'inline','none') displayyear1,decode(yeartype,0,'','none') displayfreerent,decode(yeartype,0,'freerent','year') sflag,decode(yeartype,0,'<a href="javascript:void(0)" onclick="DelTr(this)" >删除</a>','') deltext from wf_PRL_ISF_dtl a where EntGid=__ENTGID__ and FlowGid = ##FlowGid##
+count=select count(*) from wf_PRL_ISF_dtl where EntGid=__ENTGID__ and FlowGid = ##FlowGid##
+
+[Detail]
+;得到模型名称
+SqlForCondition1=select Code ModelCode, Name ModelName from wf_Model where ModelGid = ##ModelGid##
+
+SqlForCondition2=select a.stat allstat from wf_prl_isf a where EntGid= __ENTGID__ AND FlowGid = ##FlowGid##
+
+;取出当前用户的信息
+SqlForCondition3=select a.Gid DeptGid, a.Code2 DeptCode, a.Name DeptName,substr(a.code1,0,length(a.code1) - 4) parentlayercode from Dept a, HR_Emp b where a.EntGid=__ENTGID__ and b.EntGid=__ENTGID__ and b.UsrGid = __USRGID__ and a.Gid = b.DeptGid
+
+SQL1=select a.*,a.area*a.BRCbudget unitbudget,decode(modarea,'是',newarea,area) curarea,decode(modbud,'是',newBRCbudget,BRCbudget) curbud from wf_prl_isf a where EntGid= __ENTGID__ AND FlowGid = ##FlowGid##
+
+;取出当前用户的根用户代码 集团：0000 ，沈阳：0001，佛山：0002，成都：0003
+Sql3=select code2 deptsource from dept where EntGid=__ENTGID__ and code1 = ##parentlayercode##
+
+;取出附件
+LoopSQL1=select Attach_Url ,Attach_Title  from wf_PRL_ISF_Attach where EntGid = __ENTGID__ and  FlowGid = ##FlowGid## order by attach_title
+LoopHDT1=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_Attachoptions.hdt
+LoopVAR1=Attachoptions
+
+;取出审批人信息
+LoopSQL2=select a.*,decode(a.apptype,'10','招商经理/LM','20','行政经理','30','财务经理/FM','40','商场总经理/CM','50','区域总监','60','常务理事/COO','70','资产总监/Hd Invest ','80','资产总监/Hd Invest ','90','首席财务官/CFO','100','首席执行官/CEO') apptypetext from WF_PRL_ISF_App a where FlowGid = ##FlowGid## and ##allstat## = '13' order by AppDate
+LoopHDT2=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_app.hdt
+LoopVAR2=applist
+
+;取出业态
+LoopSQL3=select code,name  from Tbusrange order by code
+LoopHDT3=Templates\WorkFlow\Form\^^ModelCode^^\LoopSQL_busrange.hdt
+LoopVAR3=busrangelist
+
+;取出单位
+LoopSQL4=select * from wf_PRL_ISF_ground where EntGid=__ENTGID__ and FlowGid = ##FlowGid##
+LoopHDT4=Templates\WorkFlow\Form\^^ModelCode^^\LoopSQL_ground.hdt
+LoopVAR4=GroundList
+
+[Where]
+1= 
+2=
+3= 
+4= 
+5= 
+
+[DefaultWhere]
+DefaultWhere= 
+
+[OrderBy]
+1= 
+
+[DefaultOrderBy]
+DefaultOrderBy=yeartype
+
+[GroupBy]
+
+[LoopSQL]
+
+
+[Title]
+ChangePage=1
+Log=
+PageKind=0
+Text1=^^ModelName^^_修改
+Text2=
+Text3=
+Text4=
+Text5=
+
+[Link]
+URL1=
+URL2=
+URL3=
+URL4=
+URL5=
