@@ -1,0 +1,106 @@
+<!--Js引入-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JSCalendar.js)##"></script>
+<SCRIPT>
+  var JsOption = '';//<option value="">--请选择--</option>';
+</script>
+<HDPrint Value=#DeptList# Replace=#None#>
+<form name="frmDo" method="post" action="">
+<!--模块使用到一些隐藏的控件-->
+<input type="text" style="display:none" name="ModelGid" value="<HDPrint Value=#ModelGid# Replace=#DBField2Input#>">
+<h3 class="TitleBar"><HDPrint Value=#ModuleAtype#>-><HDPrint Value=#ModuleName#></h3>
+<div id="JQ_ToolBar">
+<TABLE width="100%" class="ButtonBar" cellpadding="0" cellspacing="0">
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A Href="javascript:CheckSubmit('保存');void(0);" name="btn_1"><FONT class="IconSave">　&nbsp;</FONT> 保存 </A>
+     |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+      <a HREF="##HDNet_AppName##/__ExplainModule?URL=HD_Standard_List&UsrGid=<HDPrint Value=#UsrGid#>"><FONT class="IconBack">　&nbsp;</FONT> 返回列表</A>
+    </TD>
+  </TR>
+</TABLE>
+</div>
+
+<table width="100%" class="ListBar" cellpadding="0"  cellspacing="1">
+  <colgroup>
+    <col style="padding-left:4px;width:10%">
+    <col style="padding-left:4px;width:40%">
+    <col style="padding-left:4px;width:10%">
+    <col style="padding-left:4px;width:40%">
+  </colgroup>
+  <tr>
+    <td class="DtlBarTitle">名称:</td>
+    <td class="listtd">[<HDPrint Value=#code#>]<HDPrint Value=#name#></td>
+    <td class="DtlBarTitle">分类:</td>
+    <td class="listtd"><HDPrint Value=#classify#></td>
+  </tr>
+  <tr>
+    <td class="DtlBarTitle">状态:</td>
+    <td class="listtd"><HDPrint Value=#statText#></td>
+    <td class="DtlBarTitle">版本:</td>
+    <td class="listtd"><HDPrint Value=#version#></td>
+  </tr>
+</table>
+<h3 class="SubTitleBar" >
+<TABLE cellspacing="1" cellpadding="0" width="100%">
+  <col style="padding-left:4px;">
+  <col style="width:20px;" align="center">
+  <TR>
+    <TD align="left" style="padding-left:10px;"><b>用户权限</b> <A HREF="javascript:DataInterface(frmDataInterface_App);">[新增]</A></TD>
+    <TD onclick="JQExpand('tb_Dtl')"  style="cursor:hand" class="IconUp">　&nbsp;</TD>
+  </TR>
+</TABLE>
+</h3>
+<table width="100%" class="ListBar JQMust" cellpadding="0"  cellspacing="1" id="tb_Dtl">
+  <colgroup>
+     <col style="width:5%" align="center">
+     <col style="width:20%">
+     <col style="width:10%">
+     <col style="width:40%">
+     <col style="width:10%">
+     <col style="width:10%">
+     <col style="width:5%" align="center">
+  </colgroup>
+  <!--使用新增行 JQTr_Add 时，需在表格中加上 thead,tbody-->
+  <thead>
+  <tr class="DtlBarTitle" align="center">
+    <td>行号</td>
+    <td>用户/用户组<font color="red">*</font></td>
+    <td>监视权限<font color="red">*</font></td>
+    <td>项目权限</td>
+    <td>作废权限<font color="red">*</font></td>
+    <td>模型设置权限<font color="red">*</font></td>
+    <td>操作</td>
+  </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+<script>//函数：ready
+//功能：document 加载完成后调用
+$(document).ready(function(){
+  <hdloop>
+  Add_Dtl('<HDPrint Value=#UsrGid# Replace=#DBField2Js#>',
+    '<HDPrint Value=#UsrCode# Replace=#DBField2Js#>',
+    '<HDPrint Value=#UsrName# Replace=#DBField2Js#>',
+    '<HDPrint Value=#RtID1# Replace=#DBField2Js#>',
+    '<HDPrint Value=#RtID2# Replace=#DBField2Js#>',
+    '<HDPrint Value=#RtID3# Replace=#DBField2Js#>',
+    '<HDPrint Value=#RtID4# Replace=#DBField2Js#>',
+    '<HDPrint Value=#DeptRT# Replace=#DBField2Js#>');
+  </hdloop>
+});
+</script>
+</form>
+
+<FieldSet style="Font-Family:Tahoma;Font-Size:9pt;">
+<Legend><font color="red">特别提醒</font></Legend>
+<li>相关说明文字；</li>
+</FieldSet>
+
+<!--本流程公用的Js函数等-->
+<HDPrint Value=#CommonList# Replace=#None#>

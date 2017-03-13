@@ -1,0 +1,138 @@
+<script>
+  /*
+  *函数名称：新增附件添加到附件列表中
+  *参数：JsFileName-附件名称
+  */
+  function AddAttach(JsFileName){
+    if (JsFileName == '')
+      return false;
+    //唯一性判断
+    if (!JQgetSingle("selFileList_1",JsFileName)){
+      alert('对不起，已经存在该附件！');
+      return false;
+    }
+    //添加到列表框中
+    var JsOption = '<option value="'+JsFileName+'">'+JsFileName+'</option>';
+    $("select[name=selFileList_1]").append(JsOption);
+  }
+
+  /*
+  *函数功能：明细新增一行
+  *参数说明：使用JQTr_Add() 函数新增行时，需写在 tbody 标记中
+  */
+  function Add_Dtl(UsrGid,UsrCode,UsrName,RtID1,RtID2,RtID3,RtID4,DeptRt){
+    var sTbId = 'tb_Dtl';
+    var sTrClass = 'listtd';
+    var tdArr = new Array();
+    var iRow = Math.floor(Math.random() * 100000 + 1);
+    var i = $("table#"+sTbId+">tbody>tr").length + 1;
+    var k = 0;
+    if (RtID1 == null){
+      RtID1 = '1';
+      RtID2 = '0';
+      RtID3 = '0';
+      RtID4 = '0';
+      DeptRt = '';
+    }
+
+    tdArr[k++] = '<td align="center"><INPUT TYPE="text" NAME="Line_1" value="'+ i +'" style="border:0px;text-align:center" readonly class="JQText"></td>';
+
+    tdArr[k++] = '<td>['+UsrCode+']'+UsrName+'<INPUT TYPE="hidden" NAME="UsrGid_1" ID="UsrGid_1'+ iRow +'" maxlength="32" class="JQMust" value = "'+UsrGid+'"></td>';
+
+    tdArr[k++] = '<td><SELECT NAME="RTId1_1" ID="RTId1_1'+ iRow +'" class="JQSelect"><option value="0" >无</option><option value="1">有</option></SELECT></td>';
+
+    tdArr[k++] = '<td>'
+    +'<input type="checkbox" name="chkAll_1'+ iRow +'" class="JQCheckBox" JQTag="chk_1'+ iRow +'">全选/全否|'
+    +'<input type="checkbox" name="chk_1'+ iRow +'" value="0000" class="JQCheckBox">[0000]集团'
+    +'<input type="checkbox" name="chk_1'+ iRow +'" value="0001" class="JQCheckBox">[0001]沈阳'
+    +'<input type="checkbox" name="chk_1'+ iRow +'" value="0002" class="JQCheckBox">[0002]佛山'
+    +'<input type="checkbox" name="chk_1'+ iRow +'" value="0003" class="JQCheckBox">[0003]成都青羊'
+    +'<input type="checkbox" name="chk_1'+ iRow +'" value="0004" class="JQCheckBox">[0004]成都东站'
+    +'<input type="hidden" name="DeptRt_1'+ iRow +'" value="'+DeptRt+'" JQChkName="chk_1'+ iRow +'" JQChkTab=";">'
+    +'</td>';
+
+    tdArr[k++] = '<td><SELECT NAME="RTId2_1" ID="RTId2_1'+ iRow +'" class="JQSelect"><option value="0" >无</option><option value="1">有</option></SELECT></td>';
+
+    tdArr[k++] = '<td><SELECT NAME="RTId4_1" ID="RTId4_1'+ iRow +'" class="JQSelect"><option value="0" >无</option><option value="1">有</option></SELECT></td>';
+
+    if (UsrCode.toLowerCase() == 'admin_grp') {
+      tdArr[k++] ='<td align="center"></td>';
+    }
+    else{
+      tdArr[k++] ='<td align="center"><a href="javascript:void(0)" onclick="javascript:JQTr_Del();">删除</a></td>';
+    }
+
+
+    //新增一行
+    JQTr_Add(sTbId,sTrClass,tdArr);
+    $("select[id=RTId1_1"+iRow+"] option[value="+RtID1+"]").prop("selected",true);
+    $("select[id=RTId2_1"+iRow+"] option[value="+RtID2+"]").prop("selected",true);
+    $("select[id=RTId4_1"+iRow+"] option[value="+RtID3+"]").prop("selected",true);
+    JQcheckBoxVal("chk_1"+iRow,";",DeptRt);
+  }
+
+  //提交函数
+  function CheckSubmit(){
+    //定义 提交提示文字
+    var sConfirm = '您确定已经填写完成，并保存吗？';
+    //提交时，验证必填项
+    if (!JQcheck("JQMust")){
+      return false;
+    }
+    //提交时，提示
+    if (!(confirm(sConfirm)))
+      return false;
+
+    //获取当前表单对象
+    var JqObj = $("form[name=frmDo]");
+    //表单参数设定
+    JqObj.attr({
+      "action":'##HDNet_AppName##/__ExplainModule?Url=<HDPrint Value=#Url#>Save&UsrGid=<HDPrint Value=#UsrGid#>',
+      "target":'_self'
+    });
+    //表单提交
+    JqObj.submit();
+
+    //操作按钮变为不可用
+    $("a[name=btn_1]").prop("disabled",true);
+
+    //本函数失效
+    CheckSubmit = function() {return false;}
+  }
+  //函数：ready
+  //功能：document 加载完成后调用
+  $(document).ready(function(){
+    //复制一个工具栏
+    var $ToolBar = $("div#JQ_ToolBar");
+    $("form[name=frmDo]").append($ToolBar.html());
+  });
+</script>
+
+<script language="javascript" src="##GetWebRootPath(/Scripts/DataInterface.js)##"></script>
+<!--选择审批人调用-->
+<FORM NAME="frmDataInterface_App" ACTION="">
+  <INPUT TYPE="hidden" name="DataInterface_Title" ID="t_App" value="审批人列表">
+
+  <INPUT TYPE="hidden" name="DataInterface_Sql" ID="s_App" value="select u.gid, u.code, u.name, u.atype from v_usr u where u.EntGid = '<HDPrint Value=#EntGid#>'">
+  <INPUT TYPE="hidden" name="DataInterface_CountSql" ID="c_App" value="select count(*) from v_usr u where u.EntGid = '<HDPrint Value=#EntGid#>'">
+  <INPUT TYPE="hidden" name="DataInterface_OrderSql" value="order by u.code">
+  <INPUT TYPE="hidden" name="DataInterface_UsrGid" value="<HDPrint Value=#UsrGid#>">
+  <INPUT TYPE="hidden" name="DataInterface_AppName" value="##HDNet_AppName##">
+
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="2^代码^left^100">
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="3^姓名^left^100">
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="4^类别^left^100">
+
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="u.code^用户代码^1">
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="u.name^用户姓名^1">
+  <input TYPE="hidden" name="DataInterface_Search_Sql" value="">
+  <input TYPE="hidden" name="DataInterface_Search_Cols" value="">
+
+  <INPUT TYPE="hidden" name="DataInterface_FieldTo" value="">
+  <INPUT TYPE="hidden" name="DataInterface_FieldBy" value="1^2^3">
+  <INPUT TYPE="hidden" name="DataInterface_CallBckFunc" value="Add_Dtl">
+  <INPUT TYPE="hidden" name="DataInterface_Close" value="false">
+</FORM>
+
+
+<HDLoop></HDLoop>

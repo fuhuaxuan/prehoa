@@ -1,27 +1,36 @@
 [Permission]
 SQL=
 Remind=
+
+;赋予默认值，共可赋予10个默认值，都是字符串形式
+;DefaultX为变量名
+;DefaultValueX为设置的默认值
+DEFAULT1=txtCreateDate1
+DEFAULTValue1=[date],-60
+
  
 [Master]
 ;拥有流程模型监视权限的人，可以看到所有的工作流程实例
-SQL=select a.*,to_char(a.createdate,'yyyy.mm.dd hh24:mi:ss') FlowCreateDate,to_char(a.FinishDate,'yyyy.mm.dd hh24:mi:ss') FlowFinishDate, b.Code ModelCode, b.Name ModelName ,decode(a.stat,'0', '未执行','1', '待执行','2', '执行中','3', '<FONT COLOR="blue">已完成</FONT>','4', '<font color="gray">已停止</font>','5', '<FONT COLOR="red">已作废</FONT>','6', '<FONT COLOR="red">已超时</FONT>') Flowstat,      decode(a.stat,0,'a',1,'a',2,'a','div style="display:inline"') stattext,decode(wf.mallstat, 0, '<font color="red">已发送至Mall，失败</font>', 10, '<font color="red">已发送至Mall，未接收</font>', 100, '<font color="blue">已发送至Mall，成功</font>') mallstat  from WF_Flow a, WF_Model b,(select f.flowgid, f.EntGid, f.mallstat from WF_PRL_ISF f union select f.flowgid, f.EntGid, f.mallstat from WF_PRL_ISTF f union select f.flowgid, f.EntGid, f.mallstat from WF_Prl_AdvertBS_ISF f union select f.flowgid, f.EntGid, f.mallstat from WF_Prl_AdvertBS_ISCF f ) wf where a.entgid=__ENTGID__ and b.entgid=__ENTGID__ and a.ModelGid = b.ModelGid and a.ModelGid in (select ModelGid from WF_RT c, v_Org_Usr d where c.entgid=__ENTGID__ and d.entgid=__ENTGID__ and c.UsrGidEx = d.OrgGid and d.UsrGid = __USRGID__ and substr(c.RTID, 1, 1) = '1' ) and a.EntGid = wf.EntGid(+) and a.FlowGid = wf.FlowGid(+)
+SQL=select a.*,to_char(a.createdate,'yyyy.mm.dd hh24:mi:ss') FlowCreateDate,to_char(a.FinishDate,'yyyy.mm.dd hh24:mi:ss') FlowFinishDate, b.Code ModelCode, b.Name ModelName ,decode(a.stat,'0', '未执行','1', '待执行','2', '执行中','3', '<FONT COLOR="blue">已完成</FONT>','4', '<font color="gray">已停止</font>','5', '<FONT COLOR="red">已作废</FONT>','6', '<FONT COLOR="red">已超时</FONT>') Flowstat,      decode(a.stat,0,'a',1,'a',2,'a','div style="display:inline"') stattext  from WF_Flow a, WF_Model b where a.entgid=__ENTGID__ and b.entgid=__ENTGID__ and a.ModelGid = b.ModelGid and exists (select 1 from wf_rt c, v_org_usr d where c.entgid = __ENTGID__ and c.modelgid = b.modelgid and d.entgid = __ENTGID__ and c.usrgidex = d.orggid and d.usrgid = __USRGID__ and substr(c.rtid, 1, 1) = '1' and exists (select 1 from v_Prl_FlowDeptRt v where v.entgid = a.entgid and v.flowgid = a.flowgid and c.deptrt like '%'||v.DeptCode||'%') ) 
 
-Count=select count(1) from WF_Flow a, WF_Model b,(select f.flowgid, f.EntGid, f.mallstat from WF_PRL_ISF f union select f.flowgid, f.EntGid, f.mallstat from WF_PRL_ISTF f union select f.flowgid, f.EntGid, f.mallstat from WF_Prl_AdvertBS_ISF f union select f.flowgid, f.EntGid, f.mallstat from WF_Prl_AdvertBS_ISCF f ) wf where a.entgid=__ENTGID__ and b.entgid=__ENTGID__ and a.ModelGid = b.ModelGid and a.ModelGid in (select ModelGid from WF_RT c, v_Org_Usr d where c.entgid=__ENTGID__ and d.entgid=__ENTGID__ and c.UsrGidEx = d.OrgGid and d.UsrGid = __USRGID__ and substr(c.RTID, 1, 1) = '1' ) and a.EntGid = wf.EntGid(+) and a.FlowGid = wf.FlowGid(+)
+Count=select count(1) from WF_Flow a, WF_Model b where a.entgid=__ENTGID__ and b.entgid=__ENTGID__ and a.ModelGid = b.ModelGid and exists (select 1 from wf_rt c, v_org_usr d where c.entgid = __ENTGID__ and c.modelgid = b.modelgid and d.entgid = __ENTGID__ and c.usrgidex = d.orggid and d.usrgid = __USRGID__ and substr(c.rtid, 1, 1) = '1' and exists (select 1 from v_Prl_FlowDeptRt v where v.entgid = a.entgid and v.flowgid = a.flowgid and c.deptrt like '%'||v.DeptCode||'%') ) 
+
 
 [Detail]
 SQL=
 
-LoopSQL1=select a.*,  decode(stat,0,'(未)',2,'(停)',5,'(废)') stattext from WF_Model a where entgid=__ENTGID__ order by Name, Code
+;工作流程名称
+LoopSQL1=select a.modelgid, classify || '-' || name name, decode(stat, 0, '(未)', 2, '(停)', 5, '(废)') stattext from wf_model a where entgid = __ENTGID__ order by classify, name
 LoopHDT1=Templates\WorkFlow\WF_Model_Option.hdt
 LoopVAR1=WF_Model_Option
 
 ;工作流程分类名称列表
-LoopSQL2=select classify Name,classify ModelGid from  (select distinct classify from WF_Model where entgid=__ENTGID__ ) x order by length(x.classify) 
+LoopSQL2=select distinct classify name, classify modelgid from WF_Model where entgid=__ENTGID__ order by length(name) 
 LoopHDT2=Templates\WorkFlow\WF_Model_Option.hdt
 LoopVAR2=WF_Model_Type
 
 [Where]
-100= and b.ModelGid = ##selModelGid##
+100= and b.ModelGid in (##selModelGid##)
 200= and (a.CreaterCode like '%' || ##txtCreaterCode## || '%' or  a.CreaterName like '%' || ##txtCreaterCode## || '%')
 300= and b.CLASSIFY = ##selModelType##
 400= and a.Stat = ##selStat##
@@ -29,7 +38,7 @@ LoopVAR2=WF_Model_Type
 510= and a.CreateDate <= to_date(##txtCreateDate2##, 'yyyy.mm.dd hh24:mi')
 600= and a.FinishDate >= to_date(##txtFinishDate1##, 'yyyy.mm.dd hh24:mi')
 610= and a.FinishDate <= to_date(##txtFinishDate2##, 'yyyy.mm.dd hh24:mi')
-620= and lower(a.FlowNote || decode(wf.mallstat, 0, '已发送至Mall，失败', 10, '已发送至Mall，未接收', 100, '已发送至Mall，成功')) like '%' || lower(##txtFlowNote##) || '%'
+620= and lower(a.FlowNote) like '%' || lower(##txtFlowNote##) || '%'
 630= and b.Name like '%' || ##selModelName## || '%'
 700= and a.flowgid in (select FlowGid from v_WF_task where EntGid = __ENTGID__ and ExecCode like lower('%' || ##txtExecInfo## || '%') or ExecName like lower('%' || ##txtExecInfo## || '%'))
 
@@ -39,7 +48,7 @@ LoopVAR2=WF_Model_Type
 DefaultWhere= 
 
 [OrderBy]
-1=
+1=##selOrderBy##
 
 
 [DefaultOrderBy]

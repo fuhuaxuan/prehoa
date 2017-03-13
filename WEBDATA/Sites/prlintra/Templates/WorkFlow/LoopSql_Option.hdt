@@ -1,0 +1,5 @@
+<script language="javascript">
+<HDLoop>
+  JsOption+='<input type="checkbox" name="DeptRt_1" value="<HDPrint Value=#ItemGid# Replace=#DBField2Input#>" class="JQCheckBox"><HDPrint Value=#ItemName#>';
+</HDLoop>
+</script>
