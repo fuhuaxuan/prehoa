@@ -24,12 +24,12 @@
   //单位选择后，计算
   function CallUnit(fgid,fno,farea,floorno,fmr,fjArea){
     //判断是否存在附件
-    if (!JQgetSingle("selUnit_1",fgid)){
+    if (!JQgetSingle("selUnit_1",fno)){
       alert('对不起，已经存在该单位！');
       return false;
     }
     //添加单位列表中
-    var JsOption = '<option value="'+fgid+'" JsArea="'+farea+'" JsFmr="'+fmr+'" JsjArea="'+fjArea+'">'+fno+'</option>';
+    var JsOption = '<option value="'+fno+'" JsArea="'+farea+'" JsFmr="'+fmr+'" JsjArea="'+fjArea+'">'+fno+'</option>';
     $("select[name=selUnit_1]").append(JsOption);
     $("input[name=Dept]").val(floorno);
     //重新计算所有值

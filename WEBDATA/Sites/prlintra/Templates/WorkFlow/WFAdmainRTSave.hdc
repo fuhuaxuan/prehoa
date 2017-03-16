@@ -15,7 +15,7 @@ SQL1=
 ;将数据插入主表中
 SQL1=delete WF_RT where EntGid = __ENTGID__ and modelgid = ##modelgid##
 
-LoopSQL1=insert into WF_RT(EntGid, modelgid, UsrGidEx, RTID, DeptRt) select __ENTGID__, ##modelgid##, ##%UsrGid%##,##%rtid1%##|| ##%rtid2%## || '0' || ##%rtid4%##, ##%DeptRt%## from dual
+LoopSQL1=insert into WF_RT(EntGid, modelgid, UsrGidEx, RTID, DeptRt) select __ENTGID__, ##modelgid##, ##%UsrGid%##,##%rtid1%##|| ##%rtid2%## || decode(lower(##%UsrCode%##),'admin_grp','1','0') || ##%rtid4%##, ##%DeptRt%## from dual
 
 LoopSQL2=delete WF_RT where EntGid = __ENTGID__ and modelgid = ##modelgid## and RtID = '0000' and UsrGidEx = ##%UsrGid%##
 

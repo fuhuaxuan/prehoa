@@ -37,7 +37,7 @@
 
     tdArr[k++] = '<td align="center"><INPUT TYPE="text" NAME="Line_1" value="'+ i +'" style="border:0px;text-align:center" readonly class="JQText"></td>';
 
-    tdArr[k++] = '<td>['+UsrCode+']'+UsrName+'<INPUT TYPE="hidden" NAME="UsrGid_1" ID="UsrGid_1'+ iRow +'" maxlength="32" class="JQMust" value = "'+UsrGid+'"></td>';
+    tdArr[k++] = '<td>['+UsrCode+']'+UsrName+'<INPUT TYPE="hidden" NAME="UsrGid_1" ID="UsrGid_1'+ iRow +'" maxlength="32" class="JQMust" value = "'+UsrGid+'"><INPUT TYPE="hidden" NAME="UsrCode_1" ID="UsrCode_1'+ iRow +'" maxlength="32" class="JQMust" value = "'+UsrCode+'"></td>';
 
     tdArr[k++] = '<td><SELECT NAME="RTId1_1" ID="RTId1_1'+ iRow +'" class="JQSelect"><option value="0" >нч</option><option value="1">сп</option></SELECT></td>';
 
@@ -67,7 +67,7 @@
     JQTr_Add(sTbId,sTrClass,tdArr);
     $("select[id=RTId1_1"+iRow+"] option[value="+RtID1+"]").prop("selected",true);
     $("select[id=RTId2_1"+iRow+"] option[value="+RtID2+"]").prop("selected",true);
-    $("select[id=RTId4_1"+iRow+"] option[value="+RtID3+"]").prop("selected",true);
+    $("select[id=RTId4_1"+iRow+"] option[value="+RtID4+"]").prop("selected",true);
     JQcheckBoxVal("chk_1"+iRow,";",DeptRt);
   }
 

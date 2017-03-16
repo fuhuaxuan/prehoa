@@ -79,7 +79,7 @@ SQL8=delete from wf_PRL_OISF_ground where EntGid = __ENTGID__ and FlowGid = ##Fl
 SQL9=insert into wf_PRL_OISF_App (EntGid,FlowGid,DtlGid,AppGid,AppCode,AppName,AppType,AppAssign,AppMemo,AppDate) select __ENTGID__,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,0,##Stat##,##AppMemo##,sysdate from dual where ##Stat## <> '保存'
 
 ;插入单位信息
-LoopSql1=insert into wf_PRL_OISF_ground (EntGid,ModelGid,FlowGid,Gid,fgid,fno,farea,Jarea,fmr) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),g.fgid,g.fno,g.farea,g.Jarea,g.fmr from prl_GROUNDH g where g.fgid = ##%selUnit%## and ##Stat## <> '终止'
+LoopSql1=insert into wf_PRL_OISF_ground (EntGid,ModelGid,FlowGid,Gid,fgid,fno,farea,Jarea,fmr) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),g.fgid,g.fno,g.farea,g.Jarea,g.fmr from prl_GROUNDH g where lower(g.fno) = lower(##%selUnit%##) and ##Stat## <> '终止'
 
 ;插入本流程明细信息
 LoopSql2=insert into wf_PRL_OISF_Dtl (EntGid,ModelGid,FlowGid,Gid,TbID,YearType,FreeRentDate1,FreeRentDate2,TBRD,TBRM,FTBRD,FTBRM,PMFD,PMFM,FPMFD,FPMFM) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),##%TbID%##,##%YearType%##,to_date(##%FreeRentDate1%##,'YYYY.MM.DD'),to_date(##%FreeRentDate2%##,'YYYY.MM.DD'),##%TBRD%##,##%TBRM%##,##%FTBRD%##,##%FTBRM%##,##%PMFD%##,##%PMFM%##,##%FPMFD%##,##%FPMFM%## from dual where ##Stat## <> '终止'
