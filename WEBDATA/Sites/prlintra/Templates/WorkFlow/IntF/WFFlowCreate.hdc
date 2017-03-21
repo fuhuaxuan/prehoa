@@ -50,7 +50,7 @@ SQL3=insert into WF_Task(EntGid, ModelGid, FlowGid, TaskDefGid, TaskGid, Code, N
 SQL4=update WF_Task set OwnerValue = (select nvl(Max(b.OwnerValue), 1) from WF_Task_Define a, WF_Task_Define_Exec b, V_Org_Usr c where a.EntGid=##EntGid## and b.EntGid=##EntGid## and c.EntGid=##EntGid## and a.ModelGid=##ModelGid## and b.ModelGid=##ModelGid## and a.TaskDefGid=b.TaskDefGid and a.IsStart=1 and b.ExecGidEx=c.OrgGid and c.UsrGid=##CreateGid##) where EntGid=##EntGid## and ModelGid=##ModelGid## and FlowGid=##NewFlowGid##
 
 ;WF_Model.Ap2 + 1
-SQL4=update WF_Model set Ap2 = Ap2 + 1 where EntGid=##EntGid## and ModelGid=##ModelGid##
+SQL5=update WF_Model set Ap2 = Ap2 + 1 where EntGid=##EntGid## and ModelGid=##ModelGid##
 
 [Title]
 Text1=

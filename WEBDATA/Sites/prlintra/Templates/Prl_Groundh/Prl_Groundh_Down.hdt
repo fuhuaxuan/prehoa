@@ -14,9 +14,9 @@
 <HDLoop>
 [Rep_BeginLine]
 <HDPrint Value=#deptsource# Replace=#None#>
-<HDPrint Value=#DeptName# Replace=#None#>
-<HDPrint Value=#fno# Replace=#None#>
-<HDPrint Value=#floorno# Replace=#None#>
+#NoForm#<HDPrint Value=#DeptName# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#fno# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#floorno# Replace=#None#>#DBField2Excel#
 #NoForm#<HDPrint Value=#farea# Replace=#DBField2Excel#>
 #NoForm#<HDPrint Value=#Jarea# Replace=#DBField2Excel#>
 #NoForm#<HDPrint Value=#fmr# Replace=#DBField2Excel#>

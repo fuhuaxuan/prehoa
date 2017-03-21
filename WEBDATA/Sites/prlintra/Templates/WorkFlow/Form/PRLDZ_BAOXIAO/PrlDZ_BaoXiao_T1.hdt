@@ -323,8 +323,10 @@
     if (!JQcheck(sCss)){
       return false;
     }
-    var len = $("input[name=AcgCode_1][value='7.05']").length;
-    $("input[name=IsT15]").val(len);
+    var AcgCode = $("input[name=AcgCode_1]").val();
+    if(AcgCode == '7.05' || AcgCode == '8.02' || AcgCode == '8.04'){
+      $("input[name=IsT15]").val('1');
+    }
     //提交时，提示
     if (OpText != '保存'){
       if (!(confirm(sConfirm)))
