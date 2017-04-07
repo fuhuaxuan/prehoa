@@ -19,6 +19,7 @@
 <input type="text" style="display:none" name="FillDeptGid" value="<HDPrint Value=#FillDeptGid# Replace=#DBField2Input#>">
 <input type="text" style="display:none" name="FillDeptName" value="<HDPrint Value=#FillDeptName# Replace=#DBField2Input#>">
 <input type="text" style="display:none" name="FillUsrName" value="<HDPrint Value=#FillUsrName# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="ParentDeptCode" value="<HDPrint Value=#ParentDeptCode# Replace=#DBField2Input#>">
 <input type="text" style="display:none" name="UnitList" value="">
 <input type="text" style="display:none" name="Mod" value="<HDPrint Value=#Mod# Replace=#DBField2Input#>">
 <!--审批人UsrGid-->
@@ -443,7 +444,7 @@
       alert('对不起，免租期不能大于租赁期，请重新填写！');
       return false;
     }
-    if ('<HDPrint Value=#oldFlowGid# Replace=#DBField2Js#>' == '' && '<HDPrint Value=#IsNo# Replace=#DBField2Js#>' = 0){
+    if ('<HDPrint Value=#oldFlowGid# Replace=#DBField2Js#>' == '' && '<HDPrint Value=#IsNo# Replace=#DBField2Js#>' == 0){
       var JsDate1 = '<HDPrint Value=#CurDate# Replace=#DBField2Js#>';
       var JsDate2 = $("input[name=HandoverDate]").val();
       if (JsDate1 != '' && JsDate2 != '' ){

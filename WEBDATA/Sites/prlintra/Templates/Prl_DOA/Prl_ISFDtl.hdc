@@ -41,6 +41,7 @@ DefaultWhere=
 6=and f.Atype = ##sel_Atype##
 7=and lower(f.Lessee) like '%' || lower(##txt_Lessee##) || '%'
 8=and lower(f.Tradingname) like '%' || lower(##txt_Tradingname##) || '%'
+9=and substr(f.fillusrdeptcode,0,4) = ##sel_Dept##
 
 [GroupBy]
 ;多条记录的查询的分组

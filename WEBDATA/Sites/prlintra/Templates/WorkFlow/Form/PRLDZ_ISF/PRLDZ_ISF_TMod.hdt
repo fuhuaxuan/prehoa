@@ -874,6 +874,7 @@
 <input type="text" style="display:none" name="FillUsrName" value="<HDPrint Value=#CurUsrName# Replace=#DBField2Input#>">
 <input type="text" style="display:none" name="FillUsrDept" value="<HDPrint Value=#FillDeptName# Replace=#DBField2Input#>">
 <input type="text" style="display:none" name="CreateDate" value="<HDPrint Value=#CreateDate# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="ParentDeptCode" value="<HDPrint Value=#ParentDeptCode# Replace=#DBField2Input#>">
 <input type="text" style="display:none" name="UnitList" value="">
 <!--ÉóÅúÈËUsrGid-->
 <select name="selT2List_1" class="JQList" multiple style="display:none"><HDPrint Value=#T2List# Replace=#None#></select>
@@ -1368,7 +1369,7 @@
       return false;
     }
 
-    if ('<HDPrint Value=#oldFlowGid# Replace=#DBField2Js#>' == '' && '<HDPrint Value=#IsNo# Replace=#DBField2Js#>' = 0){
+    if ('<HDPrint Value=#oldFlowGid# Replace=#DBField2Js#>' == '' && '<HDPrint Value=#IsNo# Replace=#DBField2Js#>' == 0){
       var JsDate1 = '<HDPrint Value=#CurDate# Replace=#DBField2Js#>';
       var JsDate2 = $("input[name=HandoverDate]").val();
       if (JsDate1 != '' && JsDate2 != '' ){

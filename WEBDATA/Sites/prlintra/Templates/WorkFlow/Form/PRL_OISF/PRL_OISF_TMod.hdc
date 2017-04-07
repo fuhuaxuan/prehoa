@@ -28,7 +28,7 @@ SQL3=select count(*) IsShow from wf_PRL_OISF_App where EntGid = __ENTGID__ and  
 ;得到当前用户的部门名称
 ;SQL4=select p.code2 ParentDeptCode from HR_Emp hr,Dept d,dept p where hr.EntGid=__ENTGID__ and hr.EntGid=d.EntGid and d.EntGid = p.EntGid and hr.DeptGid = d.Gid and substr(d.Code1,0,8) = p.code1 and exists (select 1 from wf_PRL_OISF f where f.EntGid = __ENTGID__ and f.FlowGid = ##FlowGid## and f.FillUsrGid = hr.UsrGid)
 
-SQL5=select count(*) IsNo from wf_PRL_ISF_APP where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppType = '否决'
+SQL5=select count(*) IsNo from wf_PRL_OISF_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppAssign = '否决'
 
 ;显示本流程附件信息
 LoopSQL1=select Attach_Title ItemGid,Attach_Title ItemName from wf_PRL_OISF_Attach where EntGid = __ENTGID__ and  FlowGid = ##FlowGid## order by attach_title

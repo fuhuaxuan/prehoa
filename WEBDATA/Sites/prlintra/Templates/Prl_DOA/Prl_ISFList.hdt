@@ -56,6 +56,19 @@
       </select>
     </td>
   </tr>
+  <tr>
+    <td>项目 = </td>
+    <td>
+      <select name="sel_Dept" class="JQSelect" style="width:90%">
+        <option value="">--请选择--</option>
+        <option value="0000">集团</option>
+        <option value="0001">沈阳</option>
+        <option value="0002">佛山</option>
+        <option value="0003">成都青羊</option>
+        <option value="0004">成都东站</option>
+      </select>
+    </td>
+  </tr>
   <tr >
     <td colspan="4">
      <a href="javascript:void(0)" onclick="JQExpand('tb_Search','font_Icon');" class="IconDown">　&nbsp;显示说明信息</a>（请进行相应的查询，找到您需要的信息）
@@ -85,7 +98,8 @@
   document.all.txt_FillUsr.value = '<HDPrint value=#txt_FillUsr# Replace=#DBField2Js#>';
   document.all.sel_ISCFStat.value = '<HDPrint value=#sel_ISCFStat# Replace=#DBField2Js#>';
   document.all.sel_ISTFStat.value = '<HDPrint value=#sel_ISTFStat# Replace=#DBField2Js#>';
-  
+  document.all.sel_Dept.value = '<HDPrint value=#sel_Dept# Replace=#DBField2Js#>';
+
 </script>
 <BR>
 <HDPageBar>
@@ -174,7 +188,7 @@
   //下载Excel
   function DownLoad(){
     document.all.Rep_Download.value = '1';
-    //获取当前表单对象 
+    //获取当前表单对象
     var JqObj = $("form[name=frmDo]");
     //表单参数设定
     JqObj.attr({
@@ -213,7 +227,7 @@
       $("input[name=selOrderAsc]").val(sJQAsc);
       $("input[name=selOrderColumn]").val(sJQColumn);
 
-      //获取当前表单对象 
+      //获取当前表单对象
       var JqObj = $("form[name=frmDo]");
       //表单参数设定
       JqObj.attr({

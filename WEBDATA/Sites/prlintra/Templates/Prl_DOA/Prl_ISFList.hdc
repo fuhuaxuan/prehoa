@@ -42,7 +42,7 @@ DefaultWhere=
 2=and lower(v.FillUsrName) like '%' || lower(##txt_FillUsr##) || '%'
 3=and v.ISCFFlowGid ^^sel_ISCFStat^^
 4=and v.ISTFFlowGid ^^sel_ISTFStat^^
-
+5=and substr(v.ISFDepeCode,0,4) = ##sel_Dept##
 [GroupBy]
 ;多条记录的查询的分组
 GroupBy=

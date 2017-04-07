@@ -18,6 +18,7 @@
 <input type="text" style="display:none" name="sPARAM2" value="<HDPrint Value=#sPARAM2# Replace=#DBField2Input#>">
 <input type="text" style="display:none" name="sPARAM3" value="<HDPrint Value=#sPARAM3# Replace=#DBField2Input#>">
 <input type="text" style="display:none" name="OldFlowGid" value="<HDPrint Value=#OldFlowGid# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="ParentDeptCode" value="<HDPrint Value=#ParentDeptCode# Replace=#DBField2Input#>">
 <input type="text" style="display:none" name="UnitList" value="">
 <input type="text" style="display:none" name="Stat" value="">
 <!--ÉóÅúÈËUsrGid-->
