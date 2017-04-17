@@ -590,6 +590,11 @@
     var JqFeeM = $("input[name=POSFeeM]");
     JsValue = parseFloat(JqFeeM.val() / JsBase).toFixed(4);
     JqFeeD.val(JsValue);
+
+    var JqFeeD = $("input[name=FitAllowance]");
+    var JqFeeM = $("input[name=TotalFee]");
+    JsValue = parseFloat(JqFeeM.val() / JsBase).toFixed(4);
+    JqFeeD.val(JsValue);
   }
   //计算每行租赁租金相关数值
   function CalcGTO() {
@@ -1298,7 +1303,7 @@
     <td class="listtd"><INPUT TYPE="text" NAME="AdminFee" maxlength="16" value="<HDPrint Value=#AdminFee# Replace=#DBField2Input#>" class="JQFloat JQMust" JQBit="4"></td>
     <td class="DtlBarTitle">Construction Allowance:<br>装修补贴:<font color="red">*</font></td>
     <td class="listtd"><INPUT TYPE="text" NAME="FitAllowance" maxlength="16" value="<HDPrint Value=#FitAllowance# Replace=#DBField2Input#>" class="JQFloat JQMust" JQBit="4" onblur="calcFee()"></td>
-    <td class="listtd"><INPUT TYPE="text" NAME="TotalFee" maxlength="16" value="<HDPrint Value=#TotalFee# Replace=#DBField2Input#>" class="JQFloat" JQBit="4" style="border:0px" readonly></td>
+    <td class="listtd"><INPUT TYPE="text" NAME="TotalFee" maxlength="16" value="<HDPrint Value=#TotalFee# Replace=#DBField2Input#>" class="JQFloat" JQBit="4" onblur="calcFeeM()"></td>
   </tr>
   <tr valign="top">
     <td class="DtlBarTitle">OtherFee Name:<br>其它费用名称:<font color="red">*</font></td>

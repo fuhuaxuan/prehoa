@@ -522,6 +522,11 @@
     var JqFeeM = $("input[name=POSFeeM]");
     JsValue = parseFloat(JqFeeM.val() / JsBase).toFixed(4);
     JqFeeD.val(JsValue);
+
+    var JqFeeD = $("input[name=FitAllowance]");
+    var JqFeeM = $("input[name=TotalFee]");
+    JsValue = parseFloat(JqFeeM.val() / JsBase).toFixed(4);
+    JqFeeD.val(JsValue);
   }
   //计算每行租赁租金相关数值
   function CalcGTO() {
