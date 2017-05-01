@@ -581,6 +581,8 @@
   //POS机使用费反算
   function calcFeeM(){
     var JsBase = 365/12;
+    var JsArea = $("input[name=Area]").val();
+    if (JsArea == ''){JsArea = '0';}
     var JsValue = 0;
     var JqFeeD = $("input[name=POSFeeD]");
     var JqFeeM = $("input[name=POSFeeM]");
@@ -589,7 +591,11 @@
 
     var JqFeeD = $("input[name=FitAllowance]");
     var JqFeeM = $("input[name=TotalFee]");
-    JsValue = parseFloat(JqFeeM.val() / JsBase).toFixed(4);
+    if (JsArea == 0) {
+      JsValue = 0;
+    } else{
+      JsValue = parseFloat(JqFeeM.val() / JsArea).toFixed(4);
+    }
     JqFeeD.val(JsValue);
   }
   //计算每行租赁租金相关数值
