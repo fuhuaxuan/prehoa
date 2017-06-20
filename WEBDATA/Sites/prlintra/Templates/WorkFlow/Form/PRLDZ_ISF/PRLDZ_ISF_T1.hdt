@@ -601,6 +601,15 @@
       JsValue = parseFloat(JqFeeM.val() / JsArea).toFixed(4);
     }
     JqFeeD.val(JsValue);
+
+    var JqFeeD = $("input[name=OtherFee]");
+    var JqFeeM = $("input[name=OtherTotalFee]");
+    if (JsArea == 0) {
+      JsValue = 0;
+    } else{
+      JsValue = parseFloat(JqFeeM.val() / JsArea).toFixed(4);
+    }
+    JqFeeD.val(JsValue);
   }
   //计算每行租赁租金相关数值
   function CalcGTO() {
@@ -1316,7 +1325,7 @@
     <td class="listtd" colspan="3"><INPUT TYPE="text" NAME="OtherFeeName" maxlength="64" value="<HDPrint Value=#OtherFeeName# Replace=#DBField2Input#>" class="JQText JQMust"></td>
     <td class="DtlBarTitle">OtherFee:<br>其它费用金额:<font color="red">*</font></td>
     <td class="listtd"><INPUT TYPE="text" NAME="OtherFee" maxlength="16" value="<HDPrint Value=#OtherFee# Replace=#DBField2Input#>" class="JQFloat JQMust" JQBit="4" onblur="calcFee()"></td>
-    <td class="listtd"><INPUT TYPE="text" NAME="OtherTotalFee" maxlength="16" value="<HDPrint Value=#OtherTotalFee# Replace=#DBField2Input#>" class="JQFloat" JQBit="4" style="border:0px" readonly></td>
+    <td class="listtd"><INPUT TYPE="text" NAME="OtherTotalFee" maxlength="16" value="<HDPrint Value=#OtherTotalFee# Replace=#DBField2Input#>" class="JQFloat" JQBit="4" onblur="calcFeeM()"></td>
   </tr>
   <tr valign="top">
     <td class="DtlBarTitle">Special Terms and Conditions/Remarks:<br>特别条件/评语:<br><font color="gray">(2000字以内)</font></td>

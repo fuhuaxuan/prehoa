@@ -187,3 +187,11 @@ HDT=Templates\Prl_DOA\Prl_FeeDtl.hdt
 [Prl_FeeDtlDown]
 HDC=Templates\Prl_DOA\Prl_FeeDtl.hdc
 HDT=Templates\Prl_DOA\Prl_FeeDtlDown.hdt
+
+[Prl_BaoXiaoList]
+HDC=Templates\Prl_DOA\Prl_BaoXiaoList.hdc
+HDT=Templates\Prl_DOA\Prl_BaoXiaoList.hdt
+
+[Prl_BaoXiaoDown]
+HDC=Templates\Prl_DOA\Prl_BaoXiaoList.hdc
+HDT=Templates\Prl_DOA\Prl_BaoXiaoDown.hdt

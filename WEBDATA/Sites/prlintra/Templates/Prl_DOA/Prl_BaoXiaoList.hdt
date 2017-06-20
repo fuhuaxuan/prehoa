@@ -125,6 +125,7 @@
   </tr>
   <tr class="listtr" style="cursor:hand;">
     <td nowrap JQAsc="" JQColumn="f.Num">单号</td>
+    <td nowrap JQAsc="" JQColumn="f.FillUsrName">发起人</td>
     <td nowrap JQAsc="" JQColumn="f.Stat">状态</td>
     <td nowrap JQAsc="" JQColumn="fd.ApplyFee">金额</td>
     <td nowrap JQAsc="" JQColumn="f.PayMan">收款人</td>
@@ -137,6 +138,7 @@
     <td nowrap><HDPrint Value=#ComName#></td>
     <td><HDPrint Value=#AcgCode#>-<HDPrint Value=#AcgName#></td>
     <td nowrap><a href="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid#>" target="_blank"><HDPrint Value=#Num#></a></td>
+    <td nowrap><HDPrint Value=#FillUsrName#></td>
     <td nowrap><HDPrint Value=#FStat#>-<HDPrint Value=#Stat#></td>
     <td nowrap><HDPrint Value=#ApplyFee#></td>
     <td nowrap><HDPrint Value=#PayMan#></td>

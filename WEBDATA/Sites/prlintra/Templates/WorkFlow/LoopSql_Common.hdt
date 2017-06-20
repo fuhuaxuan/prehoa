@@ -42,7 +42,7 @@
     tdArr[k++] = '<td><SELECT NAME="RTId1_1" ID="RTId1_1'+ iRow +'" class="JQSelect"><option value="0" >无</option><option value="1">有</option></SELECT></td>';
 
     tdArr[k++] = '<td>'
-    +'<input type="checkbox" name="chkAll_1'+ iRow +'" class="JQCheckBox" JQTag="chk_1'+ iRow +'">全选/全否|'
+    +'<input type="checkbox" name="chkAll_1'+ iRow +'" class="JQCheckBox" JQTag="chk_1'+ iRow +'"><font color="blue">全选/全否</font>|'
     +'<input type="checkbox" name="chk_1'+ iRow +'" value="0000" class="JQCheckBox">[0000]集团'
     +'<input type="checkbox" name="chk_1'+ iRow +'" value="0001" class="JQCheckBox">[0001]沈阳'
     +'<input type="checkbox" name="chk_1'+ iRow +'" value="0002" class="JQCheckBox">[0002]佛山'

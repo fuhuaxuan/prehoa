@@ -5,8 +5,12 @@
 <script language="JavaScript" src="##GetWebRootPath(/Scripts/Ajax/json.js)##"></Script>
 
 <script language="JavaScript">
+  //调用路径
+  var url = '';
+  var OrganizationID = '';
+
   var datainfo = {
-    OrganizationID: "BDA02110-39BF-48CE-8D00-E4D31A45EE88",
+    OrganizationID: "",
     JobNO: "<HDPrint Value=#Num# Replace=#DBField2Js#>",
     Department: "<HDPrint Value=#FillUsrDeptCode# Replace=#DBField2Js#>",
     Location: "<HDPrint Value=#unit# Replace=#DBField2Js#>",
@@ -39,14 +43,23 @@
     Remark: "<HDPrint Value=#Memo# Replace=#DBField2Js#>",
     DetailList: []
   };
-  //调用路径
-  var url = 'http://171.221.248.15/MallOAService/MallService.asmx/InsertContract';
   /*
   *函数功能：Ajax中POST方式取出员工资料
   *参数：代码控件对象
   */
   function PostMall2() {
     Run_Div_Show();
+    var PreDeptCode = '<HDPrint Value=#ParentDeptCode# Replace=#DBField2Js#>';
+    //青羊
+    if (PreDeptCode == '0003') {
+      url = 'http://171.221.248.15/MallOAService/MallService.asmx/InsertContract';
+      datainfo.OrganizationID = 'BDA02110-39BF-48CE-8D00-E4D31A45EE88';
+    }
+    //佛山
+    else if (PreDeptCode == '0002') {
+      url = 'http://121.9.230.202/MallAppService/MallService.asmx/InsertContract';
+      datainfo.OrganizationID = '06C36E50-AFB4-44AF-A75E-0D1623DCD551';
+    }
     //参数
     var data = {
       data : JSON.stringify(datainfo)
@@ -137,7 +150,8 @@
         //函数：ready
         //功能：document 加载完成后调用
         $(document).ready(function(){
-          if ('<HDPrint Value=#ParentDeptCode# Replace=#DBField2Js#>' == '0003') {
+          var PreDeptCode = '<HDPrint Value=#ParentDeptCode# Replace=#DBField2Js#>';
+          if (PreDeptCode == '0003' || PreDeptCode == '0002') {
             $("[JQ=MALL2]").show();
           }
           else{

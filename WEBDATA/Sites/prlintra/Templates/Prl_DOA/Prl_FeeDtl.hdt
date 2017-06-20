@@ -121,13 +121,14 @@
   <tr class="listtr" style="cursor:hand;">
     <td nowrap JQAsc="" JQColumn="p.ComName" rowspan="2">公司名称</td>
     <td nowrap JQAsc="" JQColumn="a.AcgCode" rowspan="2">项目信息</td>
-    <td nowrap colspan="13">流程信息</td>
+    <td nowrap colspan="14">流程信息</td>
   </tr>
   <tr class="listtr" style="cursor:hand;">
     <td nowrap JQAsc="" JQColumn="p.Num">单号</td>
+    <td nowrap JQAsc="" JQColumn="p.FillUsrName">发起人</td>
     <td nowrap JQAsc="" JQColumn="p.FStat">状态</td>
     <td nowrap JQAsc="" JQColumn="p.ApplyFee">金额</td>
-    <td nowrap JQAsc="" JQColumn="t.LEFTBUDGUTFEE">剩余预算</td>
+    <td nowrap JQAsc="" JQColumn="p.ControlFee">剩余预算</td>
     <td nowrap JQAsc="" JQColumn="p.VendorName1">供应商1</td>
     <td nowrap JQAsc="" JQColumn="p.VendorName2">供应商2</td>
     <td nowrap JQAsc="" JQColumn="p.VendorName3">供应商3</td>
@@ -142,9 +143,10 @@
     <td nowrap><HDPrint Value=#ComName#></td>
     <td><HDPrint Value=#AcgCode#>-<HDPrint Value=#AcgName#></td>
     <td nowrap><a href="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid#>" target="_blank"><HDPrint Value=#Num#></a></td>
+    <td nowrap><HDPrint Value=#FillUsrName#></td>
     <td nowrap><HDPrint Value=#FStat#></td>
     <td nowrap><HDPrint Value=#ApplyFee#></td>
-    <td nowrap><HDPrint Value=#LEFTBUDGUTFEE#></td>
+    <td nowrap><HDPrint Value=#ControlFee#></td>
     <td><HDPrint Value=#VendorName1#><br>报价：<HDPrint Value=#VendorFee1#></td>
     <td><HDPrint Value=#VendorName2#><br>报价：<HDPrint Value=#VendorFee2#></td>
     <td><HDPrint Value=#VendorName3#><br>报价：<HDPrint Value=#VendorFee3#></td>
