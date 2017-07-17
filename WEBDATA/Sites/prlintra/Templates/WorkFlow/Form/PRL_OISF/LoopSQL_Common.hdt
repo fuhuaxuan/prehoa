@@ -670,13 +670,15 @@
   }
   //判断日期大小
   function callDate1(JsObj){
-    var JsDate1 = '<HDPrint Value=#CurDate# Replace=#DBField2Js#>';
-    var JsDate2 = $("input[name=HandoverDate]").val();
-    if (JsDate1 != '' && JsDate2 != '' ){
-      if (JQDateCompare(JsDate1,JsDate2) <= 0){
-        alert('交付日期必须大于当前日期:<HDPrint Value=#CurDate#>！');
-        JsObj.focus();
+    if ('<HDPrint Value=#Mod# Replace=#DBField2Js#>' == ''){
+      var JsDate1 = '<HDPrint Value=#CurDate# Replace=#DBField2Js#>';
+      var JsDate2 = $("input[name=HandoverDate]").val();
+      if (JsDate1 != '' && JsDate2 != '' ){
+        if (JQDateCompare(JsDate1,JsDate2) <= 0){
+          alert('交付日期必须大于当前日期:<HDPrint Value=#CurDate#>！');
+          JsObj.focus();
         JsObj.value = '';
+        }
       }
     }
   }

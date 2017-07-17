@@ -259,7 +259,11 @@
 </tr>
 <tr valign="top">
   <td>10，</td>
-  <td>收银方式：<HDPrint Value=#collection#></td>
+  <td>（1）收银方式：<HDPrint Value=#collectionText#></td>
+</tr>
+<tr valign="top">
+  <td></td>
+  <td>（2）附件<HDPrint Value=#attachText#></td>
 </tr>
 </table>
 <script language="javascript">

@@ -124,13 +124,13 @@ Log=
 PageKind=0
 
 ;同意，满足条件，需要资产总监CFO审批，流转到下一步
-WF1=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TB1 | TB1Gid | and ##AppAssign## = '同意' and ##DataTotal## > 0 |^^AppFlowMemo^^)
+WF1=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TB1 | TB1Gid | and ##AppAssign## = '同意' |^^AppFlowMemo^^)
 
 ;否决，返回发起人
 WF2=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TMod | Null | and ##AppAssign## = '否决' |^^AppFlowMemo^^)
 
 ;同意并结束流程，抄送取除当前审批人外的所有审批人+部门助理+及资产经理
-WF3=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_Tcc | selTcc_1 | and ##AppAssign## = '同意' and ##DataTotal## <= 0|^^AppFlowMemo^^)
+;WF3=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_Tcc | selTcc_1 | and ##AppAssign## = '同意' and ##DataTotal## <= 0|^^AppFlowMemo^^)
 
 ;同意，不满足条件，结束流程
-WF4=WFFlowFinish( ^^CurUrl^^ | and ##AppAssign## = '同意' and ##DataTotal## <= 0)
+;WF4=WFFlowFinish( ^^CurUrl^^ | and ##AppAssign## = '同意' and ##DataTotal## <= 0)

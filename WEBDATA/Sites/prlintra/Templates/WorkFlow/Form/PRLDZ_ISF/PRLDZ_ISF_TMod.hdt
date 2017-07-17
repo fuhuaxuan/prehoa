@@ -1326,8 +1326,8 @@
     <td class="listtd"><INPUT TYPE="text" NAME="OtherTotalFee" maxlength="16" value="<HDPrint Value=#OtherTotalFee# Replace=#DBField2Input#>" class="JQFloat" JQBit="4" onblur="calcFeeM()"></td>
   </tr>
   <tr valign="top">
-    <td class="DtlBarTitle">Special Terms and Conditions/Remarks:<br>特别条件/评语:<br><font color="gray">(2000字以内)</font></td>
-    <td class="listtd" colspan="6"><textarea rows="6" id ="Memo" name="Memo" class="JQText" maxlength="1000"><HDPrint Value=#Memo# Replace=#DBField2InputField#></textarea></td>
+    <td class="DtlBarTitle">Special Terms and Conditions/Remarks:<br>特别条件/评语:<font color="red">*</font><br><font color="gray">(2000字以内)</font></td>
+    <td class="listtd" colspan="6"><textarea rows="6" id ="Memo" name="Memo" class="JQText JQMust" maxlength="1000"><HDPrint Value=#Memo# Replace=#DBField2InputField#></textarea></td>
   </tr>
   <tr>
     <td class="DtlBarTitle">发起人备注:<br><font color="gray">(500字内)</font></td>

@@ -134,18 +134,6 @@
       <HDIF EqualNot(<HDPrint Value=#NextStepCode# Replace=#None#>, )>
         <A HREF="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#NextStepCode#>&UsrGid=<HDPrint Value=#UsrGid#>&FlowGid=<HDPrint Value=#FlowGid#>&ModelGid=<HDPrint Value=#ModelGid#>" target="_blank"><FONT class="IconNext">　&nbsp;</FONT> 下一步操作：<HDPrint Value=#NextStepName#></A>
       </HDIF>
-      <HDIF Equal(<HDPrint Value=#Stat# Replace=#none#>, 30,已完成)>
-        <HDIF Equal(<HDPrint Value=#CurUsrGid# Replace=#none#>, <HDPrint Value=#FillUsrgid# Replace=#none#>)>
-        <A HREF="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_Print&UsrGid=<HDPrint Value=#UsrGid#>&FlowGid=<HDPrint Value=#FlowGid#>&ModelGid=<HDPrint Value=#ModelGid#>" target="_blank"><FONT class="IconPrint">　&nbsp;</FONT>打印关键条款</A>
-        </HDIF>
-        <A HREF="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_Content&UsrGid=<HDPrint Value=#UsrGid#>&FlowGid=<HDPrint Value=#FlowGid#>&ModelGid=<HDPrint Value=#ModelGid#>&IsPrint=1" target="_blank"><FONT class="IconPrint">　&nbsp;</FONT>打印全部条款</A>
-        <HDIF EqualNot(<HDPrint Value=#Mallstat# Replace=#none#>, 100)>
-          <HDIF Equal(<HDPrint Value=#UsrGid# Replace=#none#>, <HDPrint Value=#CWUsrGid# Replace=#None#>)>
-            <A HREF="javascript:void(0)" onclick="PostMall1('1')" JQ="MALL1" style="display:none"><FONT class="IconDefault">　&nbsp;</FONT> 发送到mall自动生成合同</A>
-            <A HREF="javascript:void(0)" onclick="PostMall2()" JQ="MALL2" style="display:none"><FONT class="IconDefault">　&nbsp;</FONT> 发送到mall自动生成合同</A>
-          </HDIF>
-        </HDIF>
-      </HDIF>
       <script language="javascript">
         //函数：ready
         //功能：document 加载完成后调用
@@ -166,7 +154,7 @@
     </TD>
   </TR>
 </TABLE>
-<iframe onload="JQAutoHeight(this)" id="iframeDtl" frameborder ='0' width="100%"  scrolling="no" style="width:100%" Src="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_Content&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid#>"></iframe>
+<iframe onload="JQAutoHeight(this)" id="iframeDtl" frameborder ='0' width="100%"  scrolling="no" style="width:100%" Src="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_DTL&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid#>&IsMall=1"></iframe>
 <br>
 <TABLE width="100%" class="ButtonBar" cellpadding="0" cellspacing="0">
   <col style="width:100%">
@@ -175,19 +163,6 @@
       <B>工具栏：</B>
       <HDIF EqualNot(<HDPrint Value=#NextStepCode# Replace=#None#>, )>
         <A HREF="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#NextStepCode#>&UsrGid=<HDPrint Value=#UsrGid#>&FlowGid=<HDPrint Value=#FlowGid#>&ModelGid=<HDPrint Value=#ModelGid#>" target="_blank"><FONT class="IconNext">　&nbsp;</FONT> 下一步操作：<HDPrint Value=#NextStepName#></A>
-      </HDIF>
-
-      <HDIF Equal(<HDPrint Value=#Stat# Replace=#none#>, 30,已完成)>
-        <HDIF Equal(<HDPrint Value=#CurUsrGid# Replace=#none#>, <HDPrint Value=#FillUsrgid# Replace=#none#>)>
-        <A HREF="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_Print&UsrGid=<HDPrint Value=#UsrGid#>&FlowGid=<HDPrint Value=#FlowGid#>&ModelGid=<HDPrint Value=#ModelGid#>" target="_blank"><FONT class="IconPrint">　&nbsp;</FONT>打印关键条款</A>
-        </HDIF>
-        <A HREF="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_Content&UsrGid=<HDPrint Value=#UsrGid#>&FlowGid=<HDPrint Value=#FlowGid#>&ModelGid=<HDPrint Value=#ModelGid#>&IsPrint=1" target="_blank"><FONT class="IconPrint">　&nbsp;</FONT>打印全部条款</A>
-        <HDIF EqualNot(<HDPrint Value=#Mallstat# Replace=#none#>, 100)>
-          <HDIF Equal(<HDPrint Value=#UsrGid# Replace=#none#>, <HDPrint Value=#CWUsrGid# Replace=#None#>)>
-            <A HREF="javascript:void(0)" onclick="PostMall1('1')" JQ="MALL1" style="display:none"><FONT class="IconDefault">　&nbsp;</FONT> 发送到mall自动生成合同</A>
-            <A HREF="javascript:void(0)" onclick="PostMall2()" JQ="MALL2" style="display:none"><FONT class="IconDefault">　&nbsp;</FONT> 发送到mall自动生成合同</A>
-          </HDIF>
-        </HDIF>
       </HDIF>
       |
       <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>

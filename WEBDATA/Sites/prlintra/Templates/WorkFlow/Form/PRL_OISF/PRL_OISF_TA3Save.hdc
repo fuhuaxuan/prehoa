@@ -32,7 +32,7 @@ SQLForCondition2=select ##CurUsrName##||':'||##AppAssign##||' - [' || Atype || '
 ;40:商场总经理;
 ;50:区域总监;
 ;71:资产经理 AssetManager
-SqlForCondition3=select v.PostGid TA4Gid from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=71
+SqlForCondition3=select v.PostGid TB1Gid from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=71
 
 ;取出流程信息，用于邮件
 Sql1=select f.* from wf_PRL_OISF f where f.EntGid = __ENTGID__ and f.FlowGid = ##FlowGid##
@@ -119,7 +119,7 @@ Log=
 PageKind=0
 
 ;同意，满足条件，需要区域总经理CFO审批，流转到下一步
-WF1=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TB1 | TA4Gid | and ##AppAssign## = '同意' and ##sStep## > 40 |^^AppFlowMemo^^)
+WF1=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TB1 | TB1Gid | and ##AppAssign## = '同意' and ##sStep## > 40 |^^AppFlowMemo^^)
 
 ;否决，返回发起人
 WF4=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TMod | Null | and ##AppAssign## = '否决' |^^AppFlowMemo^^)

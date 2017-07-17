@@ -26,7 +26,7 @@ SqlForCondition1=select wm.Code ModelCode, wm.Name ModelName,d.Name StepName,rep
 SQLForCondition2=select ##CurUsrName##||':'||##AppAssign##||' - [' || Atype || '];申请人：' || FillUsrName||';租户：'|| Lessee||';商店营业名称：'|| Tradingname AppFlowMemo,sStep from WF_PRL_ISF where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## 
 
 ;取出下一步审批人
-SQLForCondition4=select count(distinct v.PostGid) IsTC2 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype in (71,80)
+SQLForCondition4=select count(*) IsTC2 from dual where (select v.PostGid from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype in (80) and rownum <2) = (select v.AppGid from v_WF_Model_App v where v.EntGid = __ENTGID__ and v.ModelGid = ##ModelGid## and lower(v.ModelCode) like '%' || lower('_TD1') and rownum <2)
 SQLForCondition5=select v.PostGid TC2Gid from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=80
 
 ;取出流程信息，用于邮件
@@ -44,15 +44,14 @@ LoopVAR2=EmailDtl
 
 ;取出邮件
 ;同意并下一步：取出下一步执行人Email
-LoopSQL3=select distinct v.Email from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype in (80) and ##AppAssign## = '同意' and ##AppAssign## = '同意' and ##sStep## > 80 and ##IsTC2## <> '1' union select distinct hr.Email from WF_PRL_ISF_App a,hr_emp hr where a.EntGid = __ENTGID__ and a.EntGid = hr.EntGid and a.FlowGid = ##FlowGid## and a.AppGid <> __USRGID__ and a.AppType < 60 and a.AppGid = hr.UsrGid and ##AppAssign## = '同意' and ##sStep## <= 80 and ##IsTC2## <> '1' union select distinct v.Email from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype in (5,25) and ##AppAssign## = '同意' and ##sStep## <= 80 and ##IsTC2## <> '1' union select distinct hr.Email from v_Usr u, hr_emp hr where u.EntGid = __ENTGID__ and u.EntGid = hr.EntGid and u.gid = hr.usrgid and exists (select 1 from v_WF_Model_App o,v_org_usr v where o.EntGid = u.EntGid and o.EntGid = v.EntGid and o.ModelGid = ##ModelGid## and lower(o.Modelcode) like '%' || lower('_TD1') and o.AppGid = v.OrgGid and v.UsrGid = u.Gid) and ##AppAssign## = '同意' and ##sStep## > 90 and ##IsTC2## = '1' union select distinct hr.Email from WF_PRL_ISF_App a,hr_emp hr where a.EntGid = __ENTGID__ and a.EntGid = hr.EntGid and a.FlowGid = ##FlowGid## and a.AppGid <> __USRGID__ and a.AppType = 10 and a.AppGid = hr.UsrGid and ##AppAssign## = '同意' and ##sStep## <= 90 and ##IsTC2## = '1' union select distinct v.Email from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype in (5,25) and ##AppAssign## = '同意' and ##sStep## <= 90 and ##IsTC2## = '1'
+LoopSQL3=select distinct v.Email from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype in (80) and ##AppAssign## = '同意' and ##AppAssign## = '同意' and ##sStep## > 80 and (##sStep## <=90 or ##IsTC2## <> '1') union select distinct hr.Email from v_Usr u, hr_emp hr where u.EntGid = __ENTGID__ and u.EntGid = hr.EntGid and u.gid = hr.usrgid and exists (select 1 from v_WF_Model_App o,v_org_usr v where o.EntGid = u.EntGid and o.EntGid = v.EntGid and o.ModelGid = ##ModelGid## and lower(o.Modelcode) like '%' || lower('_TD1') and o.AppGid = v.OrgGid and v.UsrGid = u.Gid) and ##AppAssign## = '同意' and ##sStep## > 80 and ##sStep## > 90 and ##IsTC2## = '1' union select distinct hr.Email from WF_PRL_ISF_App a,hr_emp hr where a.EntGid = __ENTGID__ and a.EntGid = hr.EntGid and a.FlowGid = ##FlowGid## and a.AppGid <> __USRGID__ and a.AppType = 10 and a.AppGid = hr.UsrGid and ##AppAssign## = '同意' and ##sStep## <= 80 union select distinct v.Email from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype in (5,25) and ##AppAssign## = '同意' and ##sStep## <= 80
 LoopHDT3=Templates\WorkFlow\Form\PRLDZ_ISF\LoopSql_Email.hdt
 LoopVAR3=EmailList
 
 [AddtionalSQL]
 ;操作，没有返回的结果，是在数据库中执行，由Insert, Update, Delete命令。从SQL1～SQL20共支持20条
 ;更新本流程中主表信息
-Sql1=update WF_PRL_ISF set (LastUpdDate,Stat) = (select sysdate,decode(##AppAssign##,'同意',decode(##sStep##,'80','已完成',##AppAssign##),##AppAssign##) from dual) where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## and ##IsTC2## <> '1'
-Sql2=update WF_PRL_ISF set (LastUpdDate,Stat) = (select sysdate,decode(##AppAssign##,'同意',decode(##sStep##,'90','已完成',##AppAssign##),##AppAssign##) from dual) where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## and ##IsTC2## = '1'
+Sql1=update WF_PRL_ISF set (LastUpdDate,Stat) = (select sysdate,decode(##AppAssign##,'同意',decode(##sStep##,'80','已完成',##AppAssign##),##AppAssign##) from dual) where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid##
 
 ;插入本流程中审批人二信息
 SQL3=insert into Wf_PRL_ISF_App (EntGid,FlowGid,DtlGid,AppGid,AppCode,AppName,AppType,AppAssign,AppMemo,AppDate) select __ENTGID__,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,80,##AppAssign##, ##AppMemo##,sysdate from dual
@@ -113,17 +112,15 @@ Log=
 ;页面显示: 0:BodyPage;1:DetailPage;2:BlankPage
 PageKind=0
 ;同意，满足条件，流转到下一步
-WF1=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TC2 | TC2Gid | and ##AppAssign## = '同意' and ##sStep## > 80 and ##IsTC2## <> '1'|^^AppFlowMemo^^)
-WF2=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TD1 | Null | and ##AppAssign## = '同意' and ##sStep## > 90 and ##IsTC2## = '1'|^^AppFlowMemo^^)
+WF1=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TC2 | TC2Gid | and ##AppAssign## = '同意' and ##sStep## > 80 and (##sStep## <=90 or ##IsTC2## <> '1')|^^AppFlowMemo^^)
+WF2=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TD1 | Null | and ##AppAssign## = '同意' and ##sStep## > 80 and ##sStep## > 90 and ##IsTC2## = '1'|^^AppFlowMemo^^)
 
 ;否决，返回发起人
 WF3=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TMod | Null | and ##AppAssign## = '否决' |^^AppFlowMemo^^)
 
 ;同意并结束流程，抄送取除当前审批人外的所有审批人+部门助理+及资产经理
-WF4=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_Tcc | selTcc_1 | and ##AppAssign## = '同意' and ##sStep## <= 80 and ##IsTC2## <> '1'|^^AppFlowMemo^^)
-WF5=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_Tcc | selTcc_1 | and ##AppAssign## = '同意' and ##sStep## <= 90 and ##IsTC2## = '1'|^^AppFlowMemo^^)
+WF4=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_Tcc | selTcc_1 | and ##AppAssign## = '同意' and ##sStep## <= 80|^^AppFlowMemo^^)
 
 ;同意，不满足条件，结束流程
-WF6=WFFlowFinish( ^^CurUrl^^ | and ##AppAssign## = '同意' and ##sStep## <= 80 and ##IsTC2## <> '1')
-WF7=WFFlowFinish( ^^CurUrl^^ | and ##AppAssign## = '同意' and ##sStep## <= 90 and ##IsTC2## = '1')
+WF6=WFFlowFinish( ^^CurUrl^^ | and ##AppAssign## = '同意' and ##sStep## <= 80)
 
