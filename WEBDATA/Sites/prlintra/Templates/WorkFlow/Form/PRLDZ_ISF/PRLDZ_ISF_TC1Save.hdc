@@ -25,8 +25,9 @@ SqlForCondition1=select wm.Code ModelCode, wm.Name ModelName,d.Name StepName,rep
 ;审批备注
 SQLForCondition2=select ##CurUsrName##||':'||##AppAssign##||' - [' || Atype || '];申请人：' || FillUsrName||';租户：'|| Lessee||';商店营业名称：'|| Tradingname AppFlowMemo,sStep from WF_PRL_ISF where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## 
 
+;判断是否要跳过TC2:sStep>80且TB1=TC2
+SQLForCondition4=select count(distinct v.PostGid) IsTC2 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype in (71,80)
 ;取出下一步审批人
-SQLForCondition4=select count(*) IsTC2 from dual where (select v.PostGid from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype in (80) and rownum <2) = (select v.AppGid from v_WF_Model_App v where v.EntGid = __ENTGID__ and v.ModelGid = ##ModelGid## and lower(v.ModelCode) like '%' || lower('_TD1') and rownum <2)
 SQLForCondition5=select v.PostGid TC2Gid from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=80
 
 ;取出流程信息，用于邮件
@@ -112,15 +113,16 @@ Log=
 ;页面显示: 0:BodyPage;1:DetailPage;2:BlankPage
 PageKind=0
 ;同意，满足条件，流转到下一步
-WF1=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TC2 | TC2Gid | and ##AppAssign## = '同意' and ##sStep## > 80 and (##sStep## <=90 or ##IsTC2## <> '1')|^^AppFlowMemo^^)
+WF1=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TC2 | TC2Gid | and ##AppAssign## = '同意' and ##sStep## > 80 and and ##IsTC2## <> '1' |^^AppFlowMemo^^)
+
 WF2=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TD1 | Null | and ##AppAssign## = '同意' and ##sStep## > 80 and ##sStep## > 90 and ##IsTC2## = '1'|^^AppFlowMemo^^)
 
 ;否决，返回发起人
 WF3=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TMod | Null | and ##AppAssign## = '否决' |^^AppFlowMemo^^)
 
 ;同意并结束流程，抄送取除当前审批人外的所有审批人+部门助理+及资产经理
-WF4=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_Tcc | selTcc_1 | and ##AppAssign## = '同意' and ##sStep## <= 80|^^AppFlowMemo^^)
+WF4=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_Tcc | selTcc_1 | and ##AppAssign## = '同意' and (##sStep## <= 80 or (##sStep## = 90 and ##IsTC2## = '1'))|^^AppFlowMemo^^)
 
 ;同意，不满足条件，结束流程
-WF6=WFFlowFinish( ^^CurUrl^^ | and ##AppAssign## = '同意' and ##sStep## <= 80)
+WF6=WFFlowFinish( ^^CurUrl^^ | and ##AppAssign## = '同意' and (##sStep## <= 80 or (##sStep## = 90 and ##IsTC2## = '1')))
 

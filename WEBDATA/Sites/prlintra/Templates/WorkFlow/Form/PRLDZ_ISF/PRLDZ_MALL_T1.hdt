@@ -1055,7 +1055,7 @@
       <INPUT TYPE="text" NAME="LeaseTermD" maxlength="4" value="<HDPrint Value=#LeaseTermD# Replace=#DBField2Input#>" class="JQInt JQMust" JQMin="0" JQMax="31" style="width:50px;" onblur="calcContract();callDtl('LeaseTermM');">日
     </td>
     <td class="DtlBarTitle">Handover Date:<br>交付日期:<font color="red">*</font></td>
-    <td class="listtd"><INPUT TYPE="text" NAME="HandoverDate" maxlength="10" value="<HDPrint Value=#HandoverDate# Replace=#DBField2Input#>" class="JQDate JQMust" onblur="callDate1(this);calcContract();"></td>
+    <td class="listtd"><INPUT TYPE="text" NAME="HandoverDate" maxlength="10" value="<HDPrint Value=#HandoverDate# Replace=#DBField2Input#>" class="JQDate JQMust" onblur="calcContract();"></td>
     <td class="DtlBarTitle">Related Party:<br>牵连关系实体交易:</td>
     <td class="listtd">
       <input type="checkbox" name="chkRelated_1" value="有" class="JQCheckBox" onclick="setRelated(this)">
