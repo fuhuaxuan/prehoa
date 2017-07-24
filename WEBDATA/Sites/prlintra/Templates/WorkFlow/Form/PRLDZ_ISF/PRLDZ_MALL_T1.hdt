@@ -866,6 +866,41 @@
     $("input[name=sPARAM2]").val(JsP2);
     //反算建筑面积单价=(第一年租金单价*建筑面积总和)/面积总和
     $("input[name=BuildAreaPrice]").val(JsFee);
+
+    //计算预付租金+物业管理费 = （第一年 固定租金总数 + 物业管理费总数 + 推广费 月* 面积）
+    if (JqTb.find("input[name=TBRD_1]").first().length > 0){
+      //租金
+      JsA = JqTb.find("input[name=TBRM_1]").first().val();
+      //物业管理费
+      JsB = JqTb.find("input[name=PMFM_1]").first().val();
+      //推广费
+      JsC = JqTb.find("input[name=Apfixed_1]").first().val();
+
+      if (JsA == ''){JsA = '0';}
+      if (JsB == ''){JsB = '0';}
+      if (JsC == ''){JsC = '0';}
+      JsC = JsC * JsArea;
+      var JsT = parseFloat(JsA) + parseFloat(JsB) + parseFloat(JsC);
+      JsT = parseFloat(JsT).toFixed(4);
+      $("input[name=AGR]").val(JsT);
+    }
+    //计算保证金 = （最后一年 固定租金总数 + 物业管理费总数 + 推广费 月* 面积）* 3
+    if (JqTb.find("input[name=TBRD_1]").last().length > 0){
+      //租金
+      JsA = JqTb.find("input[name=TBRM_1]").last().val();
+      //物业管理费
+      JsB = JqTb.find("input[name=PMFM_1]").last().val();
+      //推广费
+      JsC = JqTb.find("input[name=Apfixed_1]").last().val();
+
+      if (JsA == ''){JsA = '0';}
+      if (JsB == ''){JsB = '0';}
+      if (JsC == ''){JsC = '0';}
+      JsC = JsC * JsArea;
+      var JsT = parseFloat(JsA) + parseFloat(JsB) + parseFloat(JsC);
+      JsT = parseFloat(JsT * 3).toFixed(4);
+      $("input[name=Security]").val(JsT);
+    }
   }
   //判断日期大小
   function callDate1(JsObj){
@@ -1258,7 +1293,7 @@
     <td class="DtlBarTitle">POS Fee:<br>POS机使用费:<font color="red">*</font></td>
     <td class="listtd"><INPUT TYPE="text" NAME="POSFeeD" maxlength="16" value="<HDPrint Value=#POSFeeD# Replace=#DBField2Input#>" class="JQFloat JQMust" JQBit="4" JQRow="FeeD" JQRowName="TotalFeeD" onblur="calcFee()"></td>
     <td class="listtd"><INPUT TYPE="text" NAME="POSFeeM" maxlength="16" value="<HDPrint Value=#POSFeeM# Replace=#DBField2Input#>" class="JQFloat" JQBit="4" JQRow="FeeM" JQRowName="TotalFeeM" onblur="calcFeeM()"></td>
-    <td class="DtlBarTitle">Advance Gross Rent:<br>预付租金 + 物业管理费:<font color="red">*</font></td>
+    <td class="DtlBarTitle">Advance Gross Rent:<br>预付租金+费用:<font color="red">*</font></td>
     <td class="listtd"><INPUT TYPE="text" NAME="AGR" maxlength="16" value="<HDPrint Value=#AGR# Replace=#DBField2Input#>" class="JQFloat JQMust" JQBit="4"></td>
     <td class="DtlBarTitle"><font color="red">New:<br>新:</font></td>
     <td class="listtd">

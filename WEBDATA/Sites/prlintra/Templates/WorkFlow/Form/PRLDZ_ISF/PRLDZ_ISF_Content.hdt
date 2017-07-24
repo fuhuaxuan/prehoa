@@ -495,7 +495,7 @@
     <td class="DtlBarTitle">POS Fee:<br>POS机使用费:</td>
     <td class="listtd"><HDPrint Value=#POSFeeDText#  Replace=#None#></td>
     <td class="listtd"><HDPrint Value=#POSFeeMText#  Replace=#None#></td>
-    <td class="DtlBarTitle">Advance Gross Rent:<br>预付租金 + 物业管理费:</td>
+    <td class="DtlBarTitle">Advance Gross Rent:<br>预付租金+费用:</td>
     <td class="listtd"><HDPrint Value=#AGRText#  Replace=#None#></td>
     <td class="DtlBarTitle"><font color="red">New:<br>新:</font></td>
     <td class="listtd"><HDPrint Value=#BRCNewText#  Replace=#None#></td>

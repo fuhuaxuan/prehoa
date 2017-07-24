@@ -50,37 +50,14 @@
 }
 </style>
 <table style="width:645;"  border=0 valign="top" align="center">
-<tr align="right"  valign="bottom">
-  <td style="font-family:方正中等线简体;font-size:12pt;height:45mm"><br>
-  合同编号：
-  <u><HDPrint Value=#Num#></u><br><br>
-  单位：
-  <u><HDPrint Value=#Unitlist# Replace=#None#></u>
-  </td>
-</tr>
-<tr style="height:59mm">
-  <td>&nbsp;</td>
-</tr>
-<tr>
-  <td align="center" style="line-height:36pt;font-size:36.0pt;font-family:方正大标宋简体">租赁协议</td>
-</tr>
-<tr align="center">
- <td style="font-size:12.0pt;">（OA流程已审批完）</td>
-</tr>
-<tr style="height:45mm">
-  <td style="font-size:12.0pt;padding-left:10mm"><b>签约双方:</b><br>
-  （1） 出租人：<HDPrint Value=#thisdeptname#><br><br>
-  （2） 承租人（租户）：<HDPrint Value=#lessee#><br>
-  </td>
-</tr>
-<tr style="height:90mm">
-  <td>&nbsp;</td>
-</tr>
-</table>
-<br>
-<table style="width:645;"  border=0 valign="top" align="center">
 <col style="font-size:12.0pt;padding-left:15mm;width:8mm;">
 <col style="font-size:12.0pt;padding-left:0;">
+<tr align="right"  valign="bottom">
+  <td style="font-family:方正中等线简体;font-size:12pt;height:45mm" colspan="2"><br>
+  合同编号：
+  <u><HDPrint Value=#Num#></u><br><br>
+  </td>
+</tr>
 <tr>
   <td colspan="2" style="font-size:16.0pt;padding-left:8mm"><b>附件一，主要租赁条款</b></td>
 </tr>
