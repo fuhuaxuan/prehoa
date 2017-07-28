@@ -748,8 +748,11 @@
       }
     }
   }
-  //计算New值
   function calcNew(){
+     calcNew('0');
+  }
+  //计算New值
+  function calcNew(JsStr){
     //表格
     var JqTb = $("table#tb_Dtl30");
     var JqTbMZQ = $("table#tb_Dtl10");
@@ -864,7 +867,7 @@
     $("input[name=BuildAreaPrice]").val(JsFee);
 
     //计算预付租金+物业管理费 = （第一年 固定租金总数 + 物业管理费总数 + 推广费 月* 面积）
-    if (JqTb.find("input[name=TBRD_1]").first().length > 0){
+    if (JqTb.find("input[name=TBRD_1]").first().length > 0 && JsStr == '1'){
       //租金
       JsA = JqTb.find("input[name=TBRM_1]").first().val();
       //物业管理费
@@ -881,7 +884,7 @@
       $("input[name=AGR]").val(JsT);
     }
     //计算保证金 = （最后一年 固定租金总数 + 物业管理费总数 + 推广费 月* 面积）* 3
-    if (JqTb.find("input[name=TBRD_1]").last().length > 0){
+    if (JqTb.find("input[name=TBRD_1]").last().length > 0 && JsStr == '1'){
       //租金
       JsA = JqTb.find("input[name=TBRM_1]").last().val();
       //物业管理费
@@ -1436,7 +1439,7 @@
     }
 
     //重新计算New
-    calcNew();
+    calcNew('1');
     //提交时，提示
     if (OpText != '保存'){
       if (!(confirm(sConfirm)))
