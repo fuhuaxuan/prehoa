@@ -51,12 +51,6 @@ SqlForCondition6=select v.PostGid TA1Gid from v_Post v where v.EntGid = __ENTGID
 ;判断是否要跳过TA1:TA1=TA2
 SqlForCondition7=select count(*) IsT2 from dual where ##T2Gid## = '^^TA1Gid^^' and ##cT2## = '1'
 
-;取出邮件
-;同意并下一步：取出下一步执行人Email
-LoopSQL1=select distinct v.Email from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype in (3) and ##Stat## = '提交' and ##IsT15## <> '0' union select distinct v.Email from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype in (10) and ##Stat## = '提交' and ##IsT15## = '0' and ##IsT2## = '0' union select distinct v.Email from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=30 and ##Stat## = '提交' and ##IsT15## = '0' and ##IsT2## = '1'
-LoopHDT1=Templates\WorkFlow\Form\^^ModelCode^^\LoopSql_Email.hdt
-LoopVAR1=EmailList
-
 [AddtionalSQL]
 ;操作，没有返回的结果，是在数据库中执行，有Insert, Update, Delete命令。从SQL1～SQL20共支持20条
 ;修改本流程流程备注
@@ -92,9 +86,6 @@ AttachSqlAdd1=insert into Wf_^^ModelCodeT^^_Attach (EntGid,ModelGid,FlowGid,Atta
 Sql1=
 
 [Master]
-;显示，多条记录的查询，可在HDT页面中直接使用<HDLoop>显示，并能够提供翻页。
-SQL=select * from wf_^^ModelCodeT^^_Dtl where EntGid = __ENTGID__ and FlowGid = ##FlowGid## order by AcgCode
-Count=select 1 from dual
 
 [DefaultWhere]
 ;多条记录的查询的默认条件
