@@ -2383,6 +2383,11 @@ HDT=Templates\WorkFlow\Form\PrlDZ_BaoXiao\PrlDZ_BaoXiao.hdt
 HDC=Templates\WorkFlow\Form\PrlDZ_BaoXiao\PrlDZ_BaoXiao_Content.hdc
 HDT=Templates\WorkFlow\Form\PrlDZ_BaoXiao\PrlDZ_BaoXiao_Content.hdt
 
+[PrlDZ_BaoXiao_Print]
+HDC=Templates\WorkFlow\Form\PrlDZ_BaoXiao\PrlDZ_BaoXiao_Print.hdc
+HDT=Templates\WorkFlow\Form\PrlDZ_BaoXiao\PrlDZ_BaoXiao_Print.hdt
+
+
 [PrlDZ_BaoXiao_T1]
 HDC=Templates\WorkFlow\Form\PrlDZ_BaoXiao\PrlDZ_BaoXiao_T1.hdc
 HDT=Templates\WorkFlow\Form\PrlDZ_BaoXiao\PrlDZ_BaoXiao_T1.hdt
@@ -2518,10 +2523,6 @@ HDT=Templates\WorkFlow\Form\PrlDZ_BaoXiao\PrlDZ_BaoXiao_TD2.hdt
 [PrlDZ_BaoXiao_TD2Save]
 HDC=Templates\WorkFlow\Form\PrlDZ_BaoXiao\PrlDZ_BaoXiao_TD2Save.hdc
 HDT=Templates\WorkFlow\Form\PrlDZ_BaoXiao\PrlDZ_BaoXiao_TD2Save.hdt
-
-[PrlDZ_BaoXiao_Print]
-HDC=Templates\WorkFlow\Form\PrlDZ_BaoXiao\PrlDZ_BaoXiao_Print.hdc
-HDT=Templates\WorkFlow\Form\PrlDZ_BaoXiao\PrlDZ_BaoXiao_Print.hdt
 
 
 ***********************ISCF(¶«Õ¾)*********
@@ -2900,3 +2901,10 @@ HDT=Templates\WorkFlow\Form\PRLDZ_ISF\PRLDZ_MALL_T1.hdt
 [PRLDZ_MALL_T1Save]
 HDC=Templates\WorkFlow\Form\PRLDZ_ISF\PRLDZ_MALL_T1Save.hdc
 HDT=Templates\WorkFlow\Form\PRLDZ_ISF\PRLDZ_MALL_T1Save.hdt
+
+
+;*****************·¢ËÍÓÊ¼þ*********
+
+[PrlDZ_Email]
+HDC=Templates\WorkFlow\Form\PrlDZ_Email\PrlDZ_Email.hdc
+HDT=Templates\WorkFlow\Form\PrlDZ_Email\PrlDZ_Email.hdt

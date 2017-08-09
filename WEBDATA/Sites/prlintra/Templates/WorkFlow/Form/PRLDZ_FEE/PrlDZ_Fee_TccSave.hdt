@@ -2,15 +2,5 @@
 <SCRIPT LANGUAGE="JavaScript">
   alert('ÔÄ¶ÁÍê±Ï£º<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>');
 
-  if (self.opener != null) 
-  {
-    try{
-      self.opener.location.reload();
-    }
-    catch(e){
-    }
-    window.opener = null;
-    window.open(' ', '_self', ' ');
-  }
-  window.close();
+  location.replace('##HDNet_AppName##/WFFlowPage?Url=PrlDZ_Email&UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid# Replace=#DBField2Js#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>');
 </SCRIPT>

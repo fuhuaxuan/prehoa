@@ -138,7 +138,7 @@
         <HDIF Equal(<HDPrint Value=#CurUsrGid# Replace=#none#>, <HDPrint Value=#FillUsrgid# Replace=#none#>)>
         <A HREF="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_Print&UsrGid=<HDPrint Value=#UsrGid#>&FlowGid=<HDPrint Value=#FlowGid#>&ModelGid=<HDPrint Value=#ModelGid#>" target="_blank"><FONT class="IconPrint">　&nbsp;</FONT>打印关键条款</A>
         </HDIF>
-        <A HREF="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_Content&UsrGid=<HDPrint Value=#UsrGid#>&FlowGid=<HDPrint Value=#FlowGid#>&ModelGid=<HDPrint Value=#ModelGid#>&IsPrint=1" target="_blank"><FONT class="IconPrint">　&nbsp;</FONT>打印全部条款</A>
+        <A HREF="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_Content&UsrGid=<HDPrint Value=#UsrGid#>&FlowGid=<HDPrint Value=#FlowGid#>&ModelGid=<HDPrint Value=#ModelGid#>&IsPrint=1" target="_blank" style="dispaly:none"><FONT class="IconPrint">　&nbsp;</FONT>打印全部条款</A>
         <HDIF EqualNot(<HDPrint Value=#Mallstat# Replace=#none#>, 100)>
           <HDIF Equal(<HDPrint Value=#UsrGid# Replace=#none#>, <HDPrint Value=#CWUsrGid# Replace=#None#>)>
             <A HREF="javascript:void(0)" onclick="PostMall1('1')" JQ="MALL1" style="display:none"><FONT class="IconDefault">　&nbsp;</FONT> 发送到mall自动生成合同</A>
@@ -181,7 +181,7 @@
         <HDIF Equal(<HDPrint Value=#CurUsrGid# Replace=#none#>, <HDPrint Value=#FillUsrgid# Replace=#none#>)>
         <A HREF="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_Print&UsrGid=<HDPrint Value=#UsrGid#>&FlowGid=<HDPrint Value=#FlowGid#>&ModelGid=<HDPrint Value=#ModelGid#>" target="_blank"><FONT class="IconPrint">　&nbsp;</FONT>打印关键条款</A>
         </HDIF>
-        <A HREF="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_Content&UsrGid=<HDPrint Value=#UsrGid#>&FlowGid=<HDPrint Value=#FlowGid#>&ModelGid=<HDPrint Value=#ModelGid#>&IsPrint=1" target="_blank"><FONT class="IconPrint">　&nbsp;</FONT>打印全部条款</A>
+        <A HREF="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_Content&UsrGid=<HDPrint Value=#UsrGid#>&FlowGid=<HDPrint Value=#FlowGid#>&ModelGid=<HDPrint Value=#ModelGid#>&IsPrint=1" target="_blank" style="dispaly:none"><FONT class="IconPrint">　&nbsp;</FONT>打印全部条款</A>
         <HDIF EqualNot(<HDPrint Value=#Mallstat# Replace=#none#>, 100)>
           <HDIF Equal(<HDPrint Value=#UsrGid# Replace=#none#>, <HDPrint Value=#CWUsrGid# Replace=#None#>)>
             <A HREF="javascript:void(0)" onclick="PostMall1('1')" JQ="MALL1" style="display:none"><FONT class="IconDefault">　&nbsp;</FONT> 发送到mall自动生成合同</A>
