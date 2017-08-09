@@ -1,5 +1,5 @@
-create or replace procedure P_PrlDZ_Fee_doMail(p_FlowGid varchar --流程Gid
-                                               ) as
+create or replace procedure P_PrlDZ_BaoXiao_doMail(p_FlowGid varchar --流程Gid
+                                                   ) as
   v_Stage   varchar2(1024); -- 过程场景
   v_ErrText varchar2(1024); -- Oracle错误信息
 
@@ -26,13 +26,13 @@ begin
   v_Content := '';
   --for 循环 取出未领取的快递
   for R in (select f.*, wm.name ModelName
-              from wf_Prl_Fee f, wf_model wm
+              from Wf_Prl_Baoxiao f, wf_model wm
              where f.EntGid = v_EntGid
                and f.entgid = wm.entgid
                and f.FlowGid = p_FlowGid
                and f.modelgid = wm.modelgid) loop
-    v_Stage   := 'FlowGid：' || R.Flowgid || '；模型：'|| R.ModelName;
-    v_Title   := '费用待审提醒:' || R.Fillusrdept;
+    v_Stage   := 'FlowGid：' || R.Flowgid || '；模型：' || R.ModelName;
+    v_Title   := '个人报销待审提醒:' || R.Filldeptname;
     v_Content := v_Content || v_Head;
   
     v_Body    := '[流程名称] : ' || R.ModelName;
@@ -43,22 +43,35 @@ begin
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
     v_Body    := '[发起时间] : ' || to_char(R.Createdate, 'YYYY.MM.DD HH24:MI');
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
-    v_Body    := '[公司名称] : ' || R.Companyname;
+    v_Body    := '[公司名称] : ' || R.Comname;
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
-    v_Body    := '[项目名称] : ' || R.ACGONENAME || '-' || R.Acgtwoname;
+    v_Body    := '<table cellpadding="0" cellspacing="1" class="ListBar" width="100%" style="background-color: #d9dbdf;">';
+    v_Body    := v_Body || '<col style="padding-left:4px;width:80%">';
+    v_Body    := v_Body || '<col style="padding-left:4px;width:20%">';
+    v_Body    := v_Body ||
+                 '<tr style="background-color: #ecedef;" align="center">';
+    v_Body    := v_Body || '<td>项目信息</td>';
+    v_Body    := v_Body || '<td>本次申请金额[元]</td>';
+    v_Body    := v_Body || '</tr>';
+    v_Content := v_Content || v_TStart || v_Body;
+  
+    for D in (select f.*
+                from Wf_Prl_Baoxiao_Dtl f
+               where f.EntGid = v_EntGid
+                 and f.FlowGid = p_FlowGid) loop
+      v_Body := '<tr valign="top" style="background-color: white">';
+      v_Body := v_Body || '<td>[' || D.Acgcode || ']' || D.Acgname ||
+                '</td>';
+      v_Body := v_Body || '<td align="center">' || D.Applyfee || '</td>';
+      v_Body := v_Body || '</tr>';
+      v_Content := v_Content || v_Body;
+    end loop;
+  
+    v_Body    := '</table>';
+    v_Content := v_Content || v_Body || '</td></tr>';
+    v_Body    := '[报销金额汇总] : ' || R.Sumfee || '元';
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
-    v_Body    := '[DOA信息] : ' || R.Doacode || '-' || R.Doaname;
-    v_Content := v_Content || v_TStart || v_Body || v_TEnd;
-    v_Body    := '[申请目的] : ' || R.Target;
-    v_Content := v_Content || v_TStart || v_Body || v_TEnd;
-    v_Body    := '[申请项目内容] : ' || R.Memo;
-    v_Content := v_Content || v_TStart || v_Body || v_TEnd;
-    v_Body    := '[推荐及理由] : ' || R.Reason;
-    v_Content := v_Content || v_TStart || v_Body || v_TEnd;
-    v_Body    := '[剩余预算金额] : ' || R.Controlfee || '元';
-    v_Content := v_Content || v_TStart || v_Body || v_TEnd;
-    v_Body    := '[本次申请金额] : 今年' || R.Askfee || '元；明年' ||
-                 nvl(R.Naskfee, '0') || '元';
+    v_Body    := '[报销备注] : ' || R.Memo;
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
   
     v_Content := v_Content || v_Foot;

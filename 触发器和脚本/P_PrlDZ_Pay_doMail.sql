@@ -1,4 +1,4 @@
-create or replace procedure P_PrlDZ_Fee_doMail(p_FlowGid varchar --流程Gid
+create or replace procedure P_PrlDZ_Pay_doMail(p_FlowGid varchar --流程Gid
                                                ) as
   v_Stage   varchar2(1024); -- 过程场景
   v_ErrText varchar2(1024); -- Oracle错误信息
@@ -26,13 +26,13 @@ begin
   v_Content := '';
   --for 循环 取出未领取的快递
   for R in (select f.*, wm.name ModelName
-              from wf_Prl_Fee f, wf_model wm
+              from wf_Prl_Pay f, wf_model wm
              where f.EntGid = v_EntGid
                and f.entgid = wm.entgid
                and f.FlowGid = p_FlowGid
                and f.modelgid = wm.modelgid) loop
-    v_Stage   := 'FlowGid：' || R.Flowgid || '；模型：'|| R.ModelName;
-    v_Title   := '费用待审提醒:' || R.Fillusrdept;
+    v_Stage   := 'FlowGid：' || R.Flowgid || '；模型：' || R.ModelName;
+    v_Title   := '付款待审提醒:' || R.Fillusrdept;
     v_Content := v_Content || v_Head;
   
     v_Body    := '[流程名称] : ' || R.ModelName;
@@ -43,23 +43,48 @@ begin
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
     v_Body    := '[发起时间] : ' || to_char(R.Createdate, 'YYYY.MM.DD HH24:MI');
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
+    if R.Feeflowgid is not null then
+      v_Body    := '[费用单号] : ' || R.Feenum || '-' || R.Partnum;
+      v_Content := v_Content || v_TStart || v_Body || v_TEnd;
+      v_Body    := '[是否尾款] : ';
+      if R.Isend = 10 then
+        v_Body := v_Body || '是';
+      else
+        v_Body := v_Body || '否';
+      end if;
+      v_Content := v_Content || v_TStart || v_Body || v_TEnd;
+    end if;
     v_Body    := '[公司名称] : ' || R.Companyname;
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
-    v_Body    := '[项目名称] : ' || R.ACGONENAME || '-' || R.Acgtwoname;
+    v_Body    := '[项目名称] : ' || R.acgonename || '-' || R.acgtwoname;
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
-    v_Body    := '[DOA信息] : ' || R.Doacode || '-' || R.Doaname;
+    v_Body    := '[DOA信息] : ' || R.Doacode;
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
-    v_Body    := '[申请目的] : ' || R.Target;
+    v_Body    := '[付款金额] : ' || nvl(R.payfee, 0) || '元';
+    if substr(R.Acgonename, 0, 1) = '3' then
+      v_Body := v_Body || '(公司承担：' || nvl(R.Npayfee, 0) || '元)';
+    end if;
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
-    v_Body    := '[申请项目内容] : ' || R.Memo;
+    v_Body    := '[要求支付方式] : ' || R.Payway;
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
-    v_Body    := '[推荐及理由] : ' || R.Reason;
+    v_Body    := '[人民币(大写)] : ' || R.Bigrmb;
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
-    v_Body    := '[剩余预算金额] : ' || R.Controlfee || '元';
+    v_Body    := '[付款备注] :' || R.Memo;
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
-    v_Body    := '[本次申请金额] : 今年' || R.Askfee || '元；明年' ||
-                 nvl(R.Naskfee, '0') || '元';
+    v_Body    := '[收款单位] : ' || R.Payee;
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
+    if R.Feeflowgid is not null then
+      v_Body    := '[（A）项目总额] : ' || R.feea;
+      v_Content := v_Content || v_TStart || v_Body || v_TEnd;
+      v_Body    := '[（B）已付款金额] : ' || R.Feeb;
+      v_Content := v_Content || v_TStart || v_Body || v_TEnd;
+      v_Body    := '[（C）本次付款] : ' || R.Payfee;
+      v_Content := v_Content || v_TStart || v_Body || v_TEnd;
+      v_Body    := '[尚欠余额=A-B-C] : ' || R.Feeleft;
+      v_Content := v_Content || v_TStart || v_Body || v_TEnd;
+      v_Body    := '[实际付款总额=B+C] : ' || R.Feeok;
+      v_Content := v_Content || v_TStart || v_Body || v_TEnd;
+    end if;
   
     v_Content := v_Content || v_Foot;
     for U in (select hr.Email
