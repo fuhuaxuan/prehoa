@@ -34,26 +34,6 @@ SQLForCondition2=select ##CurUsrName##||':'||##AppAssign##||' - [' || Atype || '
 ;71:资产经理 AssetManager
 SqlForCondition3=select v.PostGid TB1Gid from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=71
 
-;取出流程信息，用于邮件
-Sql1=select f.* from wf_PRL_OISF f where f.EntGid = __ENTGID__ and f.FlowGid = ##FlowGid##
-
-;显示单位信息
-LoopSQL1=select * from wf_PRL_OISF_ground where EntGid = __ENTGID__ and FlowGid = ##FlowGid## order by fNo
-LoopHDT1=Templates\WorkFlow\Form\PRL_OISF\LoopSql_UnitDtl.hdt
-LoopVAR1=UnitList
-
-;显示邮件明细内容
-LoopSQL2=select fd.yeartype,to_char(fd.TBRD,'FM999999999990.9990') tbrd,to_char(fd.tbrm,'FM999999999990.9990') tbrm,to_char(fd.FTBRD,'FM999999999990.9990') Ftbrd,to_char(fd.Ftbrm,'FM999999999990.9990') Ftbrm,to_char(fd.pmfd,'FM999999999990.9990') pmfd,to_char(fd.pmfm,'FM999999999990.9990') pmfm,to_char(fd.Fpmfd,'FM999999999990.9990') Fpmfd,to_char(fd.Fpmfm,'FM999999999990.9990') Fpmfm from wf_PRL_OISF_dtl fd where fd.EntGid = __ENTGID__ and fd.FlowGid = ##FlowGid## and lower(fd.TBID) = 'tb_dtl30' order by fd.yeartype
-LoopHDT2=Templates\WorkFlow\Form\PRL_OISF\LoopSql_EmailDtl.hdt
-LoopVAR2=EmailDtl
-
-;取出邮件
-;同意并下一步：取出下一步执行人Email
-;同意并结束流程：取除当前审批人外的所有审批人(60以上不发送)+部门助理+资产经理+财务会计
-LoopSQL3=select distinct v.Email from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype in (71) and ##AppAssign## = '同意' and ##sStep## > 40 union select distinct hr.Email from wf_PRL_OISF_App a,hr_emp hr where a.EntGid = __ENTGID__ and a.EntGid = hr.EntGid and a.FlowGid = ##FlowGid## and a.AppGid <> __USRGID__ and a.AppType < 40 and a.AppGid = hr.UsrGid and ##AppAssign## = '同意' and ##sStep## <= 40 union select distinct v.Email from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype in (5,25,71) and ##AppAssign## = '同意' and ##sStep## <= 40
-LoopHDT3=Templates\WorkFlow\Form\PRL_OISF\LoopSql_Email.hdt
-LoopVAR3=EmailList
-
 [AddtionalSQL]
 ;操作，没有返回的结果，是在数据库中执行，由Insert, Update, Delete命令。从SQL1～SQL20共支持20条
 ;更新本流程中主表信息

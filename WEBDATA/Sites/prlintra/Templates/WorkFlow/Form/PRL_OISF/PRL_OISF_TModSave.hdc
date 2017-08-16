@@ -31,24 +31,6 @@ SqlForCondition6=select v.PostGid TA2Gid from v_Post v where v.EntGid = __ENTGID
 ;判断是否要跳过TA1:TA1=TA2
 SqlForCondition7=select count(*) IsTA1 from dual where ##TA1Gid## = '^^TA2Gid^^' and ##cTA1## = '1'
 
-;鹏瑞利管辖部门的扩展性：
-;5:部门助理;
-;10:部门经理(招商经理);
-;20:区域财务经理;
-;25:财务会计;
-;30:财务经理;
-;31:出纳付款;
-;35:执行总经理;
-;40:商场总经理;
-;50:区域总监;
-;71:资产经理 AssetManager
-
-;取出邮件
-;同意并下一步：取出下一步执行人Email
-LoopSQL2=select distinct v.Email from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=10 and ##Stat## = '提交' and ##IsTA1## = '0' union select distinct v.Email from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=30 and ##Stat## = '提交' and ##IsTA1## = '1'
-LoopHDT2=Templates\WorkFlow\Form\PRL_OISF\LoopSql_Email.hdt
-LoopVAR2=EmailList
-
 [AddtionalSQL]
 ;操作，没有返回的结果，是在数据库中执行，由Insert, Update, Delete命令。从SQL1～SQL20共支持20条
 ;修改本流程流程备注
@@ -96,9 +78,6 @@ AttachSqlAdd1=insert into wf_PRL_OISF_Attach (EntGid,ModelGid,FlowGid,Attach_Gid
 Sql1=
 
 [Master]
-;多条记录的查询，可在HDT页面中直接使用<HDLoop>显示，并能够提供翻页。
-SQL=select fd.yeartype,to_char(fd.TBRD,'FM999999999990.9990') tbrd,to_char(fd.tbrm,'FM999999999990.9990') tbrm,to_char(fd.FTBRD,'FM999999999990.9990') Ftbrd,to_char(fd.Ftbrm,'FM999999999990.9990') Ftbrm,to_char(fd.pmfd,'FM999999999990.9990') pmfd,to_char(fd.pmfm,'FM999999999990.9990') pmfm,to_char(fd.Fpmfd,'FM999999999990.9990') Fpmfd,to_char(fd.Fpmfm,'FM999999999990.9990') Fpmfm from wf_PRL_OISF_dtl fd where fd.EntGid = __ENTGID__ and fd.FlowGid = ##FlowGid## and lower(fd.TBID) = 'tb_dtl30' order by fd.yeartype
-Count=select 1 from dual
 
 [DefaultWhere]
 ;多条记录的查询的默认条件

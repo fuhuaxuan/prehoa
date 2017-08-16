@@ -28,19 +28,6 @@ SQLForCondition2=select ##CurUsrName##||':'||##AppAssign##||' - 类别：' || decod
 SQLForCondition4=select count(distinct v.PostGid) IsTC2 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype in (71,80)
 SQLForCondition5=select v.PostGid TC2Gid from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=80
 
-;取出流程信息，用于邮件
-SQL1=select decode(f.category,10,'Early Termination 提前终止',20,'Termination 到期终止',30,'Others 其他:'||f.categorytext) categoryText1,o.DEPT,o.Unit,o.area,o.tradename,o.trade,o.lessee,o.tradingname,o.address,o.contactor,o.phone,o.email,o.fax,o.leaseTermY,o.leaseTermM,o.leaseTermD,to_char(o.HandoverDate,'YYYY.MM.DD') HandoverDate,o.Related,o.Detail,o.Rate,to_char(o.contractDate1,'YYYY.MM.DD') contractDate1,to_char(o.contractdate2,'YYYY.MM.DD') contractdate2,o.freeRentY,o.freeRentM,o.freeRentD,o.fitoutM,o.fitoutD,to_char(o.fitoutdate1,'YYYY.MM.DD') fitoutdate1,to_char(o.contractdate2,'YYYY.MM.DD') fitoutdate2,f.* from WF_^^ModelCode^^ f,WF_prl_oisf o where f.EntGid = __ENTGID__ and f.EntGid = o.EntGid and f.FlowGid = ##FlowGid## and f.OldFlowGid = o.FlowGid
-
-;显示单位信息
-LoopSQL1=select * from wf_prl_oisf_ground where EntGid = __ENTGID__ and FlowGid = ##OldFlowGid## order by fNo
-LoopHDT1=Templates\WorkFlow\Form\^^ModelCode^^\LoopSql_UnitDtl.hdt
-LoopVAR1=UnitList
-
-;取出邮件
-;同意并下一步：取出下一步执行人Email
-LoopSQL2=select distinct hr.Email from v_Usr u, hr_emp hr where u.EntGid = __ENTGID__ and u.EntGid = hr.EntGid and u.gid = hr.usrgid and exists (select 1 from v_WF_Model_App o,v_org_usr v where o.EntGid = u.EntGid and o.EntGid = v.EntGid and o.ModelGid = ##ModelGid## and lower(o.Modelcode) like '%' || lower('_TC2') and o.AppGid = v.OrgGid and v.UsrGid = u.Gid) and ##AppAssign## = '同意' and ##IsTC2## <> '1' union select distinct hr.Email from v_Usr u, hr_emp hr where u.EntGid = __ENTGID__ and u.EntGid = hr.EntGid and u.gid = hr.usrgid and exists (select 1 from v_WF_Model_App o,v_org_usr v where o.EntGid = u.EntGid and o.EntGid = v.EntGid and o.ModelGid = ##ModelGid## and lower(o.Modelcode) like '%' || lower('_TC3')  and o.AppGid = v.OrgGid and v.UsrGid = u.Gid) and ##AppAssign## = '同意' and ##IsTC2## = '1'
-LoopHDT2=Templates\WorkFlow\Form\^^Modelcode^^\LoopSql_Email.hdt
-LoopVAR2=EmailList
 
 [AddtionalSQL]
 ;操作，没有返回的结果，是在数据库中执行，由Insert, Update, Delete命令。从SQL1～SQL20共支持20条

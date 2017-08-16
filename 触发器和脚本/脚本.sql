@@ -64,19 +64,29 @@ begin
                 '</td>';
       v_Body := v_Body || '<td align="center">' || D.Applyfee || '</td>';
       v_Body := v_Body || '</tr>';
+      v_Content := v_Content || v_Body;
     end loop;
-    v_Content := v_Content || v_Body;
   
     v_Body    := '</table>';
-    v_Content := v_Content || v_Body || v_TEnd;
+    v_Content := v_Content || v_Body || '</td></tr>';
     v_Body    := '[报销金额汇总] : ' || R.Sumfee || '元';
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
     v_Body    := '[报销备注] : ' || R.Memo;
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
   
     v_Content := v_Content || v_Foot;
-    
-    v_Email := 'fuhuaxuan@hd123.com';
+    for U in (select hr.Email
+                from hr_emp hr
+               where hr.entgid = R.EntGid
+                 and exists (select 1
+                        from wf_task t
+                       where t.EntGid = hr.EntGid
+                         and t.FlowGid = R.Flowgid
+                         and t.ExecGid = hr.UsrGid
+                         and t.Stat = 1
+                         and t.ExecGid <> R.Fillusrgid)) loop
+      v_Email := U.EMAIL || ',';
+    end loop;
     if v_Email is not null then
       HDNet_SendMail(v_Title, v_Email, v_Content);
     end if;
@@ -114,7 +124,6 @@ exception
     end;
 end;
 /
-
 create or replace procedure P_PrlDZ_Fee_doMail(p_FlowGid varchar --流程Gid
                                                ) as
   v_Stage   varchar2(1024); -- 过程场景
@@ -179,8 +188,18 @@ begin
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
   
     v_Content := v_Content || v_Foot;
-    
-    v_Email := 'fuhuaxuan@hd123.com';
+    for U in (select hr.Email
+                from hr_emp hr
+               where hr.entgid = R.EntGid
+                 and exists (select 1
+                        from wf_task t
+                       where t.EntGid = hr.EntGid
+                         and t.FlowGid = R.Flowgid
+                         and t.ExecGid = hr.UsrGid
+                         and t.Stat = 1
+                         and t.ExecGid <> R.Fillusrgid)) loop
+      v_Email := U.EMAIL || ',';
+    end loop;
     if v_Email is not null then
       HDNet_SendMail(v_Title, v_Email, v_Content);
     end if;
@@ -245,14 +264,16 @@ begin
   v_Email   := '';
   v_Content := '';
   --for 循环 取出未领取的快递
-  for R in (select f.*, wm.name ModelName
+  for R in (select f.*,
+                   substr(wm.code, instr(wm.code, '_', 1) + 1) MCode,
+                   wm.name ModelName
               from wf_Prl_ISF f, wf_model wm
              where f.EntGid = v_EntGid
                and f.entgid = wm.entgid
                and f.FlowGid = p_FlowGid
                and f.modelgid = wm.modelgid) loop
     v_Stage   := 'FlowGid：' || R.Flowgid || '；模型：' || R.ModelName;
-    v_Title   := 'ISF待审提醒:' || R.Fillusrdept;
+    v_Title   := R.Mcode || '待审提醒:' || R.Fillusrdept;
     v_Content := v_Content || v_Head;
   
     v_Body    := '[流程名称] : ' || R.ModelName;
@@ -340,7 +361,6 @@ begin
                  and f.FlowGid = p_FlowGid
                  and lower(f.TBID) in ('tb_dtl10', 'tb_dtl30')
                order by f.TBID, f.yeartype) loop
-    
       v_Body := ' <tr valign="top" style="background-color: white" align="center">';
       if lower(D.TbId) = 'tb_dtl10' then
         v_Body := v_Body || '<td nowrap> 免:' ||
@@ -349,35 +369,35 @@ begin
       else
         v_Body := v_Body || '<td nowrap> Yr ' || D.Yeartype || ' </td>';
       end if;
-      v_Body := v_Body || '  <td nowrap> ' ||
-                to_char(D.Tbrd, 'FM999999999990.9990') || ' </td>';
-      v_Body := v_Body || '  <td nowrap> ' ||
-                to_char(D.Jtbrd, 'FM999999999990.9990') || ' </td>';
-      v_Body := v_Body || '  <td nowrap> ' ||
-                to_char(D.Tbrm, 'FM999999999990.9990') || ' </td>';
-      v_Body := v_Body || '  <td nowrap> ' ||
-                to_char(D.pmfd, 'FM999999999990.9990') || ' </td>';
-      v_Body := v_Body || '  <td nowrap> ' ||
-                to_char(D.Jpmfd, 'FM999999999990.9990') || ' </td>';
-      v_Body := v_Body || '  <td nowrap> ' ||
-                to_char(D.pmfm, 'FM999999999990.9990') || ' </td>';
-      v_Body := v_Body || '  <td nowrap> ' ||
-                to_char(D.Apfixed, 'FM999999999990.9990') || ' </td>';
-      v_Body := v_Body || '  <td nowrap> ' ||
-                to_char(D.Japfixed, 'FM999999999990.9990') || ' </td>';
-      v_Body := v_Body || '  <td nowrap>' || D.Gto || '%</td>';
-      v_Body := v_Body || '  <td nowrap> ' ||
-                to_char(D.Progtod, 'FM999999999990.9990') || ' </td>';
-      v_Body := v_Body || '  <td nowrap> ' ||
-                to_char(D.Progtom, 'FM999999999990.9990') || ' </td>';
-      v_Body := v_Body || '  <td nowrap>' ||
-                to_char(D.Progtorent, 'FM999999999990.9990') || '</td>';
-      v_Body := v_Body || ' </tr>';
+      v_Body    := v_Body || '  <td nowrap> ' ||
+                   to_char(D.Tbrd, 'FM999999999990.9990') || ' </td>';
+      v_Body    := v_Body || '  <td nowrap> ' ||
+                   to_char(D.Jtbrd, 'FM999999999990.9990') || ' </td>';
+      v_Body    := v_Body || '  <td nowrap> ' ||
+                   to_char(D.Tbrm, 'FM999999999990.9990') || ' </td>';
+      v_Body    := v_Body || '  <td nowrap> ' ||
+                   to_char(D.pmfd, 'FM999999999990.9990') || ' </td>';
+      v_Body    := v_Body || '  <td nowrap> ' ||
+                   to_char(D.Jpmfd, 'FM999999999990.9990') || ' </td>';
+      v_Body    := v_Body || '  <td nowrap> ' ||
+                   to_char(D.pmfm, 'FM999999999990.9990') || ' </td>';
+      v_Body    := v_Body || '  <td nowrap> ' ||
+                   to_char(D.Apfixed, 'FM999999999990.9990') || ' </td>';
+      v_Body    := v_Body || '  <td nowrap> ' ||
+                   to_char(D.Japfixed, 'FM999999999990.9990') || ' </td>';
+      v_Body    := v_Body || '  <td nowrap>' || D.Gto || '%</td>';
+      v_Body    := v_Body || '  <td nowrap> ' ||
+                   to_char(D.Progtod, 'FM999999999990.9990') || ' </td>';
+      v_Body    := v_Body || '  <td nowrap> ' ||
+                   to_char(D.Progtom, 'FM999999999990.9990') || ' </td>';
+      v_Body    := v_Body || '  <td nowrap>' ||
+                   to_char(D.Progtorent, 'FM999999999990.9990') || '</td>';
+      v_Body    := v_Body || ' </tr>';
+      v_Content := v_Content || v_Body;
     end loop;
-    v_Content := v_Content || v_Body;
   
     v_Body    := '</table>';
-    v_Content := v_Content || v_Body || v_TEnd;
+    v_Content := v_Content || v_Body || '</td></tr>';
   
     v_Body    := '[New 新] : ' || R.Brcnew || 'RMB/㎡/天';
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
@@ -389,8 +409,18 @@ begin
                  R.Memo;
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
     v_Content := v_Content || v_Foot;
-    
-    v_Email := 'fuhuaxuan@hd123.com';
+    for U in (select hr.Email
+                from hr_emp hr
+               where hr.entgid = R.EntGid
+                 and exists (select 1
+                        from wf_task t
+                       where t.EntGid = hr.EntGid
+                         and t.FlowGid = R.Flowgid
+                         and t.ExecGid = hr.UsrGid
+                         and t.Stat = 1
+                         and t.ExecGid <> R.Fillusrgid)) loop
+      v_Email := U.EMAIL || ',';
+    end loop;
     if v_Email is not null then
       HDNet_SendMail(v_Title, v_Email, v_Content);
     end if;
@@ -431,10 +461,9 @@ end;
 create or replace procedure P_PrlDZ_ISCF_doMail(p_FlowGid varchar --流程Gid
                                                 ) as
 begin
-  P_PrlDZ_ISCF_doMail(p_FlowGid);
+  P_PrlDZ_ISF_doMail(p_FlowGid);
 end;
 /
-
 create or replace procedure P_PrlDZ_ISTF_doMail(p_FlowGid varchar --流程Gid
                                                 ) as
   v_Stage   varchar2(1024); -- 过程场景
@@ -562,8 +591,18 @@ begin
     v_Body    := '[Remarks 退场原因] : ' || R.REMARKS;
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
     v_Content := v_Content || v_Foot;
-    
-    v_Email := 'fuhuaxuan@hd123.com';
+    for U in (select hr.Email
+                from hr_emp hr
+               where hr.entgid = R.EntGid
+                 and exists (select 1
+                        from wf_task t
+                       where t.EntGid = hr.EntGid
+                         and t.FlowGid = R.Flowgid
+                         and t.ExecGid = hr.UsrGid
+                         and t.Stat = 1
+                         and t.ExecGid <> R.Fillusrgid)) loop
+      v_Email := U.EMAIL || ',';
+    end loop;
     if v_Email is not null then
       HDNet_SendMail(v_Title, v_Email, v_Content);
     end if;
@@ -659,9 +698,11 @@ begin
     end if;
     v_Body    := '[公司名称] : ' || R.Companyname;
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
-    v_Body    := '[DOA信息] : ' || R.Doacode || '-' || R.Doaname;
+    v_Body    := '[项目名称] : ' || R.acgonename || '-' || R.acgtwoname;
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
-    v_Body    := '[付款金额] : ' || nvl(R.Payee, 0) || '元';
+    v_Body    := '[DOA信息] : ' || R.Doacode;
+    v_Content := v_Content || v_TStart || v_Body || v_TEnd;
+    v_Body    := '[付款金额] : ' || nvl(R.payfee, 0) || '元';
     if substr(R.Acgonename, 0, 1) = '3' then
       v_Body := v_Body || '(公司承担：' || nvl(R.Npayfee, 0) || '元)';
     end if;
@@ -688,7 +729,18 @@ begin
     end if;
   
     v_Content := v_Content || v_Foot;
-    v_Email := 'fuhuaxuan@hd123.com';
+    for U in (select hr.Email
+                from hr_emp hr
+               where hr.entgid = R.EntGid
+                 and exists (select 1
+                        from wf_task t
+                       where t.EntGid = hr.EntGid
+                         and t.FlowGid = R.Flowgid
+                         and t.ExecGid = hr.UsrGid
+                         and t.Stat = 1
+                         and t.ExecGid <> R.Fillusrgid)) loop
+      v_Email := U.EMAIL || ',';
+    end loop;
     if v_Email is not null then
       HDNet_SendMail(v_Title, v_Email, v_Content);
     end if;

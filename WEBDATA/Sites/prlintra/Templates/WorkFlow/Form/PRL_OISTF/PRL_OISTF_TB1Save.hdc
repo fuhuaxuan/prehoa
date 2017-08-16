@@ -22,22 +22,6 @@ SQLForCondition2=select ##CurUsrName##||':'||##AppAssign##||' - 类别：' || decod
 ;判断是否要跳过TB:sStep>80且TB2=TC3
 SqlForCondition6=select count(*) IsTB from dual where (select v.AppGid from v_WF_Model_App v where v.EntGid = __ENTGID__ and v.ModelGid = ##ModelGid## and lower(v.ModelCode) like '%' || lower('_TB2') and rownum <2) = (select v.AppGid from v_WF_Model_App v where v.EntGid = __ENTGID__ and v.ModelGid = ##ModelGid## and lower(v.ModelCode) like '%' || lower('_TC3') and rownum <2) and ##DataTotal## > 80000
 
-;取出流程信息，用于邮件
-SQL1=select decode(f.category,10,'Early Termination 提前终止',20,'Termination 到期终止',30,'Others 其他:'||f.categorytext) categoryText1,o.DEPT,o.Unit,o.area,o.tradename,o.trade,o.lessee,o.tradingname,o.address,o.contactor,o.phone,o.email,o.fax,o.leaseTermY,o.leaseTermM,o.leaseTermD,to_char(o.HandoverDate,'YYYY.MM.DD') HandoverDate,o.Related,o.Detail,o.Rate,to_char(o.contractDate1,'YYYY.MM.DD') contractDate1,to_char(o.contractdate2,'YYYY.MM.DD') contractdate2,o.freeRentY,o.freeRentM,o.freeRentD,o.fitoutM,o.fitoutD,to_char(o.fitoutdate1,'YYYY.MM.DD') fitoutdate1,to_char(o.contractdate2,'YYYY.MM.DD') fitoutdate2,f.* from WF_^^ModelCode^^ f,WF_prl_oisf o where f.EntGid = __ENTGID__ and f.EntGid = o.EntGid and f.FlowGid = ##FlowGid## and f.OldFlowGid = o.FlowGid
-
-;显示单位信息
-LoopSQL1=select * from wf_prl_oisf_ground where EntGid = __ENTGID__ and FlowGid = ##OldFlowGid## order by fNo
-LoopHDT1=Templates\WorkFlow\Form\^^ModelCode^^\LoopSql_UnitDtl.hdt
-LoopVAR1=UnitList
-
-;取出邮件
-;同意并下一步：取出下一步执行人Email
-LoopSQL2=select distinct hr.Email from v_Usr u, hr_emp hr where u.EntGid = __ENTGID__ and u.EntGid = hr.EntGid and u.gid = hr.usrgid and exists (select 1 from v_WF_Model_App o,v_org_usr v where o.EntGid = u.EntGid and o.EntGid = v.EntGid and o.ModelGid = ##ModelGid## and lower(o.Modelcode) like '%' || lower('_TB2') and o.AppGid = v.OrgGid and v.UsrGid = u.Gid) and ##AppAssign## = '同意' and ##IsTB## = '0' union select distinct hr.Email from v_Usr u, hr_emp hr where u.EntGid = __ENTGID__ and u.EntGid = hr.EntGid and u.gid = hr.usrgid and exists (select 1 from v_WF_Model_App o,v_org_usr v where o.EntGid = u.EntGid and o.EntGid = v.EntGid and o.ModelGid = ##ModelGid## and lower(o.Modelcode) like '%' || lower('_TC1') and o.AppGid = v.OrgGid and v.UsrGid = u.Gid) and ##AppAssign## = '同意' and ##IsTB## = '1'
-LoopHDT2=Templates\WorkFlow\Form\^^Modelcode^^\LoopSql_Email.hdt
-LoopVAR2=EmailList
-
-;select distinct v.Email from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype in (50) and ##AppAssign## = '同意'
-
 [Where]
 
 [DefaultWhere]

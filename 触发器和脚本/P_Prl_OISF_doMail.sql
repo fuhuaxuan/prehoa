@@ -1,5 +1,5 @@
-create or replace procedure P_PrlDZ_ISF_doMail(p_FlowGid varchar --流程Gid
-                                               ) as
+create or replace procedure P_Prl_OISF_doMail(p_FlowGid varchar --流程Gid
+                                              ) as
   v_Stage   varchar2(1024); -- 过程场景
   v_ErrText varchar2(1024); -- Oracle错误信息
 
@@ -26,17 +26,17 @@ begin
   v_Content := '';
   --for 循环 取出未领取的快递
   for R in (select f.*,
-                   substr(wm.code, instr(wm.code, '_', 1) + 1) MCode,
+                   substr(wm.code, instr(wm.code, '_', 1) + 2) MCode,
                    wm.name ModelName
-              from wf_Prl_ISF f, wf_model wm
+              from wf_Prl_OISF f, wf_model wm
              where f.EntGid = v_EntGid
                and f.entgid = wm.entgid
                and f.FlowGid = p_FlowGid
                and f.modelgid = wm.modelgid) loop
     v_Stage   := 'FlowGid：' || R.Flowgid || '；模型：' || R.ModelName;
-    v_Title   := R.Mcode || '待审提醒:' || R.Fillusrdept;
+    v_Title   := '写字楼' || R.Mcode || '待审提醒:' || R.FILLDEPTNAME;
     v_Content := v_Content || v_Head;
-  
+
     v_Body    := '[流程名称] : ' || R.ModelName;
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
     v_Body    := '[单号] : ' || R.Num;
@@ -66,16 +66,14 @@ begin
                  to_char(R.Contractdate1, 'YYYY.MM.DD') || '~' ||
                  to_char(R.Contractdate2, 'YYYY.MM.DD');
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
-    v_Body    := '[Free of rent Period 免租期] : ' || R.Freerentm || '月/' ||
-                 R.Freerentd || '日';
+    v_Body    := '[Free of rent Period 免租期] : ' || R.Freerenty || '年/' ||
+                 R.Freerentm || '月/' || R.Freerentd || '日';
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
     v_Body    := '[Fit-Out Period 装修期] : ' || R.Fitoutm || '月/' ||
                  R.Fitoutd || '日（' || to_char(R.Fitoutdate1, 'YYYY.MM.DD') || '~' ||
                  to_char(R.Fitoutdate2, 'YYYY.MM.DD') || ')';
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
-    v_Body    := R.RATE1 || '(' || R.Rate || ')';
-    v_Content := v_Content || v_TStart || v_Body || v_TEnd;
-  
+
     v_Body := ' <table cellpadding="0" cellspacing="1" class="ListBar" width="100%" style="background-color: #d9dbdf;">';
     v_Body := v_Body || ' <col style="padding-left:4px;">';
     v_Body := v_Body || '<col style="padding-left:4px;">';
@@ -90,76 +88,56 @@ begin
     v_Body := v_Body ||
               '  <tr style="background-color: #ecedef;" align="center">';
     v_Body := v_Body || '   <td rowspan="2">Yr 年</td>';
-    v_Body := v_Body || '   <td colspan="3">Base Rental<br>固定租金</td>';
+    v_Body := v_Body || '   <td colspan="4">Base Rental<br>固定租金</td>';
     v_Body := v_Body ||
-              '   <td colspan="3" nowrap>Property Mgmt Fee<br>物管费</td>';
-    v_Body := v_Body || '   <td colspan="2">A 市场推广费</td>';
-    v_Body := v_Body || '   <td rowspan="2" nowrap>GTO 提成</td>';
-    v_Body := v_Body ||
-              '   <td colspan="2" nowrap>Projected GTO Rent<Br>预估营业额</td>';
-    v_Body := v_Body ||
-              '   <td rowspan="2" nowrap>Projected GTO Rent<Br>预估提成租金</td>';
+              '   <td colspan="4" nowrap>Property Mgmt Fee<br>物管费</td>';
     v_Body := v_Body || ' </tr>';
     v_Body := v_Body ||
               ' <tr style="background-color: #ecedef;" align="center">';
     v_Body := v_Body || '   <td>㎡/天</td>';
-    v_Body := v_Body || '  <td>[建筑]㎡/天</td>';
-    v_Body := v_Body || '   <td>总数/月</td>';
+    v_Body := v_Body || '  <td>总数/月</td>';
+    v_Body := v_Body || '   <td>(含免)<br>㎡/天</td>';
+    v_Body := v_Body || '   <td>(含免）<br>㎡/月</td>';
     v_Body := v_Body || '   <td>㎡/天</td>';
-    v_Body := v_Body || '   <td>[建筑]㎡/天</td>';
     v_Body := v_Body || '  <td>总数/月</td>';
-    v_Body := v_Body || '  <td>㎡/天</td>';
-    v_Body := v_Body || '  <td>[建筑]㎡/天</td>';
-    v_Body := v_Body || '  <td>㎡/天</td>';
-    v_Body := v_Body || '  <td>总数/月</td>';
+    v_Body := v_Body || '   <td>(含免)<br>㎡/天</td>';
+    v_Body := v_Body || '   <td>(含免）<br>㎡/月</td>';
     v_Body := v_Body || ' </tr>';
-  
+
     v_Content := v_Content || v_TStart || v_Body;
-  
+
     for D in (select f.*
-                from Wf_Prl_Isf_Dtl f
+                from Wf_Prl_OIsf_Dtl f
                where f.EntGid = v_EntGid
                  and f.FlowGid = p_FlowGid
-                 and lower(f.TBID) in ('tb_dtl10', 'tb_dtl30')
+                 and lower(f.TBID) in ('tb_dtl30')
                order by f.TBID, f.yeartype) loop
       v_Body := ' <tr valign="top" style="background-color: white" align="center">';
-      if lower(D.TbId) = 'tb_dtl10' then
-        v_Body := v_Body || '<td nowrap> 免:' ||
-                  to_char(D.Freerentdate1, 'YYYY.MM.DD') || '~' ||
-                  to_char(D.Freerentdate2, 'YYYY.MM.DD') || ') </td>';
-      else
-        v_Body := v_Body || '<td nowrap> Yr ' || D.Yeartype || ' </td>';
-      end if;
+
+      v_Body    := v_Body || '<td nowrap> Yr ' || D.Yeartype || ' </td>';
       v_Body    := v_Body || '  <td nowrap> ' ||
                    to_char(D.Tbrd, 'FM999999999990.9990') || ' </td>';
       v_Body    := v_Body || '  <td nowrap> ' ||
-                   to_char(D.Jtbrd, 'FM999999999990.9990') || ' </td>';
+                   to_char(D.TBRM, 'FM999999999990.9990') || ' </td>';
       v_Body    := v_Body || '  <td nowrap> ' ||
-                   to_char(D.Tbrm, 'FM999999999990.9990') || ' </td>';
+                   to_char(D.Ftbrd, 'FM999999999990.9990') || ' </td>';
+      v_Body    := v_Body || '  <td nowrap> ' ||
+                   to_char(D.Ftbrm, 'FM999999999990.9990') || ' </td>';
       v_Body    := v_Body || '  <td nowrap> ' ||
                    to_char(D.pmfd, 'FM999999999990.9990') || ' </td>';
       v_Body    := v_Body || '  <td nowrap> ' ||
-                   to_char(D.Jpmfd, 'FM999999999990.9990') || ' </td>';
-      v_Body    := v_Body || '  <td nowrap> ' ||
                    to_char(D.pmfm, 'FM999999999990.9990') || ' </td>';
       v_Body    := v_Body || '  <td nowrap> ' ||
-                   to_char(D.Apfixed, 'FM999999999990.9990') || ' </td>';
+                   to_char(D.Fpmfd, 'FM999999999990.9990') || ' </td>';
       v_Body    := v_Body || '  <td nowrap> ' ||
-                   to_char(D.Japfixed, 'FM999999999990.9990') || ' </td>';
-      v_Body    := v_Body || '  <td nowrap>' || D.Gto || '%</td>';
-      v_Body    := v_Body || '  <td nowrap> ' ||
-                   to_char(D.Progtod, 'FM999999999990.9990') || ' </td>';
-      v_Body    := v_Body || '  <td nowrap> ' ||
-                   to_char(D.Progtom, 'FM999999999990.9990') || ' </td>';
-      v_Body    := v_Body || '  <td nowrap>' ||
-                   to_char(D.Progtorent, 'FM999999999990.9990') || '</td>';
+                   to_char(D.Fpmfm, 'FM999999999990.9990') || ' </td>';
       v_Body    := v_Body || ' </tr>';
       v_Content := v_Content || v_Body;
     end loop;
-  
+
     v_Body    := '</table>';
     v_Content := v_Content || v_Body || '</td></tr>';
-  
+
     v_Body    := '[New 新] : ' || R.Brcnew || 'RMB/㎡/天';
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
     v_Body    := '[Existing 目前] : ' || R.Brcexist || 'RMB/㎡/天';
