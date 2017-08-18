@@ -10,6 +10,71 @@
   <col style="padding-left:4px;">
   <col style="padding-left:4px;">
   <tr style="background-color: #ecedef;" align="center">
+    <td>Yr年</td>
+    <td>类别</td>
+    <td nowrap>㎡/天</td>
+    <td nowrap>[建筑]</td>
+    <td nowrap>㎡/月</td>
+  </tr>
+  <hdloop>
+  <tr style="background-color: white" align="center">
+    <td nowrap rowspan="5">&nbsp;
+    <script language="javascript">
+      if ('<HDPrint Value=#TBID# Replace=#DBField2Js#>'.toLowerCase() == 'tb_dtl10') {
+        document.write('免:<HDPrint Value=#FreeRentDate1# Replace=#DBField2Js#><br>~<HDPrint Value=#FreeRentDate2# Replace=#DBField2Js#>');
+      }
+      else{
+        document.write('Yr<HDPrint Value=#yeartype#>');
+      }
+    </script>
+    &nbsp;</td>
+    <td nowrap>固定租金</td>
+    <td nowrap>&nbsp;<HDPrint Value=#tbrd#>&nbsp;</td>
+    <td nowrap>&nbsp;<HDPrint Value=#JTBRD#>&nbsp;</td>
+    <td nowrap>&nbsp;<HDPrint Value=#tbrm#>&nbsp;</td>
+  </tr>
+
+  <tr valign="top" style="background-color: white" align="center">
+    <td nowrap>物管费</td>
+    <td nowrap>&nbsp;<HDPrint Value=#pmfdb#>&nbsp;</td>
+    <td nowrap>&nbsp;<HDPrint Value=#JPMFD#>&nbsp;</td>
+    <td nowrap>&nbsp;<HDPrint Value=#pmfmb#>&nbsp;</td>
+  </tr>
+  <tr valign="top" style="background-color: white" align="center">
+    <td nowrap>市场推广费</td>
+    <td nowrap>&nbsp;<HDPrint Value=#Apfixed#>&nbsp;</td>
+    <td nowrap>&nbsp;<HDPrint Value=#jApfixed#>&nbsp;</td>
+    <td nowrap>&nbsp;</td>
+  </tr>
+  <tr valign="top" style="background-color: white" align="center">
+    <td nowrap>预估营业额</td>
+    <td nowrap>&nbsp;<HDPrint Value=#progtod#>&nbsp;</td>
+    <td nowrap>&nbsp;</td>
+    <td nowrap>&nbsp;<HDPrint Value=#progtom#>&nbsp;</td>
+  </tr>
+  <tr valign="top" style="background-color: white" align="center">
+    <td nowrap>预估提成租金</td>
+    <td nowrap><HDPrint Value=#ProGTOrent#></td>
+    <td nowrap>GTO 提成</td>
+    <td nowrap><HDPrint Value=#gto#>%</td>
+  </tr>
+
+  </hdloop>
+</table>
+
+<!--
+<table cellpadding="0" cellspacing="1" class="ListBar" width="100%" style="background-color: #d9dbdf;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <tr style="background-color: #ecedef;" align="center">
     <td rowspan="2">Yr 年</td>
     <td colspan="3">Base Rental<br>固定租金</td>
     <td colspan="3" nowrap>Property Mgmt Fee<br>物管费</td>
@@ -30,7 +95,6 @@
     <td>㎡/天</td>
     <td>总数/月</td>
   </tr>
-  <hdloop>
     <tr valign="top" style="background-color: white" align="center">
       <td nowrap>&nbsp;
       <script language="javascript">
@@ -55,5 +119,4 @@
       <td nowrap>&nbsp;<HDPrint Value=#progtom#>&nbsp;</td>
       <td nowrap><HDPrint Value=#ProGTOrent#></td>
     </tr>
-  </hdloop>
-</table>
+</table>-->

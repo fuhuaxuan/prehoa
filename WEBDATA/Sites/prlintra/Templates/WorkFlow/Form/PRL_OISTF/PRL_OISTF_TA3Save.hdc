@@ -21,6 +21,19 @@ SqlForCondition1=select wm.Code ModelCode, wm.Name ModelName,d.Name StepName fro
 ;审批备注
 SQLForCondition2=select ##CurUsrName##||':'||##AppAssign##||' - 类别：' || decode(category,10,'Early Termination 提前终止',20,'Termination 到期终止',30,'Others 其他:'||categoryText) || '；租户：' || Lessee|| '；终止日期：' || Terminationdate AppFlowMemo,nvl(nvl(numa,0)+nvl(numb,0)+nvl(numc,0)+nvl(numd,0)+nvl(numg,0), 0) DataTotal from WF_^^ModelCode^^ where EntGid = __ENTGID__ and  FlowGid = ##FlowGid##
 
+;鹏瑞利管辖部门的扩展性：
+;5:部门助理;
+;10:部门经理(招商经理);
+;20:区域财务经理;
+;25:财务会计;
+;30:财务经理;
+;31:出纳付款;
+;35:执行总经理;
+;40:商场总经理;
+;50:区域总监;
+;71:资产经理 AssetManager
+SqlForCondition3=select v.PostGid TB1Gid,v.Email AppEmail from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=71
+
 [AddtionalSQL]
 ;操作，没有返回的结果，是在数据库中执行，由Insert, Update, Delete命令。从SQL1～SQL20共支持20条
 ;更新本流程中主表信息
@@ -95,7 +108,7 @@ Log=
 PageKind=0
 
 ;同意，满足条件，需要区域总经理CFO审批，流转到下一步
-WF1=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TB1 | AppGid | and ##AppAssign## = '同意' and ##DataTotal## > 0 |^^AppFlowMemo^^)
+WF1=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TB1 | TB1Gid | and ##AppAssign## = '同意' and ##DataTotal## > 0 |^^AppFlowMemo^^)
 
 ;否决，返回发起人
 WF4=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TMod | Null | and ##AppAssign## = '否决' |^^AppFlowMemo^^)

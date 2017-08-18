@@ -60,7 +60,7 @@ ACGOther： <HDPrint Value=#ACGOther#>
 <form name="frmMail" method="POST" action="/bin/hdmailsend.dll/send" target="_blank">
 标　题:<input type="text" name="Title" maxlength="100" style="width:300" value="付款待审提醒:<HDPrint Value=#fillusrdept# Replace=#DBField2Input#>" readonly><br>
 
-收件人:<input type="text" name="Email" maxlength="400" style="width:400" value=""> <input type="button" name="btn_1" value="发送邮件" onclick="CheckSubmit()">
+收件人:<input type="text" name="Email" maxlength="400" > <input type="button" name="btn_1" value="发送邮件" onclick="CheckSubmit()">
 <br>
 
 <input type="hidden" name="fAddr" maxlength="400" style="width:150" value="pcrtoa@hd123.net" readonly>

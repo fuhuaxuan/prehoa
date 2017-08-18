@@ -10,6 +10,55 @@
   <col style="padding-left:4px;">
   <col style="padding-left:4px;">
   <tr style="background-color: #ecedef;" align="center">
+    <td>Yr年</td>
+    <td>类别</td>
+    <td>㎡/天</td>
+    <td>总数/月</td>
+    <td>(含免)<br>㎡/天</td>
+    <td>(含免）<br>㎡/月</td>
+  </tr>
+  <hdloop>
+  <tr style="background-color: white" align="center">
+    <td nowrap rowspan="2">&nbsp;
+    <script language="javascript">
+      if ('<HDPrint Value=#TBID# Replace=#DBField2Js#>'.toLowerCase() == 'tb_dtl10') {
+        document.write('免:<HDPrint Value=#FreeRentDate1# Replace=#DBField2Js#><br>~<HDPrint Value=#FreeRentDate2# Replace=#DBField2Js#>');
+      }
+      else{
+        document.write('Yr<HDPrint Value=#yeartype#>');
+      }
+    </script>
+    &nbsp;</td>
+    <td nowrap>固定租金</td>
+    <td nowrap>&nbsp;<HDPrint Value=#tbrd#>&nbsp;</td>
+    <td nowrap>&nbsp;<HDPrint Value=#tbrm#>&nbsp;</td>
+    <td nowrap>&nbsp;<HDPrint Value=#ftbrd#>&nbsp;</td>
+    <td nowrap>&nbsp;<HDPrint Value=#ftbrm#>&nbsp;</td>
+  </tr>
+
+  <tr valign="top" style="background-color: white" align="center">
+    <td nowrap>物管费</td>
+    <td nowrap>&nbsp;<HDPrint Value=#pmfd#>&nbsp;</td>
+    <td nowrap>&nbsp;<HDPrint Value=#pmfm#>&nbsp;</td>
+    <td nowrap>&nbsp;<HDPrint Value=#fpmfd#>&nbsp;</td>
+    <td nowrap>&nbsp;<HDPrint Value=#fpmfm#>&nbsp;</td>
+  </tr>
+  </hdloop>
+</table>
+
+<!--
+<table cellpadding="0" cellspacing="1" class="ListBar" width="100%" style="background-color: #d9dbdf;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <tr style="background-color: #ecedef;" align="center">
     <td rowspan="2">Yr 年</td>
     <td colspan="4">Base Rental<br>固定租金</td>
     <td colspan="4" nowrap>Property Mgmt Fee<br>物管费</td>
@@ -24,7 +73,6 @@
     <td>(含免）<br>㎡/天</td>
     <td>(含免）<br>㎡/月</td>
   </tr>
-  <hdloop>
     <tr valign="top" style="background-color: white" align="center">
       <td nowrap>Yr <HDPrint Value=#yeartype#></td>
       <td nowrap><HDPrint Value=#tbrd#></td>
@@ -36,5 +84,4 @@
       <td nowrap><HDPrint Value=#fpmfd#></td>
       <td nowrap><HDPrint Value=#fpmfm#></td>
     </tr>
-  </hdloop>
-</table>
+</table>-->

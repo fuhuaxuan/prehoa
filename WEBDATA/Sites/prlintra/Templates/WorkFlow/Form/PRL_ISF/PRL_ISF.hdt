@@ -135,7 +135,7 @@ Title:<input type="hidden1" name="Title" maxlength="100" style="width:150" value
 
 <br>
 
-Email:<input type="hidden1" name="Email" maxlength="400" style="width:400" value=""> <input type="submit" name="send" value="发送邮件">
+Email:<input type="hidden1" name="Email" maxlength="400" > <input type="submit" name="send" value="发送邮件">
 <br>
 
 fAddr:<input type="hidden1" name="fAddr" maxlength="400" style="width:150" value="pcrtoa@hd123.net" readonly>
