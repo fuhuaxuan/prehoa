@@ -1,0 +1,51 @@
+<script language="javascript">
+//函数：ready
+  //功能：document 加载完成后调用
+  $(function(){
+    var browser = JQGetBrowser();
+    if (browser.mobile){
+      $("form[name=frmPhone]").show();
+      $("form[name=frmDtl]").hide();
+    }
+    else{
+      $("form[name=frmDtl]").show();
+      $("form[name=frmPhone]").hide();
+    }
+  });
+</script>
+<form name="frmPhone" method="Post" action="" style="display:none">
+<table cellpadding="0" cellspacing="1" align="center" width="100%">
+  <col style="width:100%">
+  <TR>
+    <td class="title" align="center"><HDPrint Value=#ModelName#></td>
+  </TR>
+</table>
+<table cellpadding="0" cellspacing="1" class="ListBar" width="100%" id="Order">
+  <col style="width:30%">
+  <col style="width:70%">
+  <TR>
+    <TD class="DtlBarTitle">单号:</TD>
+    <TD class="listtd"><HDPrint Value=#Num#></td>
+  </TR>
+  <TR>
+    <TD class="DtlBarTitle">发起人:</TD>
+    <TD class="listtd"><HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]</td>
+  </TR>
+  <TR>
+    <TD class="DtlBarTitle">发起日期:</TD>
+    <TD class="listtd"><HDPrint Value=#CreateDate#></td>
+  </TR>
+</table>
+
+<h3 class="SubTitleBar" >
+<TABLE cellspacing="1" cellpadding="0" width="100%">
+  <col style="padding-left:4px;">
+  <col style="width:20px;" align="center">
+  <TR>
+    <TD align="left" style="padding-left:10px;"><b>单据信息</b></TD>
+    <TD onclick="JQExpand('tb_Order');" style="cursor:hand" class="IconUp">　&nbsp;</TD>
+  </TR>
+</TABLE>
+</h3>
+<HDPrint Value=#EmailList# Replace=#None#>
+</form>

@@ -15,7 +15,7 @@ Remind1=¶Ô²»Æğ£¬ÄúÖ¸¶¨µÄÁ÷³ÌÉêÇëµ¥Ã»ÓĞÕÒµ½<script>alert('¶Ô²»Æğ£¬ÄúÖ¸¶¨µÄÁ÷³ÌÉêÇ
 SqlForCondition1=select wm.Code ModelCode, wm.Name ModelName,replace(replace(upper(wm.code),'PRL_',''),'DZ','') MCode from wf_Model wm where wm.EntGid = __ENTGID__ and wm.ModelGid = ##ModelGid##
 
 ;µÃµ½ÒµÎñµ¥¾İĞÅÏ¢
-SQL1=select decode(Rate1,'ÁªÓªĞÎÊ½',1,'×â½ğĞÎÊ½',2) RateText,decode(Rate,'¹Ì¶¨×â½ğÓëÌá³É×â½ğ¶şÕßÈ¡¸ß',0,'×â½ğ£¨º¬Îï¹Ü·Ñ£©¿ÛÂÊÈ¡¸ß',1,'×â½ğ+¿ÛÂÊ',2,'¹Ì¶¨×â½ğ',3,'¿ÛÂÊ',4) Rate,to_char(HandoverDate,'YYYY-MM-DD') HandoverDate,substr(wf.FillUsrDeptCode, 0, 4) ParentDeptCode,wf.* from wf_PRL_ISF wf where wf.EntGid = __ENTGID__ and wf.FlowGid = ##FlowGid##
+SQL1=select decode(Rate1,'ÁªÓªĞÎÊ½',1,'×â½ğĞÎÊ½',2) RateText,decode(Rate,'¹Ì¶¨×â½ğÓëÌá³É×â½ğ¶şÕßÈ¡¸ß',0,'×â½ğ£¨º¬Îï¹Ü·Ñ£©¿ÛÂÊÈ¡¸ß',1,'×â½ğ+¿ÛÂÊ',2,'¹Ì¶¨×â½ğ',3,'¿ÛÂÊ',4) Rate,to_char(HandoverDate,'YYYY-MM-DD') HandoverDate,substr(wf.FillUsrDeptCode, 0, 4) ParentDeptCode,wf.*,FillUsrDept FillDeptName from wf_PRL_ISF wf where wf.EntGid = __ENTGID__ and wf.FlowGid = ##FlowGid##
 
 ;È¡³öµ±Ç°Á÷³Ì£¬µ±Ç°ÓÃ»§£¬ÏÂÒ»²½²Ù×÷
 SQl2=select wt.Code NextStepCode,wt.Name NextStepName from wf_task wt where wt.EntGid = __ENTGID__ and wt.ModelGid = ##ModelGid## and wt.FlowGid = ##FlowGid## and wt.ExecGid = __USRGID__ and wt.stat = 1
@@ -41,6 +41,19 @@ LoopSQL5=select fd.* from WF_PRL_ISF_dtl fd where fd.EntGid = __ENTGID__ and fd.
 LoopHDT5=Templates\WorkFlow\Form\PRLDZ_ISF\Loopsql_DtlList.hdt
 LoopVAR5=DtlList
 
+;ÏÔÊ¾µ¥Î»ĞÅÏ¢
+LoopSQL7=select * from wf_PRL_ISF_ground where EntGid = __ENTGID__ and FlowGid = ##FlowGid## order by fNo
+LoopHDT7=Templates\WorkFlow\Form\PRLDZ_ISF\LoopSql_UnitDtl.hdt
+LoopVAR7=UnitList2
+
+;ÏÔÊ¾ÓÊ¼ş
+LoopSQL19=select 1 from dual
+LoopHDT19=Templates\WorkFlow\Form\PRLDZ_ISF\Loopsql_Email.hdt
+LoopVAR19=EmailList
+
+LoopSQL20=select 1 from dual
+LoopHDT20=Templates\WorkFlow\Form\PrlDZ_Email\Loopsql_Email.hdt
+LoopVAR20=EmailPhone
 [AddtionalSQL]
 ;²Ù×÷£¬Ã»ÓĞ·µ»ØµÄ½á¹û£¬ÊÇÔÚÊı¾İ¿âÖĞÖ´ĞĞ£¬ÓÉInsert, Update, DeleteÃüÁî¡£´ÓSQL1¡«SQL20¹²Ö§³Ö20Ìõ
 SQL1=

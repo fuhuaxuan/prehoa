@@ -20,7 +20,7 @@ SqlForCondition1=select wm.Code ModelCode, wm.Name ModelName from wf_Model wm wh
 ;--发送邮件
 ;--过程命名："P_模型代码_doMail.sql"
 ;--参数1：FlowGid
-SQL1=call P_^^ModelCodeT^^_doMail(##FlowGid##)
+SQL1=call P_^^ModelCode^^_doMail(##FlowGid##)
 
 [AddtionalSQLUseWhere]
 ;显示，单条数据的查询，可以用于HDT显示，有select命令。从SQL1～SQL20共支持20条，同时会使用上面的[where]中的sql语句

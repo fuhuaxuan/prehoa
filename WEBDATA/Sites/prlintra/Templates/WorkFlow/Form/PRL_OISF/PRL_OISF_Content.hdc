@@ -61,6 +61,19 @@ LoopSQL6=select fd.yeartype,to_char(fd.TBRD,'FM999999999990.9990') tbrd,to_char(
 LoopHDT6=Templates\WorkFlow\Form\PRL_OISF\LoopSql_EmailDtl.hdt
 LoopVAR6=EmailDtl
 
+;显示单位信息
+LoopSQL7=select * from wf_PRL_OISF_ground where EntGid = __ENTGID__ and FlowGid = ##FlowGid## order by fNo
+LoopHDT7=Templates\WorkFlow\Form\PRL_OISF\LoopSql_UnitDtl.hdt
+LoopVAR7=UnitList2
+
+;显示邮件
+LoopSQL19=select 1 from dual
+LoopHDT19=Templates\WorkFlow\Form\PRL_OISF\Loopsql_Email.hdt
+LoopVAR19=EmailList
+
+LoopSQL20=select 1 from dual
+LoopHDT20=Templates\WorkFlow\Form\PrlDZ_Email\Loopsql_Phone.hdt
+LoopVAR20=EmailPhone
 [AddtionalSQL]
 ;操作，没有返回的结果，是在数据库中执行，由Insert, Update, Delete命令。从SQL1～SQL20共支持20条
 ;计算本流程的 P1_P8 , 必须放在最后

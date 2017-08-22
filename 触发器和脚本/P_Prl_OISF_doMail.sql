@@ -36,7 +36,7 @@ begin
     v_Stage   := 'FlowGid：' || R.Flowgid || '；模型：' || R.ModelName;
     v_Title   := '写字楼' || R.Mcode || '待审提醒:' || R.FILLDEPTNAME;
     v_Content := v_Content || v_Head;
-
+  
     v_Body    := '[流程名称] : ' || R.ModelName;
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
     v_Body    := '[单号] : ' || R.Num;
@@ -73,7 +73,9 @@ begin
                  R.Fitoutd || '日（' || to_char(R.Fitoutdate1, 'YYYY.MM.DD') || '~' ||
                  to_char(R.Fitoutdate2, 'YYYY.MM.DD') || ')';
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
-
+    v_Body    := '[Security Deposit (mths) 保证金] : ' || R.Security;
+    v_Content := v_Content || v_TStart || v_Body || v_TEnd;
+  
     v_Body := ' <table cellpadding="0" cellspacing="1" class="ListBar" width="100%" style="background-color: #d9dbdf;">';
     v_Body := v_Body || ' <col style="padding-left:4px;">';
     v_Body := v_Body || '<col style="padding-left:4px;">';
@@ -103,9 +105,9 @@ begin
     v_Body := v_Body || '   <td>(含免)<br>㎡/天</td>';
     v_Body := v_Body || '   <td>(含免）<br>㎡/月</td>';
     v_Body := v_Body || ' </tr>';
-
+  
     v_Content := v_Content || v_TStart || v_Body;
-
+  
     for D in (select f.*
                 from Wf_Prl_OIsf_Dtl f
                where f.EntGid = v_EntGid
@@ -113,7 +115,7 @@ begin
                  and lower(f.TBID) in ('tb_dtl30')
                order by f.TBID, f.yeartype) loop
       v_Body := ' <tr valign="top" style="background-color: white" align="center">';
-
+    
       v_Body    := v_Body || '<td nowrap> Yr ' || D.Yeartype || ' </td>';
       v_Body    := v_Body || '  <td nowrap> ' ||
                    to_char(D.Tbrd, 'FM999999999990.9990') || ' </td>';
@@ -134,10 +136,10 @@ begin
       v_Body    := v_Body || ' </tr>';
       v_Content := v_Content || v_Body;
     end loop;
-
+  
     v_Body    := '</table>';
     v_Content := v_Content || v_Body || '</td></tr>';
-
+  
     v_Body    := '[New 新] : ' || R.Brcnew || 'RMB/㎡/天';
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
     v_Body    := '[Existing 目前] : ' || R.Brcexist || 'RMB/㎡/天';

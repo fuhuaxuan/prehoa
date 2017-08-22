@@ -42,6 +42,14 @@ LoopSQL4=select g.* from wf_prl_oisf_ground g,wf_^^ModelCode^^ f where f.EntGid 
 LoopHDT4=Templates\WorkFlow\Form\^^ModelCode^^\LoopSql_UnitDtl.hdt
 LoopVAR4=UnitList
 
+;显示邮件
+LoopSQL19=select 1 from dual
+LoopHDT19=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_Email.hdt
+LoopVAR19=EmailList
+
+LoopSQL20=select 1 from dual
+LoopHDT20=Templates\WorkFlow\Form\PrlDZ_Email\Loopsql_Phone.hdt
+LoopVAR20=EmailPhone
 [AddtionalSQL]
 ;操作，没有返回的结果，是在数据库中执行，有Insert, Update, Delete命令。从SQL1～SQL20共支持20条
 SQL1=

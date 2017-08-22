@@ -9,15 +9,24 @@ LIMITRemind1=¶Ô²»Æğ£¬ÄúÎ´Ö¸¶¨Á÷³ÌĞÅÏ¢£¡Çë´ÓÕıÈ·µÄÂ·¾¶½øÈë
 SQL1=select 1 from dual where ##IsNew## = '0' union select 1 from WF_Flow where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and ##IsNew## <> '0'
 Remind1=¶Ô²»Æğ£¬ÄúÖ¸¶¨µÄÁ÷³ÌÉêÇëµ¥Ã»ÓĞÕÒµ½<script>alert('¶Ô²»Æğ£¬ÄúÖ¸¶¨µÄÁ÷³ÌÉêÇëµ¥Ã»ÓĞÕÒµ½');window.close()</script>
 
+;ÅĞ¶Ï´«ÈëFlowGid ÊÇ·ñ´æÔÚ
+SQL2=select 1 from dual where ##Stat## <> 'Ìá½»' union select 1 from Prl_Stamp_App where EntGid = __ENTGID__ and StampType = '^^StampType^^' and ComGid = '^^ComGid^^' and ##Stat## = 'Ìá½»'
+Remind2=¶Ô²»Æğ£¬ÏÂÒ»²½ÉóÅúÈËÎ´ÕÒµ½£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ¡£<script>alert('¶Ô²»Æğ£¬ÏÂÒ»²½ÉóÅúÈËÎ´ÕÒµ½£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ¡£');window.close()</script>
+
 [Detail]
 ;ÏÔÊ¾£¬²éÑ¯µÃµ½µÄ½á¹û¿ÉÒÔÓÃÓÚHDTÏÔÊ¾£¬´ÓSQL1¡«SQL20¹²Ö§³Ö20Ìõ
 ;È¡³ö±¾Á÷³ÌÄ£ĞÍĞÅÏ¢
 SqlForCondition1=select wm.Code ModelCode, wm.Name ModelName,d.Name StepName from wf_Model wm,WF_Task_Define d where wm.EntGid = d.EntGid(+) and wm.EntGid = __ENTGID__ and wm.ModelGid = d.ModelGid(+) and wm.ModelGid = ##ModelGid## and lower(d.code(+)) = replace(lower(##Url##),'save')
 
-;¶¨ÒåÁ÷³Ì±¸×¢
-SQLForCondition2=select '±êÌâ£º' || ##Title## || '£»ÈÕÆÚ£º' || ##ApplyDate## TheMemo from dual
+SQLForCondition2=select name ComName from prl_company where EntGid = __ENTGID__ and gid = ##ComGid##
 
-SQLForCondition3=select 'µ¥ºÅ£º'|| ##Num##|| '£»' || ##TheMemo##  TheFlowMemo,'´ıĞŞ¸Ä - ' || ##TheMemo## ModFlowMemo,'´ıÉóÅú - ·¢ÆğÈË£º' || ##CurUsrName## ||'£»' || ##TheMemo## AppFlowMemo from dual
+;¶¨ÒåÁ÷³Ì±¸×¢
+SQLForCondition3=select 'ÉêÇëÀàĞÍ£º' || ##ApplyType## || '£»ÉêÇëÓ¡ÕÂÖÖÀà£º' || ##StampType## || '£»¹«Ë¾Ãû³Æ£º' || ##ComName## TheMemo from dual
+
+SQLForCondition4=select 'µ¥ºÅ£º'|| ##Num##|| '£»' || ##TheMemo##  TheFlowMemo,'´ıĞŞ¸Ä - ' || ##TheMemo## ModFlowMemo,'´ıÉóÅú - ·¢ÆğÈË£º' || ##CurUsrName## ||'£»' || ##TheMemo## AppFlowMemo from dual
+
+;È¡³öÉóÅúÈË
+SQLForCondition5=select AppGid T2Gid from Prl_Stamp_App where EntGid = __ENTGID__ and StampType = ##StampType## and ComGid = ##ComGid## and line = 1
 
 [AddtionalSQL]
 ;²Ù×÷£¬Ã»ÓĞ·µ»ØµÄ½á¹û£¬ÊÇÔÚÊı¾İ¿âÖĞÖ´ĞĞ£¬ÓÉInsert, Update, DeleteÃüÁî¡£´ÓSQL1¡«SQL20¹²Ö§³Ö20Ìõ
@@ -26,25 +35,32 @@ SQLForCondition3=select 'µ¥ºÅ£º'|| ##Num##|| '£»' || ##TheMemo##  TheFlowMemo,'´
 SQL1=update wf_flow set flownote = ##TheFlowMemo## where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and ##Stat## <> 'ÖÕÖ¹' and ##IsNew## <> '0'
 
 ;T1-²åÈë±¾Á÷³ÌÖ÷±í
-SQL2=insert into Wf_^^ModelCode^^ (EntGid,ModelGid,FlowGid,Num,LastUpdDate,Stat,FillUsrGid,FillUsrCode,FillUsrName,FillDeptGid,FillDeptCode,FillDeptName,Title,ApplyDate,Memo,T2Gid,T2Code,T2Name,Dtl1Sum,Dtl2Sum,Dtl3Sum,Dtl4Sum,Dtl5Sum)select __ENTGID__,##ModelGid##,##FlowGid##,##Num##,sysdate,##Stat##,__USRGID__,__USRCODE__,__USRNAME__,##FillDeptGid##,##FillDeptCode##,##FillDeptName##,##Title##,to_date(##ApplyDate##,'YYYY.MM.DD'),##Memo##,##T2Gid##,##T2Code##,##T2Name##,##Dtl1Sum##,##Dtl2Sum##,##Dtl3Sum##,##Dtl4Sum##,##Dtl5Sum## from dual where ##IsNew## = '0'
+SQL2=insert into Wf_^^ModelCode^^ (EntGid,ModelGid,FlowGid,Num,LastUpdDate,Stat,FillUsrGid,FillUsrCode,FillUsrName,FillDeptGid,FillDeptCode,FillDeptName)select __ENTGID__,##ModelGid##,##FlowGid##,##Num##,sysdate,##Stat##,__USRGID__,__USRCODE__,__USRNAME__,##FillDeptGid##,##FillDeptCode##,##FillDeptName## from dual where ##IsNew## = '0'
 
 ;TMod-¸üĞÂ±¾Á÷³ÌÖ÷±íĞÅÏ¢£¬±£´æ£¬Ìá½»
-SQL3=update Wf_^^ModelCode^^ set (LastUpdDate,Stat,FillUsrGid,FillUsrCode,FillUsrName,FillDeptGid,FillDeptCode,FillDeptName,Title,ApplyDate,Memo,T2Gid,T2Code,T2Name,Dtl1Sum,Dtl2Sum,Dtl3Sum,Dtl4Sum,Dtl5Sum) = (select sysdate,##Stat##,__USRGID__,__USRCODE__,__USRNAME__,##FillDeptGid##,##FillDeptCode##,##FillDeptName##,##Title##,to_date(##ApplyDate##,'YYYY.MM.DD'),##Memo##,##T2Gid##,##T2Code##,##T2Name##,##Dtl1Sum##,##Dtl2Sum##,##Dtl3Sum##,##Dtl4Sum##,##Dtl5Sum## from dual) where FlowGid = ##FlowGid## and EntGid = __ENTGID__ and ##Stat## <> 'ÖÕÖ¹' and ##IsNew## <> '0'
+SQL3=update Wf_^^ModelCode^^ set (LastUpdDate,Stat,mIsFlow,ApplyType,StampType,ComGid,ComName,Memo, mModelCode,mFlowGid,mNum, FilerName,FileName,FileCount,FileAim,ApplyState, ContractName,ContractCount,ContractFee,ContactName,ContractDate1,ContractDate2,ComtractMemo) = (select sysdate,##Stat##,##mIsFlow##,##ApplyType##,##StampType##,##ComGid##,##ComName##,##Memo##,'','','', '','','','','', '','','','',null,null,'' from dual) where FlowGid = ##FlowGid## and EntGid = __ENTGID__ and ##Stat## <> 'ÖÕÖ¹'
+
+SQL4=update Wf_^^ModelCode^^ set (LastUpdDate,mIsFlow,mModelCode,mFlowGid,mNum) = (select sysdate,##mIsFlow##,##mModelCode##,##mFlowGid##,##mNum## from dual) where FlowGid = ##FlowGid## and EntGid = __ENTGID__ and ##Stat## <> 'ÖÕÖ¹' and ##mIsFlow## = 'ÊÇ'
+
+SQL5=update Wf_^^ModelCode^^ set (LastUpdDate,FilerName,FileName,FileCount,FileAim,ApplyState) = (select sysdate,##FilerName##,##FileName##,##FileCount##,##FileAim##,##ApplyState## from dual) where FlowGid = ##FlowGid## and EntGid = __ENTGID__ and ##Stat## <> 'ÖÕÖ¹' and ##ApplyType## = '·ÇºÏÍ¬ÀàÎÄ¼şÓÃÓ¡'
+
+SQL6=update Wf_^^ModelCode^^ set (LastUpdDate,ContractName,ContractCount,ContractFee,ContactName,ContractDate1,ContractDate2,ComtractMemo) = (select sysdate,##ContractName##,##ContractCount##,##ContractFee##,##ContactName##,to_date(##ContractDate1##,'YYYY.MM.DD'),to_date(##ContractDate2##,'YYYY.MM.DD'),##ComtractMemo## from dual) where FlowGid = ##FlowGid## and EntGid = __ENTGID__ and ##Stat## <> 'ÖÕÖ¹' and ##IsNew## <> '0' and ##ApplyType## = 'ºÏÍ¬Ç©ÊğÓÃÓ¡'
 
 ;¸üĞÂ±¾Á÷³ÌÁ÷³ÌÖ÷±íĞÅÏ¢£¬ÖÕÖ¹
-SQL4=update Wf_^^ModelCode^^ set (LastUpdDate,Stat,EndMemo) = (select sysdate,##Stat##,##EndMemo## from dual) where FlowGid = ##FlowGid## and EntGid = __ENTGID__ and ##Stat## = 'ÖÕÖ¹'
+SQL7=update Wf_^^ModelCode^^ set (LastUpdDate,Stat,EndMemo) = (select sysdate,##Stat##,##EndMemo## from dual) where FlowGid = ##FlowGid## and EntGid = __ENTGID__ and ##Stat## = 'ÖÕÖ¹'
 
 ;É¾³ı±¾Á÷³ÌÖĞÎ´ÉóÅúµÄÉóÅúÈË
-SQL5=delete from Wf_^^ModelCode^^_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppDate is null and ##Stat## <> 'ÖÕÖ¹'
+SQL8=delete from Wf_^^ModelCode^^_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppDate is null and ##Stat## <> 'ÖÕÖ¹'
+
+SQL9=update wf_^^ModelCode^^_App set AppOrder = AppOrder + 100 where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and ##Stat## = 'Ìá½»'
 
 ;²åÈë±¾Á÷³Ì·¢ÆğÈËĞÅÏ¢
-SQL6=insert into Wf_^^ModelCode^^_App (EntGid,ModelGid,FlowGid,Gid,AppGid,AppCode,AppName,AppType,AppAssign,AppMemo,AppDate) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,10,##Stat##,'',sysdate from dual where ##Stat## <> '±£´æ'
+SQL10=insert into Wf_^^ModelCode^^_App (EntGid,ModelGid,FlowGid,Gid,AppGid,AppCode,AppName,AppOrder,AppType,AppAssign,AppMemo,AppDate) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,0,10,##Stat##,'',sysdate from dual where ##Stat## <> '±£´æ'
+
+SQL11=insert into Wf_^^ModelCode^^_App (EntGid,ModelGid,FlowGid,Gid,AppGid,AppCode,AppName,AppOrder,AppType) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),AppGid,AppCode,AppName,Line,20 from Prl_Stamp_App where EntGid = __ENTGID__ and StampType = ##StampType## and ComGid = ##ComGid## and ##Stat## <> 'ÖÕÖ¹'
 
 ;É¾³ı±¾Á÷³ÌÈ«²¿¸½¼şĞÅÏ¢
-SQL7=delete from Wf_^^ModelCode^^_Attach where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and ##Stat## <> 'ÖÕÖ¹'
-
-;²åÈë±¾Á÷³ÌÃ÷Ï¸ĞÅÏ¢
-SQL8=delete from Wf_^^ModelCode^^_Dtl where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and ##Stat## <> 'ÖÕÖ¹'
+SQL12=delete from Wf_^^ModelCode^^_Attach where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and ##Stat## <> 'ÖÕÖ¹'
 
 ;--Èç¹ûÖÕÖ¹»ò×÷·Ïºó£¬´æÔÚ¶ÔÒµÎñÊı¾İµÄ»ØĞ´£¬Ê¹ÓÃÏÂÁĞÓï¾ä£¬²¢´´½¨¶ÔÓ¦¹ı³Ì
 ;--¹ı³ÌÃüÃû£º"Hdnet_doWF_Ä£ĞÍ´úÂë"
@@ -53,9 +69,6 @@ SQL8=delete from Wf_^^ModelCode^^_Dtl where EntGid = __ENTGID__ and FlowGid = ##
 ;--²ÎÊı3£º×´Ì¬£¨Ä¬ÈÏ´«Èë"ÖÕÖ¹"ÓĞĞ§£¬¿É´«Èë"×÷·Ï"µÈ£¬¾ßÌå¿ÉÔÚ¹ıÖÖÖĞÅäÖÃ£©
 ;--¹ÜÀíÔ±×÷·ÏÊ±£¬Ò²»áµ÷ÓÃ´Ë¹ı³Ì£¬Ä¬ÈÏ´«Èë"ÖÕÖ¹"
 ;SQL10=call Hdnet_doWF_^^ModelCode^^(__ENTGID__,##FlowGid##,##Stat##)
-
-;²åÈë±¾Á÷³ÌÃ÷Ï¸ĞÅÏ¢
-LoopSql1=insert into Wf_^^ModelCode^^_Dtl (EntGid,ModelGid,FlowGid,Gid,Line,Dtl1,Dtl2,Dtl3,Dtl4,Dtl5) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),##%Line%##,##%Dtl1%##, ##%Dtl2%##, ##%Dtl3%##, ##%Dtl4%##, ##%Dtl5%## from dual where ##Stat## <> 'ÖÕÖ¹'
 
 ;²åÈë±¾Á÷³Ì¸½¼şĞÅÏ¢
 AttachSqlAdd1=insert into Wf_^^ModelCode^^_Attach (EntGid,ModelGid,FlowGid,Gid,AttachTitle,AttachUrl,AttachSize) select __ENTGID__,##ModelGid## ,##FlowGid##,@@AttachID@@, @@FileName@@, @@FilePath@@,@@FileSize@@ from dual where ##Stat## <> 'ÖÕÖ¹'

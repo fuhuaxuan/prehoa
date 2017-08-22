@@ -14,12 +14,11 @@ Remind1=¶Ô²»Æð£¬ÄúÖ¸¶¨µÄÁ÷³ÌÉêÇëµ¥Ã»ÓÐÕÒµ½<script>alert('¶Ô²»Æð£¬ÄúÖ¸¶¨µÄÁ÷³ÌÉêÇ
 ;È¡³ö±¾Á÷³ÌÄ£ÐÍÐÅÏ¢
 SqlForCondition1=select wm.Code ModelCode, wm.Name ModelName from wf_Model wm where wm.EntGid = __ENTGID__ and wm.ModelGid = ##ModelGid##
 
-
 ;È¡³ö¾ÉµÄISF/ISCFµÄÐÅÏ¢
 SQL1=select f.num OldNum,f.modelgid OldModelGid,m.code OldModelCode,f.FlowGid OldFlowGid,f.DEPT,f.unit,f.area,f.BuildArea,f.tradename,f.trade,f.lessee,f.tradingname,f.address,f.contactor,f.phone,f.email,f.fax,f.leaseTermY,f.leaseTermM,f.leaseTermD,to_char(f.HandoverDate,'YYYY.MM.DD') HandoverDate,f.Related,f.Detail,f.Rate1,f.Rate,to_char(f.contractDate1,'YYYY.MM.DD') contractDate1,to_char(f.contractdate2,'YYYY.MM.DD') contractdate2,f.freeRentM,f.freeRentD,to_char(f.freeRentdate1,'YYYY.MM.DD') freeRentdate1,to_char(f.freeRentdate2,'YYYY.MM.DD') freeRentdate2,f.fitoutM,f.fitoutD,to_char(f.fitoutdate1,'YYYY.MM.DD') fitoutdate1,to_char(f.fitoutdate2,'YYYY.MM.DD') fitoutdate2,f.collection from WF_PRL_ISF f,wf_model m,Wf_PRL_ISTF o where f.FlowGid = o.OldFlowGid and f.EntGid=__ENTGID__ and f.EntGid = m.EntGid and f.modelgid = m.modelgid and o.FlowGid = ##FlowGid##
 
 ;µÃµ½ÒµÎñµ¥¾ÝÐÅÏ¢
-Sql2=select wf.*,decode(wf.category,10,'Early Termination ÌáÇ°ÖÕÖ¹',20,'Termination µ½ÆÚÖÕÖ¹',30,'Others ÆäËû:'||wf.categorytext) categoryText1 from Wf_PRL_ISTF wf where EntGid = __ENTGID__ and FlowGid = ##FlowGid##
+Sql2=select wf.*,FillUsrDept FillDeptName,'ISTF' MCode,decode(wf.category,10,'Early Termination ÌáÇ°ÖÕÖ¹',20,'Termination µ½ÆÚÖÕÖ¹',30,'Others ÆäËû:'||wf.categorytext) categoryText1 from Wf_PRL_ISTF wf where EntGid = __ENTGID__ and FlowGid = ##FlowGid##
 
 ;È¡³öµ±Ç°Á÷³Ì£¬µ±Ç°ÓÃ»§£¬ÏÂÒ»²½²Ù×÷
 SQl3=select wt.Code NextStepCode,wt.Name NextStepName from wf_task wt where wt.EntGid = __ENTGID__ and wt.ModelGid = ##ModelGid## and wt.FlowGid = ##FlowGid## and wt.ExecGid = __USRGID__ and wt.stat = 1
@@ -27,6 +26,14 @@ SQl3=select wt.Code NextStepCode,wt.Name NextStepName from wf_task wt where wt.E
 ;²ÆÎñ¾­Àí¼°²ÆÎñ»á¼Æ¿ÉÒÔ´òÓ¡
 SQL4=select decode(count(*),0,'none','') IsPrint from wf_PRL_ISTF wf,v_Post v where wf.EntGid = __ENTGID__ and wf.FlowGid = ##FlowGid## and wf.EntGid = v.EntGid and wf.fillusrdeptgid = v.deptGid and v.atype in (25,30) and v.PostGid = __USRGID__
 
+;ÏÔÊ¾ÓÊ¼þ
+LoopSQL19=select 1 from dual
+LoopHDT19=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_Email.hdt
+LoopVAR19=EmailList
+
+LoopSQL20=select 1 from dual
+LoopHDT20=Templates\WorkFlow\Form\PrlDZ_Email\Loopsql_Email.hdt
+LoopVAR20=EmailPhone
 [AddtionalSQL]
 ;²Ù×÷£¬Ã»ÓÐ·µ»ØµÄ½á¹û£¬ÊÇÔÚÊý¾Ý¿âÖÐÖ´ÐÐ£¬ÓÐInsert, Update, DeleteÃüÁî¡£´ÓSQL1¡«SQL20¹²Ö§³Ö20Ìõ
 SQL1=

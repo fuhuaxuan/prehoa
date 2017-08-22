@@ -18,7 +18,7 @@ SqlForCondition1=select wm.Code ModelCode, wm.Name ModelName from wf_Model wm wh
 Sql1=select f.*,decode(wf.stat,'0', '未执行','1', '待执行','2', '执行中','3', '<FONT COLOR="blue">已完成</FONT>','4', '<font color="gray">已停止</font>','5', '<FONT COLOR="red">已作废</FONT>','6', '<FONT COLOR="red">已超时</FONT>') Flowstat from WF_^^ModelCode^^ f,wf_flow wf where f.EntGid = __ENTGID__ and f.EntGid = wf.EntGid and f.FlowGid = wf.FlowGid and f.FlowGid = ##FlowGid##
 
 ;取出本流程已审批的审批人的个数，用于判断是否显示审批人
-SQL2=select count(*) IsShow from wf_^^ModelCode^^_App where EntGid = __ENTGID__ and  FlowGid = ##FlowGid## and AppDate is not null
+SQL2=select count(*) IsShow from wf_^^ModelCode^^_App where EntGid = __ENTGID__ and  FlowGid = ##FlowGid##
 
 ;显示本流程附件信息
 LoopSQL1=select replace(AttachUrl,' ','%20') AttachUrl,AttachTitle from wf_^^ModelCode^^_Attach where EntGid = __ENTGID__ and  FlowGid = ##FlowGid## order by AttachTitle
@@ -26,15 +26,18 @@ LoopHDT1=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AttachList.hdt
 LoopVAR1=AttachList
 
 ;显示本流程已审批审批人信息
-LoopSQL2=select a.*,decode(a.apptype,10,'发起人',20,'审批人一',30,'审批人二',100,'发起人') apptypetext  from WF_^^ModelCode^^_App a where FlowGid = ##FlowGid## and AppDate is not null order by AppDate
+LoopSQL2=select a.*,decode(a.apptype,10,'发起人',20,'审批人') apptypetext  from WF_^^ModelCode^^_App a where FlowGid = ##FlowGid## order by AppDate,AppOrder
 LoopHDT2=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AppList.hdt
 LoopVAR2=AppList
 
-;显示本流程明细信息
-LoopSQL3=select * from wf_^^ModelCode^^_Dtl where EntGid = __ENTGID__ and FlowGid = ##FlowGid## order by Line
-LoopHDT3=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_DtlList.hdt
-LoopVAR3=DtlList
+;显示邮件
+LoopSQL19=select 1 from dual
+LoopHDT19=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_Email.hdt
+LoopVAR19=EmailList
 
+LoopSQL20=select 1 from dual
+LoopHDT20=Templates\WorkFlow\Form\PrlDZ_Email\Loopsql_Phone.hdt
+LoopVAR20=EmailPhone
 [AddtionalSQL]
 ;操作，没有返回的结果，是在数据库中执行，有Insert, Update, Delete命令。从SQL1～SQL20共支持20条
 SQL1=

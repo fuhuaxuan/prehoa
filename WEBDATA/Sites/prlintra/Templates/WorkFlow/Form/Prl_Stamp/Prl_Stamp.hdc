@@ -20,6 +20,14 @@ Sql1=select f.*,wf.stat Flowstat from WF_^^ModelCode^^ f,wf_flow wf where f.EntG
 ;取出当前流程，当前用户，下一步操作
 SQl2=select wt.Code NextStepCode,wt.Name NextStepName from wf_task wt where wt.EntGid = __ENTGID__ and wt.ModelGid = ##ModelGid## and wt.FlowGid = ##FlowGid## and wt.ExecGid = __USRGID__ and wt.stat = 1
 
+;显示邮件
+LoopSQL19=select 1 from dual
+LoopHDT19=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_Email.hdt
+LoopVAR19=EmailList
+
+LoopSQL20=select 1 from dual
+LoopHDT20=Templates\WorkFlow\Form\PrlDZ_Email\Loopsql_Email.hdt
+LoopVAR20=EmailPhone
 [AddtionalSQL]
 ;操作，没有返回的结果，是在数据库中执行，有Insert, Update, Delete命令。从SQL1～SQL20共支持20条
 SQL1=

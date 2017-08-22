@@ -19,7 +19,7 @@ SqlForCondition1=select wm.Code ModelCode, wm.Name ModelName from wf_Model wm wh
 SQL1=select f.num OldNum,f.modelgid OldModelGid,m.code OldModelCode,f.FlowGid OldFlowGid,f.DEPT,f.unit,f.area,f.tradename,f.trade,f.lessee,f.tradingname,f.address,f.contactor,f.phone,f.email,f.fax,f.leaseTermY,f.leaseTermM,f.leaseTermD,to_char(f.HandoverDate,'YYYY.MM.DD') HandoverDate,f.Related,f.Detail,f.Rate,to_char(f.contractDate1,'YYYY.MM.DD') contractDate1,to_char(f.contractdate2,'YYYY.MM.DD') contractdate2,f.freeRentM,f.freeRentD,f.fitoutM,f.fitoutD,to_char(f.fitoutdate1,'YYYY.MM.DD') fitoutdate1,to_char(f.fitoutdate2,'YYYY.MM.DD') fitoutdate2 from WF_prl_oisf f,wf_model m,WF_^^ModelCode^^ o where f.FlowGid = o.OldFlowGid and f.EntGid=__ENTGID__ and f.EntGid = m.EntGid and f.modelgid = m.modelgid and o.FlowGid = ##FlowGid##
 
 ;得到业务单据信息
-Sql2=select wf.*,decode(wf.category,10,'Early Termination 提前终止',20,'Termination 到期终止',30,'Others 其他:'||wf.categorytext) categoryText1 from WF_^^ModelCode^^ wf where EntGid = __ENTGID__ and FlowGid = ##FlowGid##
+Sql2=select wf.*,'写字楼ISTF' MCode,decode(wf.category,10,'Early Termination 提前终止',20,'Termination 到期终止',30,'Others 其他:'||wf.categorytext) categoryText1 from WF_^^ModelCode^^ wf where EntGid = __ENTGID__ and FlowGid = ##FlowGid##
 
 ;取出当前流程，当前用户，下一步操作
 SQl3=select wt.Code NextStepCode,wt.Name NextStepName from wf_task wt where wt.EntGid = __ENTGID__ and wt.ModelGid = ##ModelGid## and wt.FlowGid = ##FlowGid## and wt.ExecGid = __USRGID__ and wt.stat = 1
@@ -29,6 +29,14 @@ SQL4=select decode(count(*),0,'none','') IsPrint from wf_prl_oistf wf,v_Post v w
 
 SQL5=select count(*) IsAdmin from v_usr u, v_org_usr v where u.entgid = __ENTGID__ and u.entgid = v.entgid and u.GID = v.ORGGID and v.USRGID = __USRGID__ and lower(u.code) = 'admin_grp'
 
+;显示邮件
+LoopSQL19=select 1 from dual
+LoopHDT19=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_Email.hdt
+LoopVAR19=EmailList
+
+LoopSQL20=select 1 from dual
+LoopHDT20=Templates\WorkFlow\Form\PrlDZ_Email\Loopsql_Email.hdt
+LoopVAR20=EmailPhone
 [AddtionalSQL]
 ;操作，没有返回的结果，是在数据库中执行，有Insert, Update, Delete命令。从SQL1～SQL20共支持20条
 SQL1=

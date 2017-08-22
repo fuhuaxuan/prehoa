@@ -15,11 +15,24 @@ Remind1=¶Ô²»Æð£¬ÄúÖ¸¶¨µÄÁ÷³ÌÉêÇëµ¥Ã»ÓÐÕÒµ½<script>alert('¶Ô²»Æð£¬ÄúÖ¸¶¨µÄÁ÷³ÌÉêÇ
 SqlForCondition1=select wm.Code ModelCode, wm.Name ModelName,replace(upper(wm.code),'DZ','') ModelCodeT from wf_Model wm where wm.EntGid = __ENTGID__ and wm.ModelGid = ##ModelGid##
 
 ;µÃµ½ÒµÎñµ¥¾ÝÐÅÏ¢
-Sql1=select wf.* from WF_^^ModelCodeT^^ wf where EntGid = __ENTGID__ and FlowGid = ##FlowGid##
+Sql1=select wf.*,'¸öÈË±¨Ïú' MCode from WF_^^ModelCodeT^^ wf where EntGid = __ENTGID__ and FlowGid = ##FlowGid##
 
 ;È¡³öµ±Ç°Á÷³Ì£¬µ±Ç°ÓÃ»§£¬ÏÂÒ»²½²Ù×÷
 SQl2=select wt.Code NextStepCode,wt.Name NextStepName from wf_task wt where wt.EntGid = __ENTGID__ and wt.ModelGid = ##ModelGid## and wt.FlowGid = ##FlowGid## and wt.ExecGid = __USRGID__ and wt.stat = 1
 
+;È¡³öÓÊ¼þ
+LoopSQL4=select * from WF_^^ModelCodeT^^_Dtl where EntGid = __ENTGID__ and FlowGid = ##FlowGid## order by AcgCode
+LoopHDT4=Templates\WorkFlow\Form\^^ModelCode^^\LoopSql_EmailDtl.hdt
+LoopVAR4=EmailDtl
+
+;ÏÔÊ¾ÓÊ¼þ
+LoopSQL19=select 1 from dual
+LoopHDT19=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_Email.hdt
+LoopVAR19=EmailList
+
+LoopSQL20=select 1 from dual
+LoopHDT20=Templates\WorkFlow\Form\PrlDZ_Email\Loopsql_Email.hdt
+LoopVAR20=EmailPhone
 [AddtionalSQL]
 ;²Ù×÷£¬Ã»ÓÐ·µ»ØµÄ½á¹û£¬ÊÇÔÚÊý¾Ý¿âÖÐÖ´ÐÐ£¬ÓÐInsert, Update, DeleteÃüÁî¡£´ÓSQL1¡«SQL20¹²Ö§³Ö20Ìõ
 SQL1=

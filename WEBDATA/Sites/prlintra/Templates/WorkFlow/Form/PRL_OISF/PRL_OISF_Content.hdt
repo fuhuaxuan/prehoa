@@ -18,79 +18,8 @@
     changeHeight();
   }
 
-  //函数：ready
-  //功能：document 加载完成后调用
-  $(function(){
-    var browser = JQGetBrowser();
-    if (browser.mobile){
-      $("form[name=frmPhone]").show();
-      $("form[name=frmDtl]").hide();
-    }
-    else{
-      $("form[name=frmDtl]").show();
-      $("form[name=frmPhone]").hide();
-    }
-  });
 </script>
-<form name="frmPhone" method="Post" action="" style="display:none">
-<table cellpadding="0" cellspacing="1" align="center" width="100%">
-  <col style="width:100%">
-  <TR>
-    <td class="title" align="center"><HDPrint Value=#ModelName#></td>
-  </TR>
-</table>
-<table cellpadding="0" cellspacing="1" class="ListBar" width="100%" id="Order">
-  <col style="width:30%">
-  <col style="width:70%">
-  <TR>
-    <TD class="DtlBarTitle">单号:</TD>
-    <TD class="listtd"><HDPrint Value=#Num#></td>
-  </TR>
-  <TR>
-    <TD class="DtlBarTitle">发起人:</TD>
-    <TD class="listtd"><HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillUsrDept#>]</td>
-  </TR>
-  <TR>
-    <TD class="DtlBarTitle">发起日期:</TD>
-    <TD class="listtd"><HDPrint Value=#CreateDate#></td>
-  </TR>
-</table>
-
-<h3 class="SubTitleBar" >
-<TABLE cellspacing="1" cellpadding="0" width="100%">
-  <col style="padding-left:4px;">
-  <col style="width:20px;" align="center">
-  <TR>
-    <TD align="left" style="padding-left:10px;"><b>单据信息</b></TD>
-    <TD onclick="JQExpand('tb_Order');" style="cursor:hand" class="IconUp">　&nbsp;</TD>
-  </TR>
-</TABLE>
-</h3>
-
-<table border="0" style="width:100%;">
-<tr><td>您好 :</td></tr>
-<tr><td>[流程名称] : <HDPrint Value=#ModelName#>；</td></tr>
-<tr><td>[发起人] : <HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]；</td></tr>
-<tr><td>[单号] : <HDPrint Value=#Num#>；</td></tr>
-<tr><td>[Category 类别] : <HDPrint Value=#atype#>；</td></tr>
-<tr><td>[Unit No. 单位] : <HDPrint Value=#unitList# Replace=#None#></td></tr>
-<tr><td>[Area 面积] : <HDPrint Value=#Area#> ㎡；</td></tr>
-<tr><td>[Tenant/Licensee 租户] : <HDPrint Value=#lessee#>；</td></tr>
-<tr><td>[Trading Name 商店营业名称] : <HDPrint Value=#tradingname#>；</td></tr>
-<tr><td>[Lease Term 租赁期限] : <HDPrint Value=#leasetermy#> 年/ <HDPrint Value=#leasetermm#> 月/ <HDPrint Value=#leasetermd#> 日；</td></tr>
-<tr><td>[Handover Date 交付日期] : <HDPrint Value=#handoverdate#>；</td></tr>
-<tr><td>[Contract Date 合同起始日期] : <HDPrint Value=#contractdate1#>~<HDPrint Value=#contractdate2#></td></tr>
-<tr><td>[Free of rent Period 免租期] : <HDPrint Value=#freerenty#> 年/ <HDPrint Value=#freerentm#> 月/ <HDPrint Value=#freerentd#>天；</td></tr>
-<tr><td>[Fit-Out Period 装修期] : <HDPrint Value=#fitoutm#> 月/ <HDPrint Value=#fitoutd#> 天（<HDPrint Value=#fitoutdate1#> ~ <HDPrint Value=#fitoutdate2#>）；</td></tr>
-<tr><td><HDPrint Value=#EmailDtl# Replace=#None#></td></tr>
-<tr><td>[New 新] : <HDPrint Value=#brcnew#> RMB/㎡/天；</td></tr>
-<tr><td>[Existing 目前] : <HDPrint Value=#brcexist#> RMB/㎡/天；</td></tr>
-<tr><td>[Budget 批准预算] : <HDPrint Value=#brcbudget#> RMB/㎡/天；</td></tr>
-<tr><td>[Special Terms and Conditions/Remarks :特别条件/评语] : <HDPrint Value=#Memo#>；</td></tr>
-<tr><td>[附件信息] : <HDPrint Value=#AttachList# Replace=#None#> ；</td></tr>
-<tr><td>-----------内容展示完毕-----------</td></tr>
-</table>
-</form>
+<HDPrint Value=#EmailPhone# Replace=#None#>
 <form name="frmDtl" method="Post" action="">
 <HDIF EqualNot(<HDPrint Value=#IsDtl# Replace=#None#>, 1)>
 <table cellpadding="0" cellspacing="1" align="center" width="100%">

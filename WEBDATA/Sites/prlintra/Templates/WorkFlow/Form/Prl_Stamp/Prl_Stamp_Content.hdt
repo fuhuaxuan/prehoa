@@ -7,6 +7,8 @@
     JQChgHeight();
   });
 </script>
+
+<HDPrint Value=#EmailPhone# Replace=#None#>
 <form name="frmDtl" method="Post" action="">
 <table cellpadding="0" cellspacing="1" align="center" width="100%">
   <col style="padding-left:4px;width:10%">
@@ -45,73 +47,99 @@
 </TABLE>
 </h3>
 <table cellpadding="0" cellspacing="1" class="ListBar" width="100%" id="tb_Order">
-  <col style="padding-left:4px;width:10%" valign="top">
-  <col style="padding-left:4px;width:40%" valign="top">
-  <col style="padding-left:4px;width:10%" valign="top">
-  <col style="padding-left:4px;width:40%" valign="top">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:23%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:23%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:23%">
   <tr valign="top">
-    <td class="DtlBarTitle">名称:</td>
-    <td class="listtd"><HDPrint Value=#Title#></td>
-    <td class="DtlBarTitle">日期:</td>
-    <td class="listtd"><HDPrint Value=#ApplyDate#></td>
+    <td class="DtlBarTitle">是否关联流程:</td>
+    <td class="listtd" colspan="5">
+      <HDPrint Value=#mIsFlow#>
+      <font id="f_flow" style="display:none">
+      （单号：<a id="a_flow" href="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#mModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&ModelCode=<HDPrint Value=#mModelCode#>&FlowGid=<HDPrint Value=#mFlowGid#>" target="_blank"><HDPrint Value=#mNum#></a>）
+      </font>
+      <script language="javascript">
+        if('<HDPrint Value=#mIsFlow# Replace=#DBField2Js#>' == '是'){
+          $("#f_flow").show();
+        }
+        //函数：ready
+        //功能：document 加载完成后调用
+        $(document).ready(function(){
+          $("input[name=mIsFlow]").click(function (){
+            if($(this).val() == '是'){
+              $("#f_flow").show();
+            }
+            else{
+              $("#f_flow").hide();
+            }
+          });
+        });
+      </script>
+    </td>
   </tr>
   <tr valign="top">
-    <td class="DtlBarTitle">原因:</td>
-    <td class="listtd" colspan="3"><HDPrint Value=#Memo#></td>
+    <td class="DtlBarTitle">申请类型:</td>
+    <td class="listtd"><HDPrint Value=#ApplyType#>
+      <script language="javascript">
+        //函数：ready
+        //功能：document 加载完成后调用
+        $(document).ready(function(){
+          var JsValue = '<HDPrint Value=#ApplyType# Replace=#DBField2Js#>' == '非合同类文件用印' ? '1' : '2';
+          $("[JQ^=Type]").hide();
+          $("[JQ=Type_"+JsValue+"]").show();
+        });
+      </script>
+    </td>
+    <td class="DtlBarTitle">申请印章种类:</td>
+    <td class="listtd"><HDPrint Value=#StampType#></td>
+    <td class="DtlBarTitle">公司名称:</td>
+    <td class="listtd"><HDPrint Value=#ComName#></td>
+  </tr>
+  <tr valign="top" JQ="Type_1">
+    <td class="DtlBarTitle">文件接收方名称:</td>
+    <td class="listtd"><HDPrint Value=#FilerName#></td>
+    <td class="DtlBarTitle">文件名称:</td>
+    <td class="listtd"><HDPrint Value=#FileName#></td>
+    <td class="DtlBarTitle">文件份数:</td>
+    <td class="listtd"><HDPrint Value=#FileCount#></td>
+  </tr>
+  <tr valign="top" JQ="Type_1">
+    <td class="DtlBarTitle">文件目的:</td>
+    <td class="listtd"><HDPrint Value=#FileAim#></td>
+    <td class="DtlBarTitle">申请人声明及保证:</td>
+    <td class="listtd" colspan="3">我保证我所提交的用于盖章的非合同类文件与本申请所注载内容一致</td>
+  </tr>
+  <tr valign="top" JQ="Type_2">
+    <td class="DtlBarTitle">合同名称:</td>
+    <td class="listtd"><HDPrint Value=#ContractName#></td>
+    <td class="DtlBarTitle">合同份数:</td>
+    <td class="listtd"><HDPrint Value=#ContractCount#></td>
+    <td class="DtlBarTitle">合同金额:</td>
+    <td class="listtd"><HDPrint Value=#ContractFee#></td>
+  </tr>
+  <tr valign="top" JQ="Type_2">
+    <td class="DtlBarTitle">合作公司:</td>
+    <td class="listtd"><HDPrint Value=#ContactName#></td>
+    <td class="DtlBarTitle">合同期限:</td>
+    <td class="listtd"><HDPrint Value=#ContractDate1#>~<HDPrint Value=#ContractDate2#></td>
+    <td class="DtlBarTitle">合同概要:</td>
+    <td class="listtd" colspan="3"><HDPrint Value=#ComtractMemo#></td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">备注:</td>
+    <td class="listtd" colspan="5"><HDPrint Value=#Memo#></td>
   </tr>
   <tr valign="top">
     <td class="DtlBarTitle">附件信息:</td>
-    <td class="listtd" colspan="3"><HDPrint Value=#AttachList# Replace=#None#></td>
+    <td class="listtd" colspan="5"><HDPrint Value=#AttachList# Replace=#None#></td>
   </tr>
   <HDIF EqualNot(<HDPrint Value=#EndMemo# Replace=#None#>, )>
   <tr valign="top">
     <td class="DtlBarTitle">终止原因:</td>
-    <td class="listtd" colspan="3"><HDPrint Value=#EndMemo#></td>
+    <td class="listtd" colspan="5"><HDPrint Value=#EndMemo#></td>
   </tr>
   </HDIF>
-</table>
-<h3 class="SubTitleBar" >
-<TABLE cellspacing="1" cellpadding="0" width="100%">
-  <col style="padding-left:4px;">
-  <col style="width:20px;" align="center">
-  <TR>
-    <TD align="left" style="padding-left:10px;"><b>明细信息</b></TD>
-    <TD onclick="JQExpand('tb_Dtl');" style="cursor:hand" class="IconUp">　&nbsp;</TD>
-  </TR>
-</TABLE>
-</h3>
-<table width="100%" class="ListBar" cellpadding="0"  cellspacing="1" id="tb_Dtl">
-  <colgroup>
-     <col style="width:5%">
-     <col style="width:20%">
-     <col style="width:20%">
-     <col style="width:15%">
-     <col style="width:15%">
-     <col style="width:20%">
-  </colgroup>
-  <thead>
-  <tr class="DtlBarTitle" align="center">
-    <td>行号</td>
-    <td>明细1</td>
-    <td>明细2</td>
-    <td>明细3</td>
-    <td>明细4</td>
-    <td>明细5</td>
-  </tr>
-  </thead>
-  <tbody>
-    <!--显示明细-->
-    <HDPrint Value=#DtlList# Replace=#None#>
-  </tbody>
-  <tfoot>
-  <tr class="ListTdFocus">
-    <td align="right">合计：</td>
-    <td align="right"><HDPrint Value=#Dtl1Sum#></td>
-    <td align="right"><HDPrint Value=#Dtl2Sum#></td>
-    <td align="right"><HDPrint Value=#Dtl3Sum#></td>
-    <td align="right"><HDPrint Value=#Dtl4Sum#></td>
-    <td align="right"><HDPrint Value=#Dtl5Sum#></td>
-  </tr>
-  </tfoot>
 </table>
 </form>

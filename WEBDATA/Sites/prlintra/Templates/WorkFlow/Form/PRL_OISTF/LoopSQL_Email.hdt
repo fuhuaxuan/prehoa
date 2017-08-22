@@ -1,18 +1,4 @@
-<!-- JQuery函数引入 -->
-<script language="javascript" src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
-<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
-<form name="frmMail" method="POST" action="/bin/hdmailsend.dll/send" target="_self">
-<input type="hidden" name="Title" maxlength="100" style="width:100%" value="写字楼ISTF提醒:<HDPrint Value=#FillDeptName# Replace=#DBField2Input#>">
-<input type="hidden" name="Email" maxlength="400" style="width:100%" value="<HDPrint Value=#AppEmail# Replace=#DBField2InputField#>;">
-<input type="hidden" name="fAddr" maxlength="400" style="width:100%" value="pcrtoa@hd123.net">
-<input type="hidden" name="fName" maxlength="400" style="width:100%" value="OA系统邮件提醒">
-<input type="hidden" name="RplEmail" maxlength="400" style="width:100%" value="pcrtoa@hd123.net">
-<input type="hidden" name="isHTML" value="y">
-<textarea name="Content" style="width:100%;height:400;display:none">
-</textarea>
-</form>
-<div id="tb_Email" style="display:none">
-<table border="0">
+<table border="0" style="100%">
 <tr><td>您好：</td></tr>
 <tr><td>[流程名称] : <HDPrint Value=#ModelName#>；</td></tr>
 <tr><td>[发起人] : <HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]；</td></tr>
@@ -38,14 +24,5 @@
 <tr><td>[装修补贴] : <font color="blue"><HDPrint Value=#NumC#></font>；</td></tr>
 <tr><td>[提前终止的补偿款（包括可没收的款项）] : <font color="blue"><HDPrint Value=#NumD#></font>；</td></tr>
 <tr><td>[Remarks 退场原因] : <HDPrint Value=#Remarks#>；</td></tr>
-<tr><td>-----------内容展示完毕<font color="red" id="td_End">（待审批）</font>-----------</td></tr>
+<tr><td>-----------内容展示完毕-----------</td></tr>
 </table>
-</div>
-<script language="javascript">
-$("textarea[name=Content]").val($("div#tb_Email").html());
-var JsEmail = '';
-<HDLoop>
-  JsEmail += '<HDPrint value=#Email# Replace=#DBField2Js#>;';
-</HDLoop>
-frmMail.Email.value = JsEmail;
-</script>

@@ -195,3 +195,12 @@ HDT=Templates\Prl_DOA\Prl_BaoXiaoList.hdt
 [Prl_BaoXiaoDown]
 HDC=Templates\Prl_DOA\Prl_BaoXiaoList.hdc
 HDT=Templates\Prl_DOA\Prl_BaoXiaoDown.hdt
+
+
+[Prl_Stamp_App]
+HDC=Templates\Prl_DOA\Prl_Stamp_App.hdc
+HDT=Templates\Prl_DOA\Prl_Stamp_App.hdt
+
+[Prl_Stamp_AppSave]
+HDC=Templates\Prl_DOA\Prl_Stamp_AppSave.hdc
+HDT=Templates\Prl_DOA\Prl_Stamp_AppSave.hdt

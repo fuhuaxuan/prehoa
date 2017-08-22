@@ -20,105 +20,27 @@
     $("select[name=selFileList_1]").append(JsOption);
   }
 
-  //定义全局变量，定位控件所处位置
-  var g_Type;
-  /*
-  *函数功能：选择不同审批人，调用同一个DataInterface，并保存一些临时控件
-  *参数1：审批人类别（10：审批人1 ;20：审批人2）
-  *参数2：审批人类别对应的中文名称
-  *参数3：审批人类别对应的组织代码
-  */
-  function GetApp(JsType,JsTitle,JsOrg){
-    //暂时保留传递的参数
-    g_Type = JsType;
-
-    //对字段DataInterface 的Sql 与， count ，Title 进行赋值
-    var s_Temp = "select u.gid, u.code, u.name, u.atype from v_usr u, v_org_usr v, org o where u.EntGid = '<HDPrint Value=#EntGid#>' and u.EntGid = v.EntGid and u.EntGid = o.EntGid and u.Gid = v.Usrgid and v.OrgGid = o.Gid and lower(o.Code) = lower('"+JsOrg+"')";
-
-    var c_Temp = "select count(*) from v_usr u, v_org_usr v, org o where u.EntGid = '<HDPrint Value=#EntGid#>' and u.EntGid = v.EntGid and u.EntGid = o.EntGid and u.Gid = v.Usrgid and v.OrgGid = o.Gid and lower(o.Code) = lower('"+JsOrg+"')";
-
-    var t_Temp = JsTitle + '_审批人列表';
-
-    $("input#s_App").val(s_Temp);
-    $("input#c_App").val(c_Temp);
-    $("input#t_App").val(t_Temp);
-
-    //调用字段的DataInterface
-    DataInterface(frmDataInterface_App);
-  }
-  /*
-  *函数功能：审批人的DataInterface时调用函数，回写字段
-  *参数1：审批人Gid
-  *参数2：审批人Code
-  *参数3：审批人Name
-  */
-  function CallApp(JsAppGid,JsAppCode,JsAppName){
-    $("input[name="+g_Type+"Gid]").val(JsAppGid);
-    $("input[name="+g_Type+"Code]").val(JsAppCode);
-    $("input[name="+g_Type+"Name]").val(JsAppName);
-  }
-
-  /*
-  *函数功能：明细新增一行
-  *参数说明：使用JQTr_Add() 函数新增行时，需写在 tbody 标记中
-  */
-  function Add_Dtl(Gid,Dtl1,Dtl2,Dtl3,Dtl4,Dtl5){
-    var sTbId = 'tb_Dtl';
-    var sTrClass = 'listtd';
-    var tdArr = new Array();
-    var iRow = Math.floor(Math.random() * (1 + 100000 - 1) + 1);
-    var i = $("table#"+sTbId+">tbody>tr").length + 1;
-    var k = 0;
-    if (Gid == null){
-      Gid = '';
-      Dtl1 = '';
-      Dtl2 = '';
-      Dtl3 = '';
-      Dtl4 = '';
-      Dtl5 = '';
+  //判断日期大小
+  function callDate(JsObj){
+    var JsDate1 = $("input[name=ContractDate1]").val();
+    var JsDate2 = $("input[name=ContractDate2]").val();
+    if (JsDate1 != '' && JsDate2 != '' ){
+      if (JQDateCompare(JsDate1,JsDate2) <= 0){
+        alert('合同结束日期必须大于合同开始日期！');
+        JsObj.focus();
+        JsObj.value = '';
+      }
     }
-
-    tdArr[k++] = '<td align="center"><INPUT TYPE="text" NAME="Line_1" value="'+ i +'" style="border:0px;width:100%;text-align:center" readonly class="JQText"></td>';
-
-    tdArr[k++] = '<td><INPUT TYPE="text" NAME="Dtl1_1" ID="Dtl1_1'+ iRow +'" JQRow="Dtl1_1" maxlength="16" class="JQInt JQMust" value = "'+Dtl1+'"></td>';
-
-    tdArr[k++] = '<td><INPUT TYPE="text" NAME="Dtl2_1" ID="Dtl2_1'+ iRow +'" JQRow="Dtl2_1" maxlength="16" class="JQFloat" value = "'+Dtl2+'"></td>';
-
-    tdArr[k++] = '<td><INPUT TYPE="text" NAME="Dtl3_1" ID="Dtl3_1'+ iRow +'" JQRow="Dtl3_1" maxlength="16" class="JQInt" value = "'+Dtl3+'"></td>';
-
-    tdArr[k++] = '<td><INPUT TYPE="text" NAME="Dtl4_1" ID="Dtl4_1'+ iRow +'" JQRow="Dtl4_1" maxlength="16" class="JQFloat" value = "'+Dtl4+'"></td>';
-
-    tdArr[k++] = '<td><INPUT TYPE="text" NAME="Dtl5_1" ID="Dtl5_1'+ iRow +'" JQRow="Dtl5_1" maxlength="16" class="JQInt" value = "'+Dtl5+'"></td>';
-
-    tdArr[k++] ='<td align="center"><a href="javascript:void(0)" onclick="javascript:JQTr_Del();JqReCal()">删除</a></td>';
-
-    //新增一行
-    JQTr_Add(sTbId,sTrClass,tdArr);
   }
 
-  /*
-  *函数功能：删除行，重新计算
-  */
-  function JqReCal(){
-    //重新计算行号
-    $("input[name=Line_1]").each(function(i){
-      $(this).val(i+1);
-    });
-    //重新计算合计
-    $("input[JQRowSum]").each(function(){
-      JQSum($(this),'JQRow');
-    });
+  //流程选择
+  function CallFlow(FlowGid,Num,ModelCode){
+    $("input[name=mFlowGid]").val(FlowGid);
+    $("input[name=mNum]").val(Num);
+    $("input[name=mModelCode]").val(ModelCode);
+    $("#a_flow").attr("href","##HDNet_AppName##/WFFlowPage?Url="+ModelCode+"&UsrGid=<HDPrint Value=#UsrGid#>&ModelCode="+ModelCode+"&FlowGid="+FlowGid);
+    $("#a_flow").text(Num);
   }
-  
-  //函数：ready
-  //功能：document 加载完成后调用
-  $(document).ready(function(){
-    $("input[name=ApplyType]").click(function (){
-      var JsValue = $(this).val();
-      $("[JQ^=Type]").hide();
-      $("[JQ=Type_"+JsValue+"]").show();
-    });
-  });
 </script>
 
 <form name="frmDo" method="post" action="">
@@ -199,143 +121,159 @@
 </h3>
 
 <table cellpadding="0" cellspacing="1" class="ListBar" width="100%" id="Order">
-  <col style="padding-left:4px;width:15%">
-  <col style="padding-left:4px;width:35%">
   <col style="padding-left:4px;width:10%">
-  <col style="padding-left:4px;width:40%">
+  <col style="padding-left:4px;width:23%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:23%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:23%">
+  <tr valign="top">
+    <td class="DtlBarTitle">是否关联流程:</td>
+    <td class="listtd" colspan="5">
+      <input type="radio" name="mIsFlow" value="否" class="JQRadio JQMust1 JQMust2" checked>否
+      <input type="radio" name="mIsFlow" value="是" class="JQRadio JQMust1 JQMust2">是
+      <font id="f_flow" style="display:none">
+      （单号：<a id="a_flow" href="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#mModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&ModelCode=<HDPrint Value=#mModelCode#>&FlowGid=<HDPrint Value=#mFlowGid#>" target="_blank"><HDPrint Value=#mNum#></a>
+      <a  href="javascript:DataInterface(frmDataInterface_Flow)" target="_blank">[选择]</a>
+      注：请选择ISF,ISCF,ISTF,费用,付款,报销等流程）
+      </font>
+      <script language="javascript">
+        $("input[name=mIsFlow][value='<HDPrint Value=#mIsFlow# Replace=#DBField2Js#>']").prop("checked",true);
+        if('<HDPrint Value=#mIsFlow# Replace=#DBField2Js#>' == '是'){
+          $("#f_flow").show();
+        }
+        //函数：ready
+        //功能：document 加载完成后调用
+        $(document).ready(function(){
+          $("input[name=mIsFlow]").click(function (){
+            if($(this).val() == '是'){
+              $("#f_flow").show();
+            }
+            else{
+              $("#f_flow").hide();
+            }
+          });
+        });
+      </script>
+
+      <INPUT TYPE="hidden" NAME="mFlowGid" maxlength="32" value="<HDPrint Value=#mFlowGid# Replace=#DBField2Input#>" class="JQText">
+      <INPUT TYPE="hidden" NAME="mNum" maxlength="32" value="<HDPrint Value=#mNum# Replace=#DBField2Input#>" class="JQText">
+      <INPUT TYPE="hidden" NAME="mModelCode" maxlength="32" value="<HDPrint Value=#mModelCode# Replace=#DBField2Input#>" class="JQText">
+    </td>
+  </tr>
   <tr valign="top">
     <td class="DtlBarTitle">申请类型:<font color="red">*</font></td>
+    <td class="listtd">
+      <input type="radio" name="ApplyType" value="非合同类文件用印" class="JQRadio JQMust1 JQMust2  JQSave" checked>非合同类文件用印<br>
+      <input type="radio" name="ApplyType" value="合同签署用印" class="JQRadio JQMust1 JQMust2  JQSave">合同签署用印
+      <script language="javascript">
+        $("input[name=ApplyType][value='<HDPrint Value=#ApplyType# Replace=#DBField2Js#>']").prop("checked",true);
+        //函数：ready
+        //功能：document 加载完成后调用
+        $(document).ready(function(){
+          var JsValue1 = '<HDPrint Value=#ApplyType# Replace=#DBField2Js#>' == '合同签署用印' ? '2' : '1';
+          $("[JQ^=Type]").hide();
+          $("[JQ=Type_"+JsValue1+"]").show();
+          $("input[name=ApplyType]").click(function (){
+            var JsValue = $(this).val() == '非合同类文件用印' ? '1' : '2';
+            $("[JQ^=Type]").hide();
+            $("[JQ=Type_"+JsValue+"]").show();
+          });
+        });
+      </script>
+    </td>
+    <td class="DtlBarTitle">申请印章种类:<font color="red">*</font></td>
+    <td class="listtd">
+      <input type="radio" name="StampType" value="公司公章" class="JQRadio JQMust1 JQMust2  JQSave" checked>公司公章<br>
+      <input type="radio" name="StampType" value="法定代表人名章" class="JQRadio JQMust1 JQMust2  JQSave">法定代表人名章<br>
+      <input type="radio" name="StampType" value="公司股东或财务印章" class="JQRadio JQMust1 JQMust2  JQSave">公司股东或财务印章
+      <script language="javascript">
+        $("input[name=StampType][value='<HDPrint Value=#StampType# Replace=#DBField2Js#>']").prop("checked",true);
+      </script>
+    </td>
+    <td class="DtlBarTitle">公司名称:<font color="red">*</font></td>
+    <td class="listtd">
+      <select name="ComGid" class="JQSelect JQMust1 JQMust2 JQSave" style="width:200px">
+        <option value="">--请选择--</option>
+        <HDPrint Value=#ComList# Replace=#None#>
+      </select>
+      <script language="javascript">
+        $("select[name=ComGid] option[value=<HDPrint Value=#ComGid# Replace=#DBField2Js#>]").prop("selected",true);
+      </script>
+    </td>
+  </tr>
+  <tr valign="top" JQ="Type_1">
+    <td class="DtlBarTitle">文件接收方名称:<font color="red">*</font></td>
+    <td class="listtd">
+      <INPUT TYPE="text" NAME="FilerName" maxlength="32" value="<HDPrint Value=#FilerName# Replace=#DBField2Input#>" class="JQText JQMust1">
+    </td>
+    <td class="DtlBarTitle">文件名称:<font color="red">*</font></td>
+    <td class="listtd">
+      <INPUT TYPE="text" NAME="FileName" maxlength="64" value="<HDPrint Value=#FileName# Replace=#DBField2Input#>" class="JQText JQMust1">
+    </td>
+    <td class="DtlBarTitle">文件份数:</td>
+    <td class="listtd">
+      <INPUT TYPE="text" NAME="FileCount" maxlength="4" value="<HDPrint Value=#FileCount# Replace=#DBField2Input#>" class="JQText">
+    </td>
+  </tr>
+  <tr valign="top" JQ="Type_1">
+    <td class="DtlBarTitle">文件目的:<font color="red">*</font></td>
+    <td class="listtd">
+      <INPUT TYPE="text" NAME="FileAim" maxlength="64" value="<HDPrint Value=#FileAim# Replace=#DBField2Input#>" class="JQText JQMust1">
+    </td>
+    <td class="DtlBarTitle">申请人声明及保证:<font color="red">*</font></td>
     <td class="listtd" colspan="3">
-      <input type="radio" name="ApplyType" value="1" class="JQRadio" checked>非合同类文件用印申请表 Non-Contractual Documentation Stamp Approval Form<font color="gray">(本表格仅适用于政府类文件，函件类文件等的签署及用印申请，经付款申请审核的付款盖章，则无需使用本表格)</font><br>
-      <input type="radio" name="ApplyType" value="2" class="JQRadio">合同签署及用印申请表(ADM-001B)
-      <font color="gray">(本表格仅适用于投资类、融资类、各类框架协议、函件类文件的签署及用印申请。经费用申请审核的工程及采购类合同，则无需使用本表格。租赁类合同适用ISF/ISTF流程进行审核及用印)</font>
-    </td>
-  </tr>
-  <tr valign="top" JQ="Type_1">
-    <td class="DtlBarTitle">申请印章种类:<br>Type of Stamp Requested</td>
-    <td class="listtd">
-      <input type="radio" name="rd_1" value="否" class="JQRadio">公司公章 Company Stamp<br>
-      <input type="radio" name="rd_1" value="否" class="JQRadio">法定代表人名章 Legal Representative Stamp<br>
-      <input type="radio" name="rd_1" value="否" class="JQRadio">公司股东印章 Company Shareholder Stamp
-    </td>
-    <td class="DtlBarTitle">公司名称:<br>Name of Company</td>
-    <td class="listtd">
-      <INPUT TYPE="text" NAME="" maxlength="32" value="<HDPrint Value=## Replace=#DBField2Input#>" class="JQText">
-    </td>
-  </tr>
-  <tr valign="top" JQ="Type_1">
-    <td class="DtlBarTitle">文件接收方名称:<br>Name of Recipient</td>
-    <td class="listtd">
-      <INPUT TYPE="text" NAME="" maxlength="32" value="<HDPrint Value=## Replace=#DBField2Input#>" class="JQText">
-    </td>
-    <td class="DtlBarTitle">文件名称:<br>Name of Document</td>
-    <td class="listtd">
-      <INPUT TYPE="text" NAME="" maxlength="32" value="<HDPrint Value=## Replace=#DBField2Input#>" class="JQText">
-    </td>
-  </tr>
-  <tr valign="top" JQ="Type_1">
-    <td class="DtlBarTitle">文件份数:<br>Number of Copies</td>
-    <td class="listtd">
-      <INPUT TYPE="text" NAME="" maxlength="32" value="<HDPrint Value=## Replace=#DBField2Input#>" class="JQText">
-    </td>
-    <td class="DtlBarTitle">文件目的:<br>Purpose of Document</td>
-    <td class="listtd">
-      <INPUT TYPE="text" NAME="" maxlength="32" value="<HDPrint Value=## Replace=#DBField2Input#>" class="JQText">
-    </td>
-  </tr>
-  <tr valign="top" JQ="Type_1">
-    <td class="DtlBarTitle">申请人声明及保证:<br>Applicant Undertaking Declaration</td>
-    <td class="listtd" colspan="3">
-      <input type="checkbox" name="chk_1" value="系统故障" class="JQCheckBox">
+      <input type="checkbox" name="chk_1" value="是" class="JQCheckBox JQMust1">
       我保证我所提交的用于盖章的非合同类文件与本申请所注载内容一致
+      <input type="hidden" name="ApplyState" value="<HDPrint Value=#ApplyState# Replace=#DBField2Input#>" JQChkName="chk_1" JQChkTab=";">
+      <script language="javascript">
+      JQcheckBoxVal("chk_1",";",'<HDPrint Value=#ApplyState# Replace=#DBField2Js#>')
+      </script>
     </td>
   </tr>
   <tr valign="top" JQ="Type_2">
-    <td class="DtlBarTitle">合同名称:<br>Number of Contract</td>
+    <td class="DtlBarTitle">合同名称:<font color="red">*</font></td>
     <td class="listtd">
-      <INPUT TYPE="text" NAME="" maxlength="32" value="<HDPrint Value=## Replace=#DBField2Input#>" class="JQText">
+      <INPUT TYPE="text" NAME="ContractName" maxlength="128" value="<HDPrint Value=#ContractName# Replace=#DBField2Input#>" class="JQText JQMust2">
     </td>
-    <td class="DtlBarTitle">合同主体:<br>Name of Parties</td>
+    <td class="DtlBarTitle">合同份数:<font color="red">*</font></td>
     <td class="listtd">
-      <INPUT TYPE="text" NAME="" maxlength="32" value="<HDPrint Value=## Replace=#DBField2Input#>" class="JQText">
+      <INPUT TYPE="text" NAME="ContractCount" maxlength="4" value="<HDPrint Value=#ContractCount# Replace=#DBField2Input#>" class="JQText JQMust2">
+    </td>
+    <td class="DtlBarTitle">合同金额:<font color="red">*</font></td>
+    <td class="listtd">
+      <INPUT TYPE="text" NAME="ContractFee" maxlength="16" value="<HDPrint Value=#ContractFee# Replace=#DBField2Input#>" class="JQFloat JQMust2">
     </td>
   </tr>
   <tr valign="top" JQ="Type_2">
-    <td class="DtlBarTitle">合同概要:<br>Contract Purpose and Summary</td>
+    <td class="DtlBarTitle">合作公司:<font color="red">*</font></td>
+    <td class="listtd">
+      <INPUT TYPE="text" NAME="ContactName" maxlength="32" value="<HDPrint Value=#ContactName# Replace=#DBField2Input#>" class="JQText JQMust2">
+    </td>
+    <td class="DtlBarTitle">合同期限:<font color="red">*</font></td>
+    <td class="listtd">
+      <INPUT TYPE="text" NAME="ContractDate1" maxlength="10" value="<HDPrint Value=#ContractDate1# Replace=#DBField2Input#>" class="JQDate JQMust2" onblur="callDate(this)" style="width:100px">~
+      <INPUT TYPE="text" NAME="ContractDate2" maxlength="10" value="<HDPrint Value=#ContractDate2# Replace=#DBField2Input#>" class="JQDate JQMust2" onblur="callDate(this)" style="width:100px">
+    </td>
+    <td class="DtlBarTitle">合同概要:<font color="red">*</font></td>
     <td class="listtd" colspan="3">
-      <textarea rows="5" name="Memo" class="JQText" maxlength="1000"><HDPrint Value=#Memo# Replace=#DBField2InputField#></textarea>
-    </td>
-  </tr>
-  <tr valign="top" JQ="Type_2">
-    <td class="DtlBarTitle">合同份数:<br>Number of Copies</td>
-    <td class="listtd">
-      <INPUT TYPE="text" NAME="" maxlength="32" value="<HDPrint Value=## Replace=#DBField2Input#>" class="JQText">
-    </td>
-    <td class="DtlBarTitle">合同全额:<br>Value of Contract</td>
-    <td class="listtd">
-      <INPUT TYPE="text" NAME="" maxlength="32" value="<HDPrint Value=## Replace=#DBField2Input#>" class="JQText">
-    </td>
-  </tr>
-  <tr valign="top" JQ="Type_2">
-    <td class="DtlBarTitle">合同期限:<br>Period of Contract</td>
-    <td class="listtd">
-      <INPUT TYPE="text" NAME="" maxlength="32" value="<HDPrint Value=## Replace=#DBField2Input#>" class="JQText">
-    </td>
-    <td class="DtlBarTitle"></td>
-    <td class="listtd">
-      <input type="checkbox" name="chk_1" value="系统故障" class="JQCheckBox">
-      已签署申请人保证
-    </td>
-  </tr>
-  <tr valign="top" JQ="Type_2">
-    <td class="DtlBarTitle">DOA批准:</td>
-    <td class="listtd">
-      <input type="radio" name="rd_1" value="否" class="JQRadio">需要（请附上支持文件）<br>
-      <input type="radio" name="rd_1" value="否" class="JQRadio">不需要
-    </td>
-    <td class="DtlBarTitle">申请印章种类:<br>Type of Stamp Requested</td>
-    <td class="listtd">
-      <input type="radio" name="rd_1" value="否" class="JQRadio">公司公章 Company Stamp<br>
-      <input type="radio" name="rd_1" value="否" class="JQRadio">法定代表人名章 Legal Representative Stamp<br>
-      <input type="radio" name="rd_1" value="否" class="JQRadio">公司股东印章 Company Shareholder Stamp
+      <textarea rows="5" name="ComtractMemo" class="JQText JQMust2" maxlength="1000"><HDPrint Value=#ComtractMemo# Replace=#DBField2InputField#></textarea>
     </td>
   </tr>
   <tr valign="top">
     <td class="DtlBarTitle">备注:<br><font color="gray">(1000字以内)</font></td>
-    <td class="listtd" colspan="3"><textarea rows="5" name="Memo" class="JQText" maxlength="1000"><HDPrint Value=#Memo# Replace=#DBField2InputField#></textarea></td>
+    <td class="listtd" colspan="5"><textarea rows="5" name="Memo" class="JQText" maxlength="1000"><HDPrint Value=#Memo# Replace=#DBField2InputField#></textarea></td>
   </tr>
   <tr JQ="TMod_1" style="display:none">
     <td class="DtlBarTitle">终止原因:<font color="red">*</font></td>
-    <td class="listtd" colspan="3"><textarea rows="5" id ="EndMemo" name="EndMemo" class="JQText JQEnd" maxlength="1000"><HDPrint Value=#EndMemo# Replace=#DBField2InputField#></textarea></td>
+    <td class="listtd" colspan="5"><textarea rows="5" id ="EndMemo" name="EndMemo" class="JQText JQEnd" maxlength="1000"><HDPrint Value=#EndMemo# Replace=#DBField2InputField#></textarea></td>
   </tr>
   <tr valign="top">
-    <td class="DtlBarTitle">附件信息:<br><font color="gray">(双击删除)</font></td>
-    <td class="listtd" colspan="3">
-      <SELECT NAME="selFileList_1" size="3" style="width:250;" multiple><HDPrint Value=#AttachList# Replace=#None#></SELECT><br>
+    <td class="DtlBarTitle">附件信息:<font color="red">*</font><br><font color="gray">(双击删除)</font></td>
+    <td class="listtd" colspan="5">
+      <SELECT NAME="selFileList_1" size="3" style="width:250;" multiple class="JQMust1 JQMust2"><HDPrint Value=#AttachList# Replace=#None#></SELECT><br>
       <input type="hidden" name="HDTempPath" value="<HDPrint Value=#NewGid# Replace=#DBField2Input#>">
       <iframe FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid# Replace=#DBField2Input#>&CallBackFun=AddAttach" height=28></iframe>
-    </td>
-  </tr>
-</table>
-<h3 class="SubTitleBar" >
-<TABLE cellspacing="1" cellpadding="0" width="100%">
-  <col style="padding-left:4px;">
-  <col style="width:20px;" align="center">
-  <TR>
-    <TD align="left" style="padding-left:10px;"><b>审批人信息</b></TD>
-    <TD onclick="JQExpand('tb_App');" style="cursor:hand" class="IconUp">　&nbsp;</TD>
-  </TR>
-</TABLE>
-</h3>
-<table width="100%" cellpadding="0" cellspacing="1" class="ListBar" id="tb_App">
-  <col style="padding-left:4px;width:10%" valign="top">
-  <col style="padding-left:4px;width:90%" valign="top">
-  <tr valign="top">
-    <td class="DtlBarTitle"><A HREF="javascript:void(0);" onclick="GetApp('T2','审批人1','all_usr_grp')">审批人1</a>&nbsp;<font color="red">*</font></td>
-    <td class="listtd">
-      <input type="text" name="T2Name" readonly maxlength="64" value="<HDPrint Value=#T2Name# Replace=#DBField2Input#>" class="JQText JQMust"  onclick="GetApp('T2','审批人1','all_usr_grp')" style="width:150px;">
-      <input name="T2Gid" type="hidden" maxlength="32" value="<HDPrint Value=#T2Gid# Replace=#DBField2Input#>" class="JQText">
-      <input name="T2Code" type="hidden" maxlength="64" value="<HDPrint Value=#T2Code# Replace=#DBField2Input#>"  class="JQText">
     </td>
   </tr>
 </table>
@@ -369,7 +307,11 @@
       $("input[name=WF]").val('');
     }
     else if (OpText == '提交'){
-      sCss = 'JQMust';
+      if($("input[name=ApplyType]:checked").val() == '非合同类文件用印'){
+        sCss = 'JQMust1';
+      }else{
+        sCss = 'JQMust2';
+      }
       sConfirm = '您确定已经填写完申请单，并提交吗？';
     }
     else if (OpText == '终止'){
@@ -382,13 +324,17 @@
     }
     //提交时，提示
     if (OpText != '保存'){
+      if ($("input[name=mIsFlow]:checked").val() == '是' && $("input[name=mFlowGid]").val() == '') {
+        alert('请选择关联流程');
+        return;
+      }
       if (!(confirm(sConfirm)))
         return false;
     }
     //状态赋值
     $("input[name=Stat]").val(OpText);
-    
-    //获取当前表单对象 
+
+    //获取当前表单对象
     var JqObj = $("form[name=frmDo]");
     //表单参数设定
     JqObj.attr({
@@ -408,26 +354,25 @@
 
 <script language="javascript" src="##GetWebRootPath(/Scripts/DataInterface.js)##"></script>
 <!--选择审批人调用-->
-<FORM NAME="frmDataInterface_App" ACTION="">
-  <INPUT TYPE="hidden" name="DataInterface_Title" ID="t_App" value="审批人列表">
+<FORM NAME="frmDataInterface_Flow" ACTION="">
+  <INPUT TYPE="hidden" name="DataInterface_Title" ID="t_App" value="流程选择">
 
-  <INPUT TYPE="hidden" name="DataInterface_Sql" ID="s_App" value="">
-  <INPUT TYPE="hidden" name="DataInterface_CountSql" ID="c_App" value="">
-  <INPUT TYPE="hidden" name="DataInterface_OrderSql" value="order by u.code">
+  <INPUT TYPE="hidden" name="DataInterface_Sql" ID="s_App" value="select f.flowgid, f.num, wm.code, wm.name from v_Prl_Flow f, wf_flow wf, wf_model wm where f.entgid = '<HDPrint Value=#entgid#>' and f.entgid = wm.entgid and f.entgid = wf.entgid and f.flowgid = wf.flowgid  and f.modelgid = wm.modelgid and f.stat not in ('终止') and wf.stat = 3 and f.fillusrGid = '<HDPrint Value=#CurUsrGid#>' and not exists (select 1 from wf_prl_stamp t,wf_flow tf where t.entgid = f.entgid and t.entgid = tf.entgid and t.flowgid = tf.flowgid and t.stat not in ('终止') and tf.stat < 4 and t.flowgid <> nvl('<HDPrint Value=#FlowGid# Replace=#DBField2Js#>',1) and t.mFlowGid = f.flowgid)">
+  <INPUT TYPE="hidden" name="DataInterface_CountSql" ID="c_App" value="select count(*) from v_Prl_Flow f, wf_flow wf, wf_model wm where f.entgid = '<HDPrint Value=#entgid#>' and f.entgid = wm.entgid and f.entgid = wf.entgid and f.flowgid = wf.flowgid  and f.modelgid = wm.modelgid and f.stat not in ('终止') and wf.stat = 3 and f.fillusrGid = '<HDPrint Value=#CurUsrGid#>' and not exists (select 1 from wf_prl_stamp t,wf_flow tf where t.entgid = f.entgid and t.entgid = tf.entgid and t.flowgid = tf.flowgid and t.stat not in ('终止') and tf.stat < 4 and t.flowgid <> nvl('<HDPrint Value=#FlowGid# Replace=#DBField2Js#>',1) and t.mFlowGid = f.flowgid)">
+  <INPUT TYPE="hidden" name="DataInterface_OrderSql" value="order by f.num desc">
   <INPUT TYPE="hidden" name="DataInterface_UsrGid" value="<HDPrint Value=#UsrGid#>">
   <INPUT TYPE="hidden" name="DataInterface_AppName" value="##HDNet_AppName##">
 
-  <INPUT TYPE="hidden" name="DataInterface_Cols" value="2^代码^left^100">
-  <INPUT TYPE="hidden" name="DataInterface_Cols" value="3^姓名^left^100">
-  <INPUT TYPE="hidden" name="DataInterface_Cols" value="4^类别^left^100">
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="2^单号^left^100">
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="4^流程^left^100">
 
-  <INPUT TYPE="hidden" name="DataInterface_Search" value="u.code^用户代码^1">
-  <INPUT TYPE="hidden" name="DataInterface_Search" value="u.name^用户姓名^1">
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="f.num^单号^1">
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="wm.name^流程^1">
   <input TYPE="hidden" name="DataInterface_Search_Sql" value="">
   <input TYPE="hidden" name="DataInterface_Search_Cols" value="">
 
   <INPUT TYPE="hidden" name="DataInterface_FieldTo" value="">
   <INPUT TYPE="hidden" name="DataInterface_FieldBy" value="1^2^3">
-  <INPUT TYPE="hidden" name="DataInterface_CallBckFunc" value="CallApp">
+  <INPUT TYPE="hidden" name="DataInterface_CallBckFunc" value="CallFlow">
   <INPUT TYPE="hidden" name="DataInterface_Close" value="true">
 </FORM>

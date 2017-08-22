@@ -20,7 +20,7 @@ SqlForCondition2=select substr(f.FillUsrDeptCode,0,4) ProCode from Wf_PRL_ISTF f
 ;取出旧的ISF/ISCF的信息
 SQL1=select f.num OldNum,f.modelgid OldModelGid,m.code OldModelCode,f.FlowGid OldFlowGid,f.DEPT,f.unit,f.area,f.BuildArea,f.tradename,f.trade,f.lessee,f.tradingname,f.address,f.contactor,f.phone,f.email,f.fax,f.leaseTermY,f.leaseTermM,f.leaseTermD,to_char(f.HandoverDate,'YYYY.MM.DD') HandoverDate,f.Related,f.Detail,f.Rate1,f.Rate,to_char(f.contractDate1,'YYYY.MM.DD') contractDate1,to_char(f.contractdate2,'YYYY.MM.DD') contractdate2,f.freeRentM,f.freeRentD,to_char(f.freeRentdate1,'YYYY.MM.DD') freeRentdate1,to_char(f.freeRentdate2,'YYYY.MM.DD') freeRentdate2,f.fitoutM,f.fitoutD,to_char(f.fitoutdate1,'YYYY.MM.DD') fitoutdate1,to_char(f.fitoutdate2,'YYYY.MM.DD') fitoutdate2,f.collection,nvl(nvl(numa,0)+nvl(numb,0)+nvl(numc,0)+nvl(numd,0)+nvl(numg,0), 0) DataTotal from WF_PRL_ISF f,wf_model m,Wf_PRL_ISTF o where f.FlowGid = o.OldFlowGid and f.EntGid=__ENTGID__ and f.EntGid = m.EntGid and f.modelgid = m.modelgid and o.FlowGid = ##FlowGid##
 
-Sql2=select f.*,decode(f.mallstat,0,'已发送至Mall，处理失败',10,'已发送至Mall,未接收',100,'已发送至Mall，成功') mallstattext,decode(f.category,10,'Early Termination 提前终止',20,'Termination 到期终止',30,'Others 其他:'||f.categorytext) categoryText1,decode(wf.stat,'0', '未执行','1', '待执行','2', '执行中','3', '<FONT COLOR="blue">已完成</FONT>','4', '<font color="gray">已停止</font>','5', '<FONT COLOR="red">已作废</FONT>','6', '<FONT COLOR="red">已超时</FONT>') Flowstat,decode(f.stat,'0','未开始','1','填写中','10','已提交，审批中','12','已同意','13','已否决','30','已完成','40','已终止合同','100','发起人结束流程',f.Stat) StatText from Wf_PRL_ISTF f,wf_flow wf where f.EntGid = __ENTGID__ and f.EntGid = wf.EntGid and f.FlowGid = wf.FlowGid and f.FlowGid = ##FlowGid##
+Sql2=select f.*,FillUsrDept FillDeptName,decode(f.mallstat,0,'已发送至Mall，处理失败',10,'已发送至Mall,未接收',100,'已发送至Mall，成功') mallstattext,decode(f.category,10,'Early Termination 提前终止',20,'Termination 到期终止',30,'Others 其他:'||f.categorytext) categoryText1,decode(wf.stat,'0', '未执行','1', '待执行','2', '执行中','3', '<FONT COLOR="blue">已完成</FONT>','4', '<font color="gray">已停止</font>','5', '<FONT COLOR="red">已作废</FONT>','6', '<FONT COLOR="red">已超时</FONT>') Flowstat,decode(f.stat,'0','未开始','1','填写中','10','已提交，审批中','12','已同意','13','已否决','30','已完成','40','已终止合同','100','发起人结束流程',f.Stat) StatText from Wf_PRL_ISTF f,wf_flow wf where f.EntGid = __ENTGID__ and f.EntGid = wf.EntGid and f.FlowGid = wf.FlowGid and f.FlowGid = ##FlowGid##
 
 ;取出本流程已审批的审批人的个数，用于判断是否显示审批人
 SQL3=select count(*) IsShow from Wf_Prl_Isf_App where EntGid = __ENTGID__ and  FlowGid = ##FlowGid## and AppDate is not null
@@ -48,6 +48,14 @@ LoopSQL4=select g.* from wf_PRL_ISF_ground g,Wf_PRL_ISTF f where f.EntGid = __EN
 LoopHDT4=Templates\WorkFlow\Form\^^ModelCode^^\LoopSql_UnitDtl.hdt
 LoopVAR4=UnitList
 
+;显示邮件
+LoopSQL19=select 1 from dual
+LoopHDT19=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_Email.hdt
+LoopVAR19=EmailList
+
+LoopSQL20=select 1 from dual
+LoopHDT20=Templates\WorkFlow\Form\PrlDZ_Email\Loopsql_Phone.hdt
+LoopVAR20=EmailPhone
 [AddtionalSQL]
 ;操作，没有返回的结果，是在数据库中执行，有Insert, Update, Delete命令。从SQL1～SQL20共支持20条
 SQL1=

@@ -73,6 +73,8 @@ begin
                  R.Fitoutd || '日（' || to_char(R.Fitoutdate1, 'YYYY.MM.DD') || '~' ||
                  to_char(R.Fitoutdate2, 'YYYY.MM.DD') || ')';
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
+    v_Body    := '[Security Deposit (mths) 保证金] : ' || R.Security;
+    v_Content := v_Content || v_TStart || v_Body || v_TEnd;
     v_Body    := R.RATE1 || '(' || R.Rate || ')';
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
   
