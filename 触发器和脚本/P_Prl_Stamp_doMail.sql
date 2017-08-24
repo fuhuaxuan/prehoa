@@ -70,7 +70,7 @@ begin
       v_Content := v_Content || v_TStart || v_Body || v_TEnd;
       v_Body    := '[合同份数] : ' || R.ContractCount;
       v_Content := v_Content || v_TStart || v_Body || v_TEnd;
-      v_Body    := '[合同金额] : ' || R.ContractFee;
+      v_Body    := '[合同金额/总租金] : ' || R.ContractFee;
       v_Content := v_Content || v_TStart || v_Body || v_TEnd;
       v_Body    := '[合作公司] : ' || R.ContactName;
       v_Content := v_Content || v_TStart || v_Body || v_TEnd;
@@ -91,8 +91,7 @@ begin
                        where t.EntGid = hr.EntGid
                          and t.FlowGid = R.Flowgid
                          and t.ExecGid = hr.UsrGid
-                         and t.Stat = 1
-                         and t.ExecGid <> R.Fillusrgid)) loop
+                         and t.Stat = 1)) loop
       v_Email := U.EMAIL || ',';
     end loop;
     if v_Email is not null then

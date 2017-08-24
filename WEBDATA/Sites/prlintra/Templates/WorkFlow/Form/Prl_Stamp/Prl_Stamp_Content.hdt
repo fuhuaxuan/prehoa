@@ -116,7 +116,7 @@
     <td class="listtd"><HDPrint Value=#ContractName#></td>
     <td class="DtlBarTitle">合同份数:</td>
     <td class="listtd"><HDPrint Value=#ContractCount#></td>
-    <td class="DtlBarTitle">合同金额:</td>
+    <td class="DtlBarTitle">合同金额/总租金:</td>
     <td class="listtd"><HDPrint Value=#ContractFee#></td>
   </tr>
   <tr valign="top" JQ="Type_2">
@@ -125,7 +125,7 @@
     <td class="DtlBarTitle">合同期限:</td>
     <td class="listtd"><HDPrint Value=#ContractDate1#>~<HDPrint Value=#ContractDate2#></td>
     <td class="DtlBarTitle">合同概要:</td>
-    <td class="listtd" colspan="3"><HDPrint Value=#ComtractMemo#></td>
+    <td class="listtd"><HDPrint Value=#ComtractMemo#></td>
   </tr>
   <tr valign="top">
     <td class="DtlBarTitle">备注:</td>

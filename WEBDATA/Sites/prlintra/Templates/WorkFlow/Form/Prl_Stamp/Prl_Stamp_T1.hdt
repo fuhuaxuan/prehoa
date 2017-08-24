@@ -130,17 +130,21 @@
   <tr valign="top">
     <td class="DtlBarTitle">是否关联流程:</td>
     <td class="listtd" colspan="5">
-      <input type="radio" name="mIsFlow" value="否" class="JQRadio JQMust1 JQMust2" checked>否
-      <input type="radio" name="mIsFlow" value="是" class="JQRadio JQMust1 JQMust2">是
-      <font id="f_flow" style="display:none">
+      <input type="radio" name="mIsFlow" value="否" class="JQRadio JQMust1 JQMust2">否
+      <input type="radio" name="mIsFlow" value="是" class="JQRadio JQMust1 JQMust2" checked>是
+      <font id="f_flow">
       （单号：<a id="a_flow" href="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#mModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&ModelCode=<HDPrint Value=#mModelCode#>&FlowGid=<HDPrint Value=#mFlowGid#>" target="_blank"><HDPrint Value=#mNum#></a>
-      <a  href="javascript:DataInterface(frmDataInterface_Flow)" target="_blank">[选择]</a>
+      <a href="javascript:DataInterface(frmDataInterface_Flow)">[选择]</a>
       注：请选择ISF,ISCF,ISTF,费用,付款,报销等流程）
       </font>
       <script language="javascript">
         $("input[name=mIsFlow][value='<HDPrint Value=#mIsFlow# Replace=#DBField2Js#>']").prop("checked",true);
-        if('<HDPrint Value=#mIsFlow# Replace=#DBField2Js#>' == '是'){
+        var JsValue2 = '<HDPrint Value=#mIsFlow# Replace=#DBField2Js#>' == '否' ? '否' : '是';
+        if(JsValue2 == '是'){
           $("#f_flow").show();
+        }
+        else{
+          $("#f_flow").hide();
         }
         //函数：ready
         //功能：document 加载完成后调用
@@ -240,7 +244,7 @@
     <td class="listtd">
       <INPUT TYPE="text" NAME="ContractCount" maxlength="4" value="<HDPrint Value=#ContractCount# Replace=#DBField2Input#>" class="JQText JQMust2">
     </td>
-    <td class="DtlBarTitle">合同金额:<font color="red">*</font></td>
+    <td class="DtlBarTitle">合同金额/总租金:<font color="red">*</font></td>
     <td class="listtd">
       <INPUT TYPE="text" NAME="ContractFee" maxlength="16" value="<HDPrint Value=#ContractFee# Replace=#DBField2Input#>" class="JQFloat JQMust2">
     </td>
@@ -256,7 +260,7 @@
       <INPUT TYPE="text" NAME="ContractDate2" maxlength="10" value="<HDPrint Value=#ContractDate2# Replace=#DBField2Input#>" class="JQDate JQMust2" onblur="callDate(this)" style="width:100px">
     </td>
     <td class="DtlBarTitle">合同概要:<font color="red">*</font></td>
-    <td class="listtd" colspan="3">
+    <td class="listtd">
       <textarea rows="5" name="ComtractMemo" class="JQText JQMust2" maxlength="1000"><HDPrint Value=#ComtractMemo# Replace=#DBField2InputField#></textarea>
     </td>
   </tr>
