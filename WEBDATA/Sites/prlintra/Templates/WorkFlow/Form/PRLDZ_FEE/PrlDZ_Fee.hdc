@@ -97,5 +97,5 @@ LoopSQL1=
 
 [Link]
 ;按钮权限，从URL1~URL10共支持10个，内容放的是RT表的权限，在页面返回的变量为chkRtID1~chkRtID10
-URL1=WFFlowSetState
+URL1=wfmodellist
 URL2=

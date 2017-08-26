@@ -57,7 +57,7 @@ begin
                      v.PostCode AppCode,
                      v.PostName AppName,
                      1          AppOrder,
-                     10         AppType
+                     20         AppType
                 from v_Post v
                where v.EntGid = p_EntGid
                  and v.deptGid = v_DeptGid
@@ -68,11 +68,11 @@ begin
                      v.PostCode AppCode,
                      v.PostName AppName,
                      2          AppOrder,
-                     20         AppType
+                     30         AppType
                 from v_Post v
                where v.EntGid = p_EntGid
                  and v.deptGid = v_DeptGid
-                 and v.atype = 35
+                 and v.atype = 40
                  and rownum = 1
               union
               select AppGid, AppCode, AppName, Line + 2, 40
@@ -83,7 +83,7 @@ begin
   
     commit;
     --取出审批人中重复的审批人
-    delete from wf_Prl_Stamp_App f
+    /*delete from wf_Prl_Stamp_App f
      where f.EntGid = p_EntGid
        and f.FlowGid = p_FlowGid
        and f.Apporder > 0
@@ -101,7 +101,7 @@ begin
                      group by t.EntGid, t.FlowGid, t.AppGid) a
              where f.EntGid = a.EntGid
                and f.FlowGid = a.FlowGid
-               and f.apporder = a.apporder);
+               and f.apporder = a.apporder);*/
   end if;
   commit;
   --异常处理

@@ -14,12 +14,12 @@ SQL2=select 1 from dual where ##Stat## <> '提交' union select 1 from v_Post v wh
 Remind2=对不起，下一步审批人部门经理未找到，请与管理员联系。<script>alert('对不起，下一步审批人部门经理未找到，请与管理员联系。');history.back()</script>
 
 ;检查判断的Sql语句，查不到结果是报错，从SQL1～SQL5，共可以写5句
-SQL3=select 1 from dual where ##Stat## <> '提交' union select 1 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=35 and ##Stat## = '提交'
-Remind3=对不起，下一步审批人总经理未找到，请与管理员联系。<script>alert('对不起，下一步审批人总经理未找到，请与管理员联系。');history.back()</script>
+SQL3=select 1 from dual where ##Stat## <> '提交' union select 1 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=40 and ##Stat## = '提交'
+Remind3=对不起，下一步审批人商场总经理未找到，请与管理员联系。<script>alert('对不起，下一步审批人商场总经理未找到，请与管理员联系。');history.back()</script>
 
 ;判断传入FlowGid 是否存在
 SQL4=select 1 from dual where ##Stat## <> '提交' union select 1 from Prl_Stamp_App where EntGid = __ENTGID__ and StampType = '^^StampType^^' and ComGid = '^^ComGid^^' and ##Stat## = '提交'
-Remind4=对不起，下一步审批人配置，请与管理员联系。<script>alert('对不起，下一步审批人配置，请与管理员联系。');window.close()</script>
+Remind4=对不起，下一步审批人未配置，请与管理员联系。<script>alert('对不起，下一步审批人未配置，请与管理员联系。');window.close()</script>
 
 [Detail]
 ;显示，查询得到的结果可以用于HDT显示，从SQL1～SQL20共支持20条
