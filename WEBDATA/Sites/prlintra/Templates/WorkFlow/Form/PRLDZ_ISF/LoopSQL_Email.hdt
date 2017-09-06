@@ -21,5 +21,6 @@
 <tr><td>[Existing 目前] : <HDPrint Value=#brcexist#> RMB/㎡/天；</td></tr>
 <tr><td>[Budget 批准预算] : <HDPrint Value=#brcbudget#> RMB/㎡/天；</td></tr>
 <tr><td>[Special Terms and Conditions/Remarks :特别条件/评语] : <HDPrint Value=#Memo# Replace=#DBField2InputField#>；</td></tr>
+<tr><td>[附件信息] : <HDPrint Value=#AttachList# Replace=#None#></td></tr>
 <tr><td>-----------内容展示完毕-----------</td></tr>
 </table>

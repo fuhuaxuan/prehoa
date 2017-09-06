@@ -17,10 +17,6 @@ Remind2=¶Ô²»Æğ£¬ÏÂÒ»²½ÉóÅúÈË²¿ÃÅ¾­ÀíÎ´ÕÒµ½£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ¡£<script>alert('¶Ô²»Æ
 SQL3=select 1 from dual where ##Stat## <> 'Ìá½»' union select 1 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=40 and ##Stat## = 'Ìá½»'
 Remind3=¶Ô²»Æğ£¬ÏÂÒ»²½ÉóÅúÈËÉÌ³¡×Ü¾­ÀíÎ´ÕÒµ½£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ¡£<script>alert('¶Ô²»Æğ£¬ÏÂÒ»²½ÉóÅúÈËÉÌ³¡×Ü¾­ÀíÎ´ÕÒµ½£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ¡£');history.back()</script>
 
-;ÅĞ¶Ï´«ÈëFlowGid ÊÇ·ñ´æÔÚ
-SQL4=select 1 from dual where ##Stat## <> 'Ìá½»' union select 1 from Prl_Stamp_App where EntGid = __ENTGID__ and StampType = '^^StampType^^' and ComGid = '^^ComGid^^' and ##Stat## = 'Ìá½»'
-Remind4=¶Ô²»Æğ£¬ÏÂÒ»²½ÉóÅúÈËÎ´ÅäÖÃ£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ¡£<script>alert('¶Ô²»Æğ£¬ÏÂÒ»²½ÉóÅúÈËÎ´ÅäÖÃ£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ¡£');window.close()</script>
-
 [Detail]
 ;ÏÔÊ¾£¬²éÑ¯µÃµ½µÄ½á¹û¿ÉÒÔÓÃÓÚHDTÏÔÊ¾£¬´ÓSQL1¡«SQL20¹²Ö§³Ö20Ìõ
 ;È¡³ö±¾Á÷³ÌÄ£ĞÍĞÅÏ¢

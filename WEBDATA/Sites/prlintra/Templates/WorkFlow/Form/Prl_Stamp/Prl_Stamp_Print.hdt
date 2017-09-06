@@ -21,9 +21,9 @@
   </tr>
 </table>
 
-<table width="645" cellspacing="0" cellpadding="0" align="center" style="border-left:1 solid black;border-bottom:1 solid black;">
-  <col style="padding-left:4px;width:15%" valign="top">
-  <col style="padding-left:4px;width:3%5" valign="top">
+<table width="645" cellspacing="0" cellpadding="0" align="center" style="border-left:1 solid black;">
+  <col style="padding-left:4px;width:17%" valign="top">
+  <col style="padding-left:4px;width:33%" valign="top">
   <col style="padding-left:4px;width:10%" valign="top">
   <col style="padding-left:4px;width:40%" valign="top">
   <tr valign="top">
@@ -111,6 +111,7 @@
     <td  class="PrintTdRT" colspan="3"><HDPrint Value=#Memo#></td>
   </tr>
 </table>
+<HDPrint Value=#AppList# Replace=#None#>
 <script language="javascript">
   window.print();
 </script>

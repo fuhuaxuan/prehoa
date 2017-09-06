@@ -28,9 +28,9 @@ Sql1=
 
 [Master]
 ;显示，多条记录的查询，可在HDT页面中直接使用<HDLoop>显示，并能够提供翻页。and '^^NotFirst^^' = '1'
-SQL=select a.code AcgCode, a.name AcgName,decode(wf.stat, '0', '未执行', '1', '待执行', '2', '执行中', '3', '已完成', '4', '已停止', '5', '已作废', '6', '已超时') Flowstat, decode(f.stat, '12', '审批通过', '13', '审批否决，待修改', '20', '已通知出纳', '30', '出纳已支付', '35', '发起人修改支付信息', '100', '申请人结束申请', '审批中') stattext,f.* from WF_PRL_PAY f, wf_flow wf,prl_acg a where f.entgid = getentgid and f.entgid = wf.entgid and f.flowgid = wf.flowgid and f.entgid = a.entgid and f.AcgTwoGid = a.gid
+SQL=select a.code AcgCode, a.name AcgName,decode(wf.stat, '0', '未执行', '1', '待执行', '2', '执行中', '3', '已完成', '4', '已停止', '5', '已作废', '6', '已超时') Flowstat, decode(f.stat, '12', '审批通过', '13', '审批否决，待修改', '20', '已通知出纳', '30', '出纳已支付', '35', '发起人修改支付信息', '100', '申请人结束申请', '审批中') stattext,f.* from WF_PRL_PAY f, wf_flow wf,prl_acg a where f.entgid = getentgid and f.entgid = wf.entgid and f.flowgid = wf.flowgid and f.entgid = a.entgid and f.AcgTwoGid = a.gid and exists (select 1 from wf_rt c, v_org_usr d where c.entgid = __ENTGID__ and c.modelgid = f.modelgid and d.entgid = __ENTGID__ and c.usrgidex = d.orggid and d.usrgid = __USRGID__ and substr(c.rtid, 1, 1) = '1' and c.deptrt like '%'|| substr(f.FillUsrDeptCode, 0, 4) ||'%' and c.deptrt is not null ) 
 
-Count=select Count(*) from WF_PRL_PAY f, wf_flow wf,prl_acg a where f.entgid = getentgid and f.entgid = wf.entgid and f.flowgid = wf.flowgid and f.entgid = a.entgid and f.AcgTwoGid = a.gid
+Count=select Count(*) from WF_PRL_PAY f, wf_flow wf,prl_acg a where f.entgid = getentgid and f.entgid = wf.entgid and f.flowgid = wf.flowgid and f.entgid = a.entgid and f.AcgTwoGid = a.gid and exists (select 1 from wf_rt c, v_org_usr d where c.entgid = __ENTGID__ and c.modelgid = f.modelgid and d.entgid = __ENTGID__ and c.usrgidex = d.orggid and d.usrgid = __USRGID__ and substr(c.rtid, 1, 1) = '1' and c.deptrt like '%'|| substr(f.FillUsrDeptCode, 0, 4) ||'%' and c.deptrt is not null ) 
 
 [DefaultWhere]
 ;多条记录的查询的默认条件

@@ -35,5 +35,6 @@
 <tr><td>[尚欠余额=A-B-C] : <HDPrint Value=#feeleft#>；</td></tr>
 <tr><td>[实际付款总额=B+C] : <HDPrint Value=#feeok#>；</td></tr>
 </HDIF>
+<tr><td>[附件信息] : <HDPrint Value=#AttachList# Replace=#None#></td></tr>
 <tr><td>-----------内容展示完毕-----------</td></tr>
 </table>

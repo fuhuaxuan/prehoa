@@ -23,9 +23,9 @@ Sql1=
 
 [Master]
 ;显示，多条记录的查询，可在HDT页面中直接使用<HDLoop>显示，并能够提供翻页。and '^^NotFirst^^' = '1'
-SQL=select * from v_Prl_OISF v where v.EntGid = __ENTGID__
+SQL=select * from v_Prl_OISF v where v.EntGid = __ENTGID__ and exists (select 1 from wf_rt c, v_org_usr d where c.entgid = __ENTGID__ and c.modelgid = v.isfmodelgid and d.entgid = __ENTGID__ and c.usrgidex = d.orggid and d.usrgid = __USRGID__ and substr(c.rtid, 1, 1) = '1' and c.deptrt like '%'|| substr(v.IsfDepeCode, 0, 4) ||'%' and c.deptrt is not null ) 
 
-Count=select Count(*) from v_Prl_OISF v where v.EntGid = __ENTGID__
+Count=select Count(*) from v_Prl_OISF v where v.EntGid = __ENTGID__ and exists (select 1 from wf_rt c, v_org_usr d where c.entgid = __ENTGID__ and c.modelgid = v.isfmodelgid and d.entgid = __ENTGID__ and c.usrgidex = d.orggid and d.usrgid = __USRGID__ and substr(c.rtid, 1, 1) = '1' and c.deptrt like '%'|| substr(v.IsfDepeCode, 0, 4) ||'%' and c.deptrt is not null ) 
 
 
 ;and ((##PreDeptCode## = substr(f.FILLUSRDEPTCODE,0,4) and ##IsAdmin## = '0') or ##IsAdmin## <> '0')

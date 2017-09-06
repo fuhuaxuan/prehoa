@@ -18,5 +18,6 @@
 </td></tr>
 <tr><td>[报销金额汇总] : <HDPrint Value=#SumFee#> 元；</td></tr>
 <tr><td>[报销备注] : <HDPrint Value=#memo#> ；</td></tr>
+<tr><td>[附件信息] : <HDPrint Value=#AttachList# Replace=#None#></td></tr>
 <tr><td>-----------内容展示完毕-----------</td></tr>
 </table>

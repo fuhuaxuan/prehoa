@@ -24,5 +24,6 @@
 <tr><td>[装修补贴] : <font color="blue"><HDPrint Value=#NumC#></font>；</td></tr>
 <tr><td>[提前终止的补偿款（包括可没收的款项）] : <font color="blue"><HDPrint Value=#NumD#></font>；</td></tr>
 <tr><td>[Remarks 退场原因] : <HDPrint Value=#Remarks#>；</td></tr>
+<tr><td>[附件信息] : <HDPrint Value=#AttachList# Replace=#None#></td></tr>
 <tr><td>-----------内容展示完毕-----------</td></tr>
 </table>

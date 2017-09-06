@@ -9,7 +9,8 @@ select f.entgid,
        f.fillusrname,
        f.fillusrdeptgid  FillDeptGid,
        f.fillusrdeptcode FillDeptCode,
-       f.fillusrdept     filldeptname
+       f.fillusrdept     filldeptname,
+       f.unit            FMemo
   from wf_prl_isf f
 union
 select f.entgid,
@@ -22,8 +23,11 @@ select f.entgid,
        f.fillusrname,
        f.fillusrdeptgid  FillDeptGid,
        f.fillusrdeptcode FillDeptCode,
-       f.fillusrdept     filldeptname
-  from wf_prl_istf f
+       f.fillusrdept     filldeptname,
+       i.unit            FMemo
+  from wf_prl_istf f, wf_prl_isf i
+ where f.entgid = i.entgid
+   and f.oldflowgid = i.flowgid
 union
 select f.entgid,
        f.flowgid,
@@ -35,7 +39,8 @@ select f.entgid,
        f.fillusrname,
        f.filldeptgid,
        f.filldeptcode,
-       f.filldeptname
+       f.filldeptname,
+       f.unit fMemo
   from wf_prl_oisf f
 union
 select f.entgid,
@@ -48,8 +53,11 @@ select f.entgid,
        f.fillusrname,
        f.filldeptgid,
        f.filldeptcode,
-       f.filldeptname
-  from wf_prl_oistf f
+       f.filldeptname,
+       i.unit FMemo
+  from wf_prl_oistf f, wf_prl_oisf i
+ where f.entgid = i.entgid
+   and f.flowgid = i.flowgid
 union
 select f.entgid,
        f.flowgid,
@@ -59,9 +67,10 @@ select f.entgid,
        f.fillusrgid,
        f.fillusrcode,
        f.fillusrname,
-       f.fillusrdeptgid  FillDeptGid,
+       f.fillusrdeptgid FillDeptGid,
        f.fillusrdeptcode FillDeptCode,
-       f.fillusrdept     filldeptname
+       f.fillusrdept filldeptname,
+       f.askfee || '' FMemo
   from wf_prl_fee f
 union
 select f.entgid,
@@ -72,9 +81,10 @@ select f.entgid,
        f.fillusrgid,
        f.fillusrcode,
        f.fillusrname,
-       f.fillusrdeptgid  FillDeptGid,
+       f.fillusrdeptgid FillDeptGid,
        f.fillusrdeptcode FillDeptCode,
-       f.fillusrdept     filldeptname
+       f.fillusrdept filldeptname,
+       f.payfee || '' FMemo
   from wf_prl_pay f
 union
 select f.entgid,
@@ -87,5 +97,6 @@ select f.entgid,
        f.fillusrname,
        f.filldeptgid,
        f.filldeptcode,
-       f.filldeptname
+       f.filldeptname,
+       f.sumfee || '' FMemo
   from wf_prl_baoxiao f;

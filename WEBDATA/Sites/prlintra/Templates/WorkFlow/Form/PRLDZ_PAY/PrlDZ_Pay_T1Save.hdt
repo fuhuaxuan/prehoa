@@ -6,6 +6,21 @@
     location.replace('##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#Modelcode#>_T1&UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid# Replace=#DBField2Js#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>');
   }
   else{
-    location.replace('##HDNet_AppName##/WFFlowPage?Url=PrlDZ_Email&UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid# Replace=#DBField2Js#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>');
+    var browser = JQGetBrowser();
+    if (browser.mobile){
+      location.replace('##HDNet_AppName##/WFFlowPage?Url=PrlDZ_Email&UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid# Replace=#DBField2Js#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>');
+    }
+    else{
+      if (self.opener != null) {
+        try{
+          self.opener.location.reload();
+        }
+        catch(e){
+        }
+        window.opener = null;
+        window.open(' ', '_self', ' ');
+      }
+      location.replace('##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#Modelcode#>_Email&UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid# Replace=#DBField2Js#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>');
+    }
   }
 </SCRIPT>

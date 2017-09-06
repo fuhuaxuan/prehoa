@@ -1,0 +1,3 @@
+<HDLoop>
+  JsEmail += '<HDPrint value=#Email# Replace=#DBField2Js#>;';
+</HDLoop>

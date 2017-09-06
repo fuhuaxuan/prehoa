@@ -27,7 +27,7 @@ Sql1=update WF_^^ModelCode^^ set (LastUpdDate,Stat) = (select sysdate,##AppAssig
 
 Sql2=update WF_^^ModelCode^^ set (LastUpdDate,Stat) = (select sysdate,'已完成' from dual) where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## and ##AppAssign## = '同意' and ##NextApp## = '0'
 
-Sql3=delete from Wf_^^ModelCode^^_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppGid = __USRGID__ and AppDate is null
+Sql3=delete from Wf_^^ModelCode^^_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppGid = __USRGID__ and AppOrder = ##AppOrder##
 
 Sql4=delete from Wf_^^ModelCode^^_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppDate is null and ##AppAssign## = '否决'
 

@@ -1,0 +1,26 @@
+<!-- JQuery函数引入 -->
+<script language="javascript" src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<form name="frmMail" method="POST" action="/bin/hdmailsend.dll/send" target="_self">
+<input type="hidden" name="Title" maxlength="100" style="width:100%" value="<HDPrint Value=#MCode# Replace=#DBField2Input#>:<HDPrint Value=#FillDeptName# Replace=#DBField2Input#>">
+<input type="hidden" name="Email" maxlength="400" style="width:100%" value="<HDPrint Value=#AppEmail# Replace=#DBField2InputField#>;">
+<input type="hidden" name="fAddr" maxlength="400" style="width:100%" value="pcrtoa@hd123.net">
+<input type="hidden" name="fName" maxlength="400" style="width:100%" value="OA系统邮件提醒">
+<input type="hidden" name="RplEmail" maxlength="400" style="width:100%" value="pcrtoa@hd123.net">
+<input type="hidden" name="isHTML" value="y">
+<textarea name="Content" style="width:100%;height:400;display:none">
+<HDPrint Value=#EmailList# Replace=#None#>
+</textarea>
+
+</form>
+<script language="javascript">
+  var JsEmail = '';
+  <HDPrint Value=#AppList# Replace=#None#>
+  frmMail.Email.value = JsEmail;
+  if (!!JsEmail){
+    frmMail.submit();
+  }
+  else{
+    window.close();
+  }
+</script>

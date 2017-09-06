@@ -33,9 +33,9 @@ Sql1=
 
 [Master]
 ;显示，多条记录的查询，可在HDT页面中直接使用<HDLoop>显示，并能够提供翻页。and '^^NotFirst^^' = '1'
-SQL=select 'prl_baoxiao' modelcode,f.*,fd.* ,decode(wf.stat, 3, '已完成', '审批中') Fstat from WF_prl_BaoXiao f, WF_prl_BaoXiao_Dtl fd, wf_flow wf where f.entgid = fd.entgid and f.entgid = wf.entgid and f.flowgid = fd.flowgid and f.flowgid = wf.flowgid and f.stat not in ('终止') and wf.stat < 4
+SQL=select 'prl_baoxiao' modelcode,f.*,fd.* ,decode(wf.stat, 3, '已完成', '审批中') Fstat from WF_prl_BaoXiao f, WF_prl_BaoXiao_Dtl fd, wf_flow wf where f.entgid = fd.entgid and f.entgid = wf.entgid and f.flowgid = fd.flowgid and f.flowgid = wf.flowgid and f.stat not in ('终止') and wf.stat < 4 and exists (select 1 from wf_rt c, v_org_usr d where c.entgid = __ENTGID__ and c.modelgid = f.modelgid and d.entgid = __ENTGID__ and c.usrgidex = d.orggid and d.usrgid = __USRGID__ and substr(c.rtid, 1, 1) = '1' and c.deptrt like '%'|| substr(f.FillDeptCode, 0, 4) ||'%' and c.deptrt is not null ) 
 
-Count=select Count(*) from WF_prl_BaoXiao f, WF_prl_BaoXiao_Dtl fd, wf_flow wf where f.entgid = fd.entgid and f.entgid = wf.entgid and f.flowgid = fd.flowgid and f.flowgid = wf.flowgid and f.stat not in ('终止') and wf.stat < 4
+Count=select Count(*) from WF_prl_BaoXiao f, WF_prl_BaoXiao_Dtl fd, wf_flow wf where f.entgid = fd.entgid and f.entgid = wf.entgid and f.flowgid = fd.flowgid and f.flowgid = wf.flowgid and f.stat not in ('终止') and wf.stat < 4 and exists (select 1 from wf_rt c, v_org_usr d where c.entgid = __ENTGID__ and c.modelgid = f.modelgid and d.entgid = __ENTGID__ and c.usrgidex = d.orggid and d.usrgid = __USRGID__ and substr(c.rtid, 1, 1) = '1' and c.deptrt like '%'|| substr(f.FillDeptCode, 0, 4) ||'%' and c.deptrt is not null ) 
 
 [DefaultWhere]
 ;多条记录的查询的默认条件

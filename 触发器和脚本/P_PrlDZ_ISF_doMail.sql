@@ -172,7 +172,7 @@ begin
                  R.Memo;
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
     v_Content := v_Content || v_Foot;
-    for U in (select hr.Email
+    for U in (select distinct hr.Email
                 from hr_emp hr
                where hr.entgid = R.EntGid
                  and exists (select 1

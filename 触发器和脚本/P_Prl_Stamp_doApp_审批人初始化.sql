@@ -10,8 +10,9 @@ create or replace procedure P_Prl_Stamp_doApp(p_EntGid    varchar2, --企业Gid
   v_ModelCode   varchar2(32); --模型代码
   v_DeptGid     varchar2(32); --当前用户部门
   v_PreDeptCode varchar2(32); --所属部门代码
-  v_StampType   varchar2(32); --印章类型
+  v_StampType   varchar2(128); --印章类型
   v_ComGid      varchar2(32); --项目ID
+  v_Count       int;
 begin
   commit;
   v_Stage := '取出流程信息';
@@ -73,23 +74,67 @@ begin
                where v.EntGid = p_EntGid
                  and v.deptGid = v_DeptGid
                  and v.atype = 40
-                 and rownum = 1
-              union
-              select AppGid, AppCode, AppName, Line + 2, 40
+                 and rownum = 1) t;
+  
+    for R in (select AppGid, AppCode, AppName, Line, StampType
                 from Prl_Stamp_App
                where EntGid = p_EntGid
-                 and StampType = v_StampType
-                 and ComGid = v_ComGid) t;
-  
-    commit;
+                 and v_StampType like '%' || StampType || '%'
+                 and ComGid = v_ComGid
+               order by decode(StampType,
+                               '财务印章',
+                               1,
+                               '公司公章',
+                               2,
+                               '法定代表人名章',
+                               3,
+                               '公司股东章',
+                               4),
+                        Line) loop
+      select count(*)
+        into v_Count
+        from wf_Prl_Stamp_App t
+       where t.entgid = p_EntGid
+         and t.Flowgid = p_FlowGid
+         and t.apporder < 100;
+      insert into wf_Prl_Stamp_App
+        (EntGid,
+         ModelGid,
+         FlowGid,
+         Gid,
+         AppGid,
+         AppCode,
+         AppName,
+         AppOrder,
+         AppType)
+        select p_EntGid,
+               p_ModelGid,
+               p_FlowGid,
+               sys_guid(),
+               R.AppGid,
+               R.AppCode,
+               R.AppName,
+               v_Count + 1,
+               decode(R.StampType,
+                      '财务印章',
+                      50,
+                      '公司公章',
+                      60,
+                      '法定代表人名章',
+                      70,
+                      '公司股东章',
+                      80)
+          from dual;
+      commit;
+    end loop;
     --取出审批人中重复的审批人
-    /*delete from wf_Prl_Stamp_App f
+    delete from wf_Prl_Stamp_App f
      where f.EntGid = p_EntGid
        and f.FlowGid = p_FlowGid
        and f.Apporder > 0
        and f.Appdate is null
        and not exists (select 1
-              from (select max(t.apporder) apporder,
+              from (select min(t.apporder) apporder,
                            t.EntGid,
                            t.FlowGid,
                            t.AppGid
@@ -101,7 +146,7 @@ begin
                      group by t.EntGid, t.FlowGid, t.AppGid) a
              where f.EntGid = a.EntGid
                and f.FlowGid = a.FlowGid
-               and f.apporder = a.apporder);*/
+               and f.apporder = a.apporder);
   end if;
   commit;
   --异常处理

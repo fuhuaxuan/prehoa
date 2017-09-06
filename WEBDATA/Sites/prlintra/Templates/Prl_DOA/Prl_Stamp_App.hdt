@@ -48,9 +48,10 @@
     <td class="listtd">
     <select name="StampType" class="JQSelect JQMust" style="width:120px">
       <option value="">--请选择--</option>
+      <option value="财务印章">财务印章</option>
       <option value="公司公章">公司公章</option>
       <option value="法定代表人名章">法定代表人名章</option>
-      <option value="公司股东或财务印章">公司股东或财务印章</option>
+      <option value="公司股东章">公司股东章</option>
     </select>
     <script language="javascript">
       $("select[name=StampType] option[value=<HDPrint Value=#sStampType# Replace=#DBField2Js#>]").prop("selected",true);

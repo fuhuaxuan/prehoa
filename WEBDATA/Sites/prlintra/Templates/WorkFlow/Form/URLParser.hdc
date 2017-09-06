@@ -1342,6 +1342,10 @@ HDT=Templates\WorkFlow\Form\PRL_OISF\PRL_OISF_Content.hdt
 HDC=Templates\WorkFlow\Form\PRL_OISF\PRL_OISF_Print.hdc
 HDT=Templates\WorkFlow\Form\PRL_OISF\PRL_OISF_Print.hdt
 
+[PRL_OISCF_Email]
+HDC=Templates\WorkFlow\Form\PRL_OISF\PRL_OISF_Email.hdc
+HDT=Templates\WorkFlow\Form\PRL_OISF\PRL_OISF_Email.hdt
+
 [PRL_OISCF_TCC]
 HDC=Templates\WorkFlow\Form\PRL_OISF\PRL_OISF_TCC.hdc
 HDT=Templates\WorkFlow\Form\PRL_OISF\PRL_OISF_TCC.hdt
@@ -1458,6 +1462,10 @@ HDT=Templates\WorkFlow\Form\PRL_OISF\PRL_OISF_Content.hdt
 [PRL_OISF_Print]
 HDC=Templates\WorkFlow\Form\PRL_OISF\PRL_OISF_Print.hdc
 HDT=Templates\WorkFlow\Form\PRL_OISF\PRL_OISF_Print.hdt
+
+[PRL_OISF_Email]
+HDC=Templates\WorkFlow\Form\PRL_OISF\PRL_OISF_Email.hdc
+HDT=Templates\WorkFlow\Form\PRL_OISF\PRL_OISF_Email.hdt
 
 [PRL_OISF_TCC]
 HDC=Templates\WorkFlow\Form\PRL_OISF\PRL_OISF_TCC.hdc
@@ -1576,6 +1584,10 @@ HDT=Templates\WorkFlow\Form\PRL_OISTF\PRL_OISTF_Content.hdt
 HDC=Templates\WorkFlow\Form\PRL_OISTF\PRL_OISTF_Print.hdc
 HDT=Templates\WorkFlow\Form\PRL_OISTF\PRL_OISTF_Print.hdt
 
+[PRL_OISTF_Email]
+HDC=Templates\WorkFlow\Form\PRL_OISTF\PRL_OISTF_Email.hdc
+HDT=Templates\WorkFlow\Form\PRL_OISTF\PRL_OISTF_Email.hdt
+
 [PRL_OISTF_TCC]
 HDC=Templates\WorkFlow\Form\PRL_OISTF\PRL_OISTF_TCC.hdc
 HDT=Templates\WorkFlow\Form\PRL_OISTF\PRL_OISTF_TCC.hdt
@@ -1681,6 +1693,10 @@ HDT=Templates\WorkFlow\Form\Prl_Stamp\Prl_Stamp.hdt
 [Prl_Stamp_Content]
 HDC=Templates\WorkFlow\Form\Prl_Stamp\Prl_Stamp_Content.hdc
 HDT=Templates\WorkFlow\Form\Prl_Stamp\Prl_Stamp_Content.hdt
+
+[PRL_Stamp_Email]
+HDC=Templates\WorkFlow\Form\PRL_Stamp\PRL_Stamp_Email.hdc
+HDT=Templates\WorkFlow\Form\PRL_Stamp\PRL_Stamp_Email.hdt
 
 [Prl_Stamp_T1]
 HDC=Templates\WorkFlow\Form\Prl_Stamp\Prl_Stamp_T1.hdc
@@ -2079,6 +2095,10 @@ HDT=Templates\WorkFlow\Form\PRLDZ_Fee\PRLDZ_Fee_Content.hdt
 HDC=Templates\WorkFlow\Form\PRLDZ_Fee\PRLDZ_Fee_Print.hdc
 HDT=Templates\WorkFlow\Form\PRLDZ_Fee\PRLDZ_Fee_Print.hdt
 
+[PRLDZ_Fee_Email]
+HDC=Templates\WorkFlow\Form\PRLDZ_Fee\PRLDZ_Fee_Email.hdc
+HDT=Templates\WorkFlow\Form\PRLDZ_Fee\PRLDZ_Fee_Email.hdt
+
 [PRLDZ_Fee_TCC]
 HDC=Templates\WorkFlow\Form\PRLDZ_Fee\PRLDZ_Fee_Tcc.hdc
 HDT=Templates\WorkFlow\Form\PRLDZ_Fee\PRLDZ_Fee_Tcc.hdt
@@ -2220,6 +2240,10 @@ HDT=Templates\WorkFlow\Form\PRLDZ_Pay\PRLDZ_Pay_Content.hdt
 [PRLDZ_Pay_Print]
 HDC=Templates\WorkFlow\Form\PRLDZ_Pay\PRLDZ_Pay_Print.hdc
 HDT=Templates\WorkFlow\Form\PRLDZ_Pay\PRLDZ_Pay_Print.hdt
+
+[PRLDZ_Pay_Email]
+HDC=Templates\WorkFlow\Form\PRLDZ_Pay\PRLDZ_Pay_Email.hdc
+HDT=Templates\WorkFlow\Form\PRLDZ_Pay\PRLDZ_Pay_Email.hdt
 
 [PRLDZ_Pay_TCC]
 HDC=Templates\WorkFlow\Form\PRLDZ_Pay\PRLDZ_Pay_Tcc.hdc
@@ -2387,6 +2411,9 @@ HDT=Templates\WorkFlow\Form\PrlDZ_BaoXiao\PrlDZ_BaoXiao_Content.hdt
 HDC=Templates\WorkFlow\Form\PrlDZ_BaoXiao\PrlDZ_BaoXiao_Print.hdc
 HDT=Templates\WorkFlow\Form\PrlDZ_BaoXiao\PrlDZ_BaoXiao_Print.hdt
 
+[PRLDZ_BaoXiao_Email]
+HDC=Templates\WorkFlow\Form\PRLDZ_BaoXiao\PRLDZ_BaoXiao_Email.hdc
+HDT=Templates\WorkFlow\Form\PRLDZ_BaoXiao\PRLDZ_BaoXiao_Email.hdt
 
 [PrlDZ_BaoXiao_T1]
 HDC=Templates\WorkFlow\Form\PrlDZ_BaoXiao\PrlDZ_BaoXiao_T1.hdc
@@ -2542,6 +2569,10 @@ HDT=Templates\WorkFlow\Form\PRLDZ_ISF\PRLDZ_ISCF_Dtl.hdt
 HDC=Templates\WorkFlow\Form\PRLDZ_ISF\PRLDZ_ISF_Print.hdc
 HDT=Templates\WorkFlow\Form\PRLDZ_ISF\PRLDZ_ISF_Print.hdt
 
+[PRLDZ_ISCF_Email]
+HDC=Templates\WorkFlow\Form\PRLDZ_ISF\PRLDZ_ISF_Email.hdc
+HDT=Templates\WorkFlow\Form\PRLDZ_ISF\PRLDZ_ISF_Email.hdt
+
 [PRLDZ_ISCF_TCC]
 HDC=Templates\WorkFlow\Form\PRLDZ_ISF\PRLDZ_ISF_TCC.hdc
 HDT=Templates\WorkFlow\Form\PRLDZ_ISF\PRLDZ_ISF_TCC.hdt
@@ -2663,6 +2694,10 @@ HDT=Templates\WorkFlow\Form\PRLDZ_ISF\PRLDZ_ISF_Dtl.hdt
 HDC=Templates\WorkFlow\Form\PRLDZ_ISF\PRLDZ_ISF_Print.hdc
 HDT=Templates\WorkFlow\Form\PRLDZ_ISF\PRLDZ_ISF_Print.hdt
 
+[PRLDZ_ISF_Email]
+HDC=Templates\WorkFlow\Form\PRLDZ_ISF\PRLDZ_ISF_Email.hdc
+HDT=Templates\WorkFlow\Form\PRLDZ_ISF\PRLDZ_ISF_Email.hdt
+
 [PRLDZ_ISF_TCC]
 HDC=Templates\WorkFlow\Form\PRLDZ_ISF\PRLDZ_ISF_TCC.hdc
 HDT=Templates\WorkFlow\Form\PRLDZ_ISF\PRLDZ_ISF_TCC.hdt
@@ -2779,6 +2814,10 @@ HDT=Templates\WorkFlow\Form\PRLDZ_ISTF\PRLDZ_ISTF_Content.hdt
 [PRLDZ_ISTF_Print]
 HDC=Templates\WorkFlow\Form\PRLDZ_ISTF\PRLDZ_ISTF_Print.hdc
 HDT=Templates\WorkFlow\Form\PRLDZ_ISTF\PRLDZ_ISTF_Print.hdt
+
+[PRLDZ_ISTF_Email]
+HDC=Templates\WorkFlow\Form\PRLDZ_ISTF\PRLDZ_ISTF_Email.hdc
+HDT=Templates\WorkFlow\Form\PRLDZ_ISTF\PRLDZ_ISTF_Email.hdt
 
 [PRLDZ_ISTF_TCC]
 HDC=Templates\WorkFlow\Form\PRLDZ_ISTF\PRLDZ_ISTF_TCC.hdc
