@@ -1362,6 +1362,14 @@ HDT=Templates\WorkFlow\Form\PRL_OISF\PRL_OISF_T1.hdt
 HDC=Templates\WorkFlow\Form\PRL_OISF\PRL_OISF_T1Save.hdc
 HDT=Templates\WorkFlow\Form\PRL_OISF\PRL_OISF_T1Save.hdt
 
+[PRL_OISCF_T2]
+HDC=Templates\WorkFlow\Form\PRL_OISF\PRL_OISF_T2.hdc
+HDT=Templates\WorkFlow\Form\PRL_OISF\PRL_OISF_T2.hdt
+
+[PRL_OISCF_T2Save]
+HDC=Templates\WorkFlow\Form\PRL_OISF\PRL_OISF_T2Save.hdc
+HDT=Templates\WorkFlow\Form\PRL_OISF\PRL_OISF_T2Save.hdt
+
 [PRL_OISCF_Tmod]
 HDC=Templates\WorkFlow\Form\PRL_OISF\PRL_OISF_Tmod.hdc
 HDT=Templates\WorkFlow\Form\PRL_OISF\PRL_OISF_Tmod.hdt
@@ -1483,6 +1491,14 @@ HDT=Templates\WorkFlow\Form\PRL_OISF\PRL_OISF_T1.hdt
 HDC=Templates\WorkFlow\Form\PRL_OISF\PRL_OISF_T1Save.hdc
 HDT=Templates\WorkFlow\Form\PRL_OISF\PRL_OISF_T1Save.hdt
 
+[PRL_OISF_T2]
+HDC=Templates\WorkFlow\Form\PRL_OISF\PRL_OISF_T2.hdc
+HDT=Templates\WorkFlow\Form\PRL_OISF\PRL_OISF_T2.hdt
+
+[PRL_OISF_T2Save]
+HDC=Templates\WorkFlow\Form\PRL_OISF\PRL_OISF_T2Save.hdc
+HDT=Templates\WorkFlow\Form\PRL_OISF\PRL_OISF_T2Save.hdt
+
 [PRL_OISF_Tmod]
 HDC=Templates\WorkFlow\Form\PRL_OISF\PRL_OISF_Tmod.hdc
 HDT=Templates\WorkFlow\Form\PRL_OISF\PRL_OISF_Tmod.hdt
@@ -1603,6 +1619,14 @@ HDT=Templates\WorkFlow\Form\PRL_OISTF\PRL_OISTF_T1.hdt
 [PRL_OISTF_T1Save]
 HDC=Templates\WorkFlow\Form\PRL_OISTF\PRL_OISTF_T1Save.hdc
 HDT=Templates\WorkFlow\Form\PRL_OISTF\PRL_OISTF_T1Save.hdt
+
+[PRL_OISTF_T2]
+HDC=Templates\WorkFlow\Form\PRL_OISTF\PRL_OISTF_T2.hdc
+HDT=Templates\WorkFlow\Form\PRL_OISTF\PRL_OISTF_T2.hdt
+
+[PRL_OISTF_T2Save]
+HDC=Templates\WorkFlow\Form\PRL_OISTF\PRL_OISTF_T2Save.hdc
+HDT=Templates\WorkFlow\Form\PRL_OISTF\PRL_OISTF_T2Save.hdt
 
 [PRL_OISTF_Tmod]
 HDC=Templates\WorkFlow\Form\PRL_OISTF\PRL_OISTF_Tmod.hdc

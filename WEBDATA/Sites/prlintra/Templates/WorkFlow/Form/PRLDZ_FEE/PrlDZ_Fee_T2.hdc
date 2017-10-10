@@ -14,8 +14,16 @@ Remind1=¶Ô²»Æğ£¬ÄúÖ¸¶¨µÄÁ÷³ÌÉêÇëµ¥Ã»ÓĞÕÒµ½<script>alert('¶Ô²»Æğ£¬ÄúÖ¸¶¨µÄÁ÷³ÌÉêÇ
 ;È¡³ö±¾Á÷³ÌÄ£ĞÍĞÅÏ¢
 SqlForCondition1=select wm.code ModelCode,replace(upper(wm.code),'DZ','') ModelCodeT, wm.Name ModelName,d.Name StepName from wf_Model wm,WF_Task_Define d where wm.EntGid = d.EntGid(+) and wm.EntGid = __ENTGID__ and wm.ModelGid = d.ModelGid(+) and wm.ModelGid = ##ModelGid## and lower(d.code(+)) = replace(lower(##Url##),'save')
 
+;È¡³öµ±Ç°ÓÃ»§µÄÀà±ğ¼°ÅÅĞò
+SqlForCondition2=select distinct AppOrder,AppType from Wf_^^ModelCodeT^^_App a where a.EntGid = __ENTGID__ and a.FlowGid = ##FlowGid## and AppGid = __USRGID__ and appdate is null
+
 ;È¡³ö±¾Á÷³ÌÖ÷±íĞÅÏ¢
-Sql1=select * from wf_^^ModelCodeT^^ where EntGid = __ENTGID__ and  FlowGid = ##FlowGid##
+Sql1=select substr(f.FillUsrDeptCode, 0, 4) ParentDeptCode,f.* from Wf_^^ModelCodeT^^ f where f.EntGid = __ENTGID__ and f.FlowGid = ##FlowGid##
+
+;µÃµ½ÏÂÒ»ÅúÉóÅúÈËĞÅÏ¢
+LoopSQL1=select AppGid ItemGid, AppName ItemName from Wf_^^ModelCodeT^^_App a where a.EntGid = __ENTGID__ and a.FlowGid = ##FlowGid## and a.AppDate is null and a.AppOrder in (select min(t.AppOrder) from Wf_^^ModelCodeT^^_App t where t.EntGid = __ENTGID__ and t.FlowGid = ##FlowGid## and t.AppOrder > ##AppOrder## and t.appdate is null)
+LoopHDT1=Templates\WorkFlow\Form\PrlDZ_ISF\LoopSql_Option.hdt
+LoopVAR1=AppList
 
 [AddtionalSQL]
 ;²Ù×÷£¬Ã»ÓĞ·µ»ØµÄ½á¹û£¬ÊÇÔÚÊı¾İ¿âÖĞÖ´ĞĞ£¬ÓĞInsert, Update, DeleteÃüÁî¡£´ÓSQL1¡«SQL20¹²Ö§³Ö20Ìõ
@@ -68,6 +76,7 @@ Log=
 
 ;Ò³ÃæÏÔÊ¾: 0:BodyPage;1:DetailPage;2:BlankPage
 PageKind=0
+
 
 ;ÒÔÏÂÄÚÈİÊÇÎªÁËÈÃExplainAjaxÒıÇæÀ´¶ÁµÄ¡£¶ÔExplainModuleÒıÇæÀ´Ëµ£¬ºöÂÔ´Ë²¿·ÖÄÚÈİ¡£
 [Ajax]

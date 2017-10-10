@@ -23,7 +23,7 @@ SQL1=select f.num OldNum,f.modelgid OldModelGid,m.code OldModelCode,f.FlowGid Ol
 Sql2=select f.*,FillUsrDept FillDeptName,decode(f.mallstat,0,'已发送至Mall，处理失败',10,'已发送至Mall,未接收',100,'已发送至Mall，成功') mallstattext,decode(f.category,10,'Early Termination 提前终止',20,'Termination 到期终止',30,'Others 其他:'||f.categorytext) categoryText1,decode(wf.stat,'0', '未执行','1', '待执行','2', '执行中','3', '<FONT COLOR="blue">已完成</FONT>','4', '<font color="gray">已停止</font>','5', '<FONT COLOR="red">已作废</FONT>','6', '<FONT COLOR="red">已超时</FONT>') Flowstat,decode(f.stat,'0','未开始','1','填写中','10','已提交，审批中','12','已同意','13','已否决','30','已完成','40','已终止合同','100','发起人结束流程',f.Stat) StatText from Wf_PRL_ISTF f,wf_flow wf where f.EntGid = __ENTGID__ and f.EntGid = wf.EntGid and f.FlowGid = wf.FlowGid and f.FlowGid = ##FlowGid##
 
 ;取出本流程已审批的审批人的个数，用于判断是否显示审批人
-SQL3=select count(*) IsShow from Wf_Prl_Isf_App where EntGid = __ENTGID__ and  FlowGid = ##FlowGid## and AppDate is not null
+SQL3=select count(*) IsShow from Wf_Prl_Isf_App where EntGid = __ENTGID__ and  FlowGid = ##FlowGid##
 
 ;管理员可查看 P1-P8
 SQL6=select count(*) IsRt from v_usr u,v_org_usr v where v.EntGid = __ENTGID__ and v.EntGid = u.EntGid and v.OrgGid = u.Gid and v.usrGid = __USRGID__ and lower(u.code) = 'admin_grp'
@@ -34,7 +34,7 @@ LoopHDT1=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AttachList.hdt
 LoopVAR1=AttachList
 
 ;显示本流程已审批审批人信息
-LoopSQL2=select a.*,decode(a.apptype,0,'发起人',10,'部门经理',20,'财务经理',30,'总经理',40,'商场总经理',50,'资产经理',60,'租赁部总监',80,'财务总监',85,'资产经理',90,'区域总经理',95,'Deputy CEO',100,'CEO') apptypetext  from Wf_Prl_Isf_App a where FlowGid = ##FlowGid## and AppDate is not null order by AppDate
+LoopSQL2=select a.*,decode(a.apptype,0,'发起人',10,'部门经理',30,'财务经理',35,'总经理',40,'商场总经理',50,'资产经理',60,'租赁部总监',80,'财务总监',85,'资产经理',90,'区域总经理',95,'Deputy CEO',100,'CEO') apptypetext  from Wf_Prl_Isf_App a where FlowGid = ##FlowGid## order by AppDate,AppType
 LoopHDT2=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AppList.hdt
 LoopVAR2=AppList
 

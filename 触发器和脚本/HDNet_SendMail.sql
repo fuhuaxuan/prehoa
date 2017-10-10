@@ -6,7 +6,6 @@ create or replace procedure HDNet_SendMail(pi_Title   in varchar2, --邮件标题
   resp utl_http.resp; --接收对象
 
   v_Stage       varchar2(1024); --场景
-  v_EntCode     varchar2(32);
   v_Url         varchar2(2000); --邮箱地址
   v_PostData    varchar2(32500); --POST提交的内容
   v_MailContent varchar2(32500); --经过内容替换后的发送邮箱内容
@@ -22,10 +21,9 @@ begin
   --初始化邮箱网站参数
   v_Stage    := '初始化邮箱网站参数';
   v_Url      := 'http://www.prehoa.net/bin/hdmailsend.dll/send?';
-  v_EntCode  := getentcode;
-  v_fAddr    := 'pcrtoa@hd123.net';
+  v_fAddr    := 'oa@prehoa.cn';
   v_fName    := 'OA系统邮件提醒';
-  v_RplEmail := 'pcrtoa@hd123.net';
+  v_RplEmail := 'oa@prehoa.cn';
   v_isHTML   := 'y';
   --构造HTTP邮箱请求的POST内容
   v_Stage       := '构造HTTP邮箱请求的POST内容';
@@ -89,7 +87,7 @@ begin
   --POST发送邮箱的信息
   v_Stage := 'POST发送邮箱的信息';
   utl_http.set_header(req, 'Content-Length', lengthb(v_PostData));
-  Utl_http.write_text(req, v_PostData);
+  utl_http.write_text(req, v_PostData);
 
   --得到返回http响应对象
   v_Stage := '得到返回http响应对象';
@@ -112,5 +110,29 @@ exception
     utl_http.end_response(resp);
   when others then
     v_Content := v_Stage || '错误';
+  
+    --插入日志
+    insert into Log
+      (EntGid,
+       EntCode,
+       EntName,
+       UsrGid,
+       UsrCode,
+       UsrName,
+       CreateDate,
+       Atype,
+       AContent)
+      select e.gid,
+             e.code,
+             e.name,
+             'sys',
+             'sys',
+             '系统自动',
+             sysdate,
+             30,
+             v_Content
+        from ent e
+       where e.gid = getentgid;
+    commit;
 end HDNet_SendMail;
 /

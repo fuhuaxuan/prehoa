@@ -131,6 +131,12 @@
   <TR>
     <TD>
       <B>工具栏：</B>
+      <HDIF EqualLess(<HDPrint Value=#Flowstat# Replace=#None#>, 3)>
+      <HDIF Equal(<HDPrint Value=#chkRtID1# Replace=#None#>, 11)>
+        <a href="##HDNet_AppName##/__ExplainModule?UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Input#>&url=WFFlowSetState&stat=5&flowgid=<HDPrint Value=#FlowGid#>&modelgid=<HDPrint Value=#ModelGid#>" onclick="javascript:if (!(confirm('你确定作废该流程吗？\n该操作是不能还原的！'))) return false;" target="_blank"><FONT class="IconEnd">　&nbsp;</FONT> 管理员作废 </A>
+      </HDIF>
+      </HDIF>
+      <A HREF="##HDNet_AppName##/__ExplainModule?UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Input#>&url=WFFlowTrace&flowgid=<HDPrint Value=#flowgid#>&modelgid=<HDPrint Value=#modelgid#>" target="_blank"><FONT class="IconNext">　&nbsp;</FONT> 执行过程</A>
       <HDIF EqualNot(<HDPrint Value=#NextStepCode# Replace=#None#>, )>
         <A HREF="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#NextStepCode#>&UsrGid=<HDPrint Value=#UsrGid#>&FlowGid=<HDPrint Value=#FlowGid#>&ModelGid=<HDPrint Value=#ModelGid#>" target="_blank"><FONT class="IconNext">　&nbsp;</FONT> 下一步操作：<HDPrint Value=#NextStepName#></A>
       </HDIF>

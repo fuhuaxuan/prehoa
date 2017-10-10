@@ -191,7 +191,8 @@
       <input type="checkbox" name="StampType_1" value="财务印章" class="JQRadio JQMust1 JQMust2  JQSave">财务印章<br>
       <input type="checkbox" name="StampType_1" value="公司公章" class="JQRadio JQMust1 JQMust2  JQSave">公司公章<br>
       <input type="checkbox" name="StampType_1" value="法定代表人名章" class="JQRadio JQMust1 JQMust2  JQSave">法定代表人名章<br>
-      <input type="checkbox" name="StampType_1" value="公司股东章" class="JQRadio JQMust1 JQMust2  JQSave">公司股东章
+      <input type="checkbox" name="StampType_1" value="公司股东章" class="JQRadio JQMust1 JQMust2  JQSave">公司股东章<br>
+      <input type="checkbox" name="StampType_1" value="合同用章" class="JQRadio JQMust1 JQMust2  JQSave">合同用章
       <input type="hidden" name="StampType" value="<HDPrint Value=#StampType# Replace=#DBField2Input#>" JQChkName="StampType_1" JQChkTab=";">
       <script language="javascript">
         JQcheckBoxVal("StampType_1",";",'<HDPrint Value=#StampType# Replace=#DBField2Js#>');
@@ -363,15 +364,16 @@
 <FORM NAME="frmDataInterface_Flow" ACTION="">
   <INPUT TYPE="hidden" name="DataInterface_Title" ID="t_App" value="流程选择">
 
-  <INPUT TYPE="hidden" name="DataInterface_Sql" ID="s_App" value="select f.flowgid, f.num, f.Fmemo, wm.code, wm.name from v_Prl_Flow f, wf_flow wf, wf_model wm where f.entgid = '<HDPrint Value=#entgid#>' and f.entgid = wm.entgid and f.entgid = wf.entgid and f.flowgid = wf.flowgid  and f.modelgid = wm.modelgid and f.stat not in ('终止') and wf.stat = 3 and f.fillusrGid = '<HDPrint Value=#CurUsrGid#>' and not exists (select 1 from wf_prl_stamp t,wf_flow tf where t.entgid = f.entgid and t.entgid = tf.entgid and t.flowgid = tf.flowgid and t.stat not in ('终止') and tf.stat < 4 and t.flowgid <> nvl('<HDPrint Value=#FlowGid# Replace=#DBField2Js#>',1) and t.mFlowGid = f.flowgid)">
-  <INPUT TYPE="hidden" name="DataInterface_CountSql" ID="c_App" value="select count(*) from v_Prl_Flow f, wf_flow wf, wf_model wm where f.entgid = '<HDPrint Value=#entgid#>' and f.entgid = wm.entgid and f.entgid = wf.entgid and f.flowgid = wf.flowgid  and f.modelgid = wm.modelgid and f.stat not in ('终止') and wf.stat = 3 and f.fillusrGid = '<HDPrint Value=#CurUsrGid#>' and not exists (select 1 from wf_prl_stamp t,wf_flow tf where t.entgid = f.entgid and t.entgid = tf.entgid and t.flowgid = tf.flowgid and t.stat not in ('终止') and tf.stat < 4 and t.flowgid <> nvl('<HDPrint Value=#FlowGid# Replace=#DBField2Js#>',1) and t.mFlowGid = f.flowgid)">
+  <INPUT TYPE="hidden" name="DataInterface_Sql" ID="s_App" value="select f.flowgid, f.fillusrname, f.num, f.Fmemo, wm.code, wm.name from v_Prl_Flow f, wf_flow wf, wf_model wm where f.entgid = '<HDPrint Value=#entgid#>' and f.entgid = wm.entgid and f.entgid = wf.entgid and f.flowgid = wf.flowgid  and f.modelgid = wm.modelgid and f.stat not in ('终止') and wf.stat = 3 and (f.fillusrgid = '<HDPrint Value=#UsrGid#>' or exists (select 1 from PRL_FeeRT r where r.entgid = f.entgid and r.ausrgid = '<HDPrint Value=#UsrGid#>' and r.busrgid = f.fillusrgid)) and not exists (select 1 from wf_prl_stamp t,wf_flow tf where t.entgid = f.entgid and t.entgid = tf.entgid and t.flowgid = tf.flowgid and t.stat not in ('终止') and tf.stat < 4 and t.flowgid <> nvl('<HDPrint Value=#FlowGid# Replace=#DBField2Js#>',1) and t.mFlowGid = f.flowgid)">
+  <INPUT TYPE="hidden" name="DataInterface_CountSql" ID="c_App" value="select count(*) from v_Prl_Flow f, wf_flow wf, wf_model wm where f.entgid = '<HDPrint Value=#entgid#>' and f.entgid = wm.entgid and f.entgid = wf.entgid and f.flowgid = wf.flowgid  and f.modelgid = wm.modelgid and f.stat not in ('终止') and wf.stat = 3 and (f.fillusrgid = '<HDPrint Value=#UsrGid#>' or exists (select 1 from PRL_FeeRT r where r.entgid = f.entgid and r.ausrgid = '<HDPrint Value=#UsrGid#>' and r.busrgid = f.fillusrgid)) and not exists (select 1 from wf_prl_stamp t,wf_flow tf where t.entgid = f.entgid and t.entgid = tf.entgid and t.flowgid = tf.flowgid and t.stat not in ('终止') and tf.stat < 4 and t.flowgid <> nvl('<HDPrint Value=#FlowGid# Replace=#DBField2Js#>',1) and t.mFlowGid = f.flowgid)">
   <INPUT TYPE="hidden" name="DataInterface_OrderSql" value="order by f.num desc">
   <INPUT TYPE="hidden" name="DataInterface_UsrGid" value="<HDPrint Value=#UsrGid#>">
   <INPUT TYPE="hidden" name="DataInterface_AppName" value="##HDNet_AppName##">
 
-  <INPUT TYPE="hidden" name="DataInterface_Cols" value="2^单号^left^100">
-  <INPUT TYPE="hidden" name="DataInterface_Cols" value="3^备注^left^100">
-  <INPUT TYPE="hidden" name="DataInterface_Cols" value="5^流程^left^100">
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="2^发起人^left^30">
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="3^单号^left^100">
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="4^备注^left^100">
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="6^流程^left^60">
 
   <INPUT TYPE="hidden" name="DataInterface_Search" value="f.num^单号^1">
   <INPUT TYPE="hidden" name="DataInterface_Search" value="wm.name^流程^1">
@@ -379,7 +381,7 @@
   <input TYPE="hidden" name="DataInterface_Search_Cols" value="">
 
   <INPUT TYPE="hidden" name="DataInterface_FieldTo" value="">
-  <INPUT TYPE="hidden" name="DataInterface_FieldBy" value="1^2^4">
+  <INPUT TYPE="hidden" name="DataInterface_FieldBy" value="1^3^5">
   <INPUT TYPE="hidden" name="DataInterface_CallBckFunc" value="CallFlow">
   <INPUT TYPE="hidden" name="DataInterface_Close" value="true">
 </FORM>

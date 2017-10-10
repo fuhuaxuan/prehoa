@@ -20,7 +20,7 @@ SQLForCondition2=select ##CurUsrName##||':'||##AppAssign##||' - 报销人：' || App
 [AddtionalSQL]
 ;操作，没有返回的结果，是在数据库中执行，有Insert, Update, Delete命令。从SQL1～SQL20共支持20条
 ;更新本流程中主表信息
-Sql1=update WF_^^ModelCodeT^^ set (LastUpdDate,Stat,CertType,CertNum,PayDate) = (select sysdate,##AppAssign##||'(已完成)',##CertType##,##CertNum##,to_date(##PayDate##,'YYYY.MM.DD') from dual) where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## 
+Sql1=update WF_^^ModelCodeT^^ set (LastUpdDate,Stat,CertType,CertNum,PayDate) = (select sysdate,decode(##AppAssign##,'确认付款','已完成',##AppAssign##),##CertType##,##CertNum##,to_date(##PayDate##,'YYYY.MM.DD') from dual) where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## 
 
 ;插入本流程各级审批人信息
 Sql2=insert into Wf_^^ModelCodeT^^_App (EntGid,ModelGid,FlowGid,Gid,AppGid,AppCode,AppName,AppType,AppAssign,AppMemo,AppDate) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__, 120,##AppAssign##,##AppMemo##,sysdate from dual

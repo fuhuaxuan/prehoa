@@ -52,6 +52,7 @@
       <option value="公司公章">公司公章</option>
       <option value="法定代表人名章">法定代表人名章</option>
       <option value="公司股东章">公司股东章</option>
+      <option value="合同用章">合同用章</option>
     </select>
     <script language="javascript">
       $("select[name=StampType] option[value=<HDPrint Value=#sStampType# Replace=#DBField2Js#>]").prop("selected",true);

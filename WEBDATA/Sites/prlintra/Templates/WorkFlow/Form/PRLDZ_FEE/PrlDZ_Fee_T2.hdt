@@ -14,6 +14,11 @@
   <!--发起人UsrGid-->
   <INPUT type="text" style="display:none" name="T1Gid" value="<HDPrint Value=#FillUsrGid# Replace=#DBField2Input#>">
   <input type="text" style="display:none" name="FillUsrDeptGid" value="<HDPrint Value=#FillUsrDeptGid# Replace=#DBField2Input#>">
+  <input type="text" style="display:none" name="ParentDeptCode" value="<HDPrint Value=#ParentDeptCode# Replace=#DBField2Input#>">
+<INPUT type="text" style="display:none" name="AppOrder" value="<HDPrint Value=#AppOrder# Replace=#DBField2Input#>">
+<INPUT type="text" style="display:none" name="AppType" value="<HDPrint Value=#AppType# Replace=#DBField2Input#>">
+<INPUT type="text" style="display:none" name="F1Gid" value="123">
+<select name="selApp_1" class="JQList" multiple style="display:none"><HDPrint Value=#AppList# Replace=#None#></select>
   <!--意见标志：同意；否决-->
   <input type="text" style="display:none" name="AppAssign" value="">
 
@@ -52,7 +57,7 @@
   </tr>
   <tr>
     <td class="DtlBarTitle">审核意见:<br><font color="gray">(500字内)</font></td>
-    <td class="listtd" colspan="3"><textarea class="JQText JQNo" rows="5" id="note" name="note" maxlength="500"></textarea></td>
+    <td class="listtd" colspan="3"><textarea class="JQText JQNo" rows="5" id="AppMemo" name="AppMemo" maxlength="500"></textarea></td>
   </tr>
 </table>
 </form>
@@ -82,8 +87,7 @@
     if (!confirm(sConfirm)){
       return false;
     }
-    
-    //获取当前表单对象 
+    //获取当前表单对象
     var JqObj = $("form[name=frmDo]");
     //表单参数设定
     JqObj.attr({

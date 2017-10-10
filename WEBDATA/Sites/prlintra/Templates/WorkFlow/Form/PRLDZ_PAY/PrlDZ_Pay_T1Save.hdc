@@ -24,14 +24,7 @@ SQLForCondition2=select decode(##FeeNum##,'','','费用单：' || ##FeeNum##||'-' ||
 SQLForCondition3=select '单号：'|| ##Num##|| '；' || ##TheMemo##  TheFlowMemo,'待修改 - ' || ##TheMemo## ModFlowMemo,'待审批 - 发起人：' || ##CurUsrName## ||'；' || ##TheMemo## AppFlowMemo,decode(##isend##,'10','是','否') IsEndText from dual
 
 ;取出下一步审批人
-SQLForCondition4=select v.PostGid T2Gid from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillUsrDeptGid## and v.atype=10
-
-SqlForCondition5=select count(*) cT2 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillUsrDeptGid## and v.atype=10
-
-SqlForCondition6=select v.PostGid TA1Gid from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillUsrDeptGid## and v.atype=30
-
-;判断是否要跳过TA1:TA1=T2
-SqlForCondition7=select count(*) IsT2 from dual where ##T2Gid## = '^^TA1Gid^^' and ##cT2## = '1'
+SqlForCondition6=select F_Prl_getApp(__ENTGID__,##ModelGid##,__USRGID__,'否') T2Gid from dual
 
 [AddtionalSQL]
 ;操作，没有返回的结果，是在数据库中执行，由Insert, Update, Delete命令。从SQL1～SQL20共支持20条
@@ -49,18 +42,22 @@ SQL3=update wf_^^ModelCodeT^^ set (LastUpdDate,Stat,FeeModelCode,FeeFlowGid,FeeN
 SQL4=update wf_^^ModelCodeT^^ set (LastUpdDate,Stat,EndMemo) = (select sysdate,##Stat##,##EndMemo## from dual) where FlowGid = ##FlowGid## and EntGid = __ENTGID__ and ##Stat## = '终止'
 
 ;删除本流程中未审批的审批人
-SQL5=delete from wf_^^ModelCodeT^^_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppDate is null and ##Stat## <> '终止'
+SQL5=delete from wf_^^ModelCodeT^^_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppDate is null
+
+SQL6=update wf_^^ModelCodeT^^_App set AppOrder = AppOrder + 200 where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and ##Stat## <> '终止'
 
 ;插入本流程发起人信息
-SQL6=insert into wf_^^ModelCodeT^^_App (EntGid,FlowGid,dtlgid,AppGid,AppCode,AppName,AppType,AppAssign,note,AppDate) select __ENTGID__,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,0,##Stat##,##AppMemo##,sysdate from dual where ##Stat## <> '保存'
+SQL7=insert into wf_^^ModelCodeT^^_App (EntGid,FlowGid,dtlgid,AppGid,AppCode,AppName,AppType,AppOrder,AppAssign,note,AppDate) select __ENTGID__,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,0,0,##Stat##,##AppMemo##,sysdate from dual where ##Stat## <> '保存'
 
 ;删除本流程全部附件信息
-SQL7=delete from wf_^^ModelCodeT^^_Attach where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and ##Stat## <> '终止'
+SQL8=delete from wf_^^ModelCodeT^^_Attach where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and ##Stat## <> '终止'
 
-SQL8=update wf_^^ModelCodeT^^ f set (LastUpdDate,AcgOneName) = (select sysdate,Name from prl_acg a where a.entgid = f.entgid and a.Gid = f.AcgOneGid) where f.FlowGid = ##FlowGid## and f.EntGid = __ENTGID__ and ##Stat## <> '终止'
+SQL9=update wf_^^ModelCodeT^^ f set (LastUpdDate,AcgOneName) = (select sysdate,Name from prl_acg a where a.entgid = f.entgid and a.Gid = f.AcgOneGid) where f.FlowGid = ##FlowGid## and f.EntGid = __ENTGID__ and ##Stat## <> '终止'
 
-SQL9=update wf_^^ModelCodeT^^ f set (LastUpdDate,AcgTwoName) = (select sysdate,Name from prl_acg a where a.entgid = f.entgid and a.Gid = f.AcgTwoGid) where f.FlowGid = ##FlowGid## and f.EntGid = __ENTGID__ and ##Stat## <> '终止'
+SQL10=update wf_^^ModelCodeT^^ f set (LastUpdDate,AcgTwoName) = (select sysdate,Name from prl_acg a where a.entgid = f.entgid and a.Gid = f.AcgTwoGid) where f.FlowGid = ##FlowGid## and f.EntGid = __ENTGID__ and ##Stat## <> '终止'
 
+;--更新审批人
+SQL11=call P_^^ModelCode^^_doApp(__ENTGID__,##ModelGid##,##FlowGid##,##Stat##)
 ;--如果终止或作废后，存在对业务数据的回写，使用下列语句，并创建对应过程
 ;--过程命名："Hdnet_doWF_模型代码"
 ;--参数1：EntGid
@@ -125,10 +122,7 @@ PageKind=0
 ^^WFCreate^^1=WFFlowCreate(|^^TheFlowMemo^^ | ^^FlowGid^^)
 
 ;提交，流转到T2审批页面
-^^WF^^2=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T2 | T2Gid | and ##Stat## = '提交' and ##IsT2## = '0'| ^^AppFlowMemo^^)
-
-;提交，流转到T2审批页面
-^^WF^^3=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TA1 | TA1Gid | and ##Stat## = '提交' and ##IsT2## = '1'| ^^AppFlowMemo^^)
+^^WF^^2=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T2 | T2Gid | and ##Stat## = '提交'| ^^AppFlowMemo^^)
 
 ;终止，结束流程
 ^^WF^^4=WFFlowFinish( ^^CurUrl^^ | and ##Stat## = '终止')

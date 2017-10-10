@@ -73,6 +73,17 @@ begin
                 from v_Post v
                where v.EntGid = p_EntGid
                  and v.deptGid = v_DeptGid
+                 and v.atype = 35
+                 and rownum = 1
+              union
+              select v.PostGid  AppGid,
+                     v.PostCode AppCode,
+                     v.PostName AppName,
+                     3          AppOrder,
+                     35         AppType
+                from v_Post v
+               where v.EntGid = p_EntGid
+                 and v.deptGid = v_DeptGid
                  and v.atype = 40
                  and rownum = 1) t;
   
@@ -83,13 +94,15 @@ begin
                  and ComGid = v_ComGid
                order by decode(StampType,
                                '财务印章',
-                               1,
+                               50,
                                '公司公章',
-                               2,
+                               60,
                                '法定代表人名章',
-                               3,
+                               70,
                                '公司股东章',
-                               4),
+                               80,
+                               '合同用章',
+                               90),
                         Line) loop
       select count(*)
         into v_Count
@@ -123,7 +136,9 @@ begin
                       '法定代表人名章',
                       70,
                       '公司股东章',
-                      80)
+                      80,
+                      '合同用章',
+                      90)
           from dual;
       commit;
     end loop;

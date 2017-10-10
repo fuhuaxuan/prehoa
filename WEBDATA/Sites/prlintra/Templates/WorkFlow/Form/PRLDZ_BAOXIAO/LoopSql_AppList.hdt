@@ -11,34 +11,34 @@
 </h3>
 <table width="100%" class="ListBar" cellspacing="1" cellpadding="0" id="tb_AppList">
   <col style="padding-left:4px;width:10%" valign="top">
-  <col style="padding-left:4px;width:20%" valign="top">
+  <col style="padding-left:4px;width:12%" valign="top">
   <col style="padding-left:4px;width:8%" valign="top">
   <col style="padding-left:4px;width:15%" valign="top">
-  <col style="padding-left:4px;width:20%" valign="top">
+  <col style="padding-left:4px;width:45%" valign="top">
   <tr class="listtr">
-    <td><B>执行人类别</B></td>
-    <td><B>执行人</B></td>
+    <td><B>审批人类别</B></td>
+    <td><B>审批人</B></td>
     <td><B>审批概要</B></td>
-    <td><B>时间</B></td>
+    <td><B>审批时间</B></td>
     <td><B>审批备注</B></td>
   </tr>
   <HDLoop>
   <tr valign="top">
-    <td class="listtd"><HDPrint Value=#Apptypetext#></td>
+    <td class="listtd" align="center"><HDPrint Value=#Apptypetext#></td>
     <td class="listtd">[<HDPrint Value=#AppCode#>]<HDPrint Value=#AppName#></td>
-    <td class="listtd">
+    <td class="listtd" align="center">
       <script>
-        if ('<HDPrint Value=#AppAssign# Replace=#DBField2Js#>' == '否决') 
+        if ('<HDPrint Value=#AppAssign# Replace=#DBField2Js#>' == '否决')
           document.write('<font color="red"><b><HDPrint Value=#AppAssign#></b></font>');
         else if ('<HDPrint Value=#AppAssign# Replace=#DBField2Js#>' == ''){
-          document.write('<font color="gray">未审批</font>');
+          document.write('<font color="gray">待审批</font>');
         }
         else{
           document.write('<b><HDPrint Value=#AppAssign#></b>');
         }
       </script>
     </td>
-    <td class="listtd"><HDPrint Value=#AppDate#></td>
+    <td class="listtd" align="center"><HDPrint Value=#AppDate#></td>
     <td class="listtd"><HDPrint Value=#AppMemo#></td>
   </tr>
   </HDLoop>

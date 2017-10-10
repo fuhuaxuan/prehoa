@@ -17,11 +17,15 @@
   <script language="javascript">
   var sCode = '<HDPrint Value=#acgonename# Replace=#DBField2Js#>';
     sCode = sCode.substr(0,1);
-    var $span = $("span#acg_3");
-    $span.hide();
+    var span = document.getElementById('acg_3');
     if (sCode == '3'){
-      $span.show();
+      span.style.display = '';
     }
+    //var $span = $("span#acg_3");
+    //$span.hide();
+    //if (sCode == '3'){
+    //  $span.show();
+    //}
   </script>
 </td></tr>
 <tr><td>[要求支付方式] : <HDPrint Value=#payway#>；</td></tr>

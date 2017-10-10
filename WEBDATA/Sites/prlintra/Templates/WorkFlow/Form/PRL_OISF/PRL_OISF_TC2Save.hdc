@@ -27,7 +27,7 @@ SQLForCondition2=select ##CurUsrName##||':'||##AppAssign##||' - [' || Atype || '
 Sql1=update wf_PRL_OISF set (LastUpdDate,Stat) = (select sysdate,##AppAssign## from dual) where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## 
 
 ;插入本流程中审批人二信息
-SQL2=insert into wf_PRL_OISF_App (EntGid,FlowGid,DtlGid,AppGid,AppCode,AppName,AppType,AppAssign,AppMemo,AppDate) select __ENTGID__,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,80,##AppAssign##, ##AppMemo##,sysdate from dual
+SQL2=insert into wf_PRL_OISF_App (EntGid,FlowGid,DtlGid,AppGid,AppCode,AppName,AppType,AppAssign,AppMemo,AppDate) select __ENTGID__,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,90,##AppAssign##, ##AppMemo##,sysdate from dual
 
 [AddtionalSQLUseWhere]
 ;显示，查询得到的结果可以用于HDT显示，从SQL1～SQL20共支持20条，同时会使用上面的[where]中的sql语句

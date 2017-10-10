@@ -51,7 +51,7 @@ SqlForCondition7=select count(*) IsT2 from dual where ##T2Gid## = '^^TA1Gid^^' a
 Sql1=update WF_^^ModelCodeT^^ set (LastUpdDate,Stat) = (select sysdate,##AppAssign## from dual) where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## 
 
 ;插入本流程中审批人一信息
-SQL3=insert into Wf_^^ModelCodeT^^_App (EntGid,ModelGid,FlowGid,Gid,AppGid,AppCode,AppName,AppType,AppAssign,AppMemo,AppDate) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,15,##AppAssign##, ##AppMemo##,sysdate from dual
+SQL3=insert into Wf_^^ModelCodeT^^_App (EntGid,ModelGid,FlowGid,Gid,AppGid,AppCode,AppName,AppType,AppAssign,AppMemo,AppDate) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,3,##AppAssign##, ##AppMemo##,sysdate from dual
 
 [AddtionalSQLUseWhere]
 ;显示，单条数据的查询，可以用于HDT显示，有select命令。从SQL1～SQL20共支持20条，同时会使用上面的[where]中的sql语句

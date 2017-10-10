@@ -22,14 +22,7 @@ SqlForCondition1=select wm.Code ModelCode, wm.Name ModelName,d.Name StepName,dec
 SQLForCondition2=select '单号：' || ##Num## || ';[' || ##Atype## || '];申请人：' || ##CurUsrName##||';租户：'|| ##Lessee##||';商店营业名称：'|| ##Tradingname## TheFlowMemo,'待修改：[' || ##Atype## || '];申请人：' || ##CurUsrName##||';租户：'|| ##Lessee##||';商店营业名称：'|| ##Tradingname## ModFlowMemo,'待审批：[' || ##Atype## || '];申请人：' || ##CurUsrName## ||';租户：'|| ##Lessee##||';商店营业名称：'|| ##Tradingname## AppFlowMemo from dual
 
 ;取出下两步审批人
-SqlForCondition4=select v.PostGid TA1Gid from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=10
-
-SqlForCondition5=select count(*) cTA1 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=10
-
-SqlForCondition6=select v.PostGid TA2Gid from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=30
-
-;判断是否要跳过TA1:TA1=TA2
-SqlForCondition7=select count(*) IsTA1 from dual where ##TA1Gid## = '^^TA2Gid^^' and ##cTA1## = '1'
+SqlForCondition6=select F_Prl_getApp(__ENTGID__,##ModelGid##,__USRGID__,'否') T2Gid from dual
 
 [AddtionalSQL]
 ;操作，没有返回的结果，是在数据库中执行，由Insert, Update, Delete命令。从SQL1～SQL20共支持20条
@@ -46,7 +39,7 @@ SQL3=update wf_PRL_OISF f set f.Tradename = (select t.name from Tbusrange t wher
 SQL4=update wf_PRL_OISF set (LastUpdDate,Stat,EndMemo) = (select sysdate,##Stat##,##EndMemo## from dual) where FlowGid = ##FlowGid## and EntGid = __ENTGID__ and ##Stat## = '终止'
 
 ;删除本流程中未审批的审批人
-SQL5=delete from wf_PRL_OISF_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppDate is null and ##Stat## <> '终止'
+SQL5=delete from wf_PRL_OISF_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppDate is null
 
 ;删除本流程全部附件信息
 SQL6=delete from wf_PRL_OISF_Attach where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and ##Stat## <> '终止'
@@ -57,8 +50,13 @@ SQL7=delete from wf_PRL_OISF_Dtl where EntGid = __ENTGID__ and FlowGid = ##FlowG
 ;插入本流程明细信息
 SQL8=delete from wf_PRL_OISF_ground where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and ##Stat## <> '终止'
 
+SQL9=update Wf_prl_oisf_App set AppOrder = AppOrder + 200 where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and ##Stat## <> '终止'
+
 ;插入本流程发起人信息
-SQL9=insert into wf_PRL_OISF_App (EntGid,FlowGid,DtlGid,AppGid,AppCode,AppName,AppType,AppAssign,AppMemo,AppDate) select __ENTGID__,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,0,##Stat##,##AppMemo##,sysdate from dual where ##Stat## <> '保存'
+SQL10=insert into wf_PRL_OISF_App (EntGid,FlowGid,DtlGid,AppGid,AppCode,AppName,AppType,AppOrder,AppAssign,AppMemo,AppDate) select __ENTGID__,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,0,0,##Stat##,##AppMemo##,sysdate from dual where ##Stat## <> '保存'
+
+;--更新审批人
+SQL11=call P_^^ModelCode^^_doApp(__ENTGID__,##ModelGid##,##FlowGid##,##Stat##)
 
 ;插入单位信息
 LoopSql1=insert into wf_PRL_OISF_ground (EntGid,ModelGid,FlowGid,Gid,fgid,fno,farea,Jarea,fmr) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),g.fgid,g.fno,g.farea,g.Jarea,g.fmr from prl_GROUNDH g where lower(replace(g.fno,'','')) = lower(replace(##%selUnit%##,'','')) and g.DEPTSOURCE = ##ParentDeptCode## and ##Stat## <> '终止'
@@ -127,10 +125,7 @@ Log=
 PageKind=0
 
 ;提交，流转到T2审批页面
-^^WF^^1=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TA1 | selTA1List_1 | and ##Stat## = '提交' and ##IsTA1## = '0'| ^^AppFlowMemo^^)
-
-;提交，流转到T2审批页面
-^^WF^^2=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TA2 | TA2Gid | and ##Stat## = '提交' and ##IsTA1## = '1'| ^^AppFlowMemo^^)
+^^WF^^1=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T2 | T2Gid | and ##Stat## = '提交'| ^^AppFlowMemo^^)
 
 ;终止，结束流程
 ^^WF^^3=WFFlowFinish( ^^CurUrl^^ | and ##Stat## = '终止')

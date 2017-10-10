@@ -1,11 +1,11 @@
 <HDIF Equal(<HDPrint Value=#CurUsrCode#>,heading,admin)>
 <form name="frmMail" method="POST" action="/bin/hdmailsend.dll/send" target="_blank">
 标　题:<input type="text" name="Title" maxlength="100" style="width:150" value="<HDPrint Value=#MCode# Replace=#DBField2Input#>提醒:<HDPrint Value=#filldeptName# Replace=#DBField2Input#>" readonly><br>
-收件人:<input type="text" name="Email" maxlength="400" > <input type="button" name="btn_1" value="发送邮件" onclick="CheckSubmit()">
+收件人:<input type="text" name="Email" maxlength="400" style="width:150" > <input type="button" name="btn_1" value="发送邮件" onclick="CheckSubmit()">
 <br>
-<input type="hidden" name="fAddr" maxlength="400" style="width:150" value="pcrtoa@hd123.net" readonly>
+<input type="hidden" name="fAddr" maxlength="400" style="width:150" value="oa@prehoa.cn" readonly>
 <input type="hidden" name="fName" maxlength="400" style="width:150" value="OA系统邮件提醒" readonly>
-<input type="hidden" name="RplEmail" maxlength="400" style="width:150" value="pcrtoa@hd123.net" readonly>
+<input type="hidden" name="RplEmail" maxlength="400" style="width:150" value="oa@prehoa.cn" readonly>
 <input type="hidden" name="isHTML" value="y" readonly>
 <textarea name="Content" style="width:100%;height:400;display:none"></textarea>
 </form>

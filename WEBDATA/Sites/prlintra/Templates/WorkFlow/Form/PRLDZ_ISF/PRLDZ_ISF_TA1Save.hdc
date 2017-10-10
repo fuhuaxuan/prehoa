@@ -46,7 +46,7 @@ SQLForCondition6=select v.PostGid TA2Gid from v_Post v where v.EntGid = __ENTGID
 Sql1=update WF_PRL_ISF set (LastUpdDate,Stat) = (select sysdate,##AppAssign## from dual) where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## 
 
 ;插入本流程中审批人二信息
-SQL2=insert into Wf_PRL_ISF_App (EntGid,FlowGid,DtlGid,AppGid,AppCode,AppName,AppType,AppAssign,AppMemo,AppDate) select __ENTGID__,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,20,##AppAssign##, ##AppMemo##,sysdate from dual
+SQL2=insert into Wf_PRL_ISF_App (EntGid,FlowGid,DtlGid,AppGid,AppCode,AppName,AppType,AppAssign,AppMemo,AppDate) select __ENTGID__,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,30,##AppAssign##, ##AppMemo##,sysdate from dual
 
 [AddtionalSQLUseWhere]
 ;显示，查询得到的结果可以用于HDT显示，从SQL1～SQL20共支持20条，同时会使用上面的[where]中的sql语句

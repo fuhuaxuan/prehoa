@@ -9,6 +9,10 @@ LIMITRemind1=对不起，您未指定流程信息！请从正确的路径进入
 SQL1=select 1 from wf_Flow where EntGid = __ENTGID__ and FlowGid = ##FlowGid##
 Remind1=对不起，您指定的流程申请单没有找到<script>alert('对不起，您指定的流程申请单没有找到');window.close()</script>
 
+;检查判断的Sql语句，查不到结果是报错，从SQL1～SQL5，共可以写5句
+SQL2=select 1 from dual where ##Stat## <> '提交' union select 1 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=10 and ##Stat## = '提交'
+Remind2=对不起，下一步审批人部门经理未找到，请与管理员联系。<script>alert('对不起，下一步审批人部门经理未找到，请与管理员联系。');history.back()</script>
+
 [Detail]
 ;显示，单条数据的查询，可以用于HDT显示，有select命令。从SQL1～SQL20共支持20条
 ;取出模型代码
@@ -20,14 +24,7 @@ SQLForCondition2=select '类别：' || decode(##category##,10,'Early Termination 提
 SQLForCondition3=select '单号：' || ##Num## ||'；'|| ##TheMemo##  TheFlowMemo,'待修改：' || ##TheMemo## ModFlowMemo,'待审批：申请人：' || ##CurUsrName## ||'；' || ##TheMemo## AppFlowMemo from dual
 
 ;取出下两步审批人
-SqlForCondition4=select v.PostGid TA1Gid from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=10
-
-SqlForCondition5=select count(*) cTA1 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=10
-
-SqlForCondition6=select v.PostGid TA2Gid from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=30
-
-;判断是否要跳过TA1:TA1=TA2
-SqlForCondition7=select count(*) IsTA1 from dual where ##TA1Gid## = '^^TA2Gid^^' and ##cTA1## = '1'
+SqlForCondition6=select F_Prl_getApp(__ENTGID__,##ModelGid##,__USRGID__,'否') T2Gid from dual
 
 
 [AddtionalSQL]
@@ -42,7 +39,7 @@ SQL2=update Wf_^^ModelCode^^ set (LastUpdDate,Stat,category,categorytext,Termina
 SQL3=update Wf_^^ModelCode^^ set (LastUpdDate,Stat,EndMemo) = (select sysdate,##Stat##,##EndMemo## from dual) where FlowGid = ##FlowGid## and EntGid = __ENTGID__ and ##Stat## = '终止'
 
 ;删除本流程中未审批的审批人
-SQL4=delete from Wf_prl_oisf_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppDate is null and ##Stat## <> '终止'
+SQL4=delete from Wf_prl_oisf_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppDate is null
 
 ;删除本流程全部附件信息
 SQL5=delete from WF_prl_oisf_Attach where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and ##Stat## <> '终止'
@@ -50,8 +47,13 @@ SQL5=delete from WF_prl_oisf_Attach where EntGid = __ENTGID__ and FlowGid = ##Fl
 ;插入本流程明细信息
 SQL6=delete from Wf_^^ModelCode^^_Dtl where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and ##Stat## <> '终止'
 
+SQL7=update Wf_prl_oisf_App set AppOrder = AppOrder + 200 where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and ##Stat## <> '终止'
+
 ;插入本流程发起人信息
-SQL7=insert into Wf_prl_oisf_App (EntGid,FlowGid,dtlgid,AppGid,AppCode,AppName,AppType,AppAssign,AppMemo,AppDate) select __ENTGID__,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,0,##Stat##,##AppMemo##,sysdate from dual where ##Stat## <> '保存'
+SQL8=insert into Wf_prl_oisf_App (EntGid,FlowGid,dtlgid,AppGid,AppCode,AppName,AppType,AppOrder,AppAssign,AppMemo,AppDate) select __ENTGID__,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,0,0,##Stat##,##AppMemo##,sysdate from dual where ##Stat## <> '保存'
+
+;--更新审批人
+SQL11=call P_^^ModelCode^^_doApp(__ENTGID__,##ModelGid##,##FlowGid##,##Stat##)
 
 ;插入本流程明细信息
 LoopSql1=insert into Wf_^^ModelCode^^_Dtl (EntGid,ModelGid,FlowGid,Gid,Line,DataName,DataA,DataB,DataC,DataD,DataE,Memo) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),##%Line%##,##%DataName%##,##%DataA%##,##%DataB%##,##%DataC%##,##%DataD%##,##%DataE%##,##%Memo%## from dual where ##Stat## <> '终止'
@@ -113,10 +115,7 @@ Log=
 PageKind=0
 
 ;提交，流转到T2审批页面
-^^WF^^1=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TA1 | selTA1List_1 | and ##Stat## = '提交' and ##IsTA1## = '0'| ^^AppFlowMemo^^)
-
-;提交，流转到T2审批页面
-^^WF^^2=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TA2 | TA2Gid | and ##Stat## = '提交' and ##IsTA1## = '1'| ^^AppFlowMemo^^)
+^^WF^^1=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T2 | T2Gid | and ##Stat## = '提交'| ^^AppFlowMemo^^)
 
 ;终止，结束流程
 ^^WF^^3=WFFlowFinish( ^^CurUrl^^ | and ##Stat## = '终止')

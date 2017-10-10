@@ -25,27 +25,7 @@ SqlForCondition1=select wm.Code ModelCode, wm.Name ModelName,d.Name StepName,rep
 ;定义流程备注
 SQLForCondition2=select '单号：' || ##Num## || '；公司：' || ##ComName## || ';金额：' || ##SumFee## ||'元' TheFlowMemo,'待修改-报销人：' || ##ApplyUsrName## ||'；公司：' || ##ComName## || '；金额：' || ##SumFee## ||'元' ModFlowMemo,'待审批-报销人：' || ##ApplyUsrName## ||'；公司：' || ##ComName## || '；金额：' || ##SumFee## ||'元' AppFlowMemo from dual
 
-;鹏瑞利管辖部门的扩展性：
-;5:部门助理;
-;10:部门经理(招商经理);
-;20:区域财务经理;
-;25:财务会计;
-;30:财务经理;
-;31:出纳付款;
-;35:执行总经理;
-;40:商场总经理;
-;50:区域总监;
-;71:资产经理 AssetManager
-SqlForCondition3=select v.PostGid T15Gid from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=3
-
-SqlForCondition4=select v.PostGid T2Gid from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=10
-
-SqlForCondition5=select count(*) cT2 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=10
-
-SqlForCondition6=select v.PostGid TA1Gid from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=30
-
-;判断是否要跳过TA1:TA1=TA2
-SqlForCondition7=select count(*) IsT2 from dual where ##T2Gid## = '^^TA1Gid^^' and ##cT2## = '1'
+SqlForCondition6=select F_Prl_getApp(__ENTGID__,##ModelGid##,__USRGID__,decode(##IsT15##,'0','否','是')) T2Gid from dual
 
 [AddtionalSQL]
 ;操作，没有返回的结果，是在数据库中执行，有Insert, Update, Delete命令。从SQL1～SQL20共支持20条
@@ -59,7 +39,10 @@ SQL3=delete from Wf_^^ModelCodeT^^_Attach where EntGid = __ENTGID__ and FlowGid 
 SQL4=delete from Wf_^^ModelCodeT^^_Dtl where EntGid = __ENTGID__ and FlowGid = ##FlowGid##
 
 ;插入本流程发起人信息
-SQL5=insert into Wf_^^ModelCodeT^^_App (EntGid,ModelGid,FlowGid,Gid,AppGid,AppCode,AppName,AppType,AppAssign,AppMemo,AppDate) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,0,##Stat##,##AppMemo##,sysdate from dual where ##Stat## = '提交'
+SQL5=insert into Wf_^^ModelCodeT^^_App (EntGid,ModelGid,FlowGid,Gid,AppGid,AppCode,AppName,AppType,AppOrder,AppAssign,AppMemo,AppDate) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,0,0,##Stat##,##AppMemo##,sysdate from dual where ##Stat## = '提交'
+
+;--更新审批人
+SQL11=call P_^^ModelCode^^_doApp(__ENTGID__,##ModelGid##,##FlowGid##,##Stat##)
 
 ;插入本流程明细信息
 LoopSql2=insert into Wf_^^ModelCodeT^^_Dtl (EntGid,ModelGid,FlowGid,Gid,Line,AcgGid,AcgCode,AcgName,PAcgGid,PAcgCode,PAcgName,AcgFee,ApplyFee) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),##%Line%##,##%AcgGid%##, ##%AcgCode%##, ##%AcgName%##, ##%PAcgGid%##, ##%PAcgCode%##, ##%PAcgName%##, ##%AcgFee%##, ##%ApplyFee%## from dual
@@ -121,10 +104,4 @@ WF1=WFFlowCreate(|^^TheFlowMemo^^ | ^^FlowGid^^)
 WF2=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TMod | Null | and ##Stat## = '保存' | ^^ModFlowMemo^^)
 
 ;提交，流转到T2审批页面
-WF3=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T15 | T15Gid | and ##Stat## = '提交' and ##IsT15## <> '0'| ^^AppFlowMemo^^)
-
-;提交，流转到T2审批页面
-WF4=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T2 | T2Gid | and ##Stat## = '提交' and ##IsT15## = '0' and ##IsT2## = '0'| ^^AppFlowMemo^^)
-
-;提交，流转到T2审批页面
-WF5=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TA1 | TA1Gid | and ##Stat## = '提交' and ##IsT15## = '0' and ##IsT2## = '1'| ^^AppFlowMemo^^)
+WF4=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T2 | T2Gid | and ##Stat## = '提交'| ^^AppFlowMemo^^)

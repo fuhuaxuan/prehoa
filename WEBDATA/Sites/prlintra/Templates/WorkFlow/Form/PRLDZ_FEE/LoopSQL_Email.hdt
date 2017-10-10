@@ -9,6 +9,47 @@
 <tr><td>[DOA信息] : <HDPrint Value=#DOACode#> - <HDPrint Value=#DOAname#>；</td></tr>
 <tr><td>[申请目的] : <HDPrint Value=#target#>；</td></tr>
 <tr><td>[申请项目内容] : <HDPrint Value=#Memo#>；</td></tr>
+<tr><td>[供应商报价] :</td></tr>
+<tr><td>
+<table cellpadding="0" cellspacing="1" class="ListBar" width="100%" style="background-color: #d9dbdf;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <tr style="background-color: #ecedef;" align="center">
+    <td>供应商</td>
+    <td>报价</td>
+  </tr>
+<HDIF EqualNot(<HDPrint Value=#VendorName1# Replace=#DBField2Input#>1, 1)>
+<tr style="background-color: white">
+  <td><HDPrint Value=#VendorName1#></td>
+  <td><HDPrint Value=#VendorFee1#></td>
+</tr>
+</HDIF>
+<HDIF EqualNot(<HDPrint Value=#VendorName2# Replace=#DBField2Input#>1, 1)>
+<tr style="background-color: white">
+  <td><HDPrint Value=#VendorName2#></td>
+  <td><HDPrint Value=#VendorFee2#></td>
+</tr>
+</HDIF>
+<HDIF EqualNot(<HDPrint Value=#VendorName3# Replace=#DBField2Input#>1, 1)>
+<tr style="background-color: white">
+  <td><HDPrint Value=#VendorName3#></td>
+  <td><HDPrint Value=#VendorFee3#></td>
+</tr>
+</HDIF>
+<HDIF EqualNot(<HDPrint Value=#VendorName4# Replace=#DBField2Input#>1, 1)>
+<tr style="background-color: white">
+  <td><HDPrint Value=#VendorName4#></td>
+  <td><HDPrint Value=#VendorFee4#></td>
+</tr>
+</HDIF>
+<HDIF EqualNot(<HDPrint Value=#VendorName5# Replace=#DBField2Input#>1, 1)>
+<tr style="background-color: white">
+  <td><HDPrint Value=#VendorName5#></td>
+  <td><HDPrint Value=#VendorFee5#></td>
+</tr>
+</HDIF>
+</table>
+</td></tr>
 <tr><td>[推荐及理由] : <HDPrint Value=#reason#>；</td></tr>
 <tr><td>[剩余预算金额] : <HDPrint Value=#controlfee#> 元；</td></tr>
 <tr><td>[本次申请金额] : 今年：<HDPrint Value=#askfee#> 元；明年：<HDPrint Value=#Naskfee#> 元；</td></tr>

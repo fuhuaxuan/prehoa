@@ -48,7 +48,7 @@ SQL8=delete from Wf_PRL_ISF_Dtl where EntGid = __ENTGID__ and FlowGid = ##FlowGi
 SQL9=delete from Wf_PRL_ISF_ground where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and ##Stat## <> '终止'
 
 ;插入本流程发起人信息
-SQL10=insert into Wf_PRL_ISF_App (EntGid,FlowGid,DtlGid,AppGid,AppCode,AppName,AppType,AppAssign,AppMemo,AppDate) select __ENTGID__,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,0,##Stat##,##AppMemo##,sysdate from dual where ##Stat## <> '保存'
+SQL10=insert into Wf_PRL_ISF_App (EntGid,FlowGid,DtlGid,AppGid,AppCode,AppName,AppType,AppOrder,AppAssign,AppMemo,AppDate) select __ENTGID__,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,0,0,##Stat##,##AppMemo##,sysdate from dual where ##Stat## <> '保存'
 
 ;插入单位信息
 LoopSql1=insert into Wf_PRL_ISF_ground (EntGid,ModelGid,FlowGid,Gid,fgid,fno,farea,Jarea,fmr) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),g.fgid,g.fno,g.farea,g.Jarea,g.fmr from prl_GROUNDH g where lower(replace(g.fno,'','')) = lower(replace(##%selUnit%##,'','')) and g.DEPTSOURCE = ##ParentDeptCode## and ##Stat## <> '终止'
