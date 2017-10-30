@@ -23,7 +23,7 @@ Sql1=select f.* from WF_PRL_ISF f where f.EntGid = __ENTGID__ and f.FlowGid = ##
 Sql2=select o.ModelGid ISFModelGid,m.code ISFModelCode,o.flowgid ISFFlowGid,o.num ISFNum from WF_PRL_ISF f,WF_PRL_ISF o,wf_model m where f.EntGid = __ENTGID__ and f.FlowGid = ##FlowGid## and f.EntGid = o.EntGid and f.OldFlowGid = o.FlowGid and o.EntGid = m.EntGid and o.ModelGid = m.ModelGid
 
 ;取出本流程已审批的审批人的个数，用于判断是否显示审批人
-SQL3=select count(*) IsShow from wf_PRL_ISF_App where EntGid = __ENTGID__ and  FlowGid = ##FlowGid## and AppDate is not null
+SQL3=select count(*) IsShow from wf_PRL_ISF_App where EntGid = __ENTGID__ and  FlowGid = ##FlowGid##
 
 ;得到当前用户的部门名称
 SQL4=select p.code2 ParentDeptCode from HR_Emp hr,Dept d,dept p where hr.EntGid=__ENTGID__ and hr.EntGid=d.EntGid and d.EntGid = p.EntGid and hr.UsrGid = __USRGID__ and hr.DeptGid = d.Gid and substr(d.Code1,0,8) = p.code1
@@ -36,7 +36,7 @@ LoopHDT1=Templates\WorkFlow\Form\PRLDZ_ISF\LoopSql_Option.hdt
 LoopVAR1=AttachList
 
 ;显示本流程审批人信息
-LoopSQL2=select a.*,decode(a.apptype,0,'发起人',10,'部门经理',30,'财务经理',35,'总经理',40,'商场总经理',50,'资产经理',60,'租赁部总监',80,'财务总监',85,'资产经理',90,'区域总经理',95,'Deputy CEO',100,'CEO') apptypetext  from WF_PRL_ISF_App a where FlowGid = ##FlowGid## and AppDate is not null order by AppDate
+LoopSQL2=select a.*,decode(a.apptype,0,'发起人',10,'部门经理',30,'财务经理',35,'总经理',40,'商场总经理',50,'资产经理',60,'租赁部总监',80,'财务总监',85,'资产经理',90,'区域总经理',95,'Deputy CEO',100,'CEO') apptypetext  from WF_PRL_ISF_App a where FlowGid = ##FlowGid## order by AppDate,AppType
 LoopHDT2=Templates\WorkFlow\Form\PRLDZ_ISF\Loopsql_App.hdt
 LoopVAR2=AppList
 

@@ -29,9 +29,6 @@ SQLForCondition3=select '申请类型：' || ##ApplyType## || '；申请印章种类：' || #
 
 SQLForCondition4=select '单号：'|| ##Num##|| '；' || ##TheMemo##  TheFlowMemo,'待修改 - ' || ##TheMemo## ModFlowMemo,'待审批 - 发起人：' || ##CurUsrName## ||'；' || ##TheMemo## AppFlowMemo from dual
 
-;取出审批人
-SqlForCondition5=select v.PostGid T2Gid from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=10
-
 [AddtionalSQL]
 ;操作，没有返回的结果，是在数据库中执行，由Insert, Update, Delete命令。从SQL1～SQL20共支持20条
 
@@ -54,7 +51,7 @@ SQL6=update Wf_^^ModelCode^^ set (LastUpdDate,ContractName,ContractCount,Contrac
 SQL7=update Wf_^^ModelCode^^ set (LastUpdDate,Stat,EndMemo) = (select sysdate,##Stat##,##EndMemo## from dual) where FlowGid = ##FlowGid## and EntGid = __ENTGID__ and ##Stat## = '终止'
 
 ;删除本流程中未审批的审批人
-SQL8=delete from Wf_^^ModelCode^^_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid##
+SQL8=delete from Wf_^^ModelCode^^_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppDate is null
 
 SQL9=update wf_^^ModelCode^^_App set AppOrder = AppOrder + 100 where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and ##Stat## = '提交'
 
@@ -132,7 +129,7 @@ PageKind=0
 ^^WFCreate^^1=WFFlowCreate(|^^TheFlowMemo^^ | ^^FlowGid^^)
 
 ;提交，流转到下一步
-^^WF^^2=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T2 | T2Gid | and ##Stat## = '提交'| ^^AppFlowMemo^^)
+^^WF^^2=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T2 | null | and ##Stat## = '提交'| ^^AppFlowMemo^^)
 
 ;终止，结束流程
 ^^WF^^3=WFFlowFinish( ^^CurUrl^^ | and ##Stat## = '终止')

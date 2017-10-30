@@ -249,7 +249,7 @@
     </td>
     <td class="DtlBarTitle">合同金额/总租金:<font color="red">*</font></td>
     <td class="listtd">
-      <INPUT TYPE="text" NAME="ContractFee" maxlength="16" value="<HDPrint Value=#ContractFee# Replace=#DBField2Input#>" class="JQFloat JQMust2">
+      <INPUT TYPE="text" NAME="ContractFee" maxlength="16" value="<HDPrint Value=#ContractFee# Replace=#DBField2Input#>" class="JQText JQMust2">
     </td>
   </tr>
   <tr valign="top" JQ="Type_2">

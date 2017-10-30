@@ -231,7 +231,56 @@ begin
                      group by t.EntGid, t.FlowGid, t.AppGid) a
              where f.EntGid = a.EntGid
                and f.FlowGid = a.FlowGid
-               and f.appType = a.appType);
+               and f.appType = a.appType);v_Stage := '插入审批人';
+    if p_AppAssign = '提交' then
+      insert into WF_Task
+        (EntGid,
+         ModelGid,
+         FlowGid,
+         TaskDefGid,
+         TaskGid,
+         Code,
+         Name,
+         Note,
+         ExecGid,
+         ExecCode,
+         ExecName,
+         OrderValue,
+         IsMCF)
+        select p_EntGid,
+               p_ModelGid,
+               p_FlowGid,
+               d.TaskDefGid,
+               sys_guid(),
+               d.code,
+               d.name,
+               d.note,
+               a.AppGid,
+               a.AppCode,
+               a.AppName,
+               d.OrderValue,
+               d.IsMCF
+          from WF_Task_Define d,
+               (select *
+                  from (select *
+                          from wf_Prl_PAy_App t
+                         where t.entgid = p_EntGid
+                           and t.flowgid = p_FlowGid
+                           and t.AppOrder <= 100
+                           and t.AppDate is null
+                         order by t.Apporder)
+                 where rownum = 1) a
+         where d.EntGid = p_EntGid
+           and d.ModelGid = p_ModelGid
+           and replace(lower(d.code), lower(v_ModelCode), '') in ('_t2')
+           and not exists (select 1
+                  from wf_task t
+                 where t.entgid = p_EntGid
+                   and t.flowgid = p_FlowGid
+                   and t.TaskDefGid = d.taskdefgid
+                   and t.ExecGid = a.AppGid
+                   and t.stat = 1);
+    end if;
   end if;
   commit;
   --异常处理

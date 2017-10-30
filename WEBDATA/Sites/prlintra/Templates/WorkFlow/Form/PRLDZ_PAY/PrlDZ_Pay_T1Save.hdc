@@ -23,9 +23,6 @@ SQLForCondition2=select decode(##FeeNum##,'','','费用单：' || ##FeeNum##||'-' ||
 
 SQLForCondition3=select '单号：'|| ##Num##|| '；' || ##TheMemo##  TheFlowMemo,'待修改 - ' || ##TheMemo## ModFlowMemo,'待审批 - 发起人：' || ##CurUsrName## ||'；' || ##TheMemo## AppFlowMemo,decode(##isend##,'10','是','否') IsEndText from dual
 
-;取出下一步审批人
-SqlForCondition6=select F_Prl_getApp(__ENTGID__,##ModelGid##,__USRGID__,'否') T2Gid from dual
-
 [AddtionalSQL]
 ;操作，没有返回的结果，是在数据库中执行，由Insert, Update, Delete命令。从SQL1～SQL20共支持20条
 
@@ -122,7 +119,7 @@ PageKind=0
 ^^WFCreate^^1=WFFlowCreate(|^^TheFlowMemo^^ | ^^FlowGid^^)
 
 ;提交，流转到T2审批页面
-^^WF^^2=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T2 | T2Gid | and ##Stat## = '提交'| ^^AppFlowMemo^^)
+^^WF^^2=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T2 | null | and ##Stat## = '提交'| ^^AppFlowMemo^^)
 
 ;终止，结束流程
 ^^WF^^4=WFFlowFinish( ^^CurUrl^^ | and ##Stat## = '终止')

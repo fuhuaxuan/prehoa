@@ -138,6 +138,7 @@
 <!--流程用到一些控件-->
   <input type="text" style="display:none" name="ModelGid" value="<HDPrint Value=#ModelGid# Replace=#DBField2Input#>">
   <input type="text" style="display:none" name="FlowGid" value="<HDPrint Value=#FlowGid# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="FlowGid_1" value="<HDPrint Value=#FlowGid# Replace=#DBField2Input#>">
   <INPUT type="text" style="display:none" name="CurUrl" value="<HDPrint Value=#Url# Replace=#DBField2Input#>">
   <input type="text" style="display:none" name="Stat" value="<HDPrint Value=#Stat# Replace=#DBField2Input#>">
   <input type="text" style="display:none" name="WF" value="">

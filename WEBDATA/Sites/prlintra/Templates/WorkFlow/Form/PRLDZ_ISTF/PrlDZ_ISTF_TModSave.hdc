@@ -23,9 +23,6 @@ SQLForCondition2=select '类别：' || decode(##category##,10,'Early Termination 提
 
 SQLForCondition3=select '单号：' || ##Num## ||'；'|| ##TheMemo##  TheFlowMemo,'待修改：' || ##TheMemo## ModFlowMemo,'待审批：申请人：' || ##CurUsrName## ||'；' || ##TheMemo## AppFlowMemo from dual
 
-;取出下两步审批人
-SqlForCondition6=select F_Prl_getApp(__ENTGID__,##ModelGid##,__USRGID__,'否') T2Gid from dual
-
 [AddtionalSQL]
 ;操作，没有返回的结果，是在数据库中执行，有Insert, Update, Delete命令。从SQL1～SQL20共支持20条
 ;修改本流程流程备注
@@ -114,7 +111,7 @@ Log=
 PageKind=0
 
 ;提交，流转到T2审批页面
-^^WF^^1=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T2 | T2Gid | and ##Stat## = '提交'| ^^AppFlowMemo^^)
+^^WF^^1=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T2 | null | and ##Stat## = '提交'| ^^AppFlowMemo^^)
 
 ;终止，结束流程
 ^^WF^^3=WFFlowFinish( ^^CurUrl^^ | and ##Stat## = '终止')

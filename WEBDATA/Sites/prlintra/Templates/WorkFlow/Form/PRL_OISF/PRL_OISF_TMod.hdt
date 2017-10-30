@@ -11,6 +11,7 @@
 <INPUT type="text" style="display:none" name="CurUrl" value="<HDPrint Value=#Url# Replace=#DBField2Input#>">
 <input type="text" style="display:none" name="Stat" value="<HDPrint Value=#Stat# Replace=#DBField2Input#>">
 <input type="text" style="display:none" name="WF" value="">
+<input type="text" style="display:none" name="Sql" value="Sql">
 <INPUT type="text" style="display:none" name="Num" value="<HDPrint Value=#Num# Replace=#DBField2Input#>">
 <input type="text" style="display:none" name="sPARAM1" value="<HDPrint Value=#sPARAM1# Replace=#DBField2Input#>">
 <input type="text" style="display:none" name="sPARAM2" value="<HDPrint Value=#sPARAM2# Replace=#DBField2Input#>">
@@ -18,6 +19,7 @@
 <input type="text" style="display:none" name="OldFlowGid" value="<HDPrint Value=#OldFlowGid# Replace=#DBField2Input#>">
 <input type="text" style="display:none" name="FillDeptGid" value="<HDPrint Value=#FillDeptGid# Replace=#DBField2Input#>">
 <input type="text" style="display:none" name="FillDeptName" value="<HDPrint Value=#FillDeptName# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="FillUsrGid" value="<HDPrint Value=#FillUsrGid# Replace=#DBField2Input#>">
 <input type="text" style="display:none" name="FillUsrName" value="<HDPrint Value=#FillUsrName# Replace=#DBField2Input#>">
 <input type="text" style="display:none" name="ParentDeptCode" value="<HDPrint Value=#ParentDeptCode# Replace=#DBField2Input#>">
 <input type="text" style="display:none" name="UnitList" value="">
@@ -423,6 +425,7 @@
     var sConfirm = '';
     //流转状态初始化
     $("input[name=WF]").val('WF');
+    $("input[name=Sql]").val('Sql');
     if (OpText == '保存'){
       sCss = 'JQSave';
       $("input[name=WF]").val('');
@@ -434,6 +437,9 @@
     else if (OpText == '终止'){
       sCss = 'JQEnd';
       sConfirm = '你确定要终止该流程吗！';
+    }
+    if ('<HDPrint Value=#Mod# Replace=#DBField2Js#>' == '1') {
+      $("input[name=Sql]").val('');
     }
     //验证必填项
     if (!JQcheck(sCss)){

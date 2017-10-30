@@ -183,7 +183,7 @@ BEGIN
        and a.flowgid = R.Flowgid
        and a.appdate is null
        and a.AppOrder <= (select max(AppOrder)
-                            from wf_prl_oisf_app t
+                            from wf_prl_ISF_App t
                            where t.entgid = R.Entgid
                              and t.flowgid = R.flowgid
                              and t.apporder < 200
@@ -251,7 +251,7 @@ BEGIN
        and a.flowgid = R.Flowgid
        and a.appdate is null
        and a.AppOrder <= (select max(AppOrder)
-                            from wf_prl_oisf_app t
+                            from wf_prl_ISF_App t
                            where t.entgid = R.Entgid
                              and t.flowgid = R.flowgid
                              and t.apporder < 200
@@ -319,7 +319,7 @@ BEGIN
        and a.flowgid = R.Flowgid
        and a.appdate is null
        and a.AppOrder <= (select max(AppOrder)
-                            from wf_prl_oisf_app t
+                            from wf_prl_fee_App t
                            where t.entgid = R.Entgid
                              and t.flowgid = R.flowgid
                              and t.apporder < 200
@@ -387,7 +387,7 @@ BEGIN
        and a.flowgid = R.Flowgid
        and a.appdate is null
        and a.AppOrder <= (select max(AppOrder)
-                            from wf_prl_oisf_app t
+                            from wf_prl_pay_App t
                            where t.entgid = R.Entgid
                              and t.flowgid = R.flowgid
                              and t.apporder < 200
@@ -455,7 +455,7 @@ BEGIN
        and a.flowgid = R.Flowgid
        and a.appdate is null
        and a.AppOrder <= (select max(AppOrder)
-                            from wf_prl_oisf_app t
+                            from wf_prl_baoxiao_App t
                            where t.entgid = R.Entgid
                              and t.flowgid = R.flowgid
                              and t.apporder < 200

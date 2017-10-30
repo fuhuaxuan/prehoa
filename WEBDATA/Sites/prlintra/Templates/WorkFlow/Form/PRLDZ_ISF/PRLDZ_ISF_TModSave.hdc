@@ -21,9 +21,6 @@ SqlForCondition1=select wm.Code ModelCode, wm.Name ModelName,d.Name StepName,dec
 ;定义流程备注
 SQLForCondition2=select '单号：' || ##Num## || ';[' || ##Atype## || '];申请人：' || ##CurUsrName##||';租户：'|| ##Lessee##||';商店营业名称：'|| ##Tradingname## TheFlowMemo,'待修改：[' || ##Atype## || '];申请人：' || ##CurUsrName##||';租户：'|| ##Lessee##||';商店营业名称：'|| ##Tradingname## ModFlowMemo,'待审批：[' || ##Atype## || '];申请人：' || ##CurUsrName## ||';租户：'|| ##Lessee##||';商店营业名称：'|| ##Tradingname## AppFlowMemo from dual
 
-;取出下两步审批人
-SqlForCondition6=select F_Prl_getApp(__ENTGID__,##ModelGid##,__USRGID__,'否') T2Gid from dual
-
 
 ;鹏瑞利管辖部门的扩展性：
 ;5:部门助理;
@@ -68,9 +65,6 @@ SQL9=update Wf_PRL_ISF_App set AppOrder = AppOrder + 200 where EntGid = __ENTGID
 ;插入本流程发起人信息
 SQL10=insert into Wf_PRL_ISF_App (EntGid,FlowGid,DtlGid,AppGid,AppCode,AppName,AppType,AppOrder,AppAssign,AppMemo,AppDate) select __ENTGID__,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,0,0,##Stat##,##AppMemo##,sysdate from dual where ##Stat## <> '保存'
 
-;--更新审批人
-SQL11=call P_^^ModelCode^^_doApp(__ENTGID__,##ModelGid##,##FlowGid##,##Stat##)
-
 ;插入单位信息
 LoopSql1=insert into Wf_PRL_ISF_ground (EntGid,ModelGid,FlowGid,Gid,fgid,fno,farea,Jarea,fmr) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),g.fgid,g.fno,g.farea,g.Jarea,g.fmr from prl_GROUNDH g where lower(replace(g.fno,'','')) = lower(replace(##%selUnit%##,'','')) and g.DEPTSOURCE = ##ParentDeptCode## and ##Stat## <> '终止'
 
@@ -79,6 +73,9 @@ LoopSql2=insert into Wf_PRL_ISF_Dtl (EntGid,ModelGid,FlowGid,Gid,TbID,YearType,F
 
 ;计算本流程的 P1_P8 , 必须放在最后
 LoopSql3=call HDNET_Prl_doISF(__ENTGID__,##%FlowGid%##)
+
+;--更新审批人
+LoopSql4=call P_^^ModelCode^^_doApp(__ENTGID__,##ModelGid##,##%FlowGid%##,##Stat##)
 
 ;插入本流程附件信息
 AttachSqlAdd1=insert into Wf_PRL_ISF_Attach (EntGid,ModelGid,FlowGid,Attach_Gid,Attach_Title,Attach_Url,Attach_Size) select __ENTGID__,##ModelGid## ,##FlowGid##,@@AttachID@@, @@FileName@@, @@FilePath@@,@@FileSize@@ from dual where ##Stat## <> '终止'
@@ -138,7 +135,7 @@ Log=
 PageKind=0
 
 ;提交，流转到T2审批页面
-^^WF^^1=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T2 | T2Gid | and ##Stat## = '提交'| ^^AppFlowMemo^^)
+^^WF^^1=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T2 | null | and ##Stat## = '提交'| ^^AppFlowMemo^^)
 
 ;终止，结束流程
 ^^WF^^3=WFFlowFinish( ^^CurUrl^^ | and ##Stat## = '终止')

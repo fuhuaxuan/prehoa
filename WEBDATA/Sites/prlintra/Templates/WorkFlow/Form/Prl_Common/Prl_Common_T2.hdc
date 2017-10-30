@@ -1,0 +1,91 @@
+;版本号：2014年3月份（此行不允许删除）
+[Permission]
+;判断FlowGid 是否为空
+LIMIT1=FlowGid
+LIMITDesc1=StringSize[,0]
+LIMITRemind1=对不起，您未指定流程信息！请从正确的路径进入
+
+;判断传入FlowGid 是否存在
+SQL1=select 1 from WF_Flow where EntGid = __ENTGID__ and FlowGid = ##FlowGid##
+Remind1=对不起，您指定的流程申请单没有找到<script>alert('对不起，您指定的流程申请单没有找到');window.close()</script>
+
+[Detail]
+;显示，单条数据的查询，可以用于HDT显示，有select命令。从SQL1～SQL20共支持20条
+;取出本流程模型信息
+SqlForCondition1=select wm.Code ModelCode, wm.Name ModelName,d.Name StepName from wf_Model wm,WF_Task_Define d where wm.EntGid = d.EntGid(+) and wm.EntGid = __ENTGID__ and wm.ModelGid = d.ModelGid(+) and wm.ModelGid = ##ModelGid## and lower(d.code(+)) = replace(lower(##Url##),'save')
+
+;取出当前用户的类别及排序
+SqlForCondition2=select distinct AppOrder,AppType from Wf_^^ModelCode^^_App a where a.EntGid = __ENTGID__ and a.FlowGid = ##FlowGid## and AppGid = __USRGID__ and appdate is null
+
+;取出本流程主表信息
+Sql1=select * from WF_^^ModelCode^^ where EntGid = __ENTGID__ and  FlowGid = ##FlowGid##
+
+;取出下一个审批人
+SQL2=select AppGid T2Gid from Wf_^^ModelCode^^_App a where a.EntGid = __ENTGID__ and a.FlowGid = ##FlowGid## and a.AppDate is null and a.AppOrder in (select min(t.AppOrder) from Wf_^^ModelCode^^_App t where t.EntGid = __ENTGID__ and t.FlowGid = ##FlowGid## and t.AppOrder > ##AppOrder## and t.appdate is null)
+
+[AddtionalSQL]
+;操作，没有返回的结果，是在数据库中执行，有Insert, Update, Delete命令。从SQL1～SQL20共支持20条
+SQL1=
+
+[AddtionalSQLUseWhere]
+;显示，单条数据的查询，可以用于HDT显示，有select命令。从SQL1～SQL20共支持20条，同时会使用上面的[where]中的sql语句
+;示例
+Sql1=
+
+[Master]
+;显示，多条记录的查询，可在HDT页面中直接使用<HDLoop>显示，并能够提供翻页。
+SQL=
+Count=
+
+[DefaultWhere]
+;多条记录的查询的默认条件
+DefaultWhere=
+
+[Where]
+;多条记录的查询的条件，可以根据页面传入的变量组合成
+1=
+
+[GroupBy]
+;多条记录的查询的分组
+GroupBy=
+
+[DefaultOrderBy]
+;多条记录的查询的默认排序
+DefaultOrderBy=
+
+[OrderBy]
+;多条记录的查询的排序,支持多重排序排序的先后顺序由序号决定
+1=
+
+
+[Title]
+;页面的标题，从Text1～Text30共支持30条
+
+Text1=^^ModelName^^-^^StepName^^
+
+;是否翻页：1是，0否
+ChangePage=0
+
+;翻页时的每页记录数，如果没有的话，则取HDNet默认值20
+ChangePageRow=
+
+;写入数据库日志
+Log=
+
+;页面显示: 0:BodyPage;1:DetailPage;2:BlankPage
+PageKind=0
+
+;以下内容是为了让ExplainAjax引擎来读的。对ExplainModule引擎来说，忽略此部分内容。
+[Ajax]
+;此Section“[Ajax]”,表明以下内容是为了Ajax应用而配置的文件。
+;需要显示一条的内容，可以支持21条, Detail, Detail1～Detail20
+Detail=
+
+;需要循环显示的内容,可以支持11条，Master, Master1～Master10
+Master=
+
+;实现对数据库进行的操作，可以支持20条, AddtionalSQL1～AddtionalSQL20
+AddtionalSQL1=
+
+;实现对数据库进行的循环操作，可以支持20条, LoopSQL1～LoopSQL20
+LoopSQL1=
