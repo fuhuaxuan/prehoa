@@ -25,6 +25,11 @@ LoopSQL1=select AppGid ItemGid, AppName ItemName from Wf_Prl_OISF_App a where a.
 LoopHDT1=Templates\WorkFlow\Form\^^ModelCode^^\LoopSql_Option.hdt
 LoopVAR1=AppList
 
+;取出抄送人(除当前审批外的所有审批人(60以上不发送)+部门助理+资产经理+财务会计） 用于同意并结束流程，或否决抄送
+LoopSQL2=select distinct AppGid ItemGid,AppName ItemName from wf_PRL_OISF_App where EntGid = __ENTGID__ and  FlowGid = ##FlowGid## and AppGid <> __USRGID__ and AppType = 0 union select distinct v.PostGid ItemGid,v.PostName ItemName from v_Post v,wf_PRL_OISF f where v.EntGid = __ENTGID__ and v.EntGid = f.EntGid and f.FlowGid = ##FlowGid## and v.deptGid = f.FillDeptGid and v.atype in (5)
+LoopHDT2=Templates\WorkFlow\Form\PRL_OISF\LoopSql_Option.hdt
+LoopVAR2=Tcclist
+
 [AddtionalSQL]
 ;操作，没有返回的结果，是在数据库中执行，有Insert, Update, Delete命令。从SQL1～SQL20共支持20条
 SQL1=
