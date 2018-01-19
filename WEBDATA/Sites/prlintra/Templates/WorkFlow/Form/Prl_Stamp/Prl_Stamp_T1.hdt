@@ -377,6 +377,7 @@
 
   <INPUT TYPE="hidden" name="DataInterface_Search" value="f.num^单号^1">
   <INPUT TYPE="hidden" name="DataInterface_Search" value="wm.name^流程^1">
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="f.Fmemo^备注^1">
   <input TYPE="hidden" name="DataInterface_Search_Sql" value="">
   <input TYPE="hidden" name="DataInterface_Search_Cols" value="">
 

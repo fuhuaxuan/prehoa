@@ -1,0 +1,121 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<style type="text/css">
+.PrintTdRT {
+  border-right:1 solid black;
+  border-top:1 solid black;
+}
+</style>
+<table style="width:645;margin-top:10px;" align="center" border="0" cellpadding="0" cellspacing="0">
+  <col style="width:30%">
+  <col style="width:40%">
+  <col style="width:30%">
+  <tr>
+    <td class="Title" align="center" colspan="3"><HDPrint Value=#ModelName#></td>
+  </tr>
+  <tr>
+    <td align="center"><B>单号</B>：<HDPrint Value=#Num#></td>
+    <td align="center"><B>发起人</B>：<HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]</td>
+    <td align="center"><B>申请时间</B>：<HDPrint Value=#CreateDate#></td>
+  </tr>
+</table>
+
+<table width="645" cellspacing="0" cellpadding="0" align="center" style="border-left:1 solid black;">
+  <col style="padding-left:4px;width:17%" valign="top">
+  <col style="padding-left:4px;width:33%" valign="top">
+  <col style="padding-left:4px;width:10%" valign="top">
+  <col style="padding-left:4px;width:40%" valign="top">
+  <tr valign="top">
+    <td  class="PrintTdRT">是否关联流程:</td>
+    <td  class="PrintTdRT" colspan="3">
+      <HDPrint Value=#mIsFlow#>
+      <font id="f_flow" style="display:none">
+      （单号：<a id="a_flow" href="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#mModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&ModelCode=<HDPrint Value=#mModelCode#>&FlowGid=<HDPrint Value=#mFlowGid#>" target="_blank"><HDPrint Value=#mNum#></a>）
+      </font>
+      <script language="javascript">
+        if('<HDPrint Value=#mIsFlow# Replace=#DBField2Js#>' == '是'){
+          $("#f_flow").show();
+        }
+        //函数：ready
+        //功能：document 加载完成后调用
+        $(document).ready(function(){
+          $("input[name=mIsFlow]").click(function (){
+            if($(this).val() == '是'){
+              $("#f_flow").show();
+            }
+            else{
+              $("#f_flow").hide();
+            }
+          });
+        });
+      </script>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="PrintTdRT">部门类型:</td>
+    <td class="PrintTdRT"><HDPrint Value=#DeptType#></td>
+    <td  class="PrintTdRT">申请类型:</td>
+    <td  class="PrintTdRT"><HDPrint Value=#ApplyType#>
+      <script language="javascript">
+        //函数：ready
+        //功能：document 加载完成后调用
+        $(document).ready(function(){
+          var JsValue = '<HDPrint Value=#ApplyType# Replace=#DBField2Js#>' == '非合同类文件用印' ? '1' : '2';
+          $("[JQ^=Type]").hide();
+          $("[JQ=Type_"+JsValue+"]").show();
+        });
+      </script>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td  class="PrintTdRT">申请印章种类:</td>
+    <td  class="PrintTdRT"><HDPrint Value=#StampType#></td>
+    <td  class="PrintTdRT">公司名称:</td>
+    <td  class="PrintTdRT"><HDPrint Value=#ComName#></td>
+  </tr>
+  <tr valign="top" JQ="Type_1">
+    <td  class="PrintTdRT">文件接收方名称:</td>
+    <td  class="PrintTdRT"><HDPrint Value=#FilerName#></td>
+    <td  class="PrintTdRT">文件名称:</td>
+    <td  class="PrintTdRT"><HDPrint Value=#FileName#></td>
+  </tr>
+  <tr valign="top" JQ="Type_1">
+    <td  class="PrintTdRT">文件份数:</td>
+    <td  class="PrintTdRT"><HDPrint Value=#FileCount#></td>
+    <td  class="PrintTdRT">文件目的:</td>
+    <td  class="PrintTdRT"><HDPrint Value=#FileAim#></td>
+  </tr>
+  <tr valign="top" JQ="Type_1">
+    <td  class="PrintTdRT">申请人声明及保证:</td>
+    <td  class="PrintTdRT" colspan="3">我保证我所提交的用于盖章的非合同类文件与本申请所注载内容一致</td>
+  </tr>
+  <tr valign="top" JQ="Type_2">
+    <td  class="PrintTdRT">合同名称:</td>
+    <td  class="PrintTdRT"><HDPrint Value=#ContractName#></td>
+    <td  class="PrintTdRT">合同份数:</td>
+    <td  class="PrintTdRT"><HDPrint Value=#ContractCount#></td>
+  </tr>
+  <tr valign="top" JQ="Type_2">
+    <td  class="PrintTdRT">合同金额/总租金:</td>
+    <td  class="PrintTdRT"><HDPrint Value=#ContractFee#></td>
+    <td  class="PrintTdRT">合作公司:</td>
+    <td  class="PrintTdRT"><HDPrint Value=#ContactName#></td>
+  </tr>
+  <tr valign="top" JQ="Type_2">
+    <td  class="PrintTdRT">合同期限:</td>
+    <td  class="PrintTdRT" colspan="3"><HDPrint Value=#ContractDate1#>~<HDPrint Value=#ContractDate2#></td>
+  </tr>
+  <tr valign="top" JQ="Type_2">
+    <td  class="PrintTdRT">合同概要:</td>
+    <td  class="PrintTdRT" colspan="3"><HDPrint Value=#ComtractMemo#></td>
+  </tr>
+  <tr valign="top">
+    <td  class="PrintTdRT">备注:</td>
+    <td  class="PrintTdRT" colspan="3"><HDPrint Value=#Memo#></td>
+  </tr>
+</table>
+<HDPrint Value=#AppList# Replace=#None#>
+<script language="javascript">
+  window.print();
+</script>

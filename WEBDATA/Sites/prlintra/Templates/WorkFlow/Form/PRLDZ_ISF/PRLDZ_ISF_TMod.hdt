@@ -1444,7 +1444,7 @@
     }
     //把单位拼起来
     var JsUnitList = $("select[name=selUnit_1]>option").map(function() {
-        return $(this).html();
+        return $(this).val();
       }).get().join(';');
     //单位
     $("input[name=UnitList]").val(JsUnitList);

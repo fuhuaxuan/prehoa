@@ -1,0 +1,91 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<style type="text/css">
+.PrintTdRT {
+  border-right:1 solid black;
+  border-top:1 solid black;
+}
+</style>
+<table style="width:645;margin-top:10px;" align="center" border="0" cellpadding="0" cellspacing="0">
+  <col style="width:30%">
+  <col style="width:40%">
+  <col style="width:30%">
+  <tr>
+    <td class="Title" align="center" colspan="3"><HDPrint Value=#ModelName#></td>
+  </tr>
+  <tr>
+    <td align="center" colspan="3">（OA流程已审批完）</td>
+  </tr>
+  <tr>
+    <td align="center"><B>单号</B>：<HDPrint Value=#Num#></td>
+    <td align="center"><B>申请人</B>：<HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]</td>
+    <td align="center"><B>申请时间</B>：<HDPrint Value=#CreateDate#></td>
+  </tr>
+</table>
+
+<table width="645" cellspacing="0" cellpadding="0" align="center" style="border-left:1 solid black;">
+  <col style="padding-left:4px;width:10%" valign="top">
+  <col style="padding-left:4px;width:23%" valign="top">
+  <col style="padding-left:4px;width:10%" valign="top">
+  <col style="padding-left:4px;width:23%" valign="top">
+  <col style="padding-left:4px;width:10%" valign="top">
+  <col style="padding-left:4px;width:23%" valign="top">
+  <tr valign="top">
+    <td class="PrintTdRT">报销人:</td>
+    <td class="PrintTdRT"><HDPrint Value=#ApplyUsrName#></td>
+    <td class="PrintTdRT">公司名称:</td>
+    <td class="PrintTdRT" colspan="3"><HDPrint Value=#ComName#></td>
+  </tr>
+  <tr valign="top">
+    <td class="PrintTdRT">收款人</td>
+    <td class="PrintTdRT"><HDPrint Value=#PayMan#></td>
+    <td class="PrintTdRT">银行帐号</td>
+    <td class="PrintTdRT"><HDPrint Value=#PayAccount#></td>
+    <td class="PrintTdRT">开户行</td>
+    <td class="PrintTdRT"><HDPrint Value=#PayBank#></td>
+  </tr>
+  <tr valign="top">
+    <td class="PrintTdRT">报销备注:</td>
+    <td class="PrintTdRT" colspan="5"><HDPrint Value=#Memo#></td>
+  </tr>
+</table>
+<table width="645" cellspacing="0" cellpadding="0" align="center" ID="tb_Dtl" style="border-left:1 solid black;">
+  <colgroup>
+     <col style="width:80%">
+     <col style="width:20%">
+  </colgroup>
+  <thead>
+  <tr align="center">
+    <td class="PrintTdRT">项目小类</td>
+    <td class="PrintTdRT">本次申请金额[元]</td>
+  </tr>
+  </thead>
+  <tbody>
+    <HDPrint Value=#DtlList# Replace=#None#>
+  </tbody>
+  <tfoot>
+  <tr>
+    <td align="right" class="PrintTdRT">报销金额汇总[元]：</td>
+    <td align="center"  class="PrintTdRT"><HDPrint Value=#SumFee#></td>
+  </tr>
+  </tfoot>
+</table>
+<table width="645" cellspacing="0" cellpadding="0" align="center" ID="tb_Dtl" style="border-bottom:1 solid black;border-left:1 solid black;">
+  <col style="width:20%" valign="top">
+  <col style="width:15%" valign="top">
+  <col style="width:15%" valign="top">
+  <col style="width:20%" valign="top">
+  <col style="width:30%" valign="top">
+  <tr align="center">
+    <td class="PrintTdRT">执行人类别</td>
+    <td class="PrintTdRT">执行人</td>
+    <td class="PrintTdRT">审批概要</td>
+    <td class="PrintTdRT">时间</td>
+    <td class="PrintTdRT">审批备注</td>
+  </tr>
+  <HDPrint Value=#AppList# Replace=#None#>
+</table>
+<script language="javascript">
+  window.print();
+</script>

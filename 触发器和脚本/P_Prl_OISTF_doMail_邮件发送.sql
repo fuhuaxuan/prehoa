@@ -43,6 +43,7 @@ begin
                    t.HandoverDate,
                    t.contractDate1,
                    t.contractdate2,
+                   t.freeRentY,
                    t.freeRentM,
                    t.freeRentD,
                    t.fitoutM,
@@ -89,7 +90,7 @@ begin
                  to_char(R.Contractdate1, 'YYYY.MM.DD') || '~' ||
                  to_char(R.Contractdate2, 'YYYY.MM.DD');
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
-    v_Body    := '[Free of rent Period 免租期] : ' || R.Freerentm || '月/' ||
+    v_Body    := '[Free of rent Period 免租期] : '|| R.Freerenty || '年/' || R.Freerentm || '月/' ||
                  R.Freerentd || '日';
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
     v_Body    := '[Fit-Out Period 装修期] : ' || R.Fitoutm || '月/' ||

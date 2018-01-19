@@ -1,0 +1,34 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script>
+  var sTb = 'tb_Dtl';
+  var sTrClass = 'PrintTdRT';
+  var tdArr = new Array();
+    
+  <hdloop>
+    var iRow = Math.floor(Math.random() * (1 + 100000 - 1) + 1);
+    var i = $("table#tb_Dtl").find("tbody").find("tr").length + 1;
+    var k = 0;
+
+    tdArr[k++] = '<td align="center" class="PrintTdRT"><HDPrint Value=#Line#></td>';
+    tdArr[k++] = '<td align="right" class="PrintTdRT"><HDPrint Value=#Dtl1#></td>';
+    tdArr[k++] = '<td align="right" class="PrintTdRT"><HDPrint Value=#Dtl2#></td>';
+    tdArr[k++] = '<td align="right" class="PrintTdRT"><HDPrint Value=#Dtl3#></td>';
+    tdArr[k++] = '<td align="right" class="PrintTdRT"><HDPrint Value=#Dtl4#></td>';
+    tdArr[k++] = '<td align="right" class="PrintTdRT"><HDPrint Value=#Dtl5#></td>';
+
+    //新增一行
+    JQTr_Add(sTb,sTrClass,tdArr);
+  </hdloop>
+</script>
+<!--写法2，直接写，可参考
+<hdloop>
+  <tr class="PrintTdRT" valign="top">
+    <td align="center" class="PrintTdRT"><HDPrint Value=#Line#></td>
+    <td align="right" class="PrintTdRT"><HDPrint Value=#Dtl_1#></td>
+    <td align="right" class="PrintTdRT"><HDPrint Value=#Dtl_2#></td>
+    <td align="right" class="PrintTdRT"><HDPrint Value=#Dtl_3#></td>
+    <td align="right" class="PrintTdRT"><HDPrint Value=#Dtl_4#></td>
+    <td align="right" class="PrintTdRT"><HDPrint Value=#Dtl_5#></td>
+  </tr>
+</hdloop>
+-->

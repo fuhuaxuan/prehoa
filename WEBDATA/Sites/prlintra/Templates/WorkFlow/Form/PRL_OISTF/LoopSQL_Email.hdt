@@ -12,7 +12,7 @@
 <tr><td>[Handover Date 交付日期] : <HDPrint Value=#handoverdate#>；</td></tr>
 <tr><td>[Contract start Date 合同起始日期] : <HDPrint Value=#contractdate1#>；</td></tr>
 <tr><td>[Expiry Date 截止日期] : <HDPrint Value=#contractdate2#>；</td></tr>
-<tr><td>[Free of rent Period 免租期] : <HDPrint Value=#freerentm#> 年/<HDPrint Value=#freerentm#> 月/<HDPrint Value=#freerentd# Replace=#None#> 天；</td></tr>
+<tr><td>[Free of rent Period 免租期] : <HDPrint Value=#freerenty#> 年/<HDPrint Value=#freerentm#> 月/<HDPrint Value=#freerentd# Replace=#None#> 天；</td></tr>
 <tr><td>[Fit-Out Period 装修期] : <HDPrint Value=#fitoutm#> 月/<HDPrint Value=#fitoutd#> 天（ <HDPrint Value=#fitoutdate1#> ~ <HDPrint Value=#fitoutdate2#>）；</td></tr>
 <tr><td>[Termination Date 申请终止日期] : <font color="BLUE"><HDPrint Value=#Terminationdate#></font>；</td></tr>
 <tr><td>结算费用项目合计:</td></tr>

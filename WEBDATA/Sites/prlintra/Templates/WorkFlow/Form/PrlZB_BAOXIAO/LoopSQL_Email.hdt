@@ -1,0 +1,23 @@
+<table border="0" style="width:100%;">
+<tr><td>您好 :</td></tr>
+<tr><td>[流程名称] : <HDPrint Value=#ModelName#>；</td></tr>
+<tr><td>[单号] : <HDPrint Value=#Num#>；</td></tr>
+<tr><td>[发起人] : <HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]；</td></tr>
+<tr><td>[发起时间] : <HDPrint Value=#CreateDate#>]；</td></tr>
+<tr><td>[公司名称] : <HDPrint Value=#ComName#>；</td></tr>
+<tr><td>
+  <table cellpadding="0" cellspacing="1" class="ListBar" width="100%" style="background-color: #d9dbdf;">
+    <col style="padding-left:4px;width:80%">
+    <col style="padding-left:4px;width:20%">
+    <tr style="background-color: #ecedef;" align="center">
+      <td>项目信息</td>
+      <td>本次申请金额[元]</td>
+    </tr>
+    <HDPrint Value=#EmailDtl# Replace=#None#>
+  </table>
+</td></tr>
+<tr><td>[报销金额汇总] : <HDPrint Value=#SumFee#> 元；</td></tr>
+<tr><td>[报销备注] : <HDPrint Value=#memo#> ；</td></tr>
+<tr><td>[附件信息] : <HDPrint Value=#AttachList# Replace=#None#></td></tr>
+<tr><td>-----------内容展示完毕-----------</td></tr>
+</table>

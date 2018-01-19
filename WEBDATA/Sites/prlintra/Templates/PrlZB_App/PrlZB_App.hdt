@@ -1,0 +1,268 @@
+<!--Js引入-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JSCalendar.js)##"></script>
+<script language="javascript">
+  /*
+  *函数功能：明细新增一行
+  *参数说明：使用JQTr_Add() 函数新增行时，需写在 tbody 标记中
+  */
+  function Add_Dtl(PostGid,PostCode,PostName,ComGid,ComCode,ComName,BAppGid,BAppCode,BAppName,FAppGid,FAppCode,FAppName,PAppGid,PAppCode,PAppName,SAppGid,SAppCode,SAppName){
+    var sTbId = 'tb_Dtl';
+    var sTrClass = 'listtd';
+    var tdArr = new Array();
+    var iRow = Math.floor(Math.random() * 100000 + 1);
+    var i = $("table#"+sTbId+">tbody>tr").length + 1;
+    var k = 0;
+    if (BAppGid == null){
+      BAppGid = '';
+      BAppCode = '';
+      BAppName = '';
+    }
+    if (FAppGid == null){
+      FAppGid = '';
+      FAppCode = '';
+      FAppName = '';
+    }
+    if (PAppGid == null){
+      PAppGid = '';
+      PAppCode = '';
+      PAppName = '';
+    }
+    if (SAppGid == null){
+      SAppGid = '';
+      SAppCode = '';
+      SAppName = '';
+    }
+
+    tdArr[k++] = '<td align="center"><INPUT TYPE="text" NAME="Line_1" value="'+ i +'" style="border:0px;text-align:center" readonly class="JQText"></td>';
+
+    tdArr[k++] = '<td>'
+      +ComName
+      +'<INPUT TYPE="hidden" NAME="ComName_1" ID="ComName_1'+ iRow +'" maxlength="32" class="JQText" value = "'+ComName+'" readonly>'
+      +'<INPUT TYPE="hidden" NAME="ComGid_1" ID="ComGid_1'+ iRow +'" maxlength="32" class="JQText" value = "'+ComGid+'">'
+      +'<INPUT TYPE="hidden" NAME="ComCode_1" ID="ComCode_1'+ iRow +'" maxlength="32" class="JQText" value = "'+ComCode+'">'
+    +'</td>';
+    tdArr[k++] = '<td>'
+      +PostCode+'-'+PostName
+      +'<INPUT TYPE="hidden" NAME="PostName_1" ID="PostName_1'+ iRow +'" maxlength="32" class="JQText" value = "'+PostName+'" readonly>'
+      +'<INPUT TYPE="hidden" NAME="PostGid_1" ID="PostGid_1'+ iRow +'" maxlength="32" class="JQText" value = "'+PostGid+'">'
+      +'<INPUT TYPE="hidden" NAME="PostCode_1" ID="PostCode_1'+ iRow +'" maxlength="32" class="JQText" value = "'+PostCode+'">'
+    +'</td>';
+    tdArr[k++] = '<td>'
+      +'<INPUT TYPE="text" NAME="BAppName_1" ID="BAppName_1'+ iRow +'" maxlength="32" class="JQText" value = "'+BAppName+'" readonly onclick="getApp(\'B\',\''+iRow+'\')" style="width:70%">'
+      +'　<a href="javascript:void(0)" onclick="clearApp(\'B\',\''+iRow+'\');">清空</a>'
+      +'<INPUT TYPE="hidden" NAME="BAppGid_1" ID="BAppGid_1'+ iRow +'" maxlength="32" class="JQText" value = "'+BAppGid+'">'
+      +'<INPUT TYPE="hidden" NAME="BAppCode_1" ID="BAppCode_1'+ iRow +'" maxlength="32" class="JQText" value = "'+BAppCode+'">'
+    +'</td>';
+    tdArr[k++] = '<td>'
+      +'<INPUT TYPE="text" NAME="FAppName_1" ID="FAppName_1'+ iRow +'" maxlength="32" class="JQText" value = "'+FAppName+'" readonly onclick="getApp(\'F\',\''+iRow+'\')" style="width:70%">'
+      +'　<a href="javascript:void(0)" onclick="clearApp(\'F\',\''+iRow+'\');">清空</a>'
+      +'<INPUT TYPE="hidden" NAME="FAppGid_1" ID="FAppGid_1'+ iRow +'" maxlength="32" class="JQText" value = "'+FAppGid+'">'
+      +'<INPUT TYPE="hidden" NAME="FAppCode_1" ID="FAppCode_1'+ iRow +'" maxlength="32" class="JQText" value = "'+FAppCode+'">'
+    +'</td>';
+    tdArr[k++] = '<td>'
+      +'<INPUT TYPE="text" NAME="PAppName_1" ID="PAppName_1'+ iRow +'" maxlength="32" class="JQText" value = "'+PAppName+'" readonly onclick="getApp(\'P\',\''+iRow+'\')" style="width:70%">'
+      +'　<a href="javascript:void(0)" onclick="clearApp(\'P\',\''+iRow+'\');">清空</a>'
+      +'<INPUT TYPE="hidden" NAME="PAppGid_1" ID="PAppGid_1'+ iRow +'" maxlength="32" class="JQText" value = "'+PAppGid+'">'
+      +'<INPUT TYPE="hidden" NAME="PAppCode_1" ID="PAppCode_1'+ iRow +'" maxlength="32" class="JQText" value = "'+PAppCode+'">'
+    +'</td>';
+    tdArr[k++] = '<td>'
+      +'<INPUT TYPE="text" NAME="SAppName_1" ID="SAppName_1'+ iRow +'" maxlength="32" class="JQText" value = "'+SAppName+'" readonly onclick="getApp(\'S\',\''+iRow+'\')" style="width:70%">'
+      +'　<a href="javascript:void(0)" onclick="clearApp(\'S\',\''+iRow+'\');">清空</a>'
+      +'<INPUT TYPE="hidden" NAME="SAppGid_1" ID="SAppGid_1'+ iRow +'" maxlength="32" class="JQText" value = "'+SAppGid+'">'
+      +'<INPUT TYPE="hidden" NAME="SAppCode_1" ID="SAppCode_1'+ iRow +'" maxlength="32" class="JQText" value = "'+SAppCode+'">'
+    +'</td>';
+
+    //新增一行
+    JQTr_Add(sTbId,sTrClass,tdArr);
+  }
+
+  /*
+  *函数功能：删除行，重新计算
+  */
+  function JqReCal(){
+    //重新计算行号
+    $("input[name=Line_1]").each(function(i){
+      $(this).val(i+1);
+    });
+    //重新计算合计
+    $("input[JQRowSum]").each(function(){
+      JQSum($(this),'JQRow');
+    });
+  }
+  var g_Type,g_Row;
+  function getApp(JsType,JsRow){
+    g_Type = JsType;
+    g_Row = JsRow;
+    DataInterface(frmDataInterface_App);
+  }
+  function callApp(JsGid,JsCode,JsName){
+    $("input#"+g_Type+"AppGid_1"+g_Row).val(JsGid);
+    $("input#"+g_Type+"AppCode_1"+g_Row).val(JsCode);
+    $("input#"+g_Type+"AppName_1"+g_Row).val(JsName);
+  }
+  function clearApp(JsType,JsRow){
+    $("input#"+JsType+"AppGid_1"+JsRow).val('');
+    $("input#"+JsType+"AppCode_1"+JsRow).val('');
+    $("input#"+JsType+"AppName_1"+JsRow).val('');
+  }
+  //提交函数
+  function CheckSubmit(){
+    //定义 提交提示文字
+    var sConfirm = '您确定已经填写完成，并保存吗？';
+    //提交时，验证必填项
+    if (!JQcheck("JQMust")){
+      return false;
+    }
+    //提交时，提示
+    if (!(confirm(sConfirm)))
+      return false;
+
+    //获取当前表单对象
+    var JqObj = $("form[name=frmDo]");
+    //表单参数设定
+    JqObj.attr({
+      "action":'##HDNet_AppName##/__ExplainModule?Url=<HDPrint Value=#Url#>Save&UsrGid=<HDPrint Value=#UsrGid#>',
+      "target":'_self'
+    });
+    //表单提交
+    JqObj.submit();
+
+    //操作按钮变为不可用
+    $("a[name=btn_1]").prop("disabled",true);
+
+    //本函数失效
+    CheckSubmit = function() {return false;}
+  }
+  //函数：ready
+  //功能：document 加载完成后调用
+  $(document).ready(function(){
+    //复制一个工具栏
+    var $ToolBar = $("div#JQ_ToolBar");
+    //$("form[name=frmDo]").append($ToolBar.html());
+  });
+</script>
+<form name="frmOther" method="Post" action=""></form>
+<form name="frmDo" method="post" action="">
+<!--模块使用到一些隐藏的控件-->
+<input type="text" style="display:none" name="Gid" value="<HDPrint Value=#Gid# Replace=#DBField2Input#>">
+<h3 class="TitleBar"><HDPrint Value=#ModuleAtype#>-><HDPrint Value=#ModuleName#></h3>
+<div id="JQ_ToolBar">
+<TABLE width="100%" class="ButtonBar" cellpadding="0" cellspacing="0">
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A name="btn_1" HREF="javascript:CheckSubmit();void(0)"><FONT class="IconSave">　&nbsp;</FONT> 保存 </A>
+     |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+    </TD>
+  </TR>
+</TABLE>
+</div>
+<table width="100%" class="ListBar" cellpadding="0"  cellspacing="1">
+  <colgroup>
+    <col style="padding-left:4px;width:10%">
+    <col style="padding-left:4px;width:90%">
+  </colgroup>
+  <tr>
+    <td class="DtlBarTitle">公司:<font color ="red">*</font></td>
+    <td class="listtd">
+      <select name="mComGid" class="JQSelect" style="width:250px">
+        <option value="">--请选择--</option>
+        <HDPrint Value=#ComList# Replace=#None#>
+      </select>
+      <script language="javascript">
+      $("select[name=mComGid] option[value=<HDPrint Value=#mComGid# Replace=#DBField2Js#>]").prop("selected",true);
+      $("select[name=mComGid]").change(function(){
+        frmOther.action=' ##HDNet_AppName##/__ExplainModule?URL=PrlZB_App&UsrGid=<HDPrint Value=#UsrGid#>&mComGid='+$(this).val();
+        frmOther.target='_self';
+        frmOther.submit();
+      });
+      </script>
+    </td>
+  </tr>
+</table>
+<table width="100%" class="ListBar JQMust" cellpadding="0"  cellspacing="1" id="tb_Dtl" style="margin-top:10px">
+  <colgroup>
+     <col style="width:5%" align="center">
+     <col style="width:15%">
+     <col style="width:15%">
+     <col style="width:15%">
+     <col style="width:15%">
+     <col style="width:15%">
+     <col style="width:15%">
+     <col style="width:5%" align="center">
+  </colgroup>
+  <!--使用新增行 JQTr_Add 时，需在表格中加上 thead,tbody-->
+  <thead>
+  <tr class="DtlBarTitle" align="center">
+    <td>行号</td>
+    <td>公司名称</td>
+    <td>审批类型</td>
+    <td>报销流程审批人<font color="red">*</font></td>
+    <td>费用流程审批人<font color="red">*</font></td>
+    <td>付款流程审批人<font color="red">*</font></td>
+    <td>用印流程审批人<font color="red">*</font></td>
+  </tr>
+  </thead>
+  <tbody>
+
+  </tbody>
+</table>
+<script>
+  <hdloop>
+    Add_Dtl('<HDPrint Value=#PostGid# Replace=#DBField2Js#>',
+    '<HDPrint Value=#PostCode# Replace=#DBField2Js#>',
+    '<HDPrint Value=#PostName# Replace=#DBField2Js#>',
+    '<HDPrint Value=#ComGid# Replace=#DBField2Js#>',
+    '<HDPrint Value=#ComCode# Replace=#DBField2Js#>',
+    '<HDPrint Value=#ComName# Replace=#DBField2Js#>',
+    '<HDPrint Value=#BAppGid# Replace=#DBField2Js#>',
+    '<HDPrint Value=#BAppCode# Replace=#DBField2Js#>',
+    '<HDPrint Value=#BAppName# Replace=#DBField2Js#>',
+    '<HDPrint Value=#FAppGid# Replace=#DBField2Js#>',
+    '<HDPrint Value=#FAppCode# Replace=#DBField2Js#>',
+    '<HDPrint Value=#FAppName# Replace=#DBField2Js#>',
+    '<HDPrint Value=#PAppGid# Replace=#DBField2Js#>',
+    '<HDPrint Value=#PAppCode# Replace=#DBField2Js#>',
+    '<HDPrint Value=#PAppName# Replace=#DBField2Js#>',
+    '<HDPrint Value=#SAppGid# Replace=#DBField2Js#>',
+    '<HDPrint Value=#SAppCode# Replace=#DBField2Js#>',
+    '<HDPrint Value=#SAppName# Replace=#DBField2Js#>');
+  </hdloop>
+</script>
+</form>
+
+<FieldSet style="Font-Family:Tahoma;Font-Size:9pt;">
+<Legend><font color="red">特别提醒</font></Legend>
+<li>相关说明文字；</li>
+</FieldSet>
+
+
+<script language="javascript" src="##GetWebRootPath(/Scripts/DataInterface.js)##"></script>
+<!--选择审批人调用-->
+<FORM NAME="frmDataInterface_App" ACTION="">
+  <INPUT TYPE="hidden" name="DataInterface_Title" ID="t_App" value="审批人列表">
+
+  <INPUT TYPE="hidden" name="DataInterface_Sql" ID="s_App" value="select u.gid, u.code, u.name, u.atype from v_usr u, v_org_usr v, org o where u.EntGid = '<HDPrint Value=#EntGid#>' and u.EntGid = v.EntGid and u.EntGid = o.EntGid and u.Gid = v.Usrgid and v.OrgGid = o.Gid and lower(o.Code) = lower('all_usr_grp')">
+  <INPUT TYPE="hidden" name="DataInterface_CountSql" ID="c_App" value="select count(*) from v_usr u, v_org_usr v, org o where u.EntGid = '<HDPrint Value=#EntGid#>' and u.EntGid = v.EntGid and u.EntGid = o.EntGid and u.Gid = v.Usrgid and v.OrgGid = o.Gid and lower(o.Code) = lower('all_usr_grp')">
+  <INPUT TYPE="hidden" name="DataInterface_OrderSql" value="order by u.code">
+  <INPUT TYPE="hidden" name="DataInterface_UsrGid" value="<HDPrint Value=#UsrGid#>">
+  <INPUT TYPE="hidden" name="DataInterface_AppName" value="##HDNet_AppName##">
+
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="2^代码^left^100">
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="3^姓名^left^100">
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="4^类别^left^100">
+
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="u.code^用户代码^1">
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="u.name^用户姓名^1">
+  <input TYPE="hidden" name="DataInterface_Search_Sql" value="">
+  <input TYPE="hidden" name="DataInterface_Search_Cols" value="">
+
+  <INPUT TYPE="hidden" name="DataInterface_FieldTo" value="">
+  <INPUT TYPE="hidden" name="DataInterface_FieldBy" value="1^2^3">
+  <INPUT TYPE="hidden" name="DataInterface_CallBckFunc" value="callApp">
+  <INPUT TYPE="hidden" name="DataInterface_Close" value="true">
+</FORM>

@@ -67,6 +67,18 @@
     </td>
     <td>日期 in </td>
     <td><input type="Text" name="txt_BDate" class="JQDate" style="width:40%">~<input type="Text" name="txt_EDate" class="JQDate" style="width:40%"></td>
+    <td>单据状态 = </td>
+    <td>
+      <select name="sel_Stat" class="JQSelect"  style="width:90%">
+        <option value="">--请选择--</option>
+        <option value="in ('保存','提交')">保存,提交</option>
+        <option value="= '审批中'">审批中</option>
+        <option value="= '已审批'">已审批</option>
+        <option value="= '通知出纳'">通知出纳</option>
+        <option value="= '已完成'">已完成</option>
+        <option value="= '否决'">否决</option>
+      </select>
+    </td>
   </tr>
   <tr >
     <td colspan="4">
@@ -98,6 +110,7 @@
   }
   document.all.txt_Acg1.value = '<HDPrint value=#txt_Acg1# Replace=#DBField2Js#>';
   document.all.txt_Acg.value = '<HDPrint value=#txt_Acg# Replace=#DBField2Js#>';
+  document.all.sel_Stat.value = '<HDPrint value=#sel_Stat# Replace=#DBField2Js#>';
 </script>
 <BR>
 <HDPageBar>
@@ -121,7 +134,7 @@
   <tr class="listtr" style="cursor:hand;">
     <td nowrap JQAsc="" JQColumn="f.ComName" rowspan="2">公司名称</td>
     <td nowrap JQAsc="" JQColumn="fd.AcgCode" rowspan="2">项目信息</td>
-    <td nowrap colspan="13">流程信息</td>
+    <td nowrap colspan="8">流程信息</td>
   </tr>
   <tr class="listtr" style="cursor:hand;">
     <td nowrap JQAsc="" JQColumn="f.Num">单号</td>

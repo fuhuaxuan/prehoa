@@ -10,7 +10,7 @@ select f.entgid,
        f.fillusrdeptgid  FillDeptGid,
        f.fillusrdeptcode FillDeptCode,
        f.fillusrdept     filldeptname,
-       f.unit            FMemo
+       f.Tradingname            FMemo
   from wf_prl_isf f
 union
 select f.entgid,
@@ -24,7 +24,7 @@ select f.entgid,
        f.fillusrdeptgid  FillDeptGid,
        f.fillusrdeptcode FillDeptCode,
        f.fillusrdept     filldeptname,
-       i.unit            FMemo
+       i.Tradingname            FMemo
   from wf_prl_istf f, wf_prl_isf i
  where f.entgid = i.entgid
    and f.oldflowgid = i.flowgid
@@ -40,7 +40,7 @@ select f.entgid,
        f.filldeptgid,
        f.filldeptcode,
        f.filldeptname,
-       f.unit fMemo
+       f.Tradingname fMemo
   from wf_prl_oisf f
 union
 select f.entgid,
@@ -54,10 +54,10 @@ select f.entgid,
        f.filldeptgid,
        f.filldeptcode,
        f.filldeptname,
-       i.unit FMemo
+       i.Tradingname FMemo
   from wf_prl_oistf f, wf_prl_oisf i
  where f.entgid = i.entgid
-   and f.flowgid = i.flowgid
+   and f.oldflowgid = i.flowgid
 union
 select f.entgid,
        f.flowgid,

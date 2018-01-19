@@ -15,13 +15,13 @@ Remind1=∂‘≤ª∆£¨ƒ˙÷∏∂®µƒ¡˜≥Ã…Í«Îµ•√ª”–’“µΩ<script>alert('∂‘≤ª∆£¨ƒ˙÷∏∂®µƒ¡˜≥Ã…Í«
 SqlForCondition1=select wm.Code ModelCode, wm.Name ModelName from wf_Model wm where wm.EntGid = __ENTGID__ and wm.ModelGid = ##ModelGid##
 
 ;œ‘ æ±æ¡˜≥Ã÷˜±Ì–≈œ¢
-SQL1=select f.num OldNum,f.modelgid OldModelGid,m.code OldModelCode,f.FlowGid OldFlowGid,f.DEPT,f.unit,f.area,f.tradename,f.trade,f.lessee,f.tradingname,f.address,f.contactor,f.phone,f.email,f.fax,f.leaseTermY,f.leaseTermM,f.leaseTermD,to_char(f.HandoverDate,'YYYY.MM.DD') HandoverDate,f.Related,f.Detail,f.Rate,to_char(f.contractDate1,'YYYY.MM.DD') contractDate1,to_char(f.contractdate2,'YYYY.MM.DD') contractdate2,f.freeRentM,f.freeRentD,f.fitoutM,f.fitoutD,to_char(f.fitoutdate1,'YYYY.MM.DD') fitoutdate1,to_char(f.fitoutdate2,'YYYY.MM.DD') fitoutdate2 from WF_prl_oisf f,wf_model m,WF_^^ModelCode^^ o where f.FlowGid = o.OldFlowGid and f.EntGid=__ENTGID__ and f.EntGid = m.EntGid and f.modelgid = m.modelgid and o.FlowGid = ##FlowGid##
+SQL1=select f.num OldNum,f.modelgid OldModelGid,m.code OldModelCode,f.FlowGid OldFlowGid,f.DEPT,f.unit,f.area,f.tradename,f.trade,f.lessee,f.tradingname,f.address,f.contactor,f.phone,f.email,f.fax,f.leaseTermY,f.leaseTermM,f.leaseTermD,to_char(f.HandoverDate,'YYYY.MM.DD') HandoverDate,f.Related,f.Detail,f.Rate,to_char(f.contractDate1,'YYYY.MM.DD') contractDate1,to_char(f.contractdate2,'YYYY.MM.DD') contractdate2,f.freeRentY,f.freeRentM,f.freeRentD,f.fitoutM,f.fitoutD,to_char(f.fitoutdate1,'YYYY.MM.DD') fitoutdate1,to_char(f.fitoutdate2,'YYYY.MM.DD') fitoutdate2 from WF_prl_oisf f,wf_model m,WF_^^ModelCode^^ o where f.FlowGid = o.OldFlowGid and f.EntGid=__ENTGID__ and f.EntGid = m.EntGid and f.modelgid = m.modelgid and o.FlowGid = ##FlowGid##
 
 ;µ√µΩ“µŒÒµ•æ›–≈œ¢
 Sql2=select wf.*,'–¥◊÷¬•ISTF' MCode,decode(wf.category,10,'Early Termination Ã·«∞÷’÷π',20,'Termination µΩ∆⁄÷’÷π',30,'Others ∆‰À˚:'||wf.categorytext) categoryText1 from WF_^^ModelCode^^ wf where EntGid = __ENTGID__ and FlowGid = ##FlowGid##
 
 ;œ‘ æ…Û≈˙»À
-LoopSQL18=select hr.Email from hr_emp hr where hr.entgid = __ENTGID__ and exists (select 1 from wf_task t where t.EntGid = hr.EntGid and t.FlowGid = ##FlowGid## and t.ExecGid = hr.UsrGid and t.Stat = 1)
+LoopSQL18=select hr.Email from hr_emp hr where hr.entgid = __ENTGID__ and hr.email is not null and exists (select 1 from wf_task t where t.EntGid = hr.EntGid and t.FlowGid = ##FlowGid## and t.ExecGid = hr.UsrGid and t.Stat = 1)
 LoopHDT18=Templates\WorkFlow\Form\PrlDZ_Email\Loopsql_App.hdt
 LoopVAR18=AppList
 
@@ -45,7 +45,7 @@ Sql1=
 
 [Master]
 ;œ‘ æ£¨∂‡Ãıº«¬ºµƒ≤È—Ø£¨ø…‘⁄HDT“≥√Ê÷–÷±Ω” π”√<HDLoop>œ‘ æ£¨≤¢ƒ‹πªÃ·π©∑≠“≥°£
-SQL=select hr.Email from hr_emp hr where hr.entgid = __ENTGID__ and exists (select 1 from wf_task t where t.EntGid = hr.EntGid and t.FlowGid = ##FlowGid## and t.ExecGid = hr.UsrGid and t.Stat = 1 and t.ExecGid <> __USRGID__)
+SQL=select hr.Email from hr_emp hr where hr.entgid = __ENTGID__ and hr.email is not null and exists (select 1 from wf_task t where t.EntGid = hr.EntGid and t.FlowGid = ##FlowGid## and t.ExecGid = hr.UsrGid and t.Stat = 1 and t.ExecGid <> __USRGID__)
 Count=select 1 from dual
 
 [DefaultWhere]

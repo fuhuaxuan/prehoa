@@ -1,0 +1,39 @@
+<table border="0" style="width:100%;">
+<tr><td>您好 :</td></tr>
+<tr><td>[流程名称] : <HDPrint Value=#ModelName#>；</td></tr>
+<tr><td>[单号] : <HDPrint Value=#Num#>；</td></tr>
+<tr><td>[发起人] : <HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]；</td></tr>
+<tr><td>[发起时间] : <HDPrint Value=#CreateDate#>；</td></tr>
+<HDIF EqualNot(<HDPrint Value=#feeflowgid# Replace=#DBField2Input#>1, 1)>
+<tr><td>[费用单号] : <HDPrint Value=#feeNum#>-<HDPrint Value=#partnum#>；</td></tr>
+<tr><td>[是否尾款] : <HDPrint Value=#isendtext#>；</td></tr>
+</HDIF>
+<tr><td>[公司名称] : <HDPrint Value=#companyname#>；</td></tr>
+<tr><td>[项目名称] : <HDPrint Value=#acgonename#> - <HDPrint Value=#acgtwoname#>；</td></tr>
+<tr><td>
+  [付款金额] : <HDPrint Value=#payfee#>；
+  <span id="acg_3" style="display:none">(公司承担：<HDPrint Value=#npayfee#>)</span>
+  <script language="javascript">
+  var sCode = '<HDPrint Value=#acgonename# Replace=#DBField2Js#>';
+    sCode = sCode.substr(0,1);
+    var $span = $("span#acg_3");
+    $span.hide();
+    if (sCode == '3'){
+      $span.show();
+    }
+  </script>
+</td></tr>
+<tr><td>[要求支付方式] : <HDPrint Value=#payway#>；</td></tr>
+<tr><td>[人民币（大写）] : <HDPrint Value=#bigrmb#>；</td></tr>
+<tr><td>[付款备注（Memo）] : <HDPrint Value=#Memo#>；</td></tr>
+<tr><td>[收款单位] : <HDPrint Value=#payee#>；</td></tr>
+<HDIF EqualNot(<HDPrint Value=#feeflowgid# Replace=#DBField2Input#>1, 1)>
+<tr><td>[（A）项目总额] : <HDPrint Value=#feeA#>；</td></tr>
+<tr><td>[（B）已付款金额] : <HDPrint Value=#feeB#>；</td></tr>
+<tr><td>[（C）本次付款] : <HDPrint Value=#payfee#>；</td></tr>
+<tr><td>[尚欠余额=A-B-C] : <HDPrint Value=#feeleft#>；</td></tr>
+<tr><td>[实际付款总额=B+C] : <HDPrint Value=#feeok#>；</td></tr>
+</HDIF>
+<tr><td>[附件信息] : <HDPrint Value=#AttachList# Replace=#None#></td></tr>
+<tr><td>-----------内容展示完毕-----------</td></tr>
+</table>

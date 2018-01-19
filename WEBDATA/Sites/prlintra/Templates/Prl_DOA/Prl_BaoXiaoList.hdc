@@ -48,6 +48,7 @@ DefaultWhere=and to_char(f.CreateDate,'YYYY') = to_char(sysdate,'YYYY')
 3=and f.CreateDate >= to_date(##txt_BDate##, 'yyyy.mm.dd')
 4=and f.CreateDate <= to_date(##txt_EDate##, 'yyyy.mm.dd')
 5=and fd.AcgGid in (##txt_Acg##)
+6=and f.stat ^^sel_Stat^^
 
 [GroupBy]
 ;多条记录的查询的分组

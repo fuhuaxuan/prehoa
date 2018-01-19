@@ -28,7 +28,7 @@ LoopHDT7=Templates\WorkFlow\Form\PRL_OISF\LoopSql_UnitDtl.hdt
 LoopVAR7=UnitList2
 
 ;显示审批人
-LoopSQL18=select hr.Email from hr_emp hr where hr.entgid = __ENTGID__ and exists (select 1 from wf_task t where t.EntGid = hr.EntGid and t.FlowGid = ##FlowGid## and t.ExecGid = hr.UsrGid and t.Stat = 1)
+LoopSQL18=select hr.Email from hr_emp hr where hr.entgid = __ENTGID__ and hr.email is not null and exists (select 1 from wf_task t where t.EntGid = hr.EntGid and t.FlowGid = ##FlowGid## and t.ExecGid = hr.UsrGid and t.Stat = 1)
 LoopHDT18=Templates\WorkFlow\Form\PrlDZ_Email\Loopsql_App.hdt
 LoopVAR18=AppList
 
@@ -52,7 +52,7 @@ Sql1=
 
 [Master]
 ;显示，多条记录的查询，可在HDT页面中直接使用<HDLoop>显示，并能够提供翻页。
-SQL=select hr.Email from hr_emp hr where hr.entgid = __ENTGID__ and exists (select 1 from wf_task t where t.EntGid = hr.EntGid and t.FlowGid = ##FlowGid## and t.ExecGid = hr.UsrGid and t.Stat = 1 and t.ExecGid <> __USRGID__)
+SQL=select hr.Email from hr_emp hr where hr.entgid = __ENTGID__ and hr.email is not null and exists (select 1 from wf_task t where t.EntGid = hr.EntGid and t.FlowGid = ##FlowGid## and t.ExecGid = hr.UsrGid and t.Stat = 1 and t.ExecGid <> __USRGID__)
 Count=select 1 from dual
 
 [DefaultWhere]

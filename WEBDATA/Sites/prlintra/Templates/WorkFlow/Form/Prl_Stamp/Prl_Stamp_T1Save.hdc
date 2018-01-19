@@ -25,7 +25,7 @@ SqlForCondition1=select wm.Code ModelCode, wm.Name ModelName,d.Name StepName fro
 SQLForCondition2=select name ComName from prl_company where EntGid = __ENTGID__ and gid = ##ComGid##
 
 ;定义流程备注
-SQLForCondition3=select '申请类型：' || ##ApplyType## || '；申请印章种类：' || ##StampType## || '；公司名称：' || ##ComName## TheMemo from dual
+SQLForCondition3=select decode(##mIsFlow##,'是','关联流程：'||##mNum##||'；','')||##ApplyType## || '-' || ##StampType## || '；公司：' || ##ComName## || decode(##ApplyType##,'合同签署用印','；合作公司：'||##ContactName##,'') TheMemo from dual
 
 SQLForCondition4=select '单号：'|| ##Num##|| '；' || ##TheMemo##  TheFlowMemo,'待修改 - ' || ##TheMemo## ModFlowMemo,'待审批 - 发起人：' || ##CurUsrName## ||'；' || ##TheMemo## AppFlowMemo from dual
 

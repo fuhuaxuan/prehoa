@@ -1,0 +1,4 @@
+<!--版本号：2013年3月份;此行不允许删除-->
+<HDLoop>
+<option value='<HDPrint Value=#Attach_Title# Replace=#DBField2Input#>'><HDPrint Value=#Attach_Title#></option>
+</HDLoop>
