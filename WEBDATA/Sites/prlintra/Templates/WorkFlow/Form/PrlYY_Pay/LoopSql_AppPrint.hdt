@@ -1,0 +1,23 @@
+<table width="645" cellspacing="0" cellpadding="0" align="center" style="border-left:1 solid black;border-bottom:1 solid black;">
+  <col style="padding-left:4px;width:17%" valign="top">
+  <col style="padding-left:4px;width:18%" valign="top">
+  <col style="padding-left:4px;width:15%" valign="top">
+  <col style="padding-left:4px;width:10%" valign="top">
+  <col style="padding-left:4px;width:40%" valign="top">
+  <tr>
+    <td class="PrintTdRT">时间</td>
+    <td class="PrintTdRT">执行人类别</td>
+    <td class="PrintTdRT">执行人</td>
+    <td class="PrintTdRT">审批概要</td>
+    <td class="PrintTdRT">审批备注</td>
+  </tr>
+  <HDLoop>
+  <tr valign="top">
+    <td class="PrintTdRT"><HDPrint Value=#AppDate#></td>
+    <td class="PrintTdRT"><HDPrint Value=#Apptypetext#></td>
+    <td class="PrintTdRT"><HDPrint Value=#AppName#></td>
+    <td class="PrintTdRT"><HDPrint Value=#AppAssign#></td>
+    <td class="PrintTdRT"><HDPrint Value=#note#></td>
+  </tr>
+  </HDLoop>
+</table>

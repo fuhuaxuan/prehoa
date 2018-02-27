@@ -231,6 +231,6 @@ update PRLZB_ACG a
    set (ParentGID, ParentCode) =
        (select t.Gid, t.Code
           from PRLZB_ACG t
-         where t.code = substr(a.code, 0, 1))
+         where t.code = substr(a.code, 0, instr(a.code,'.') - 1))
  where a.type = 20;
 commit;

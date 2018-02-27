@@ -1,0 +1,300 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<script language="javascript">
+  //自动获取高度
+  function changeHeight()
+  {
+    //改变 Iframe 高度
+    if(top != self)
+    {
+      window.parent.document.getElementById('iframeDtl').style.height = frmDtl.scrollHeight + 10;
+    }
+  }
+  //展开，折叠
+  function JQExpandEx(JsStr)
+  {
+    JQExpand(JsStr);
+    changeHeight();
+  }
+
+</script>
+<HDPrint Value=#EmailPhone# Replace=#None#>
+<form name="frmDtl" method="Post" action="">
+<HDIF EqualNot(<HDPrint Value=#IsDtl# Replace=#None#>, 1)>
+<table cellpadding="0" cellspacing="1" align="center" width="100%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:20%">
+  <col style="padding-left:4px;width:40%">
+  <col style="padding-left:4px;width:30%">
+  <TR>
+    <TD class="newtd2">单号:</TD>
+    <TD class="newtd3"><HDPrint Value=#Num#></td>
+    <td class="title" rowspan="3" align="center"><HDPrint Value=#ModelName#></td>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2">发起人:</TD>
+    <TD class="newtd3"><HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]</td>
+    <TD>流程状态:<HDPrint Value=#Flowstat# Replace=#None#></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2">发起日期:</TD>
+    <TD class="newtd3"><HDPrint Value=#CreateDate#></td>
+    <TD>单据状态:<font color="blue"><HDPrint Value=#stat#></font></TD>
+  </TR>
+</table>
+</HDIF>
+<!--显示审批人信息-->
+<HDIF EqualNot(<HDPrint Value=#IsShow# Replace=#None#>, 0)>
+<HDPrint Value=#AppList# Replace=#None#>
+</HDIF>
+
+<h3 class="SubTitleBar" >
+<TABLE cellspacing="1" cellpadding="0" width="100%">
+  <col style="padding-left:4px;">
+  <col style="width:20px;" align="center">
+  <TR>
+    <TD align="left" style="padding-left:10px;"><b>单据信息</b></TD>
+    <TD onclick="JQExpandEx('tb_Order');" style="cursor:hand" class="IconUp">　&nbsp;</TD>
+  </TR>
+</TABLE>
+</h3>
+<div id="tb_Order">
+<table cellpadding="0" cellspacing="1" class="ListBar" width="100%" id="tb_Base">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:23%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:23%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:23%">
+  <tr valign="top">
+    <td class="DtlBarTitle">类别: </td>
+    <td class="listtd"><HDPrint Value=#Atype#>（<HDPrint Value=#Category#>）</td>
+    <td class="DtlBarTitle">单位:</td>
+    <td class="listtd"><HDPrint Value=#unit#></td>
+    <td class="DtlBarTitle">科室:</td>
+    <td class="listtd"><HDPrint Value=#Dept#></td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">楼层:</td>
+    <td class="listtd"><HDPrint Value=#Floor#></td>
+    <td class="DtlBarTitle">面积[㎡]:</td>
+    <td class="listtd"><HDPrint Value=#Area#></td>
+    <td class="DtlBarTitle">建筑面积[㎡]:</td>
+    <td class="listtd"><HDPrint Value=#BuildArea#></td>
+  </tr>
+  <tr valign="top">
+    <td class="listtd" colspan="6">A、</td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">租户:</td>
+    <td class="listtd"><HDPrint Value=#Lessee#></td>
+    <td class="DtlBarTitle">联系人:</td>
+    <td class="listtd"><HDPrint Value=#Contactor#></td>
+    <td class="DtlBarTitle">地址:</td>
+    <td class="listtd"><HDPrint Value=#Address#></td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">电话号码:</td>
+    <td class="listtd"><HDPrint Value=#Phone#></td>
+    <td class="DtlBarTitle">电子邮件:</td>
+    <td class="listtd"><HDPrint Value=#Email#></td>
+    <td class="DtlBarTitle">传真号码:</td>
+    <td class="listtd"><HDPrint Value=#Fax#></td>
+  </tr>
+  <tr valign="top">
+    <td class="listtd" colspan="6">B、</td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">租赁期限:</td>
+    <td class="listtd">
+      <HDPrint Value=#LeaseTermY#>年/
+      <HDPrint Value=#LeaseTermM#>月/
+      <HDPrint Value=#LeaseTermD#>日
+    </td>
+    <td class="DtlBarTitle">交付日期:</td>
+    <td class="listtd"><HDPrint Value=#HandoverDate#></td>
+    <td class="DtlBarTitle">免租期:</td>
+    <td class="listtd">
+     <HDPrint Value=#FreeRentM#>月/
+     <HDPrint Value=#FreeRentD#>日
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">装修期:</td>
+    <td class="listtd">
+     <HDPrint Value=#FitoutM#>月/<HDPrint Value=#FitoutD#>日
+     （<HDPrint Value=#FitoutDate1#>~"<HDPrint Value=#FitoutDate2#>）
+    </td>
+    <td class="DtlBarTitle">合同起始日期:</td>
+    <td class="listtd"><HDPrint Value=#ContractDate1#>~<HDPrint Value=#ContractDate2#></td>
+    <td class="listtd" colspan="2">
+      <HDPrint Value=#Rate#>
+      <div id="Rate1" style="display:inline">
+        （名医馆<HDPrint Value=#Rate1#>%，租户<HDPrint Value=#Rate2#>%）
+      </div>
+      <div id="Rate2" style="display:inline">
+        （<HDPrint Value=#Rate3#>元/天）
+      </div>
+      <script language="javascript">
+        //函数：ready
+        //功能：document 加载完成后调用
+        $(document).ready(function(){
+          if ('<HDPrint Value=#Rate# Replace=#DBField2Js#>' == '分成') {
+            $("div#Rate1").show();
+            $("div#Rate2").hide();
+          }else{
+            $("div#Rate1").hide();
+            $("div#Rate2").show();
+          }
+        });
+      </script>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">预付租金+费用:</td>
+    <td class="listtd"><HDPrint Value=#AGR#></td>
+    </td>
+    <td class="DtlBarTitle">保证金:</td>
+    <td class="listtd"><HDPrint Value=#Security#></td>
+    <td class="DtlBarTitle"></td>
+    <td class="listtd"></td>
+  </tr>
+</table>
+
+<br>
+<table width="100%" class="ListBar" cellpadding="0"  cellspacing="1">
+  <colgroup>
+     <col style="width:10%">
+     <col style="width:10%">
+     <col style="width:15%">
+     <col style="width:10%">
+     <col style="width:15%">
+     <col style="width:10%">
+     <col style="width:15%">
+  </colgroup>
+  <thead>
+  <tr class="DtlBarTitle" align="center">
+    <td colspan="3">第一租赁期固定租金</td>
+    <td colspan="2">物业管理费</td>
+    <td colspan="2">市场推广费</td>
+  </tr>
+  <tr class="DtlBarTitle" align="center">
+    <td></td>
+    <td>元/天</td>
+    <td>元/月</td>
+    <td>元/天</td>
+    <td>元/月</td>
+    <td>元/天</td>
+    <td>元/月</td>
+  </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+<table width="100%" class="ListBar" cellpadding="0"  cellspacing="1" id="tb_Dtl10" style="margin-top:2px;">
+  <colgroup>
+     <col style="width:10%">
+     <col style="width:10%">
+     <col style="width:15%">
+     <col style="width:10%">
+     <col style="width:15%">
+     <col style="width:10%">
+     <col style="width:15%">
+  </colgroup>
+  <tbody>
+  </tbody>
+</table>
+<table width="100%" class="ListBar" cellpadding="0"  cellspacing="1" id="tb_Dtl20" style="margin-top:2px;">
+  <colgroup>
+     <col style="width:10%">
+     <col style="width:10%">
+     <col style="width:15%">
+     <col style="width:10%">
+     <col style="width:15%">
+     <col style="width:10%">
+     <col style="width:15%">
+  </colgroup>
+  <tbody>
+  </tbody>
+</table>
+<table width="100%" class="ListBar JQMust" cellpadding="0"  cellspacing="1" id="tb_Dtl30" style="margin-top:2px;">
+  <colgroup>
+     <col style="width:10%">
+     <col style="width:10%">
+     <col style="width:15%">
+     <col style="width:10%">
+     <col style="width:15%">
+     <col style="width:10%">
+     <col style="width:15%">
+  </colgroup>
+  <tbody>
+  </tbody>
+</table>
+<HDPrint Value=#DtlList# Replace=#None#>
+<br>
+<table cellpadding="0" cellspacing="1" class="ListBar" width="100%" id="tb_Other">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:40%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:40%">
+  <tr valign="top">
+    <td class="DtlBarTitle">附件类型:</td>
+    <td class="listtd" colspan="3"><HDPrint Value=#AttachType#>
+      <script language="javascript">
+        //函数：ready
+        //功能：document 加载完成后调用
+        $(document).ready(function(){
+          if ('<HDPrint Value=#AttachType# Replace=#DBField2Js#>' == '个人') {
+            $("tr[JQ=t2]").show();
+            $("tr[JQ=t1]").hide();
+          }else {
+            $("tr[JQ=t2]").hide();
+            $("tr[JQ=t1]").show();
+          }
+        });
+      </script>
+    </td>
+  </tr>
+  <tr valign="top" JQ="t1" style="display:none">
+    <td class="DtlBarTitle">营业执照:</td>
+    <td class="listtd" NAME="fileList_10"></td>
+    <td class="DtlBarTitle">法人身份证:</td>
+    <td class="listtd" NAME="fileList_20"></td>
+  </tr>
+  <tr valign="top" JQ="t2">
+    <td class="DtlBarTitle">医师资格证:</td>
+    <td class="listtd" NAME="fileList_30"></td>
+    <td class="DtlBarTitle">医师执业证:</td>
+    <td class="listtd" NAME="fileList_40"></td>
+  </tr>
+  <tr valign="top" JQ="t2">
+    <td class="DtlBarTitle">专业技术职称证书:</td>
+    <td class="listtd" NAME="fileList_50"></td>
+    <td class="DtlBarTitle">简历:</td>
+    <td class="listtd" NAME="fileList_60"></td>
+  </tr>
+  <tr valign="top" JQ="t2">
+    <td class="DtlBarTitle">身份证及其它有效证件:</td>
+    <td class="listtd" NAME="fileList_70"></td>
+    <td class="DtlBarTitle">其他:（包含核实文件）</td>
+    <td class="listtd" NAME="fileList_80"></td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">特别条件/评语/备注:</td>
+    <td class="listtd" colspan="3"><HDPrint Value=#Memo#></td>
+  </tr>
+  <tr JQ="TMod_1" style="display:none">
+    <td class="DtlBarTitle">终止原因:</td>
+    <td class="listtd" colspan="3"><HDPrint Value=#EndMemo#></td>
+  </tr>
+</table>
+    <HDPrint Value=#AttachList# Replace=#None#>
+</div>
+</form>
+<script language="javascript">
+  if('<HDPrint Value=#IsPrint# Replace=#DBField2Js#>' == '1'){
+    window.print();
+  }
+</script>

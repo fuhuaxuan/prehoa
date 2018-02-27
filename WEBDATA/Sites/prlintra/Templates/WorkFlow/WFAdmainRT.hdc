@@ -10,6 +10,10 @@ SqlForCondition1=select Name ModuleName,Atype ModuleAtype from rt where lower(id
 ;得到当前用户的部门名称
 SQL1=select wm.*,decode(wm.stat,1,'未发布',2,'暂停服务',3,'服务中',4,'已作废') stattext from wf_model wm where wm.entgid=__ENTGID__ and wm.modelgid=##modelgid##
 
+LoopSQL1=select code2 ItemGid,name ItemName from dept d where EntGid = __ENTGID__ and length(d.code1) = 8 order by code2
+LoopHDT1=Templates\WorkFlow\LoopSql_Option.hdt
+LoopVAR1=ComList
+
 ;显示公用信息
 LoopSQL20=select * from dual
 LoopHDT20=Templates\WorkFlow\Loopsql_Common.hdt

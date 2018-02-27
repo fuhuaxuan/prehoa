@@ -1,0 +1,218 @@
+<!--Js引入-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JSCalendar.js)##"></script>
+
+<form name="frmOther" method="Post" action=""></form>
+<form name="frmDo" method="post" action="">
+<!--模块使用到一些隐藏的控件-->
+<input type="text" style="display:none" name="Gid" value="<HDPrint Value=#NewGid# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="ComGid" value="<HDPrint Value=#ComGid# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="ComCode" value="<HDPrint Value=#ComCode# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="ComName" value="<HDPrint Value=#ComName# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="ComCode1" value="<HDPrint Value=#ComCode1# Replace=#DBField2Input#>">
+<h3 class="TitleBar"><HDPrint Value=#ModuleAtype#>-><HDPrint Value=#ModuleName#></h3>
+<div id="JQ_ToolBar">
+<TABLE width="100%" class="ButtonBar" cellpadding="0" cellspacing="0">
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A Href="javascript:CheckSubmit('保存');void(0);" name="btn_1"><FONT class="IconSave">　&nbsp;</FONT> 保存 </A>
+     |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+    </TD>
+  </TR>
+</TABLE>
+</div>
+
+<table width="100%" class="ListBar" cellpadding="0"  cellspacing="1">
+  <colgroup>
+    <col style="padding-left:4px;width:10%">
+    <col style="padding-left:4px;width:40%">
+    <col style="padding-left:4px;width:10%">
+    <col style="padding-left:4px;width:40%">
+  </colgroup>
+  <tr>
+    <td class="DtlBarTitle">项目:<font color ="red">*</font></td>
+    <td class="listtd">
+    <select name="ComGid" class="JQSelect JQMust" style="width:200px">
+      <option value="">--请选择--</option>
+      <HDPrint Value=#ComList# Replace=#None#>
+    </select>
+    <script language="javascript">
+      $("select[name=ComGid] option[value=<HDPrint Value=#sComGid# Replace=#DBField2Js#>]").prop("selected",true);
+    </script>
+    </td>
+    <td class="DtlBarTitle">印章类型:<font color ="red">*</font></td>
+    <td class="listtd">
+    <select name="StampType" class="JQSelect JQMust" style="width:120px">
+      <option value="">--请选择--</option>
+      <option value="财务印章">财务印章</option>
+      <option value="公司公章">公司公章</option>
+      <option value="法定代表人名章">法定代表人名章</option>
+      <option value="公司股东章">公司股东章</option>
+      <option value="合同用章">合同用章</option>
+    </select>
+    <script language="javascript">
+      $("select[name=StampType] option[value=<HDPrint Value=#sStampType# Replace=#DBField2Js#>]").prop("selected",true);
+    </script>
+    </td>
+  </tr>
+</table>
+<h3 class="SubTitleBar" >
+<TABLE cellspacing="1" cellpadding="0" width="100%">
+  <col style="padding-left:4px;">
+  <col style="width:20px;" align="center">
+  <TR>
+    <TD align="left" style="padding-left:10px;"><b>审批人</b> <A HREF="javascript:DataInterface(frmDataInterface_App);">[选择]</A></TD>
+    <TD onclick="JQExpand('tb_Dtl')"  style="cursor:hand" class="IconUp">　&nbsp;</TD>
+  </TR>
+</TABLE>
+</h3>
+<table width="100%" class="ListBar JQMust" cellpadding="0"  cellspacing="1" id="tb_Dtl">
+  <colgroup>
+     <col style="width:5%" align="center">
+     <col style="width:40%">
+     <col style="width:50%">
+     <col style="width:5%" align="center">
+  </colgroup>
+  <!--使用新增行 JQTr_Add 时，需在表格中加上 thead,tbody-->
+  <thead>
+  <tr class="DtlBarTitle" align="center">
+    <td>行号</td>
+    <td>审批人</td>
+    <td>所在部门</td>
+    <td>操作</td>
+  </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+</form>
+
+<script>
+  function callOther(){
+    var sComGid = $("select[name=ComGid]").val();
+    var sStampType = $("select[name=StampType]").val();
+    frmOther.action='##HDNet_AppName##/__ExplainModule?Url=<HDPrint Value=#Url#>&UsrGid=<HDPrint Value=#UsrGid#>&sComGid=' + sComGid + '&sStampType='+ sStampType;
+    frmOther.target='_self';
+    frmOther.submit();
+  }
+  //函数：ready
+  //功能：document 加载完成后调用
+  $(document).ready(function(){
+    $("select[name=ComGid]").change(function(){
+      callOther();
+    });
+    $("select[name=StampType]").change(function(){
+      callOther();
+    });
+  });
+  /*
+  *函数功能：明细新增一行
+  *参数说明：使用JQTr_Add() 函数新增行时，需写在 tbody 标记中
+  */
+  function Add_Dtl(AppGid,AppCode,AppName,ComCode,ComName){
+    var sTbId = 'tb_Dtl';
+    var sTrClass = 'listtd';
+    var tdArr = new Array();
+    var iRow = Math.floor(Math.random() * 100000 + 1);
+    if (!JQgetSingle("AppGid_1",AppGid)) {
+      alert('审批人已经存在！')
+      return;
+    }
+    var i = $("table#"+sTbId+">tbody>tr").length + 1;
+    var k = 0;
+    tdArr[k++] = '<td align="center"><INPUT TYPE="text" NAME="Line_1" value="'+ i +'" style="border:0px;text-align:center" readonly class="JQText"></td>';
+
+    tdArr[k++] = '<td>'
+      +'['+AppCode+']'+AppName
+      +'<INPUT TYPE="hidden" NAME="AppGid_1" ID="AppGid_1'+ iRow +'" JQRow="AppGid_1" maxlength="16" class="JQInt JQMust" value = "'+AppGid+'">'
+      +'<INPUT TYPE="hidden" NAME="AppCode_1" ID="AppCode_1'+ iRow +'" JQRow="AppCode_1" maxlength="16" class="JQFloat" value = "'+AppCode+'">'
+      +'<INPUT TYPE="hidden" NAME="AppName_1" ID="AppName_1'+ iRow +'" JQRow="AppName_1" maxlength="16" class="JQInt" value = "'+AppName+'">'
+    +'</td>';
+
+    tdArr[k++] = '<td>'+ComName+'</td>';
+
+    tdArr[k++] ='<td align="center"><a href="javascript:void(0)" onclick="javascript:JQTr_Del();JqReCal()">删除</a></td>';
+
+    //新增一行
+    JQTr_Add(sTbId,sTrClass,tdArr);
+  }
+
+  /*
+  *函数功能：删除行，重新计算
+  */
+  function JqReCal(){
+    //重新计算行号
+    $("input[name=Line_1]").each(function(i){
+      $(this).val(i+1);
+    });
+  }
+
+  //提交函数
+  function CheckSubmit(){
+    //定义 提交提示文字
+    var sConfirm = '您确定已经填写完成，并保存吗？';
+    //提交时，验证必填项
+    if (!JQcheck("JQMust")){
+      return false;
+    }
+    //提交时，提示
+    if (!(confirm(sConfirm)))
+      return false;
+
+    //获取当前表单对象
+    var JqObj = $("form[name=frmDo]");
+    //表单参数设定
+    JqObj.attr({
+      "action":'##HDNet_AppName##/__ExplainModule?Url=<HDPrint Value=#Url#>Save&UsrGid=<HDPrint Value=#UsrGid#>',
+      "target":'_self'
+    });
+    //表单提交
+    JqObj.submit();
+
+    //操作按钮变为不可用
+    $("a[name=btn_1]").prop("disabled",true);
+
+    //本函数失效
+    CheckSubmit = function() {return false;}
+  }
+  //函数：ready
+  //功能：document 加载完成后调用
+  $(document).ready(function(){
+    //复制一个工具栏
+    var $ToolBar = $("div#JQ_ToolBar");
+    //$("form[name=frmDo]").append($ToolBar.html());
+  });
+</script>
+
+<script language="javascript" src="##GetWebRootPath(/Scripts/DataInterface.js)##"></script>
+<!--选择审批人调用-->
+<FORM NAME="frmDataInterface_App" ACTION="">
+  <INPUT TYPE="hidden" name="DataInterface_Title" ID="t_App" value="审批人列表">
+
+  <INPUT TYPE="hidden" name="DataInterface_Sql" ID="s_App" value="select u.gid, u.code, u.name, t.gid, t.code2, t.name from v_usr u, (select hr.entgid, hr.usrgid, d.Gid, d.Code2, d.Name from hr_emp hr, Dept d where hr.entgid = d.entgid and hr.Deptgid = d.gid) t where u.EntGid = '<HDPrint Value=#EntGid#>' and u.entgid = t.entgid(+) and u.gid = t.usrgid(+)">
+  <INPUT TYPE="hidden" name="DataInterface_CountSql" ID="c_App" value="select count(*) from v_usr u, (select hr.entgid, hr.usrgid, d.Gid, d.Code2, d.Name from hr_emp hr, Dept d where hr.entgid = d.entgid and hr.Deptgid = d.gid) t where u.EntGid = '<HDPrint Value=#EntGid#>' and u.entgid = t.entgid(+) and u.gid = t.usrgid(+)">
+  <INPUT TYPE="hidden" name="DataInterface_OrderSql" value="order by u.code">
+  <INPUT TYPE="hidden" name="DataInterface_UsrGid" value="<HDPrint Value=#UsrGid#>">
+  <INPUT TYPE="hidden" name="DataInterface_AppName" value="##HDNet_AppName##">
+
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="2^代码^left^100">
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="3^姓名^left^100">
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="6^部门^left^100">
+
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="u.code^用户代码^1">
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="u.name^用户姓名^1">
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="t.Name^部门^1">
+  <input TYPE="hidden" name="DataInterface_Search_Sql" value="">
+  <input TYPE="hidden" name="DataInterface_Search_Cols" value="">
+
+  <INPUT TYPE="hidden" name="DataInterface_FieldTo" value="">
+  <INPUT TYPE="hidden" name="DataInterface_FieldBy" value="1^2^3^5^6">
+  <INPUT TYPE="hidden" name="DataInterface_CallBckFunc" value="Add_Dtl">
+  <INPUT TYPE="hidden" name="DataInterface_Close" value="false">
+</FORM>
+
+<HDPrint Value=#AppList# Replace=#None#>

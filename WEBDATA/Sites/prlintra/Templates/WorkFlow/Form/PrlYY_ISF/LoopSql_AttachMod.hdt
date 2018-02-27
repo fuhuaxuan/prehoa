@@ -1,0 +1,5 @@
+<script>
+  <hdloop>
+    $("input[name=fileList_<HDPrint Value=#Attach_Type# Replace=#DBField2Js#>]").val('<HDPrint Value=#Attach_Title# Replace=#DBField2Js#>');
+  </hdloop>
+</script>

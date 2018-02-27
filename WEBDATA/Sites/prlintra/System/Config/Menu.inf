@@ -37,9 +37,17 @@
 ^2^------------------^line^#^_self^
 ^2^用印审批设置^Prl_Stamp_App^##HDNet_AppName##/__ExplainModule?Url=Prl_Stamp_App&usrgid={##usrgid##}^MainPage^
 
-^1^总部流程管理^^^_Self^Prl_Groundh
+^1^总部流程管理^^^_Self^Prl_ZB
 ^2^公司设置^PrlZb_Company^##HDNet_AppName##/__ExplainModule?Url=PrlZb_Company&usrgid={##usrgid##}^MainPage^
-^2^流程设置^PrlZb_App^##HDNet_AppName##/__ExplainModule?Url=PrlZb_App&usrgid={##usrgid##}^MainPage^
+^2^流程审批设置^PrlZb_App^##HDNet_AppName##/__ExplainModule?Url=PrlZb_App&usrgid={##usrgid##}^MainPage^
+^2^项目审批设置^PrlZb_Acg_Post^##HDNet_AppName##/__ExplainModule?Url=PrlZb_Acg_Post&usrgid={##usrgid##}^MainPage^
+^2^用印审批设置^PrlZB_Stamp_App^##HDNet_AppName##/__ExplainModule?Url=PrlZB_Stamp_App&usrgid={##usrgid##}^MainPage^
+
+^1^医疗流程管理^^^_Self^Prl_YY
+^2^公司设置^PrlYY_Company^##HDNet_AppName##/__ExplainModule?Url=PrlYY_Company&usrgid={##usrgid##}^MainPage^
+^2^流程审批设置^PrlYY_App^##HDNet_AppName##/__ExplainModule?Url=PrlYY_App&usrgid={##usrgid##}^MainPage^
+^2^项目审批设置^PrlYY_Acg_Post^##HDNet_AppName##/__ExplainModule?Url=PrlYY_Acg_Post&usrgid={##usrgid##}^MainPage^
+^2^用印审批设置^PrlYY_Stamp_App^##HDNet_AppName##/__ExplainModule?Url=PrlYY_Stamp_App&usrgid={##usrgid##}^MainPage^
 
 ^1^地理位置管理^^^_Self^Prl_Groundh
 ^2^地理位置列表^Prl_Groundh_List^##HDNet_AppName##/__ExplainModule?Url=Prl_Groundh_List&usrgid={##usrgid##}^MainPage^

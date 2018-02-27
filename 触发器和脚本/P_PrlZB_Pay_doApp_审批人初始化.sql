@@ -9,15 +9,15 @@ create or replace procedure P_PrlZB_Pay_doApp(p_EntGid    varchar2, --企业Gid
   v_UsrGid    varchar2(32); --用户Gid
   v_ModelCode varchar2(32); --模型代码
   v_DeptGid   varchar2(32); --当前用户部门
-  v_AcgTwoGid varchar2(32); --所属部门代码
   v_ComGid    varchar2(32); --公司
+  v_AcgGid    varchar2(32); --项目
 
 begin
   commit;
 
   v_Stage := '取出流程信息';
-  select f.FillUsrGid, f.fillusrdeptgid, f.AcgTwoGid, f.CompanyGid
-    into v_UsrGid, v_DeptGid, v_AcgTwoGid, v_ComGid
+  select f.FillUsrGid, f.fillusrdeptgid, f.CompanyGid, f.AcgTwoGid
+    into v_UsrGid, v_DeptGid, v_ComGid, v_AcgGid
     from wf_PrlZB_Pay f
    where f.entgid = p_EntGid
      and f.flowgid = p_FlowGid;
@@ -43,16 +43,38 @@ begin
       select p_EntGid,
              p_FlowGid,
              sys_guid(),
+             v.PostGid AppGid,
+             v.PostCode AppCode,
+             v.PostName AppName,
+             10 AppOrder,
+             10 AppType
+        from v_Post v
+       where v.EntGid = p_EntGid
+         and v.deptGid = v_DeptGid
+         and v.atype = 10
+         and rownum = 1
+      union
+      select p_EntGid,
+             p_FlowGid,
+             sys_guid(),
              t.AppGid,
              t.AppCode,
              t.AppName,
              t.PostCode,
              t.PostCode
-        from PrlZB_Pay_App t
+        from PrlZB_App t
        where t.EntGid = p_EntGid
          and t.ComGid = v_ComGid
-         and t.AppGid is not null;
-
+         and lower(t.modelcode) = 'prlzb_pay'
+         and t.AppGid is not null
+         and exists (select 1
+                from PrlZB_Acg_Post p
+               where p.entgid = t.entgid
+                 and p.comgid = t.comgid
+                 and p.postgid = t.postgid
+                 and p.AcgGid = v_AcgGid
+                 and p.apper = 1);
+  
     commit;
     --取出审批人中重复的审批人
     delete from wf_PrlZB_Pay_App f
@@ -82,6 +104,7 @@ begin
          FlowGid,
          TaskDefGid,
          TaskGid,
+         Stat,
          Code,
          Name,
          Note,
@@ -95,6 +118,7 @@ begin
                p_FlowGid,
                d.TaskDefGid,
                sys_guid(),
+               1,
                d.code,
                d.name,
                d.note,

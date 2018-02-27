@@ -10,7 +10,7 @@ SQL1=select 1 from WF_Flow where EntGid = __ENTGID__ and FlowGid = ##FlowGid##
 Remind1=对不起，您指定的流程申请单没有找到<script>alert('对不起，您指定的流程申请单没有找到');window.close()</script>
 
 ;检查判断的Sql语句，查不到结果是报错，从SQL1～SQL5，共可以写5句
-SQL2=select 1 from dual where ##AppAssign## <> '同意' union select 1 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=31 and ##AppAssign## = '同意'
+SQL2=select 1 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=31
 Remind2=对不起，下一步审批人出纳未找到，请与管理员联系。<script>alert('对不起，下一步审批人出纳未找到，请与管理员联系。');history.back()</script>
 [Detail]
 ;显示，单条数据的查询，可以用于HDT显示，有select命令。从SQL1～SQL20共支持20条

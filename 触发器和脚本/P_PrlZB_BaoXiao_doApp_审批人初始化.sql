@@ -44,16 +44,53 @@ begin
              p_ModelGid,
              p_FlowGid,
              sys_guid(),
-             t.AppGid,
-             t.AppCode,
-             t.AppName,
-             t.PostCode,
-             t.PostCode
-        from PrlZB_Baoxiao_App t
-       where t.EntGid = p_EntGid
-         and t.ComGid = v_ComGid
-         and t.AppGid is not null;
-  
+             v.PostGid AppGid,
+             v.PostCode AppCode,
+             v.PostName AppName,
+             10 AppOrder,
+             10 AppType
+        from v_Post v
+       where v.EntGid = p_EntGid
+         and v.deptGid = v_DeptGid
+         and v.atype = 10
+         and rownum = 1;
+    insert into wf_PrlZB_Baoxiao_App
+      (EntGid,
+       ModelGid,
+       FlowGid,
+       gid,
+       AppGid,
+       AppCode,
+       AppName,
+       AppOrder,
+       AppType)
+      select p_EntGid,
+             p_ModelGid,
+             p_FlowGid,
+             sys_guid(),
+             a.AppGid,
+             a.AppCode,
+             a.AppName,
+             a.PostCode,
+             a.PostCode
+        from (select distinct t.AppGid, t.AppCode, t.AppName, t.PostCode
+                from PrlZB_App t
+               where t.EntGid = p_EntGid
+                 and t.ComGid = v_ComGid
+                 and lower(t.modelcode) = 'prlzb_baoxiao'
+                 and t.AppGid is not null
+                 and exists
+               (select 1
+                        from PrlZB_Acg_Post p
+                       where p.entgid = t.entgid
+                         and p.comgid = t.comgid
+                         and p.postgid = t.postgid
+                         and exists (select 1
+                                from wf_prlzb_baoxiao_dtl d
+                               where d.entgid = p.entgid
+                                 and d.flowgid = p_FlowGid
+                                 and d.acggid = p.acggid)
+                         and p.apper = 1)) a;
     commit;
     --取出审批人中重复的审批人
     delete from wf_PrlZB_Baoxiao_App f
@@ -83,6 +120,7 @@ begin
          FlowGid,
          TaskDefGid,
          TaskGid,
+         Stat,
          Code,
          Name,
          Note,
@@ -96,6 +134,7 @@ begin
                p_FlowGid,
                d.TaskDefGid,
                sys_guid(),
+               1,
                d.code,
                d.name,
                d.note,

@@ -3,9 +3,16 @@
 <script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
 <script language="javascript" src="##GetWebRootPath(/Scripts/JSCalendar.js)##"></script>
 <SCRIPT>
-  var JsOption = '';//<option value="">--请选择--</option>';
+  var arrComList = [];//<option value="">--请选择--</option>';
+  function getOption(JsRow){
+    var JsOption = '';
+    $.each(arrComList,function(i,item){
+      JsOption += '<input type="checkbox" name="chk_1'+ JsRow +'" value="'+item.id+'" class="JQCheckBox">['+item.id+']'+item.name
+    });
+    return JsOption;
+  }
 </script>
-<HDPrint Value=#DeptList# Replace=#None#>
+<HDPrint Value=#ComList# Replace=#None#>
 <form name="frmDo" method="post" action="">
 <!--模块使用到一些隐藏的控件-->
 <input type="text" style="display:none" name="ModelGid" value="<HDPrint Value=#ModelGid# Replace=#DBField2Input#>">

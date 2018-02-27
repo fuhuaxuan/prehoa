@@ -1,0 +1,51 @@
+<table border="0" style="width:100%">
+<tr><td>您好 :</td></tr>
+<tr><td>[流程名称] : <HDPrint Value=#ModelName#>；</td></tr>
+<tr><td>[单号] : <HDPrint Value=#Num#>；</td></tr>
+<tr><td>[发起人] : <HDPrint Value=#FillUsrName#>[<HDPrint Value=#filldeptName#>]；</td></tr>
+<tr><td>[发起时间] : <HDPrint Value=#CreateDate#>]；</td></tr>
+<tr><td>[类别] : <HDPrint Value=#atype#> <HDPrint Value=#Category#>；</td></tr>
+<tr><td>[单位] : <HDPrint Value=#Unit#></td></tr>
+<tr><td>[科室] : <HDPrint Value=#Dept#></td></tr>
+<tr><td>[面积] : <HDPrint Value=#Area#>；</td></tr>
+<tr><td>[面积] : <HDPrint Value=#BuildArea#>；</td></tr>
+<tr><td>[租户] : <HDPrint Value=#lessee#>；</td></tr>
+<tr><td>[联系人] : <HDPrint Value=#Contactor#>；</td></tr>
+<tr><td>[地址] : <HDPrint Value=#Address#>；</td></tr>
+<tr><td>[电话] : <HDPrint Value=#Phone#>；</td></tr>
+<tr><td>[电子邮件] : <HDPrint Value=#Email#>；</td></tr>
+<tr><td>[租赁期限] : <HDPrint Value=#leasetermy#> 年/ <HDPrint Value=#leasetermm#> 月/ <HDPrint Value=#leasetermd#> 日；</td></tr>
+<tr><td>[交付日期] : <HDPrint Value=#handoverdate#>；</td></tr>
+<tr><td>[合同起始日期] : <HDPrint Value=#contractdate1#>~<HDPrint Value=#contractdate2#></td></tr>
+<tr><td>[免租期] : <HDPrint Value=#freerentm#> 月/ <HDPrint Value=#freerentd#>天；</td></tr>
+<tr><td>[装修期] : <HDPrint Value=#fitoutm#> 月/ <HDPrint Value=#fitoutd#> 天（<HDPrint Value=#fitoutdate1#> ~ <HDPrint Value=#fitoutdate2#>）；</td></tr>
+<tr><td>[预付租金+费用] : <HDPrint Value=#AGR#>；</td></tr>
+<tr><td>[保证金] : <HDPrint Value=#Security#>；</td></tr>
+<tr>
+  <td><HDPrint Value=#Rate#>
+    <div id="Rate1" style="display:inline">
+        （名医馆<HDPrint Value=#Rate1#>%，租户<HDPrint Value=#Rate2#>%）
+      </div>
+      <div id="Rate2" style="display:inline">
+        （<HDPrint Value=#Rate3#>元/天）
+      </div>
+      <script language="javascript">
+        //函数：ready
+        //功能：document 加载完成后调用
+        $(document).ready(function(){
+          if ('<HDPrint Value=#Rate# Replace=#DBField2Js#>' == '分成') {
+            $("div#Rate1").show();
+            $("div#Rate2").hide();
+          }else{
+            $("div#Rate1").hide();
+            $("div#Rate2").show();
+          }
+        });
+      </script>
+  </td>
+</tr>
+<tr><td><HDPrint Value=#EmailDtl# Replace=#None#></td></tr>
+<tr><td>[特别条件/评语] : <HDPrint Value=#Memo# Replace=#DBField2InputField#>；</td></tr>
+<tr><td>[附件信息] : <HDPrint Value=#AttachList# Replace=#None#></td></tr>
+<tr><td>-----------内容展示完毕-----------</td></tr>
+</table>

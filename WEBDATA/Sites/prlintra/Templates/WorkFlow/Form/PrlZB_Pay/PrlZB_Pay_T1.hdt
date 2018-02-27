@@ -546,11 +546,11 @@
         if (LeftFee == ''){
           LeftFee = 0;
         }
-        if (parseFloat(PayFee) > parseFloat(LeftFee)){
+        /*if (parseFloat(PayFee) > parseFloat(LeftFee)){
           alert('本次付款金额不能超过剩余预算金额，请调整!');
           $("input[name=PayFee]").val(LeftFee);
           return false;
-        }
+        }*/
       }
     }
     //提交时，提示

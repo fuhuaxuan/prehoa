@@ -22,10 +22,10 @@ select t.*,
                c.name   ComName
           from PrlZB_Post p, Prlzb_Company c
          where p.entgid = c.entgid) t,
-       PrlZB_Baoxiao_App b,
-       PrlZB_Fee_App f,
-       PrlZB_Pay_App p,
-       PrlZB_Stamp_App s
+       PrlZB_App b,
+       PrlZB_App f,
+       PrlZB_App p,
+       PrlZB_App s
  where t.entgid = b.entgid(+)
    and t.entgid = f.entgid(+)
    and t.entgid = p.entgid(+)
@@ -38,4 +38,8 @@ select t.*,
    and t.ComGid = f.ComGid(+)
    and t.ComGid = p.ComGid(+)
    and t.ComGid = s.ComGid(+)
+   and lower(b.modelcode(+)) = 'prlzb_baoxiao'
+   and lower(f.modelcode(+)) = 'prlzb_fee'
+   and lower(p.modelcode(+)) = 'prlzb_pay'
+   and lower(s.modelcode(+)) = 'prlzb_stamp'
  order by t.Postcode;

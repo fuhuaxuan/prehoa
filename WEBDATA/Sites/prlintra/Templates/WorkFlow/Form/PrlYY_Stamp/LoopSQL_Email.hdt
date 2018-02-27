@@ -1,0 +1,30 @@
+<table border="0" style="width:100%;">
+<tr><td>您好 :</td></tr>
+<tr><td>[流程名称] : <HDPrint Value=#ModelName#>；</td></tr>
+<tr><td>[单号] : <HDPrint Value=#Num#>；</td></tr>
+<tr><td>[发起人] : <HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]；</td></tr>
+<tr><td>[发起时间] : <HDPrint Value=#CreateDate#>；</td></tr>
+<tr><td>[是否关联流程] : <HDPrint Value=#mIsFlow#>（单号<HDPrint Value=#mNum#>）；</td></tr>
+<tr><td>[部门类型] : <HDPrint Value=#DeptType#>；</td></tr>
+<tr><td>[申请类型] : <HDPrint Value=#ApplyType#>；</td></tr>
+<tr><td>[申请印章种类] : <HDPrint Value=#StampType#>；</td></tr>
+<tr><td>[公司名称] : <HDPrint Value=#ComName#>；</td></tr>
+<HDIF Equal(<HDPrint Value=#ApplyType# Replace=#None#>, 非合同类文件用印)>
+<tr><td>[文件接收方名称] : <HDPrint Value=#FilerName#>；</td></tr>
+<tr><td>[文件名称] : <HDPrint Value=#FileName#>；</td></tr>
+<tr><td>[文件份数] : <HDPrint Value=#FileCount#>；</td></tr>
+<tr><td>[文件目的] : <HDPrint Value=#FileAim#>；</td></tr>
+<tr><td>[申请人声明及保证] : 我保证我所提交的用于盖章的非合同类文件与本申请所注载内容一致；</td></tr>
+</HDIF>
+<HDIF Equal(<HDPrint Value=#ApplyType# Replace=#None#>, 合同签署用印)>
+<tr><td>[合同名称] : <HDPrint Value=#ContractName#>；</td></tr>
+<tr><td>[合同份数] : <HDPrint Value=#ContractCount#>；</td></tr>
+<tr><td>[合同金额] : <HDPrint Value=#ContractFee#>；</td></tr>
+<tr><td>[合作公司] : <HDPrint Value=#ContactName#>；</td></tr>
+<tr><td>[合同期限] : <HDPrint Value=#ContractDate1#>~<HDPrint Value=#ContractDate2#>；</td></tr>
+<tr><td>[合同概要] : <HDPrint Value=#ComtractMemo#>；</td></tr>
+</HDIF>
+<tr><td>[备注] : <HDPrint Value=#Memo#>；</td></tr>
+<tr><td>[附件信息] : <HDPrint Value=#AttachList# Replace=#None#> ；</td></tr>
+<tr><td>-----------内容展示完毕-----------</td></tr>
+</table>
