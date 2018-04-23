@@ -56,7 +56,7 @@ BEGIN
   values(sEntGid, sModelGid, sTaskGid_t3, 'PRL_ISF_TA2', '招商经理/LM审批', '审批', 1, 0, 0, 0);
 
   insert into WF_Task_Define(EntGid, ModelGid, TaskDefGid, Code, Name, Note, OrderValue, IsStart, IsEnd, IsMCF)
-  values(sEntGid, sModelGid, sTaskGid_t4, 'PRL_ISF_TA3', '商场总经理/CM审批', '审批', 1, 0, 0, 0);
+  values(sEntGid, sModelGid, sTaskGid_t4, 'PRL_ISF_TA3', '项目总经理/CM审批', '审批', 1, 0, 0, 0);
 
   insert into WF_Task_Define(EntGid, ModelGid, TaskDefGid, Code, Name, Note, OrderValue, IsStart, IsEnd, IsMCF)
   values(sEntGid, sModelGid, sTaskGid_t5, 'PRL_ISF_TB', '常务理事/COO审批', '审批', 1, 0, 0, 0);

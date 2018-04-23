@@ -106,7 +106,7 @@ WF1=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T1 | T1Gid | and ##AppAssign## = '否决
 ;同意，流转到下一步
 WF2=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TB1 | TB1Gid | and ##AppAssign## = '同意' and ##IsNext## > 0 and ##IsB0## <= 0 |^^AppFlowMemo^^)
 
-;acgcode 是 ('1.01','1.02','1.03','2.01','2.02','2.03') 商场总经理后面加入区域财务经理审批节点
+;acgcode 是 ('1.01','1.02','1.03','2.01','2.02','2.03') 项目总经理后面加入区域财务经理审批节点
 WF3=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TB0 | TB0Gid | and ##AppAssign## = '同意' and ##IsNext## > 0 and ##IsB0## > 0 |^^AppFlowMemo^^)
 
 ;同意，流转到确认并抄送

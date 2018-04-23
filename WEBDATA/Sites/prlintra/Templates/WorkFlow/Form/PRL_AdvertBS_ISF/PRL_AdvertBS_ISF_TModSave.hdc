@@ -29,7 +29,7 @@ SQLForCondition3=select 'Serial No 编号：' || ##SerialNo## ModFlowMemo from dual
 
 SQLForCondition4=select '申请人：' || ##CurUsrName##||';Serial No 编号：'||##SerialNo## AppFlowMemo from dual
 
-;鹏瑞利管辖部门的扩展性：10:部门经理(招商经理)；20:人事经理；30：财务经理；30：出纳；40：商场总经理；50：区域总监;71:资产经理 AssetManager
+;鹏瑞利管辖部门的扩展性：10:部门经理(招商经理)；20:人事经理；30：财务经理；30：出纳；40：项目总经理；50：区域总监;71:资产经理 AssetManager
 SqlForCondition5=select b.usrgid AppGid,b.email ThisEmail from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##DeptGid## and b.gid = a.empgidex and atype=10 and b.usrgid is not null
 [Where]
 

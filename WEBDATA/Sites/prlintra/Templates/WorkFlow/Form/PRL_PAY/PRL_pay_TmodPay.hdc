@@ -16,7 +16,7 @@ SqlForCondition1=select Code ModelCode, Name ModelName from wf_Model where Model
 ;得到业务单据信息
 Sql1=select * from WF_^^ModelCode^^ where FlowGid = ##FlowGid##
 
-LoopSQL2=select a.*,decode(a.apptype,'10','部门经理','20','行政经理','30','财务经理/FM','35','执行总经理','40','商场总经理/CM','45','区域财务经理','50','部门总监','60','高级副总裁/SVP','70','首席财务官/CFO(部门总监与SVP同一个人) ','80','资产总监/Hd Invest ','90','首席财务官/CFO','100','首席执行官/CEO','110','执行委员会/Indpt Director','1000','出纳') apptypetext from WF_^^ModelCode^^_App a where FlowGid = ##FlowGid##  order by AppDate
+LoopSQL2=select a.*,decode(a.apptype,'10','部门经理','20','行政经理','30','财务经理/FM','35','执行总经理','40','项目总经理/CM','45','区域财务经理','50','部门总监','60','高级副总裁/SVP','70','首席财务官/CFO(部门总监与SVP同一个人) ','80','资产总监/Hd Invest ','90','首席财务官/CFO','100','首席执行官/CEO','110','执行委员会/Indpt Director','1000','出纳') apptypetext from WF_^^ModelCode^^_App a where FlowGid = ##FlowGid##  order by AppDate
 LoopHDT2=Templates\WorkFlow\Form\prl_pay\Loopsql_app.hdt
 LoopVAR2=applist
 

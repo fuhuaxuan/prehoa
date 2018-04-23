@@ -27,7 +27,7 @@ SqlForCondition1=select Code ModelCode, Name ModelName from wf_Model where EntGi
 ;得到业务单据信息
 Sql1=select * from WF_^^ModelCode^^ where EntGid = __ENTGID__ and  FlowGid = ##FlowGid##
 
-LoopSQL2=select a.*,decode(a.apptype,'10','财务经理/FM','20','招商经理/LM ','30','商场总经理/CM','40','常务理事/COO','50','资产总监/Hd Invest ','60','首席财务官/CFO','70','首席执行官/CEO','80','执行委员会/Indpt Director') apptypetext from WF_^^ModelCode^^_App a where FlowGid = ##FlowGid##  order by AppDate
+LoopSQL2=select a.*,decode(a.apptype,'10','财务经理/FM','20','招商经理/LM ','30','项目总经理/CM','40','常务理事/COO','50','资产总监/Hd Invest ','60','首席财务官/CFO','70','首席执行官/CEO','80','执行委员会/Indpt Director') apptypetext from WF_^^ModelCode^^_App a where FlowGid = ##FlowGid##  order by AppDate
 LoopHDT2=Templates\WorkFlow\Form\PRL_Fee\Loopsql_app.hdt
 LoopVAR2=applist
 

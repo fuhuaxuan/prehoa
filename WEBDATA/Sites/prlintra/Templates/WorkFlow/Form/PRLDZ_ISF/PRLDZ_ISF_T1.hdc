@@ -33,7 +33,7 @@ LoopHDT5=Templates\WorkFlow\Form\PRLDZ_ISF\LoopSql_Option.hdt
 LoopVAR5=Tradelist
 
 ;显示T2的审批人
-;鹏瑞利管辖部门的扩展性：5:部门助理;10:部门经理(招商经理);20:人事经理;30:财务经理;31:出纳;40:商场总经理;50:区域总监;71:资产经理 AssetManager
+;鹏瑞利管辖部门的扩展性：5:部门助理;10:部门经理(招商经理);20:人事经理;30:财务经理;31:出纳;40:项目总经理;50:区域总监;71:资产经理 AssetManager
 LoopSQL6=select distinct v.PostGid ItemGid,v.PostName ItemName from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=10 order by v.PostName
 LoopHDT6=Templates\WorkFlow\Form\PRLDZ_ISF\LoopSql_Option.hdt
 LoopVAR6=T2List

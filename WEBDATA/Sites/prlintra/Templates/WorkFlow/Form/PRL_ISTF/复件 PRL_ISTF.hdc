@@ -18,7 +18,7 @@ SqlForCondition2=select a.*,decode(mallstat,0,'ÒÑ·¢ËÍÖÁMall£¬´¦ÀíÊ§°Ü',10,'ÒÑ·¢Ë
 
 ;²ÆÎñ¾­Àí
 Sql3=select b.usrgid CWUsrGid from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##fillusrdeptgid## and b.gid = a.empgidex and atype=30 and b.usrgid is not null
----10:²¿ÃÅ¾­Àí£» 20:ĞĞÕş¾­Àí£» 30:²ÆÎñ¾­Àí£» 40:ÉÌ³¡×Ü¾­Àí£» 50:ÇøÓò×Ü¼à£» 60:³£ÎñÀíÊÂ£» 70:×Ê²ú×Ü¼à£» 80:×Ê²ú×Ü¼à£» 90:CFO£» 100:CEO£»
+---10:²¿ÃÅ¾­Àí£» 20:ĞĞÕş¾­Àí£» 30:²ÆÎñ¾­Àí£» 40:ÏîÄ¿×Ü¾­Àí£» 50:ÇøÓò×Ü¼à£» 60:³£ÎñÀíÊÂ£» 70:×Ê²ú×Ü¼à£» 80:×Ê²ú×Ü¼à£» 90:CFO£» 100:CEO£»
 
 [Where]
 1= 

@@ -34,7 +34,7 @@ LoopHDT1=Templates\WorkFlow\Form\PRL_ISFV2\LoopSql_Option.hdt
 LoopVAR1=AttachList
 
 ;显示本流程审批人信息
-LoopSQL2=select a.*,decode(a.apptype,0,'发起人',10,'部门经理',30,'财务经理',35,'总经理',40,'商场总经理',50,'资产经理',60,'租赁部总监',80,decode(##ProCode##,'0004','区域总经理','资产总监'),90,'财务总监',95,'Deputy CEO',100,'CEO') apptypetext  from WF_PRL_ISF_App a where FlowGid = ##FlowGid## and AppDate is not null order by AppDate
+LoopSQL2=select a.*,decode(a.apptype,0,'发起人',10,'部门经理',30,'财务经理',35,'总经理',40,'项目总经理',50,'资产经理',60,'租赁部总监',80,decode(##ProCode##,'0004','区域总经理','资产总监'),90,'财务总监',95,'Deputy CEO',100,'CEO') apptypetext  from WF_PRL_ISF_App a where FlowGid = ##FlowGid## and AppDate is not null order by AppDate
 LoopHDT2=Templates\WorkFlow\Form\PRL_ISFV2\Loopsql_App.hdt
 LoopVAR2=AppList
 
@@ -54,7 +54,7 @@ LoopHDT5=Templates\WorkFlow\Form\PRL_ISFV2\LoopSql_Option.hdt
 LoopVAR5=Tradelist
 
 ;显示TA2的审批人
-;鹏瑞利管辖部门的扩展性：5:部门助理;10:部门经理(招商经理);20:人事经理;30:财务经理;31:出纳;40:商场总经理;50:区域总监;71:资产经理 AssetManager
+;鹏瑞利管辖部门的扩展性：5:部门助理;10:部门经理(招商经理);20:人事经理;30:财务经理;31:出纳;40:项目总经理;50:区域总监;71:资产经理 AssetManager
 LoopSQL6=select distinct v.PostGid ItemGid,v.PostName ItemName from v_Post v,WF_PRL_ISF f where f.EntGid = __ENTGID__ and f.EntGid = v.EntGid and f.FlowGid = ##FlowGid## and v.deptGid = f.FillUsrDeptGid and v.atype=10 order by v.PostName
 LoopHDT6=Templates\WorkFlow\Form\PRL_ISFV2\LoopSql_Option.hdt
 LoopVAR6=TA1List

@@ -27,7 +27,7 @@ SqlForCondition1=select Code ModelCode, Name ModelName from wf_Model where Model
 ;得到业务单据信息
 SQLForCondition2=select '申请人：' || ##CurUsrName##||';Serial No 编号：'||##SerialNo## AppFlowMemo from dual
 
-;鹏瑞利管辖部门的扩展性：10:部门经理(招商经理)；20:人事经理；30：财务经理；30：出纳；40：商场总经理；50：区域总监;71:资产经理 AssetManager
+;鹏瑞利管辖部门的扩展性：10:部门经理(招商经理)；20:人事经理；30：财务经理；30：出纳；40：项目总经理；50：区域总监;71:资产经理 AssetManager
 SqlForCondition5=select b.usrgid AppGid,b.email ThisEmail from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##DeptGid## and b.gid = a.empgidex and atype=30 and b.usrgid is not null
 
 ;取出流程主表信息。
@@ -61,7 +61,7 @@ Text4=
 Text5=
 
 ChangePage=0
-;10:部门经理;20:财务经理/FM;30:商场总经理/CM;40:总部推广总监/常务理事COO;50:资产总监(Hd Invest);60:首席财务官(CFO);70:首席执行官(CEO);71:Asset Manager
+;10:部门经理;20:财务经理/FM;30:项目总经理/CM;40:总部推广总监/常务理事COO;50:资产总监(Hd Invest);60:首席财务官(CFO);70:首席执行官(CEO);71:Asset Manager
 
 WF1=WFFlowRun( ^^ModelCode^^_TA1 | ^^ModelCode^^_TA2 | AppGid | and ##AppAssign## = '同意' | 部门经理:^^AppAssign^^ - ^^AppFlowMemo^^)
 

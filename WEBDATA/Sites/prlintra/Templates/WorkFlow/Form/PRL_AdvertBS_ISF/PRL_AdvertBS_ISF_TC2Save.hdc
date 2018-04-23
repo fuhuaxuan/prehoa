@@ -63,7 +63,7 @@ Text4=
 Text5=
 
 ChangePage=0
-;10:部门经理;20:财务经理/FM;30:商场总经理/CM;40:总部推广总监/常务理事COO;50:资产总监(Hd Invest);60:首席财务官(CFO);70:首席执行官(CEO);71:Asset Manager
+;10:部门经理;20:财务经理/FM;30:项目总经理/CM;40:总部推广总监/常务理事COO;50:资产总监(Hd Invest);60:首席财务官(CFO);70:首席执行官(CEO);71:Asset Manager
 WF1=WFFlowRun( ^^ModelCode^^_TC2 | ^^ModelCode^^_TD | null | and ##AppAssign## = '同意' | 首席财务官(CFO):^^AppAssign^^ - ^^AppFlowMemo^^)
 
 WF2=WFFlowRun( ^^ModelCode^^_TC2 | ^^ModelCode^^_TMod | null | and ##AppAssign## = '否决' | 首席财务官(CFO):^^AppAssign^^ - ^^AppFlowMemo^^)

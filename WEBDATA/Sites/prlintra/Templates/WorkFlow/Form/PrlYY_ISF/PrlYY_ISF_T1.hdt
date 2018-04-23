@@ -626,7 +626,7 @@
     <td class="listtd"><INPUT TYPE="text" NAME="BuildArea" maxlength="16" value="<HDPrint Value=#BuildArea# Replace=#DBField2Input#>" class="JQFloat" JQBit="4" style="border:0px" readonly></td>
   </tr>
   <tr valign="top">
-    <td class="listtd" colspan="6">A、</td>
+    <td class="listtd" colspan="6">A、租户信息</td>
   </tr>
   <tr valign="top">
     <td class="DtlBarTitle">租户:<font color="red">*</font></td>
@@ -645,7 +645,7 @@
     <td class="listtd"><INPUT TYPE="text" NAME="Fax" maxlength="32" value="<HDPrint Value=#Fax# Replace=#DBField2Input#>" class="JQText"></td>
   </tr>
   <tr valign="top">
-    <td class="listtd" colspan="6">B、</td>
+    <td class="listtd" colspan="6">B、合同信息</td>
   </tr>
   <tr valign="top">
     <td class="DtlBarTitle">租赁期限:<font color="red">*</font></td>
@@ -719,9 +719,10 @@
     <td class="DtlBarTitle"></td>
     <td class="listtd"></td>
   </tr>
+  <tr valign="top">
+    <td class="listtd" colspan="6">C、租赁条件</td>
+  </tr>
 </table>
-
-<br>
 <table width="100%" class="ListBar" cellpadding="0"  cellspacing="1">
   <colgroup>
      <col style="width:10%">
@@ -799,12 +800,17 @@
 <br>
 <table cellpadding="0" cellspacing="1" class="ListBar" width="100%" id="tb_Other">
   <col style="padding-left:4px;width:10%">
-  <col style="padding-left:4px;width:40%">
+  <col style="padding-left:4px;width:23%">
   <col style="padding-left:4px;width:10%">
-  <col style="padding-left:4px;width:40%">
+  <col style="padding-left:4px;width:23%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:23%">
+  <tr valign="top">
+    <td class="listtd" colspan="6">D、附件信息</td>
+  </tr>
   <tr valign="top">
     <td class="DtlBarTitle">附件类型:<font color="red">*</font></td>
-    <td class="listtd" colspan="3">
+    <td class="listtd" colspan="5">
       <input type="radio" name="AttachType" value="个人" class="JQRadio JQMust" checked>个人
       <input type="radio" name="AttachType" value="公司" class="JQRadio JQMust">公司
       <script language="javascript">
@@ -861,6 +867,15 @@
       <INPUT TYPE="hidden" NAME="fileType_1" maxlength="10" value="20" class="JQText" readonly>
       <iframe FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid# Replace=#DBField2Input#>&CallBackFun=chgAttach('20');WinObj.AddAttach" height=28></iframe>
     </td>
+    <td class="DtlBarTitle">
+      医生资质:<font color="red">*</font><br>
+      <a href="javascript:void(0)" onclick="clearAttach('90');">　[清空]</a>
+    </td>
+    <td class="listtd">
+      <INPUT TYPE="text" JQ="l1" NAME="fileList_90" maxlength="256" class="JQText JQMust" readonly>
+      <INPUT TYPE="hidden" NAME="fileType_1" maxlength="10" value="90" class="JQText" readonly>
+      <iframe FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid# Replace=#DBField2Input#>&CallBackFun=chgAttach('90');WinObj.AddAttach" height=28></iframe>
+    </td>
   </tr>
   <tr valign="top" JQ="t2">
     <td class="DtlBarTitle">
@@ -881,8 +896,6 @@
       <INPUT TYPE="hidden" NAME="fileType_1" maxlength="10" value="40" class="JQText" readonly>
       <iframe FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid# Replace=#DBField2Input#>&CallBackFun=chgAttach('40');WinObj.AddAttach" height=28></iframe>
     </td>
-  </tr>
-  <tr valign="top" JQ="t2">
     <td class="DtlBarTitle">
       专业技术职称证书:<font color="red">*</font><br>
       <a href="javascript:void(0)" onclick="clearAttach('50');">　[清空]</a>
@@ -892,6 +905,8 @@
       <INPUT TYPE="hidden" NAME="fileType_1" maxlength="10" value="50" class="JQText" readonly>
       <iframe FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid# Replace=#DBField2Input#>&CallBackFun=chgAttach('50');WinObj.AddAttach" height=28></iframe>
     </td>
+  </tr>
+  <tr valign="top" JQ="t2">
     <td class="DtlBarTitle">
       简历:<font color="red">*</font><br>
       <a href="javascript:void(0)" onclick="clearAttach('60');">　[清空]</a>
@@ -901,8 +916,6 @@
       <INPUT TYPE="hidden" NAME="fileType_1" maxlength="10" value="60" class="JQText" readonly>
       <iframe FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid# Replace=#DBField2Input#>&CallBackFun=chgAttach('60');WinObj.AddAttach" height=28></iframe>
     </td>
-  </tr>
-  <tr valign="top" JQ="t2">
     <td class="DtlBarTitle">
       身份证及其它有效证件:<font color="red">*</font>
       <a href="javascript:void(0)" onclick="clearAttach('70');">　[清空]</a>
@@ -924,11 +937,11 @@
   </tr>
   <tr valign="top">
     <td class="DtlBarTitle">特别条件/评语/备注:<font color="red">*</font><br><font color="gray">(2000字以内)</font></td>
-    <td class="listtd" colspan="3"><textarea rows="6" id ="Memo" name="Memo" class="JQText JQMust" maxlength="1000"><HDPrint Value=#Memo# Replace=#DBField2InputField#></textarea></td>
+    <td class="listtd" colspan="5"><textarea rows="6" id ="Memo" name="Memo" class="JQText JQMust" maxlength="1000"><HDPrint Value=#Memo# Replace=#DBField2InputField#></textarea></td>
   </tr>
   <tr JQ="TMod_1" style="display:none">
     <td class="DtlBarTitle">终止原因:<font color="red">*</font></td>
-    <td class="listtd" colspan="3"><textarea rows="5" id ="EndMemo" name="EndMemo" class="JQText JQEnd" maxlength="1000"><HDPrint Value=#EndMemo# Replace=#DBField2InputField#></textarea></td>
+    <td class="listtd" colspan="5"><textarea rows="5" id ="EndMemo" name="EndMemo" class="JQText JQEnd" maxlength="1000"><HDPrint Value=#EndMemo# Replace=#DBField2InputField#></textarea></td>
   </tr>
 </table>
     <HDPrint Value=#AttachList# Replace=#None#>

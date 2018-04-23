@@ -1,0 +1,291 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JSCalendar.js)##"></script>
+<script>
+  /*
+  *函数名称：新增附件添加到附件列表中
+  *参数：sFileName-附件名称
+  */
+  function AddAttach(JsFileName){
+    if (JsFileName == '')
+      return false;
+    //唯一性判断
+    if (!JQgetSingle("selFileList_1",JsFileName)){
+      alert('对不起，已经存在该附件！');
+      return false;
+    }
+    //添加到列表框中
+    var JsOption = '<option value="'+JsFileName+'">'+JsFileName+'</option>';
+    $("select[name=selFileList_1]").append(JsOption);
+  }
+</script>
+
+<form name="frmDo" method="post" action="">
+<!--当前流程路径-->
+<INPUT type="text" style="display:none" name="CurUrl" value="<HDPrint Value=#Url# Replace=#DBField2Input#>">
+<!--当前流程ModelGid-->
+<input type="text" style="display:none" name="ModelGid" value="<HDPrint Value=#ModelGid# Replace=#DBField2Input#>">
+<!--当前流程FlowGid-->
+<input type="text" style="display:none" name="FlowGid" value="<HDPrint Value=#FlowGid# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="FlowGid_1" value="<HDPrint Value=#FlowGid# Replace=#DBField2Input#>">
+<!--当前流程单号-->
+<INPUT type="text" style="display:none" name="Num" value="<HDPrint Value=#Num# Replace=#DBField2Input#>">
+<!--发起人部门信息-->
+<input type="text" style="display:none" name="FillDeptGid" value="<HDPrint Value=#FillDeptGid# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="FillDeptCode" value="<HDPrint Value=#FillDeptCode# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="FillDeptName" value="<HDPrint Value=#FillDeptName# Replace=#DBField2Input#>">
+<!--当前流程状态-->
+<input type="text" style="display:none" name="Stat" value="">
+<!--当前流程：0：发起 1：修改-->
+<input type="text" style="display:none" name="IsNew" value="<HDPrint Value=#IsNew# Replace=#DBField2Input#>">
+<!--当前流程是否发起-->
+<input type="text" style="display:none" name="WFCreate" value="">
+<!--当前流程是否流转-->
+<input type="text" style="display:none" name="WF" value="">
+
+<h3 class="TitleBar" ><HDPrint Value=#ModelName#>-><HDPrint Value=#StepName#></h3>
+<div id="JQ_ToolBar">
+<TABLE width="100%" class="ButtonBar" cellpadding="0" cellspacing="0">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A name="btn_1" HREF="javascript:CheckSubmit('保存');void(0)"><FONT class="IconSave">　&nbsp;</FONT> 保存 </A>
+      <A name="btn_1" HREF="javascript:CheckSubmit('提交');void(0)"><FONT class="IconCheck">　&nbsp;</FONT> 提交 </A>
+      <A name="btn_1" HREF="javascript:CheckSubmit('终止');void(0)" JQ="TMod_1" style="display:none"><FONT class="IconEnd">　&nbsp;</FONT> 终止 </A>
+    |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+      <A HREF="javascript:window.close();void(0)"><FONT class="IconClose">　&nbsp;</FONT> 关闭</A>
+    </TD>
+  </TR>
+</TABLE>
+</div>
+<table cellpadding="0" cellspacing="1" align="center" width="100%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:20%">
+  <col style="padding-left:4px;width:40%">
+  <col style="padding-left:4px;width:30%">
+  <TR>
+    <TD class="newtd2">单号:</TD>
+    <TD class="newtd3"><HDPrint Value=#Num#></td>
+    <td class="title" rowspan="3" align="center"><HDPrint Value=#ModelName#></td>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2">发起人:</TD>
+    <TD class="newtd3"><HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]</td>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2">发起日期:</TD>
+    <TD class="newtd3"><HDPrint Value=#CreateDate#></td>
+    <TD><font color="blue">状态:填写中</font></TD>
+  </TR>
+</table>
+
+<!--显示审批人信息-->
+<HDIF EqualNot(<HDPrint Value=#IsShow# Replace=#None#>, 0)>
+<HDPrint Value=#AppList# Replace=#None#>
+</HDIF>
+
+<h3 class="SubTitleBar" >
+<TABLE cellspacing="1" cellpadding="0" width="100%">
+  <col style="padding-left:4px;">
+  <col style="width:20px;" align="center">
+  <TR>
+    <TD align="left" style="padding-left:10px;"><b>单据信息</b></TD>
+    <TD onclick="JQExpand('tb_Order');" style="cursor:hand" class="IconUp">　&nbsp;</TD>
+  </TR>
+</TABLE>
+</h3>
+
+<table cellpadding="0" cellspacing="1" class="ListBar" width="100%" id="Order">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:23%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:23%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:23%">
+  <tr valign="top">
+    <td class="DtlBarTitle">公司名称:<font color="red">*</font></td>
+    <td class="listtd">
+      <select name="ComGid" class="JQSelect JQMust JQSave">
+        <option value="">--请选择--</option>
+        <HDPrint Value=#ComList# Replace=#None#>
+      </select>
+      <script language="javascript">
+        $("select[name=ComGid] option[value=<HDPrint Value=#ComGid# Replace=#DBField2Js#>]").prop("selected",true);
+      </script>
+    </td>
+    <td class="DtlBarTitle">变更类型:<font color="red">*</font></td>
+    <td class="listtd">
+      <input type="radio" name="ChgType" value="转移" class="JQRadio JQMust JQSave" checked>转移
+      <input type="radio" name="ChgType" value="出售" class="JQRadio JQMust JQSave" >出售
+      <input type="radio" name="ChgType" value="报废" class="JQRadio JQMust JQSave" >报废
+      <script language="javascript">
+        //函数：ready
+        //功能：document 加载完成后调用
+        $(document).ready(function(){
+          $("input[name=ChgType]").change(function(){
+            if ($(this).val() == '转移') {
+              $("tr[JQ=Type_1]").show();
+              $("input[name=ReceiveName]").addClass("JQMust");
+            }else{
+              $("tr[JQ=Type_1]").hide();
+              $("input[name=ReceiveName]").removeClass("JQMust");
+            }
+          });
+          var ChgType = '<HDPrint Value=#ChgType# Replace=#DBField2Js#>';
+          if (ChgType == '') {
+            ChgType = '转移';
+          }
+          $("input[name=ChgType][value="+ChgType+"]").prop("checked",true);
+          if (ChgType == '转移') {
+              $("tr[JQ=Type_1]").show();
+              $("input[name=ReceiveName]").addClass("JQMust");
+            }else{
+              $("tr[JQ=Type_1]").hide();
+              $("input[name=ReceiveName]").removeClass("JQMust");
+            }
+        });
+      </script>
+    </td><td class="DtlBarTitle">数量<font color="red">*</font></td>
+    <td class="listtd">
+      <INPUT TYPE="text" NAME="ChgQty" maxlength="4" value="<HDPrint Value=#ChgQty# Replace=#DBField2Input#>" class="JQInt JQMust">
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">资产编号:<font color="red">*</font></td>
+    <td class="listtd">
+      <INPUT TYPE="text" NAME="AssetNum" maxlength="16" value="<HDPrint Value=#AssetNum# Replace=#DBField2Input#>" class="JQText JQMust">
+    </td>
+    <td class="DtlBarTitle">资产名称:<font color="red">*</font></td>
+    <td class="listtd">
+      <INPUT TYPE="text" NAME="AssetName" maxlength="64" value="<HDPrint Value=#AssetName# Replace=#DBField2Input#>" class="JQText JQMust">
+    </td>
+    <td class="DtlBarTitle">存放地点:<font color="red">*</font></td>
+    <td class="listtd">
+      <INPUT TYPE="text" NAME="AssetPlace" maxlength="128" value="<HDPrint Value=#AssetPlace# Replace=#DBField2Input#>" class="JQText">
+    </td>
+  </tr>
+  <tr valign="top" JQ="Type_1">
+    <td class="DtlBarTitle"><A HREF="javascript:void(0);" onclick="DataInterface(frmDataInterface_App)">接收人</a>&nbsp;<font color="red">*</font></td>
+    <td class="listtd" colspan="5">
+      <input type="text" name="ReceiveName" readonly maxlength="64" value="<HDPrint Value=#ReceiveName# Replace=#DBField2Input#>" class="JQText JQMust" onclick="DataInterface(frmDataInterface_App)" style="width:150px;">
+      <input name="ReceiveGid" type="hidden" maxlength="32" value="<HDPrint Value=#ReceiveGid# Replace=#DBField2Input#>" class="JQText">
+      <input name="ReceiveCode" type="hidden" maxlength="64" value="<HDPrint Value=#ReceiveCode# Replace=#DBField2Input#>" class="JQText">
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">详细原因说明:<font color="red">*</font><br><font color="gray">(1000字以内)</font></td>
+    <td class="listtd" colspan="5"><textarea rows="5" name="Memo" class="JQText" maxlength="1000"><HDPrint Value=#Memo# Replace=#DBField2InputField#></textarea></td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">处理结果:<br><font color="gray">(若出售需写明出售价格)</font></td>
+    <td class="listtd" colspan="5"><textarea rows="3" name="OpResult" class="JQText" maxlength="1000"><HDPrint Value=#OpResult# Replace=#DBField2InputField#></textarea></td>
+  </tr>
+  <tr JQ="TMod_1" style="display:none">
+    <td class="DtlBarTitle">终止原因:<font color="red">*</font></td>
+    <td class="listtd" colspan="5"><textarea rows="5" id ="EndMemo" name="EndMemo" class="JQText JQEnd" maxlength="1000"><HDPrint Value=#EndMemo# Replace=#DBField2InputField#></textarea></td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">附件信息:<br><font color="gray">(双击删除)</font></td>
+    <td class="listtd" colspan="5">
+      <SELECT NAME="selFileList_1" size="3" style="width:250;" multiple><HDPrint Value=#AttachList# Replace=#None#></SELECT><br>
+      <input type="hidden" name="HDTempPath" value="<HDPrint Value=#NewGid# Replace=#DBField2Input#>">
+      <iframe FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid# Replace=#DBField2Input#>&CallBackFun=AddAttach" height=28></iframe>
+    </td>
+  </tr>
+</table>
+</form>
+
+
+<script language="javascript">
+  //复制一个工具栏
+  var $ToolBar = $("div#JQ_ToolBar");
+  $("form[name=frmDo]").append($ToolBar.html());
+
+  if ('<HDPrint Value=#IsNew# Replace=#DBField2Js#>' == '0'){
+    //T1时，加载FlowGid的数据
+    $("input[name=FlowGid]").val('<HDPrint Value=#NewGid# Replace=#DBField2Js#>');
+    $("input[name=WFCreate]").val('WF');
+  }
+  else{
+    //Tmod时，显示Tmod的数据
+    $("[JQ=TMod_1]").show();
+  }
+  //提交函数
+  function CheckSubmit(OpText){
+    //定义 必填验证的 值
+    var sCss = '';
+    //定义 提交提示文字
+    var sConfirm = '';
+    //流转状态初始化
+    $("input[name=WF]").val('WF');
+    if (OpText == '保存'){
+      sCss = 'JQSave';
+      $("input[name=WF]").val('');
+    }
+    else if (OpText == '提交'){
+      sCss = 'JQMust';
+      sConfirm = '您确定已经填写完申请单，并提交吗？';
+    }
+    else if (OpText == '终止'){
+      sCss = 'JQEnd';
+      sConfirm = '你确定要终止该流程吗？';
+    }
+    //验证必填项
+    if (!JQcheck(sCss)){
+      return false;
+    }
+    //提交时，提示
+    if (OpText != '保存'){
+      if (!(confirm(sConfirm)))
+        return false;
+    }
+    //状态赋值
+    $("input[name=Stat]").val(OpText);
+
+    //获取当前表单对象
+    var JqObj = $("form[name=frmDo]");
+    //表单参数设定
+    JqObj.attr({
+      "action":'##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#Url#>Save&UsrGid=<HDPrint Value=#UsrGid#>',
+      "target":'_self'
+    });
+    //表单提交
+    JqObj.submit();
+
+    //操作按钮变为不可用
+    $("a[name=btn_1]").prop("disabled",true);
+
+    //本函数失效
+    CheckSubmit = function() {return false;}
+  }
+</script>
+
+<script language="javascript" src="##GetWebRootPath(/Scripts/DataInterface.js)##"></script>
+<!--选择审批人调用-->
+<FORM NAME="frmDataInterface_App" ACTION="">
+  <INPUT TYPE="hidden" name="DataInterface_Title" ID="t_App" value="审批人列表">
+
+  <INPUT TYPE="hidden" name="DataInterface_Sql" ID="s_App" value="select u.gid, u.code, u.name, u.atype from v_usr u, v_org_usr v, org o where u.EntGid = '<HDPrint Value=#EntGid#>' and u.EntGid = v.EntGid and u.EntGid = o.EntGid and u.Gid = v.Usrgid and v.OrgGid = o.Gid and lower(o.Code) = lower('all_usr_grp')">
+  <INPUT TYPE="hidden" name="DataInterface_CountSql" ID="c_App" value="select count(*) from v_usr u, v_org_usr v, org o where u.EntGid = '<HDPrint Value=#EntGid#>' and u.EntGid = v.EntGid and u.EntGid = o.EntGid and u.Gid = v.Usrgid and v.OrgGid = o.Gid and lower(o.Code) = lower('all_usr_grp')">
+  <INPUT TYPE="hidden" name="DataInterface_OrderSql" value="order by u.code">
+  <INPUT TYPE="hidden" name="DataInterface_UsrGid" value="<HDPrint Value=#UsrGid#>">
+  <INPUT TYPE="hidden" name="DataInterface_AppName" value="##HDNet_AppName##">
+
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="2^代码^left^100">
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="3^姓名^left^100">
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="4^类别^left^100">
+
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="u.code^用户代码^1">
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="u.name^用户姓名^1">
+  <input TYPE="hidden" name="DataInterface_Search_Sql" value="">
+  <input TYPE="hidden" name="DataInterface_Search_Cols" value="">
+
+  <INPUT TYPE="hidden" name="DataInterface_FieldTo" value="ReceiveGid^ReceiveCode^ReceiveName">
+  <INPUT TYPE="hidden" name="DataInterface_FieldBy" value="1^2^3">
+  <INPUT TYPE="hidden" name="DataInterface_CallBckFunc" value="">
+  <INPUT TYPE="hidden" name="DataInterface_Close" value="true">
+</FORM>

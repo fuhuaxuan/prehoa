@@ -37,7 +37,7 @@ LoopSQL3=select Attach_Url ,Attach_Title  from wf_^^ModelCode^^_Attach where Ent
 LoopHDT3=Templates\WorkFlow\Form\prl_pay\Loopsql_Attachoptions.hdt
 LoopVAR3=Attachoptions
 
-LoopSQL4=select a.*,decode(a.apptype,'10','部门经理','20','行政经理','30','财务经理/FM','35','执行总经理','40','商场总经理/CM','45','区域财务经理','50','部门总监','55','资产经理','60','高级副总裁/Coo','70','首席财务官/CFO(部门总监与SVP同一个人) ','80','资产总监/Hd Invest ',85,'PREH中国资产总监','90','首席财务官/CFO','100','首席执行官/CEO','110','执行委员会/Indpt Director','1000','出纳') apptypetext from WF_^^ModelCode^^_App a where FlowGid = ##FlowGid## and ##allstat## = '13' order by AppDate
+LoopSQL4=select a.*,decode(a.apptype,'10','部门经理','20','行政经理','30','财务经理/FM','35','执行总经理','40','项目总经理/CM','45','区域财务经理','50','部门总监','55','资产经理','60','高级副总裁/Coo','70','首席财务官/CFO(部门总监与SVP同一个人) ','80','资产总监/Hd Invest ',85,'PREH中国资产总监','90','首席财务官/CFO','100','首席执行官/CEO','110','执行委员会/Indpt Director','1000','出纳') apptypetext from WF_^^ModelCode^^_App a where FlowGid = ##FlowGid## and ##allstat## = '13' order by AppDate
 LoopHDT4=Templates\WorkFlow\Form\prl_pay\Loopsql_app.hdt
 LoopVAR4=applist
 

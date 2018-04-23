@@ -92,9 +92,11 @@ WF1=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_T2 | selApp_1 | and ##AppAssign#
 
 WF2=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_Tcc | null | and ##AppAssign## = '同意' and ##NextApp## = '0'|^^AppFlowMemo^^)
 
+WF3=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_Tcc | T1Gid | and ##AppAssign## = '同意' and ##NextApp## = '0'|^^AppFlowMemo^^)
+
 ;否决，返回发起人
-WF3=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T1 | T1Gid | and ##AppAssign## = '否决' |^^AppFlowMemo^^)
+WF4=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T1 | T1Gid | and ##AppAssign## = '否决' |^^AppFlowMemo^^)
 
 
 ;同意，没有下一步，结束
-WF4=WFFlowFinish( ^^CurUrl^^ | and ##AppAssign## = '同意' and ##NextApp## = '0')
+WF5=WFFlowFinish( ^^CurUrl^^ | and ##AppAssign## = '同意' and ##NextApp## = '0')

@@ -46,6 +46,14 @@
 </tr>
 <tr><td><HDPrint Value=#EmailDtl# Replace=#None#></td></tr>
 <tr><td>[特别条件/评语] : <HDPrint Value=#Memo# Replace=#DBField2InputField#>；</td></tr>
-<tr><td>[附件信息] : <HDPrint Value=#AttachList# Replace=#None#></td></tr>
+<tr JQ="t1" style="display:none"><td class="listtd" NAME="fileList_10">[营业执照] :</td></tr>
+<tr JQ="t1" style="display:none"><td class="listtd" NAME="fileList_20">[法人身份证] :</td></tr>
+<tr JQ="t1" style="display:none"><td class="listtd" NAME="fileList_90">[医生资质] :</td></tr>
+<tr JQ="t2"><td class="listtd" NAME="fileList_30">[医师资格证] :</td></tr>
+<tr JQ="t2"><td class="listtd" NAME="fileList_40">[医师执业证] :</td></tr>
+<tr JQ="t2"><td class="listtd" NAME="fileList_50">[专业技术职称证书] :</td></tr>
+<tr JQ="t2"><td class="listtd" NAME="fileList_60">[简历] :</td></tr>
+<tr JQ="t2"><td class="listtd" NAME="fileList_70">[身份证及其它有效证件] :</td></tr>
+<tr JQ="t2"><td class="listtd" NAME="fileList_80">[其他:（包含核实文件）] </td></tr>
 <tr><td>-----------内容展示完毕-----------</td></tr>
 </table>

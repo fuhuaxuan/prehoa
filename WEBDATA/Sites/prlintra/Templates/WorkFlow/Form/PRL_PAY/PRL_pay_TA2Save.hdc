@@ -27,7 +27,7 @@ SqlForCondition2= select '发起人：'||fillusrname||'；付款单号：'||decode(feenum,
 ;30:财务经理;
 ;31:出纳付款;
 ;35:执行总经理;
-;40:商场总经理;
+;40:项目总经理;
 ;50:区域总监;
 ;71:资产经理 AssetManager
 SqlForCondition3=select v.PostGid TccGid from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##DeptGid## and v.atype=30
@@ -80,13 +80,13 @@ log=^^ModelCode^^_TA2:flowgid:##flowgid##; ACGCODE:##ACGCODEQYCW## ; payfee:##PA
 ChangePage=0
 
 ;acgcode 不是 ('1.01','1.02','1.03','2.01','2.02','2.03')
-WF1=WFFlowRun( ^^ModelCode^^_TA2 | ^^ModelCode^^_TB1 | TB1Gid | and  ##ACGCODEQYCW## NOT in ('1.01','1.02','1.03','2.01','2.02','2.03') and ##PAYFEE## - ##bvalue## > 0 and ##allvalue## - 0  != 0 and ##AppAssign## = '同意'  | 商场总经理/CM:同意 - ^^flownote^^)
+WF1=WFFlowRun( ^^ModelCode^^_TA2 | ^^ModelCode^^_TB1 | TB1Gid | and  ##ACGCODEQYCW## NOT in ('1.01','1.02','1.03','2.01','2.02','2.03') and ##PAYFEE## - ##bvalue## > 0 and ##allvalue## - 0  != 0 and ##AppAssign## = '同意'  | 项目总经理/CM:同意 - ^^flownote^^)
 
-;acgcode 是 ('1.01','1.02','1.03','2.01','2.02','2.03') 商场总经理后面加入区域财务经理审批节点
-WF2=WFFlowRun( ^^ModelCode^^_TA2 | ^^ModelCode^^_TA3 | TA3Gid | and  ##ACGCODEQYCW## in ('1.01','1.02','1.03','2.01','2.02','2.03') and ##PAYFEE## - ##bvalue## > 0 and ##allvalue## - 0  != 0 and ##AppAssign## = '同意' | 商场总经理/CM:同意 - ^^flownote^^)
+;acgcode 是 ('1.01','1.02','1.03','2.01','2.02','2.03') 项目总经理后面加入区域财务经理审批节点
+WF2=WFFlowRun( ^^ModelCode^^_TA2 | ^^ModelCode^^_TA3 | TA3Gid | and  ##ACGCODEQYCW## in ('1.01','1.02','1.03','2.01','2.02','2.03') and ##PAYFEE## - ##bvalue## > 0 and ##allvalue## - 0  != 0 and ##AppAssign## = '同意' | 项目总经理/CM:同意 - ^^flownote^^)
 
 
-WF3=WFFlowRun( ^^ModelCode^^_TA2 | ^^ModelCode^^_TMOD | NULL | and ##AppAssign## = '否决' | 商场总经理/CM:否决 - ^^flownote^^)
+WF3=WFFlowRun( ^^ModelCode^^_TA2 | ^^ModelCode^^_TMOD | NULL | and ##AppAssign## = '否决' | 项目总经理/CM:否决 - ^^flownote^^)
 ;否决后，还有个抄送给相关人员没有做
 
 
@@ -94,7 +94,7 @@ WF4=WFFlowRun( ^^ModelCode^^_TA2 | ^^ModelCode^^_Tconfirm | NULL | and ##AppAssi
 
 
 
-WF5=WFFlowRun( ^^ModelCode^^_TA2 | ^^ModelCode^^_TCC2 | TccGid | and (##PAYFEE## - ##bvalue## <=0 or ##allvalue## - 0  = 0) | 商场总经理/CM:^^AppAssign^^ - ^^flownote^^)
+WF5=WFFlowRun( ^^ModelCode^^_TA2 | ^^ModelCode^^_TCC2 | TccGid | and (##PAYFEE## - ##bvalue## <=0 or ##allvalue## - 0  = 0) | 项目总经理/CM:^^AppAssign^^ - ^^flownote^^)
 
 
 

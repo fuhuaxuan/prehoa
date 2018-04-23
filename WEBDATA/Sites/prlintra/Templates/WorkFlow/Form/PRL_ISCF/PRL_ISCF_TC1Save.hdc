@@ -55,7 +55,7 @@ DefaultOrderBy=
 [GroupBy]
 
 [AddtionalSQL]
-; --鹏瑞利管辖部门的扩展性：10:部门经理；20:总部人事经理；30：财务经理；40：商场总经理；50：区域总监;60:常务理事;71:资产总监；80:资产总监；90：cfo;100:ceo
+; --鹏瑞利管辖部门的扩展性：10:部门经理；20:总部人事经理；30：财务经理；40：项目总经理；50：区域总监;60:常务理事;71:资产总监；80:资产总监；90：cfo;100:ceo
 SQL1=insert into WF_PRL_ISF_App (EntGid,FlowGid, DtlGid,AppStat, AppGid,AppName, AppAssign, Note,AppDate,apptype) values(__ENTGID__,##FlowGid##, sys_guid(),decode(##AppAssign##,'同意','12','13'), __USRGID__, __USRNAME__ || '[' || __USRCODE__ || ']', ##AppAssign##, ##Note##,sysdate,80)
 
 ;审批人否决

@@ -32,7 +32,7 @@ LoopHDT1=Templates\WorkFlow\Form\^^ModelCode^^\LoopSql_AttachOptions.hdt
 LoopVAR1=AttachOptions
 
 ;显示审批人信息
-LoopSQL2=select a.*,decode(a.apptype,'10','商场总经理/CM','20','财务经理/FM','40','总部推广总监/常务理事COO','50','资产总监(Hd Invest)','60','首席财务官(CFO)','70','首席执行官(CEO)') apptypetext  from WF_PRL_AdvertBS_ISF_App a where FlowGid = ##FlowGid## and AppDate is not null and ##sFlowGid## is null order by AppDate
+LoopSQL2=select a.*,decode(a.apptype,'10','项目总经理/CM','20','财务经理/FM','40','总部推广总监/常务理事COO','50','资产总监(Hd Invest)','60','首席财务官(CFO)','70','首席执行官(CEO)') apptypetext  from WF_PRL_AdvertBS_ISF_App a where FlowGid = ##FlowGid## and AppDate is not null and ##sFlowGid## is null order by AppDate
 LoopHDT2=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_App.hdt
 LoopVAR3=applist
 

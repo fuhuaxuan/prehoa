@@ -24,7 +24,7 @@ LoopHDT1=Templates\WorkFlow\Form\prl_ISCF\Loopsql_Attach.hdt
 LoopVAR1=AttachList
 
 ;取出审批人信息
-LoopSQL3=select a.*,decode(a.apptype,'10','招商经理/LM','20','行政经理','30','财务经理/FM','40','商场总经理/CM','50','区域总监','60','常务理事/COO','70','资产总监/Hd Invest ','80','资产总监/Hd Invest ','90','首席财务官/CFO','100','首席执行官/CEO') apptypetext from WF_prl_isf_App a where FlowGid = ##FlowGid##  order by AppDate
+LoopSQL3=select a.*,decode(a.apptype,'10','招商经理/LM','20','行政经理','30','财务经理/FM','40','项目总经理/CM','50','区域总监','60','常务理事/COO','70','资产总监/Hd Invest ','80','资产总监/Hd Invest ','90','首席财务官/CFO','100','首席执行官/CEO') apptypetext from WF_prl_isf_App a where FlowGid = ##FlowGid##  order by AppDate
 LoopHDT3=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_app.hdt
 LoopVAR3=applist
 [Where]

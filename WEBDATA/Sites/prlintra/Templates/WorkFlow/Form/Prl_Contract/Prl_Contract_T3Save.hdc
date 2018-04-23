@@ -15,7 +15,7 @@ Remind2=¶Ô²»Æğ£¬ÏÂÒ»²½ÉóÅúÈË²ÆÎñ¾­ÀíÎ´ÕÒµ½£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ¡£<script>alert('¶Ô²»Æ
 
 ;¼ì²éÅĞ¶ÏµÄSqlÓï¾ä£¬²é²»µ½½á¹ûÊÇ±¨´í£¬´ÓSQL1¡«SQL5£¬¹²¿ÉÒÔĞ´5¾ä
 SQL3=select 1 from dual where ##AppAssign## <> 'Í¬Òâ' union select 1 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=40 and ##AppAssign## = 'Í¬Òâ'
-Remind3=¶Ô²»Æğ£¬ÏÂÒ»²½ÉóÅúÈËÉÌ³¡×Ü¾­ÀíÎ´ÕÒµ½£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ¡£<script>alert('¶Ô²»Æğ£¬ÏÂÒ»²½ÉóÅúÈËÉÌ³¡×Ü¾­ÀíÎ´ÕÒµ½£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ¡£');history.back()</script>
+Remind3=¶Ô²»Æğ£¬ÏÂÒ»²½ÉóÅúÈËÏîÄ¿×Ü¾­ÀíÎ´ÕÒµ½£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ¡£<script>alert('¶Ô²»Æğ£¬ÏÂÒ»²½ÉóÅúÈËÏîÄ¿×Ü¾­ÀíÎ´ÕÒµ½£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ¡£');history.back()</script>
 [Detail]
 ;ÏÔÊ¾£¬²éÑ¯µÃµ½µÄ½á¹û¿ÉÒÔÓÃÓÚHDTÏÔÊ¾£¬´ÓSQL1¡«SQL20¹²Ö§³Ö20Ìõ
 ;È¡³ö±¾Á÷³ÌÄ£ĞÍĞÅÏ¢
@@ -27,10 +27,10 @@ SQLForCondition2=select '^^CurUsrName^^:^^AppAssign^^ - ºÏÍ¬µ¥ºÅ£º' || ISFNum ||
 ;Çó³ö×î´óµÄÉóÅú¼¶±ğ
 SQLForCondition3=select count(*) OpAppCW from (select fd.OpApp from WF_^^ModelCode^^_Dtl fd where fd.EntGid = __ENTGID__ AND fd.FlowGid = ##FlowGid## and fd.OpApp is not null union select distinct fo.OpApp from WF_^^ModelCode^^_Other fo where fo.EntGid = __ENTGID__ AND fo.FlowGid = ##FlowGid## and fo.OpApp is not null) a where a.OpApp in ('B','D','F') 
 
-;ÅôÈğÀû¹ÜÏ½²¿ÃÅµÄÀ©Õ¹ĞÔ£º10:²¿ÃÅ¾­Àí(ÕĞÉÌ¾­Àí)£»20:ÈËÊÂ¾­Àí£»30£º²ÆÎñ¾­Àí£»30£º³öÄÉ£»40£ºÉÌ³¡×Ü¾­Àí£»50£ºÇøÓò×Ü¼à;71:×Ê²ú¾­Àí AssetManager
+;ÅôÈğÀû¹ÜÏ½²¿ÃÅµÄÀ©Õ¹ĞÔ£º10:²¿ÃÅ¾­Àí(ÕĞÉÌ¾­Àí)£»20:ÈËÊÂ¾­Àí£»30£º²ÆÎñ¾­Àí£»30£º³öÄÉ£»40£ºÏîÄ¿×Ü¾­Àí£»50£ºÇøÓò×Ü¼à;71:×Ê²ú¾­Àí AssetManager
 SqlForCondition4=select v.PostGid AppGid30 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=30
 
-;ÅôÈğÀû¹ÜÏ½²¿ÃÅµÄÀ©Õ¹ĞÔ£º10:²¿ÃÅ¾­Àí(ÕĞÉÌ¾­Àí)£»20:ÈËÊÂ¾­Àí£»30£º²ÆÎñ¾­Àí£»30£º³öÄÉ£»40£ºÉÌ³¡×Ü¾­Àí£»50£ºÇøÓò×Ü¼à;71:×Ê²ú¾­Àí AssetManager
+;ÅôÈğÀû¹ÜÏ½²¿ÃÅµÄÀ©Õ¹ĞÔ£º10:²¿ÃÅ¾­Àí(ÕĞÉÌ¾­Àí)£»20:ÈËÊÂ¾­Àí£»30£º²ÆÎñ¾­Àí£»30£º³öÄÉ£»40£ºÏîÄ¿×Ü¾­Àí£»50£ºÇøÓò×Ü¼à;71:×Ê²ú¾­Àí AssetManager
 SqlForCondition5=select v.PostGid AppGid40 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=40
 
 [AddtionalSQL]

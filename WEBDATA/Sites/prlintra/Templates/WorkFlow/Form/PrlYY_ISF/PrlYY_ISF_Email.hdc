@@ -17,6 +17,11 @@ SqlForCondition1=select wm.Code ModelCode, wm.Name ModelName,replace(upper(wm.co
 ;显示本流程主表信息
 SQL1=select substr(wf.FillDeptCode, 0, 4) ParentDeptCode,wf.* from wf_^^ModelCode^^ wf where wf.EntGid = __ENTGID__ and wf.FlowGid = ##FlowGid##
 
+;显示本流程附件信息
+LoopSQL1=select Attach_Type,Attach_Title,replace(Attach_Url,' ','%20') Attach_Url from wf_^^ModelCode^^_Attach where EntGid = __ENTGID__ and  FlowGid = ##FlowGid## order by attach_title
+LoopHDT1=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AttachList.hdt
+LoopVAR1=AttachList
+
 LoopSQL3=select fd.TBID,to_char(fd.FreeRentDate1,'YYYY.MM.DD') FreeRentDate1,to_char(fd.FreeRentDate2,'YYYY.MM.DD') FreeRentDate2,fd.yeartype,to_char(fd.TBRD,'FM999999999990.9990') tbrd,to_char(fd.tbrm,'FM999999999990.9990') tbrm,to_char(fd.pmfd,'FM999999999990.9990') pmfd,to_char(fd.pmfm,'FM999999999990.9990') pmfm,to_char(fd.progtod,'FM999999999990.9990') progtod,to_char(fd.progtom,'FM999999999990.9990') progtom from wf_^^ModelCode^^_dtl fd where fd.EntGid = __ENTGID__ and fd.FlowGid = ##FlowGid## and lower(fd.TBID) in ('tb_dtl10','tb_dtl30') order by fd.TBID,fd.yeartype
 LoopHDT3=Templates\WorkFlow\Form\^^ModelCode^^\LoopSql_EmailDtl.hdt
 LoopVAR3=EmailDtl

@@ -28,7 +28,7 @@ SqlForCondition1=select Code ModelCode, Name ModelName from wf_Model where Model
 ;得到业务单据信息
 SqlForCondition2= select '['||atype||']'||lessee flownote,nvl(sparam1,0) sparam1,nvl(sparam2,0) sparam2,nvl(sparam3,0) sparam3,nvl(round(TotalFee + OtherTotalFee,2),0) TotalFee,fillusrdeptgid,fillusrgid from WF_^^ModelCode^^ where FlowGid = ##FlowGid##
 
-; --鹏瑞利管辖部门的扩展性：10:部门经理；20:行政经理；30：财务经理；31：出纳；40：商场总经理；50：区域总监；71:资产总监；
+; --鹏瑞利管辖部门的扩展性：10:部门经理；20:行政经理；30：财务经理；31：出纳；40：项目总经理；50：区域总监；71:资产总监；
 SqlForCondition3=select b.usrgid usrA1 from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##fillusrdeptgid## and b.gid = a.empgidex and atype=30 and b.usrgid is not null
 
 ;得到业务单据信息
@@ -46,7 +46,7 @@ SqlForCondition5=select code2 ZongDept from dept a where code1 = (select substr(
 ;发起人
 ;招商经理 10
 ;财务经理 30 
-;商场总经理 40 
+;项目总经理 40 
 ;资产经理 71
 ;物业经理 组织代码 0002 下 所有人员， 中职务 为物业经理的人
 LoopSQL3=select hr.Email from (select a.gid, a.code, a.name from v_usr a, v_org_usr b, org c where a.EntGid = __ENTGID__ and a.EntGid = b.EntGid and a.EntGid = c.EntGid and a.Gid = b.Usrgid and b.OrgGid = c.Gid and lower(c.Code) like lower(##ZongDept##) || '%') u,hr_emp hr where hr.entgid = __ENTGID__ and u.gid = hr.usrgid and hr.position like '%物业经理%' union select b.Email from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##fillusrdeptgid## and b.gid = a.empgidex and atype=10 and b.usrgid is not null union select b.Email from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##fillusrdeptgid## and b.gid = a.empgidex and atype=30 and b.usrgid is not null union select b.Email from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##fillusrdeptgid## and b.gid = a.empgidex and atype=40 and b.usrgid is not null union select b.Email from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##fillusrdeptgid## and b.gid = a.empgidex and atype=71 and b.usrgid is not null union select hr.Email from WF_^^ModelCode^^ i,hr_emp hr where i.EntGid = __ENTGID__ and i.FlowGid = ##FlowGid## and hr.EntGid = __ENTGID__  and hr.usrgid = i.FillUsrGid
@@ -91,20 +91,20 @@ Text5=
 
 ChangePage=0
 ;审批人同意，PI>0 or P2>0 or 免租期 >= 0 个月  or 总金额 > 0,流转到下一步审批人
-WF1=WFFlowRun( ^^ModelCode^^_TA3 | ^^ModelCode^^_TB | NULL | and (##sparam1## - 0 > 0 or ##sparam2## > 0 or ##sparam3## > 0 or ##TotalFee## > 0) and ##AppAssign## = '同意' | 商场总经理/CM:同意 - ^^flownote^^)
+WF1=WFFlowRun( ^^ModelCode^^_TA3 | ^^ModelCode^^_TB | NULL | and (##sparam1## - 0 > 0 or ##sparam2## > 0 or ##sparam3## > 0 or ##TotalFee## > 0) and ##AppAssign## = '同意' | 项目总经理/CM:同意 - ^^flownote^^)
 
 ;审批人,返回发起人修改
-WF2=WFFlowRun( ^^ModelCode^^_TA3 | ^^ModelCode^^_TMOD | NULL | and ##AppAssign## = '否决' | 商场总经理/CM:否决 - ^^flownote^^)
+WF2=WFFlowRun( ^^ModelCode^^_TA3 | ^^ModelCode^^_TMOD | NULL | and ##AppAssign## = '否决' | 项目总经理/CM:否决 - ^^flownote^^)
 
 ;--------------------------------------
 ;抄送 资产总监Asset Manager
-WF3=WFFlowRun( ^^ModelCode^^_TA3 | ^^ModelCode^^_TCC1 | usrcc1 | and ##sparam1## <= 0 and ##sparam2## <= 0 and ##sparam3## <= 0 and ##TotalFee## <= 0 and ##AppAssign## = '同意'| 商场总经理/CM:^^AppAssign^^ - ^^flownote^^)
+WF3=WFFlowRun( ^^ModelCode^^_TA3 | ^^ModelCode^^_TCC1 | usrcc1 | and ##sparam1## <= 0 and ##sparam2## <= 0 and ##sparam3## <= 0 and ##TotalFee## <= 0 and ##AppAssign## = '同意'| 项目总经理/CM:^^AppAssign^^ - ^^flownote^^)
 
 ;结束流程 抄送 财务经理
-WF4=WFFlowRun( ^^ModelCode^^_TA3 | ^^ModelCode^^_TCC2 | usrA1 | and ##sparam1## <= 0 and ##sparam2## <= 0 and ##sparam3## <= 0 and ##TotalFee## <= 0 and ##AppAssign## = '同意'| 商场总经理/CM:^^AppAssign^^ - ^^flownote^^)
+WF4=WFFlowRun( ^^ModelCode^^_TA3 | ^^ModelCode^^_TCC2 | usrA1 | and ##sparam1## <= 0 and ##sparam2## <= 0 and ##sparam3## <= 0 and ##TotalFee## <= 0 and ##AppAssign## = '同意'| 项目总经理/CM:^^AppAssign^^ - ^^flownote^^)
 
 ;结束流程 抄送 发起人
-WF5=WFFlowRun( ^^ModelCode^^_TA3 | ^^ModelCode^^_TCC2 | fillusrgid | and ##sparam1## <= 0 and ##sparam2## <= 0 and ##sparam3## <= 0 and ##TotalFee## <= 0 and ##AppAssign## = '同意'| 商场总经理/CM:^^AppAssign^^ - ^^flownote^^)
+WF5=WFFlowRun( ^^ModelCode^^_TA3 | ^^ModelCode^^_TCC2 | fillusrgid | and ##sparam1## <= 0 and ##sparam2## <= 0 and ##sparam3## <= 0 and ##TotalFee## <= 0 and ##AppAssign## = '同意'| 项目总经理/CM:^^AppAssign^^ - ^^flownote^^)
 
 ;结束流程
 WF6=WFFlowFinish( ^^ModelCode^^_TA3 | and ##sparam1## <= 0 and ##sparam2## <= 0 and ##sparam3## <= 0 and ##TotalFee## <= 0 and ##AppAssign## = '同意')

@@ -20,7 +20,7 @@ SqlForCondition2=select substr(f.FillUsrDeptCode,0,4) ProCode from wf_^^ModelCod
 Sql2= select A.*,decode(a.confirmfee,null,'审批通过后回填',a.confirmfee||'  [确认时间：'||to_char(a.confirmdate,'yyyy.mm.dd hh24:mi')||']') confirmfeetext,decode(a.stat,'0','未开始','1','填写中','10','已提交，审批中','12','审批通过','13','审批否决，待修改','30','已确认金额-已完成','40','已终止合同','100','发起人结束流程',a.Stat) StatText from wf_^^ModelCodeT^^ A where  EntGid=__ENTGID__ and FlowGid = ##FlowGid##
 
 ;显示本流程已审批审批人信息
-LoopSQL2=select a.*,decode(a.apptype,0,'发起人',10,'部门经理',15,'部门总经理',20,'部门总经理',30,'财务经理',35,'总经理',40,'商场总经理',50,'资产经理',60,'部门总监',80,decode(##ProCode##,'0004','区域总经理','资产总监'),90,'财务总监',95,'Deputy CEO',98,decode(##ProCode##,'0004','区域总经理','资产总监'),100,'CEO',110,'执行委员会',120,'发起人确认') apptypetext  from wf_^^ModelCodeT^^_App a where FlowGid = ##FlowGid## and AppDate is not null order by AppDate
+LoopSQL2=select a.*,decode(a.apptype,0,'发起人',10,'部门经理',15,'部门总经理',20,'部门总经理',30,'财务经理',35,'总经理',40,'项目总经理',50,'资产经理',60,'部门总监',80,decode(##ProCode##,'0004','区域总经理','资产总监'),90,'财务总监',95,'Deputy CEO',98,decode(##ProCode##,'0004','区域总经理','资产总监'),100,'CEO',110,'执行委员会',120,'发起人确认') apptypetext  from wf_^^ModelCodeT^^_App a where FlowGid = ##FlowGid## and AppDate is not null order by AppDate
 LoopHDT2=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AppPrint.hdt
 LoopVAR2=AppList
 

@@ -108,6 +108,13 @@
 </tr>
 </table>
 <HDPrint Value=#AppList# Replace=#None#>
+<HDLoop>
+<table width="645" cellspacing="0" cellpadding="0" align="center" style="margin-top:5px">
+  <tr>
+    <td>打印次数：<HDPrint Value=#PrintTime#>次</td>
+  </tr>
+</table>
+</HDLoop>
 <script language="javascript">
 //函数：ready
   //功能：document 加载完成后调用

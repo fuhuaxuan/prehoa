@@ -9,7 +9,7 @@ Remind1=您指定的费用流程没有找到！<script>alert('您指定的费用流程没有找到！');wi
 
 ;检查判断的Sql语句，查不到结果是报错，从SQL1～SQL5，共可以写5句
 SQL2=select 1 from dual where ##AppAssign## <> '同意' union select 1 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##DeptGid## and v.atype=40 and ##AppAssign## = '同意'
-Remind2=对不起，下一步审批人商场总经理/CM未找到，请与管理员联系。<script>alert('对不起，下一步审批人商场总经理/CM未找到，请与管理员联系。');history.back()</script>
+Remind2=对不起，下一步审批人项目总经理/CM未找到，请与管理员联系。<script>alert('对不起，下一步审批人项目总经理/CM未找到，请与管理员联系。');history.back()</script>
 
 [Master]
 
@@ -28,12 +28,12 @@ SqlForCondition2=select '本次申请金额：'||askfee||';申请目的：'||substr(target,0
 ;30:财务经理;
 ;31:出纳付款;
 ;35:执行总经理;
-;40:商场总经理;
+;40:项目总经理;
 ;50:区域总监;
 ;71:资产经理 AssetManager
 SqlForCondition3=select v.PostGid TA2Gid,v.Email TA2email from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##DeptGid## and v.atype=35
 
-;商场总经理
+;项目总经理
 SqlForCondition4=select v.PostGid TA3Gid,v.Email ThisEmail from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##DeptGid## and v.atype=40
 
 ;执行总总经理是否存在

@@ -19,7 +19,7 @@ Sql2=select A.*,substr(acgtwoname,0,20) acgtwonametext,decode(a.acgother,null,'n
 ;得到业务单据信息
 SQL3=select v.PostGid CWUsrGid from WF_^^ModelCode^^ wf,v_Post v where wf.EntGid = __ENTGID__ and wf.FlowGid = ##FlowGid## and wf.EntGid = v.EntGid(+) and wf.fillusrdeptgid = v.deptGid(+) and v.atype(+) = 30
 
-LoopSQL2=select a.*,decode(a.apptype,'10','部门经理','20','行政经理','30','财务经理/FM','40','商场总经理/CM','50','部门总监','60','高级副总裁/SVP','70','首席财务官/CFO(部门总监与SVP同一个人)','80','资产总监/Hd Invest ','90','首席财务官/CFO','100','首席执行官/CEO','110','执行委员会/Indpt Director') apptypetext from WF_^^ModelCode^^_App a where FlowGid = ##FlowGid##  order by AppDate
+LoopSQL2=select a.*,decode(a.apptype,'10','部门经理','20','行政经理','30','财务经理/FM','40','项目总经理/CM','50','部门总监','60','高级副总裁/SVP','70','首席财务官/CFO(部门总监与SVP同一个人)','80','资产总监/Hd Invest ','90','首席财务官/CFO','100','首席执行官/CEO','110','执行委员会/Indpt Director') apptypetext from WF_^^ModelCode^^_App a where FlowGid = ##FlowGid##  order by AppDate
 LoopHDT2=Templates\WorkFlow\Form\PRL_Fee\Loopsql_app.hdt
 LoopVAR2=applist
 

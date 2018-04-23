@@ -15,7 +15,7 @@ Remind2=¶Ô²»Æð£¬ÏÂÒ»²½ÉóÅúÈË²¿ÃÅ¾­ÀíÎ´ÕÒµ½£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ¡£<script>alert('¶Ô²»Æ
 
 ;¼ì²éÅÐ¶ÏµÄSqlÓï¾ä£¬²é²»µ½½á¹ûÊÇ±¨´í£¬´ÓSQL1¡«SQL5£¬¹²¿ÉÒÔÐ´5¾ä
 SQL3=select 1 from dual where ##Stat## <> 'Ìá½»' union select 1 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=40 and ##Stat## = 'Ìá½»'
-Remind3=¶Ô²»Æð£¬ÏÂÒ»²½ÉóÅúÈËÉÌ³¡×Ü¾­ÀíÎ´ÕÒµ½£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ¡£<script>alert('¶Ô²»Æð£¬ÏÂÒ»²½ÉóÅúÈËÉÌ³¡×Ü¾­ÀíÎ´ÕÒµ½£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ¡£');history.back()</script>
+Remind3=¶Ô²»Æð£¬ÏÂÒ»²½ÉóÅúÈËÏîÄ¿×Ü¾­ÀíÎ´ÕÒµ½£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ¡£<script>alert('¶Ô²»Æð£¬ÏÂÒ»²½ÉóÅúÈËÏîÄ¿×Ü¾­ÀíÎ´ÕÒµ½£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ¡£');history.back()</script>
 
 [Detail]
 ;ÏÔÊ¾£¬²éÑ¯µÃµ½µÄ½á¹û¿ÉÒÔÓÃÓÚHDTÏÔÊ¾£¬´ÓSQL1¡«SQL20¹²Ö§³Ö20Ìõ

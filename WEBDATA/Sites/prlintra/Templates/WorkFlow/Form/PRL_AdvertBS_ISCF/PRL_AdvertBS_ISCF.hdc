@@ -17,7 +17,7 @@ SqlForCondition2=select wf.*,decode(stat,'0','未开始','10','已保存,填写中','11',
 
 ;财务经理
 Sql3=select b.usrgid CWUsrGid from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##fillusrdeptgid## and b.gid = a.empgidex and atype=30 and b.usrgid is not null
----10:部门经理； 20:行政经理； 30:财务经理； 40:商场总经理； 50:区域总监； 60:常务理事； 70:资产总监； 80:资产总监； 90:CFO； 100:CEO；
+---10:部门经理； 20:行政经理； 30:财务经理； 40:项目总经理； 50:区域总监； 60:常务理事； 70:资产总监； 80:资产总监； 90:CFO； 100:CEO；
 [Where]
 1= 
 2= 

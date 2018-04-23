@@ -46,7 +46,7 @@ SqlForCondition4=select code2 ZongDept from dept a where code1 = (select substr(
 ;发起人
 ;招商经理 10
 ;财务经理 30 
-;商场总经理 40 
+;项目总经理 40 
 ;资产经理 71
 ;物业经理 组织代码 0002 下 所有人员， 中职务 为物业经理的人
 LoopSQL3=select hr.Email from (select a.gid, a.code, a.name from v_usr a, v_org_usr b, org c where a.EntGid = __ENTGID__ and a.EntGid = b.EntGid and a.EntGid = c.EntGid and a.Gid = b.Usrgid and b.OrgGid = c.Gid and lower(c.Code) like lower(##ZongDept##) || '%') u,hr_emp hr where hr.entgid = __ENTGID__ and u.gid = hr.usrgid and hr.position like '%物业经理%' union select b.Email from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##fillusrdeptgid## and b.gid = a.empgidex and atype=10 and b.usrgid is not null union select b.Email from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##fillusrdeptgid## and b.gid = a.empgidex and atype=30 and b.usrgid is not null union select b.Email from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##fillusrdeptgid## and b.gid = a.empgidex and atype=40 and b.usrgid is not null union select b.Email from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##fillusrdeptgid## and b.gid = a.empgidex and atype=71 and b.usrgid is not null union select hr.Email from WF_PRL_ISF i,hr_emp hr where i.EntGid = __ENTGID__ and i.FlowGid = ##FlowGid## and hr.EntGid = __ENTGID__  and hr.usrgid = i.FillUsrGid
@@ -66,7 +66,7 @@ DefaultOrderBy=
 [GroupBy]
 
 [AddtionalSQL]
-; --鹏瑞利管辖部门的扩展性：10:部门经理；20:总部人事经理；30：财务经理；40：商场总经理；50：区域总监;60:常务理事;70:资产总监；80:资产总监；90：cfo;100:ceo
+; --鹏瑞利管辖部门的扩展性：10:部门经理；20:总部人事经理；30：财务经理；40：项目总经理；50：区域总监;60:常务理事;70:资产总监；80:资产总监；90：cfo;100:ceo
 SQL1=insert into WF_PRL_ISF_App (EntGid,FlowGid, DtlGid,AppStat, AppGid,AppName, AppAssign, Note,AppDate,apptype) values(__ENTGID__,##FlowGid##, sys_guid(),decode(##AppAssign##,'同意','12','批准','30','转让授权','11','13'), __USRGID__, __USRNAME__ || '[' || __USRCODE__ || ']', ##AppAssign##, ##Note##,sysdate,90)
 
 ;审批人否决

@@ -29,7 +29,7 @@ SqlForCondition1=select Code ModelCode, Name ModelName from wf_Model where Model
 
 ;得到业务单据信息
 SqlForCondition2=select '['||atype||']'||lessee flownote,sparam1,sparam2,sparam3,fillusrdeptgid,fillusrgid,unitgid from WF_^^ModelCode^^ where FlowGid = ##FlowGid##
-; --鹏瑞利管辖部门的扩展性：10:部门经理；20:行政经理；30：财务经理；31：出纳；40：商场总经理；50：区域总监；71:资产总监；
+; --鹏瑞利管辖部门的扩展性：10:部门经理；20:行政经理；30：财务经理；31：出纳；40：项目总经理；50：区域总监；71:资产总监；
 ;招商经理
 SqlForCondition3=select b.usrgid usrA1,b.email thisemail from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##DeptGid## and b.gid = a.empgidex and atype=10 and b.usrgid is not null
 

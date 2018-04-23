@@ -70,7 +70,7 @@
     <HDPrint Value=#ApplyUsrName#>
     <HDIF Equal(<HDPrint Value=#CurUsrCode# Replace=#None#>, heading)>
     <HDIF Equal(<HDPrint Value=#IsCM# Replace=#None#>, 是)>
-    (商场总经理)
+    (项目总经理)
     </HDIF>
     </HDIF>
     </td>

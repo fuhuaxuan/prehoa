@@ -2,21 +2,10 @@
 <script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
 <script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
 <script language="javascript">
-  //自动获取高度
-  function changeHeight()
-  {
-    //改变 Iframe 高度
-    if(top != self)
-    {
-      window.parent.document.getElementById('iframeDtl').style.height = frmDtl.scrollHeight + 10;
-    }
-  }
-  //展开，折叠
-  function JQExpandEx(JsStr)
-  {
-    JQExpand(JsStr);
-    changeHeight();
-  }
+  //窗口改变，重计算iframe的高度
+  $(window).resize(function (){
+    JQChgHeight();
+  });
 
 </script>
 <HDPrint Value=#EmailPhone# Replace=#None#>
@@ -85,7 +74,7 @@
     <td class="listtd"><HDPrint Value=#BuildArea#></td>
   </tr>
   <tr valign="top">
-    <td class="listtd" colspan="6">A、</td>
+    <td class="listtd" colspan="6">A、租户信息</td>
   </tr>
   <tr valign="top">
     <td class="DtlBarTitle">租户:</td>
@@ -104,7 +93,7 @@
     <td class="listtd"><HDPrint Value=#Fax#></td>
   </tr>
   <tr valign="top">
-    <td class="listtd" colspan="6">B、</td>
+    <td class="listtd" colspan="6">B、合同信息</td>
   </tr>
   <tr valign="top">
     <td class="DtlBarTitle">租赁期限:</td>
@@ -161,9 +150,10 @@
     <td class="DtlBarTitle"></td>
     <td class="listtd"></td>
   </tr>
+  <tr valign="top">
+    <td class="listtd" colspan="6">C、租赁条件</td>
+  </tr>
 </table>
-
-<br>
 <table width="100%" class="ListBar" cellpadding="0"  cellspacing="1">
   <colgroup>
      <col style="width:10%">
@@ -233,15 +223,19 @@
   </tbody>
 </table>
 <HDPrint Value=#DtlList# Replace=#None#>
-<br>
-<table cellpadding="0" cellspacing="1" class="ListBar" width="100%" id="tb_Other">
+<table cellpadding="0" cellspacing="1" class="ListBar" width="100%" id="tb_Attach">
   <col style="padding-left:4px;width:10%">
-  <col style="padding-left:4px;width:40%">
+  <col style="padding-left:4px;width:23%">
   <col style="padding-left:4px;width:10%">
-  <col style="padding-left:4px;width:40%">
+  <col style="padding-left:4px;width:23%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:23%">
+  <tr valign="top">
+    <td class="listtd" colspan="6">D、附件信息</td>
+  </tr>
   <tr valign="top">
     <td class="DtlBarTitle">附件类型:</td>
-    <td class="listtd" colspan="3"><HDPrint Value=#AttachType#>
+    <td class="listtd" colspan="5"><HDPrint Value=#AttachType#>
       <script language="javascript">
         //函数：ready
         //功能：document 加载完成后调用
@@ -262,20 +256,20 @@
     <td class="listtd" NAME="fileList_10"></td>
     <td class="DtlBarTitle">法人身份证:</td>
     <td class="listtd" NAME="fileList_20"></td>
+    <td class="DtlBarTitle">医生资质:</td>
+    <td class="listtd" NAME="fileList_90"></td>
   </tr>
   <tr valign="top" JQ="t2">
     <td class="DtlBarTitle">医师资格证:</td>
     <td class="listtd" NAME="fileList_30"></td>
     <td class="DtlBarTitle">医师执业证:</td>
     <td class="listtd" NAME="fileList_40"></td>
-  </tr>
-  <tr valign="top" JQ="t2">
     <td class="DtlBarTitle">专业技术职称证书:</td>
     <td class="listtd" NAME="fileList_50"></td>
-    <td class="DtlBarTitle">简历:</td>
-    <td class="listtd" NAME="fileList_60"></td>
   </tr>
   <tr valign="top" JQ="t2">
+    <td class="DtlBarTitle">简历:</td>
+    <td class="listtd" NAME="fileList_60"></td>
     <td class="DtlBarTitle">身份证及其它有效证件:</td>
     <td class="listtd" NAME="fileList_70"></td>
     <td class="DtlBarTitle">其他:（包含核实文件）</td>
@@ -283,11 +277,11 @@
   </tr>
   <tr valign="top">
     <td class="DtlBarTitle">特别条件/评语/备注:</td>
-    <td class="listtd" colspan="3"><HDPrint Value=#Memo#></td>
+    <td class="listtd" colspan="5"><HDPrint Value=#Memo#></td>
   </tr>
   <tr JQ="TMod_1" style="display:none">
     <td class="DtlBarTitle">终止原因:</td>
-    <td class="listtd" colspan="3"><HDPrint Value=#EndMemo#></td>
+    <td class="listtd" colspan="5"><HDPrint Value=#EndMemo#></td>
   </tr>
 </table>
     <HDPrint Value=#AttachList# Replace=#None#>

@@ -86,6 +86,13 @@
   </tr>
   <HDPrint Value=#AppList# Replace=#None#>
 </table>
+<HDLoop>
+<table width="645" cellspacing="0" cellpadding="0" align="center" style="margin-top:5px">
+  <tr>
+    <td>打印次数：<HDPrint Value=#PrintTime#>次</td>
+  </tr>
+</table>
+</HDLoop>
 <script language="javascript">
   window.print();
 </script>

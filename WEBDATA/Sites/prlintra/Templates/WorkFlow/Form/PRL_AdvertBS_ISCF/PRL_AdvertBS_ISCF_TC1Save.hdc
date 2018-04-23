@@ -64,7 +64,7 @@ Text4=
 Text5=
 
 ChangePage=0
-;10:商场总经理;20:财务经理;40:总部推广总监/常务理事;50:资产总监(Hd Invest);60:首席财务官(CFO);70:首席执行官(CEO);
+;10:项目总经理;20:财务经理;40:总部推广总监/常务理事;50:资产总监(Hd Invest);60:首席财务官(CFO);70:首席执行官(CEO);
 WF1=WFFlowRun( ^^ModelCode^^_TC1 | ^^ModelCode^^_TC2 | null | and ##AppAssign## = '同意' | 资产总监(Hd Invest):^^AppAssign^^ - ^^AppFlowMemo^^)
 
 WF2=WFFlowRun( ^^ModelCode^^_TC1 | ^^ModelCode^^_TMod | null | and ##AppAssign## = '否决' | 资产总监(Hd Invest):^^AppAssign^^ - ^^AppFlowMemo^^)

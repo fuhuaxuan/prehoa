@@ -23,7 +23,7 @@ SqlForCondition1=select Code ModelCode, Name ModelName from wf_Model where Model
 ;得到业务单据信息
 SQLForCondition2=select '申请人：' || ##CurUsrName##||';Serial No 编号：'||##SerialNo## AppFlowMemo from dual
 
-;鹏瑞利管辖部门的扩展性：10:部门经理(招商经理)；20:人事经理；30：财务经理；30：出纳；40：商场总经理；50：区域总监;71:资产经理 AssetManager
+;鹏瑞利管辖部门的扩展性：10:部门经理(招商经理)；20:人事经理；30：财务经理；30：出纳；40：项目总经理；50：区域总监;71:资产经理 AssetManager
 SqlForCondition3=select b.usrgid TccGid from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##DeptGid## and b.gid = a.empgidex and atype=71 and b.usrgid is not null
 
 SqlForCondition4=select b.usrgid Tcc2Gid,b.email ThisEmail from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##DeptGid## and b.gid = a.empgidex and atype=30 and b.usrgid is not null
@@ -37,7 +37,7 @@ Sql1=select * from WF_^^ModelCode^^ where EntGid = __ENTGID__ and  FlowGid = ##F
 ;发起人
 ;招商经理 10
 ;财务经理 30 
-;商场总经理 40 
+;项目总经理 40 
 ;资产经理 71
 ;物业经理 组织代码 0002 下 所有人员， 中职务 为物业经理的人
 LoopSQL3=select hr.Email from (select a.gid, a.code, a.name from v_usr a, v_org_usr b, org c where a.EntGid = __ENTGID__ and a.EntGid = b.EntGid and a.EntGid = c.EntGid and a.Gid = b.Usrgid and b.OrgGid = c.Gid and lower(c.Code) like lower(##ZongDept##) || '%') u,hr_emp hr where hr.entgid = __ENTGID__ and u.gid = hr.usrgid and hr.position like '%物业经理%' union select b.Email from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##DeptGid## and b.gid = a.empgidex and atype=10 and b.usrgid is not null union select b.Email from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##DeptGid## and b.gid = a.empgidex and atype=30 and b.usrgid is not null union select b.Email from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##DeptGid## and b.gid = a.empgidex and atype=40 and b.usrgid is not null union select b.Email from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##DeptGid## and b.gid = a.empgidex and atype=71 and b.usrgid is not null union select hr.Email from WF_PRL_ISF i,hr_emp hr where i.EntGid = __ENTGID__ and i.FlowGid = ##FlowGid## and hr.EntGid = __ENTGID__  and hr.usrgid = i.FillUsrGid 
@@ -73,7 +73,7 @@ Text4=
 Text5=
 
 ChangePage=0
-;10:部门经理;20:财务经理/FM;30:商场总经理/CM;40:总部推广总监/常务理事COO;50:资产总监(Hd Invest);60:首席财务官(CFO);70:首席执行官(CEO);71:Asset Manager
+;10:部门经理;20:财务经理/FM;30:项目总经理/CM;40:总部推广总监/常务理事COO;50:资产总监(Hd Invest);60:首席财务官(CFO);70:首席执行官(CEO);71:Asset Manager
 
 ;否决返回发起人
 WF2=WFFlowRun( ^^ModelCode^^_TD | ^^ModelCode^^_TMod | NULL | and ##AppAssign## = '否决' | 首席执行官(CEO):^^AppAssign^^ - ^^AppFlowMemo^^)

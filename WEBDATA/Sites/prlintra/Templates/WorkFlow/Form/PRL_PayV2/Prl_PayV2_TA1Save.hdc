@@ -11,7 +11,7 @@ Remind1=¶Ô²»Æð£¬ÄúÖ¸¶¨µÄÁ÷³ÌÉêÇëµ¥Ã»ÓÐÕÒµ½<script>alert('¶Ô²»Æð£¬ÄúÖ¸¶¨µÄÁ÷³ÌÉêÇ
 
 ;¼ì²éÅÐ¶ÏµÄSqlÓï¾ä£¬²é²»µ½½á¹ûÊÇ±¨´í£¬´ÓSQL1¡«SQL5£¬¹²¿ÉÒÔÐ´5¾ä
 SQL2=select 1 from dual where ##AppAssign## <> 'Í¬Òâ' union select 1 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillUsrDeptGid## and v.atype=40 and ##AppAssign## = 'Í¬Òâ'
-Remind2=¶Ô²»Æð£¬ÏÂÒ»²½ÉóÅúÈËÉÌ³¡×Ü¾­ÀíÎ´ÕÒµ½£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ¡£<script>alert('¶Ô²»Æð£¬ÏÂÒ»²½ÉóÅúÈËÉÌ³¡×Ü¾­ÀíÎ´ÕÒµ½£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ¡£');history.back()</script>
+Remind2=¶Ô²»Æð£¬ÏÂÒ»²½ÉóÅúÈËÏîÄ¿×Ü¾­ÀíÎ´ÕÒµ½£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ¡£<script>alert('¶Ô²»Æð£¬ÏÂÒ»²½ÉóÅúÈËÏîÄ¿×Ü¾­ÀíÎ´ÕÒµ½£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ¡£');history.back()</script>
 
 [Detail]
 ;ÏÔÊ¾£¬µ¥ÌõÊý¾ÝµÄ²éÑ¯£¬¿ÉÒÔÓÃÓÚHDTÏÔÊ¾£¬ÓÐselectÃüÁî¡£´ÓSQL1¡«SQL20¹²Ö§³Ö20Ìõ

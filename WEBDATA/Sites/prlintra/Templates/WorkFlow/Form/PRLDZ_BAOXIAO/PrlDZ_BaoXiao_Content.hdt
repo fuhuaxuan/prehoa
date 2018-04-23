@@ -70,7 +70,7 @@
     <HDPrint Value=#ApplyUsrName#>
     <HDIF Equal(<HDPrint Value=#CurUsrCode# Replace=#None#>, heading)>
     <HDIF Equal(<HDPrint Value=#IsCM# Replace=#None#>, 是)>
-    (商场总经理)
+    (项目总经理)
     </HDIF>
     </HDIF>
     </td>
@@ -112,8 +112,9 @@
 </h3>
 <table width="100%" class="ListBar JQMust" cellpadding="0"  cellspacing="1" id="tb_Dtl">
   <colgroup>
+     <col style="width:30%">
      <col style="width:40%">
-     <col style="width:40%">
+     <col style="width:10%">
      <col style="width:10%">
      <col style="width:5%">
   </colgroup>
@@ -121,6 +122,7 @@
   <tr class="listtr">
     <td align="center">项目大类</td>
     <td align="center">项目小类</td>
+    <td align="center">剩余预算[元]</td>
     <td align="center">本次申请金额[元]</td>
   </tr>
   </thead>
@@ -129,7 +131,7 @@
   </tbody>
   <tfoot>
   <tr class="ListTdFocus">
-    <td align="right" colspan="2">报销金额汇总[元]：</td>
+    <td align="right" colspan="3">报销金额汇总[元]：</td>
     <td align="center"><HDPrint Value=#SumFee#></td>
   </tr>
   </tfoot>

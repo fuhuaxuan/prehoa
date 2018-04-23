@@ -242,7 +242,7 @@
   </tr>
   <tr valign="top">
     <td class="DtlBarTitle">收款人<font color="red">*</font></td>
-    <td class="ListTd"><input type="text" NAME="PayMan" maxlength="16" class="JQText JQMust" value="<HDPrint Value=#PayMan# Replace=#DBField2Input#>"></td>
+    <td class="ListTd"><input type="text" NAME="PayMan" maxlength="32" class="JQText JQMust" value="<HDPrint Value=#PayMan# Replace=#DBField2Input#>"></td>
     <td class="DtlBarTitle">银行帐号</td>
     <td class="ListTd"><input type="text" NAME="PayAccount" maxlength="64" class="JQText" onkeypress="return JQPIntKeyPress(event)" value="<HDPrint Value=#PayAccount# Replace=#DBField2Input#>" onkeyup="return changeInt(this);" onchange="return changeInt(this);"></td>
     <td class="DtlBarTitle">开户行</td>

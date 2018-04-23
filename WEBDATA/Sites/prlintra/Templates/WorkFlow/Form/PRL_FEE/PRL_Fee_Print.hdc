@@ -19,7 +19,7 @@ sql1=select name acgotherdoatext from prl_doa where code='^^acgothertext^^'
 Sql2= select A.*,decode(a.acgother,null,'none','') acgotherdis,a.acgother acgothertext,decode(a.confirmfee,null,'审批通过后回填',a.confirmfee||'  [确认时间：'||to_char(a.confirmdate,'yyyy.mm.dd hh24:mi')||']') confirmfeetext,decode(a.stat,'0','未开始','1','填写中','10','已提交，审批中','12','审批通过','13','审批否决，待修改','30','已确认金额-已完成','40','已终止合同','100','发起人结束流程',a.Stat) StatText from wf_^^ModelCode^^ A where  EntGid=__ENTGID__ and FlowGid = ##FlowGid##
 
 ;显示本流程已审批审批人信息
-LoopSQL2=select a.*,decode(a.apptype,'10','部门经理','20','行政经理','30','财务经理/FM','40','商场总经理/CM','50','部门总监','60','高级副总裁/SVP','70','首席财务官/CFO(部门总监与SVP同一个人)','80','资产总监/Hd Invest ','90','首席财务官/CFO','100','首席执行官/CEO','110','执行委员会/Indpt Director') apptypetext  from wf_^^ModelCode^^_App a where FlowGid = ##FlowGid## and AppDate is not null order by AppDate
+LoopSQL2=select a.*,decode(a.apptype,'10','部门经理','20','行政经理','30','财务经理/FM','40','项目总经理/CM','50','部门总监','60','高级副总裁/SVP','70','首席财务官/CFO(部门总监与SVP同一个人)','80','资产总监/Hd Invest ','90','首席财务官/CFO','100','首席执行官/CEO','110','执行委员会/Indpt Director') apptypetext  from wf_^^ModelCode^^_App a where FlowGid = ##FlowGid## and AppDate is not null order by AppDate
 LoopHDT2=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AppPrint.hdt
 LoopVAR2=AppList
 

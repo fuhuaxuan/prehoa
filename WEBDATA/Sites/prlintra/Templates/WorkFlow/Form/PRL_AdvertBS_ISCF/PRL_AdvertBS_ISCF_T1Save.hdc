@@ -6,7 +6,7 @@ LIMITRemind1=您进入的路径不正确，请从正确的路径进入。
 
 ;检查判断的Sql语句，查不到结果是报错，从SQL1～SQL5，共可以写5句
 SQL1=select 1 from dual where ##wf_Stat## = '10' union select 1 from hr_deptpost a,hr_emp b,v_usr v where a.EntGid = __ENTGID__ and b.EntGid = __ENTGID__ and v.EntGid = __ENTGID__ and a.deptGid = ##DeptGid## and b.gid = a.empgidex and v.gid = b.usrgid and a.atype=40 and b.usrgid is not null and ##wf_Stat## = '11'
-Remind1=对不起，下一步审批人商场总经理/CM未找到，请与管理员联系。<script>alert('对不起，下一步审批人商场总经理/CM未找到，请与管理员联系。');history.back()</script>
+Remind1=对不起，下一步审批人项目总经理/CM未找到，请与管理员联系。<script>alert('对不起，下一步审批人项目总经理/CM未找到，请与管理员联系。');history.back()</script>
 
 [Master]
 [Detail]
@@ -18,7 +18,7 @@ SQLForCondition3=select 'Serial No 编号：' || ##SerialNo## ModFlowMemo from dual
 
 SQLForCondition4=select '申请人：' || ##CurUsrName##||';Serial No 编号：'||##SerialNo## AppFlowMemo from dual
 
-;鹏瑞利管辖部门的扩展性：10:部门经理(招商经理)；20:人事经理；30：财务经理；30：出纳；40：商场总经理；50：区域总监;71:资产经理 AssetManager
+;鹏瑞利管辖部门的扩展性：10:部门经理(招商经理)；20:人事经理；30：财务经理；30：出纳；40：项目总经理；50：区域总监;71:资产经理 AssetManager
 SqlForCondition5=select b.usrgid AppGid,b.email ThisEmail from hr_deptpost a,hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##FillUsrDeptGid## and b.gid = a.empgidex and atype=40 and b.usrgid is not null
 
 [Where]

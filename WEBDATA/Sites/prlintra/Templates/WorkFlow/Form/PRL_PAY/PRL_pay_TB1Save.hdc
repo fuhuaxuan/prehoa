@@ -33,7 +33,7 @@ SqlForCondition2=select '发起人：'||fillusrname||'；付款单号：'||decode(feenum,n
 ;30:财务经理;
 ;31:出纳付款;
 ;35:执行总经理;
-;40:商场总经理;
+;40:项目总经理;
 ;50:区域总监;
 ;71:资产经理 AssetManager
 SqlForCondition3=select b.usrgid nextappgid from  hr_emp b ,v_org_usr a,(select ExecGidEx from WF_Task_Define_Exec where TaskDefGid = (select TaskDefGid from WF_Task_Define where LOWER(Code) = 'prl_pay_tb3' and EntGid = __ENTGID__) ) c where a.usrgid = b.usrgid and c.ExecGidEx = a.orggid

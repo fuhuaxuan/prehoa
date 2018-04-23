@@ -9,7 +9,7 @@ Remind1=您指定的申请单没有找到。<script>alert('您指定的申请单没有找到。');window
 
 
 [Master]
-SQL = select a.*,decode(a.apptype,'10','部门经理','20','财务经理/FM','30','商场总经理/CM','40','总部推广总监/常务理事COO','50','资产总监(Hd Invest)','60','首席财务官(CFO)','70','首席执行官(CEO)','71','Asset Manager')  apptypetext  from WF_^^ModelCode^^_App a where FlowGid = ##FlowGid## and AppDate is not null order by AppDate
+SQL = select a.*,decode(a.apptype,'10','部门经理','20','财务经理/FM','30','项目总经理/CM','40','总部推广总监/常务理事COO','50','资产总监(Hd Invest)','60','首席财务官(CFO)','70','首席执行官(CEO)','71','Asset Manager')  apptypetext  from WF_^^ModelCode^^_App a where FlowGid = ##FlowGid## and AppDate is not null order by AppDate
 Count = select 1 from dual
 [Detail]
 ;显示模型代码

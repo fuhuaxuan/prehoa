@@ -29,7 +29,7 @@ SqlForCondition2= select '本次申请金额：'||askfee||';申请目的：'||substr(target,
 ;30:财务经理;
 ;31:出纳付款;
 ;35:执行总经理;
-;40:商场总经理;
+;40:项目总经理;
 ;50:区域总监;
 ;71:资产经理 AssetManager
 SqlForCondition3=select v.PostGid TccGid from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##DeptGid## and v.atype=30
@@ -71,18 +71,18 @@ Text2=
 Text3=
 Text4=
 Text5=
-log= 费用申请商场总经理：flowgid:##flowgid##;  ##askfee1## - ##bvalue##> 0 and ##allvalue## - 0  != 0
+log= 费用申请项目总经理：flowgid:##flowgid##;  ##askfee1## - ##bvalue##> 0 and ##allvalue## - 0  != 0
 ChangePage=0
 ;部门总监
-WF1=WFFlowRun( ^^ModelCode^^_TA3 | ^^ModelCode^^_TB1 | TB1Gid | and ##askfee1## - ##bvalue##> 0 and ##allvalue## - 0  != 0 and ##AppAssign## = '同意' | 商场总经理/CM:同意 - ^^flownote^^)
+WF1=WFFlowRun( ^^ModelCode^^_TA3 | ^^ModelCode^^_TB1 | TB1Gid | and ##askfee1## - ##bvalue##> 0 and ##allvalue## - 0  != 0 and ##AppAssign## = '同意' | 项目总经理/CM:同意 - ^^flownote^^)
 
-WF3=WFFlowRun( ^^ModelCode^^_TA3 | ^^ModelCode^^_TMOD | NULL | and ##AppAssign## = '否决' | 商场总经理/CM:否决 - ^^flownote^^)
+WF3=WFFlowRun( ^^ModelCode^^_TA3 | ^^ModelCode^^_TMOD | NULL | and ##AppAssign## = '否决' | 项目总经理/CM:否决 - ^^flownote^^)
 ;否决后，还有个抄送给相关人员没有做
 
 WF4=WFFlowRun( ^^ModelCode^^_TA3 | ^^ModelCode^^_Tconfirm | NULL | and ##AppAssign## = '同意' and (##askfee1## - ##bvalue##<= 0 or ##allvalue## - 0 = 0) | 审批通过，请确认 - ^^flownote^^)
 
 ;---------------------------------
-WF5=WFFlowRun( ^^ModelCode^^_TA3 | ^^ModelCode^^_TCC2 | TccGid | and (##askfee1## - ##bvalue## <= 0 or ##allvalue## - 0  = 0) | 商场总经理/CM:^^AppAssign^^ - ^^flownote^^)
+WF5=WFFlowRun( ^^ModelCode^^_TA3 | ^^ModelCode^^_TCC2 | TccGid | and (##askfee1## - ##bvalue## <= 0 or ##allvalue## - 0  = 0) | 项目总经理/CM:^^AppAssign^^ - ^^flownote^^)
 
 
 [Link]

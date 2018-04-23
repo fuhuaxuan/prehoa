@@ -11,7 +11,7 @@ Remind1=¶Ô²»Æğ£¬ÄúÖ¸¶¨µÄÁ÷³ÌÉêÇëµ¥Ã»ÓĞÕÒµ½<script>alert('¶Ô²»Æğ£¬ÄúÖ¸¶¨µÄÁ÷³ÌÉêÇ
 
 ;¼ì²éÅĞ¶ÏµÄSqlÓï¾ä£¬²é²»µ½½á¹ûÊÇ±¨´í£¬´ÓSQL1¡«SQL5£¬¹²¿ÉÒÔĞ´5¾ä
 SQL2=select 1 from dual where ##AppAssign## <> 'Í¬Òâ' union select 1 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=40 and ##AppAssign## = 'Í¬Òâ'
-Remind2=¶Ô²»Æğ£¬ÏÂÒ»²½ÉóÅúÈËÉÌ³¡×Ü¾­ÀíÎ´ÕÒµ½£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ¡£<script>alert('¶Ô²»Æğ£¬ÏÂÒ»²½ÉóÅúÈËÉÌ³¡×Ü¾­ÀíÎ´ÕÒµ½£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ¡£');history.back()</script>
+Remind2=¶Ô²»Æğ£¬ÏÂÒ»²½ÉóÅúÈËÏîÄ¿×Ü¾­ÀíÎ´ÕÒµ½£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ¡£<script>alert('¶Ô²»Æğ£¬ÏÂÒ»²½ÉóÅúÈËÏîÄ¿×Ü¾­ÀíÎ´ÕÒµ½£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ¡£');history.back()</script>
 
 [Detail]
 ;ÏÔÊ¾£¬²éÑ¯µÃµ½µÄ½á¹û¿ÉÒÔÓÃÓÚHDTÏÔÊ¾£¬´ÓSQL1¡«SQL20¹²Ö§³Ö20Ìõ
@@ -30,7 +30,7 @@ SQLForCondition2=select ##CurUsrName##||':'||##AppAssign##||' - Àà±ğ£º' || decod
 ;30:²ÆÎñ¾­Àí;
 ;31:³öÄÉ¸¶¿î;
 ;35:Ö´ĞĞ×Ü¾­Àí;
-;40:ÉÌ³¡×Ü¾­Àí;
+;40:ÏîÄ¿×Ü¾­Àí;
 ;50:ÇøÓò×Ü¼à;
 ;71:×Ê²ú¾­Àí AssetManager
 SqlForCondition3=select v.PostGid TA3Gid,v.Email AppEmail from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=40

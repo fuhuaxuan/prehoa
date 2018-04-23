@@ -208,7 +208,7 @@
       <INPUT type="text" name="ApplyUsrName" value="<HDPrint Value=#ApplyUsrName# Replace=#DBField2Input#>" readonly Class="JQText JQMust" style="width:200px">
       <INPUT type="hidden" name="ApplyUsrCode" value="<HDPrint Value=#ApplyUsrCode# Replace=#DBField2Input#>">
       <INPUT type="hidden" name="ApplyUsrGid" value="<HDPrint Value=#ApplyUsrGid# Replace=#DBField2Input#>">
-      <input type="checkbox" name="IsCM_1" value="是" class="JQCheckBox">报销人为商场总经理/财务经理
+      <input type="checkbox" name="IsCM_1" value="是" class="JQCheckBox">报销人为项目总经理/财务经理
       <input type="hidden" name="IsCM" value="<HDPrint Value=#IsCM# Replace=#DBField2Input#>" JQChkName="IsCM_1" JQChkTab=";">
       <script language="javascript">
       JQcheckBoxVal("IsCM_1",";",'<HDPrint Value=#IsCM# Replace=#DBField2Js#>')
@@ -228,7 +228,7 @@
   </tr>
   <tr valign="top">
     <td class="DtlBarTitle">收款人<font color="red">*</font></td>
-    <td class="ListTd"><input type="text" NAME="PayMan" maxlength="16" class="JQText JQMust" value="<HDPrint Value=#PayMan# Replace=#DBField2Input#>"></td>
+    <td class="ListTd"><input type="text" NAME="PayMan" maxlength="32" class="JQText JQMust" value="<HDPrint Value=#PayMan# Replace=#DBField2Input#>"></td>
     <td class="DtlBarTitle">银行帐号<font color="red">*</font></td>
     <td class="ListTd"><input type="text" NAME="PayAccount" maxlength="64" class="JQText JQMust" onkeypress="return JQPIntKeyPress(event)" value="<HDPrint Value=#PayAccount# Replace=#DBField2Input#>" onkeyup="return changeInt(this);" onchange="return changeInt(this);"></td>
     <td class="DtlBarTitle">开户行<font color="red">*</font></td>

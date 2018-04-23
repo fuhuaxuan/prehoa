@@ -29,7 +29,7 @@ SQLForCondition2=select ##CurUsrName##||':'||##AppAssign##||' - [' || Atype || '
 ;30:财务经理;
 ;31:出纳付款;
 ;35:执行总经理;
-;40:商场总经理;
+;40:项目总经理;
 ;50:区域总监;
 ;71:资产经理 AssetManager
 SqlForCondition3=select v.PostGid TB1Gid,v.Email AppEmail from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=71
