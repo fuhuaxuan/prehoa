@@ -23,7 +23,7 @@ LoopHDT3=Templates\WorkFlow\Form\PRLDZ_ISF\Loopsql_DtlMod.hdt
 LoopVAR3=DtlList
 
 ;显示oldFlowGid单位信息
-LoopSQL4=select distinct g.* from wf_PRL_ISF_ground f,prl_groundh g where f.EntGid = __ENTGID__ and ((lower(f.fno) = lower(g.fno) and f.fgid <> g.fgid) or (f.fgid = g.fgid)) and f.FlowGid = ##OldFlowGid## order by g.fNo
+LoopSQL4=select distinct g.* from wf_PRL_ISF_ground f,prl_groundh g where f.EntGid = __ENTGID__ and ((lower(f.fno) = lower(g.fno) and f.fgid <> g.fgid) or (f.fgid = g.fgid)) and f.FlowGid = ##OldFlowGid##  and g.fStat not in ('停用') order by g.fNo
 LoopHDT4=Templates\WorkFlow\Form\PRLDZ_ISF\LoopSql_UnitList.hdt
 LoopVAR4=UnitList
 

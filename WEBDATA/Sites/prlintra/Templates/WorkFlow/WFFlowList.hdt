@@ -76,7 +76,7 @@
       <option value="5" style="color:red">已作废</option>
       <option value="6" style="color:red">已超时</option>
       </select>
-    </td>  
+    </td>
     <td>实例备注 ≈ </td>
     <td><input name="txtFlowNote" maxlength=100 class="JQText"></td>
   </tr>
@@ -86,7 +86,7 @@
       <INPUT TYPE="hidden" name="NotFirst" value="1">
       <INPUT TYPE="submit" name="btnSearch" class="NormalSbt" value=" 查询 " onclick="return CheckSubmit()">
       <INPUT TYPE="reset" name="btnSearch" class="NormalSbt" value=" 默认 ">
-      <INPUT TYPE="hidden" name="btnDownload" value="根据条件下载汇总" class="normalsbt" onclick="return CheckSubmit()">
+      <INPUT TYPE="button" name="btnDownload" class="NormalSbt" value="下载Excel" onclick="return JQListDown('##HDNet_AppName##/__ExplainModule?Url=WfFlowDown&UsrGid=<HDPrint Value=#UsrGid#>')">
       <INPUT TYPE="hidden" name="Rep_Download" value="">
     </td>
   </tr>
@@ -124,7 +124,7 @@
 	frmDo.submit();
 	frmDo.target="";}
    // window.open('##HDNet_AppName##/__ExplainModule?UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Input#>&url=WFFlowSetState&stat=5&flowgid='+sflowgid+'&modelgid='+smodelgid);
-  
+
   }
 
   </SCRIPT>
@@ -197,7 +197,7 @@
       $("input[name=selOrderAsc]").val(sJQAsc);
       $("input[name=selOrderColumn]").val(sJQColumn);
 
-      //获取当前表单对象 
+      //获取当前表单对象
       var JqObj = $("form[name=frmDo]");
       //表单参数设定
       JqObj.attr({
@@ -225,6 +225,13 @@
         }
       }
     });
+  });
+
+  //函数：ready
+  //功能：document 加载完成后调用
+  $(function(){
+    //列表初始化
+    JQListInit('<HDPrint Value=#selOrderColumn# Replace=#DBField2Js#>','<HDPrint Value=#selOrderAsc# Replace=#DBField2Js#>');
   });
 </script>
 

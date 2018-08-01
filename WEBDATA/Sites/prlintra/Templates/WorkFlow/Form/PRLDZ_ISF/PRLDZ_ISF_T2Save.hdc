@@ -88,7 +88,7 @@ Log=
 PageKind=0
 
 ;同意，流转到下一步
-WF1=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_T2 | selApp_1 | and ##AppAssign## = '同意' and ##NextApp## <> '0'| ^^AppFlowMemo^^)
+WF1=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_T2 | T2Gid | and ##AppAssign## = '同意' and ##NextApp## <> '0'| ^^AppFlowMemo^^)
 
 ;否决，返回发起人
 WF2=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TMod | null | and ##AppAssign## = '否决' |^^AppFlowMemo^^)

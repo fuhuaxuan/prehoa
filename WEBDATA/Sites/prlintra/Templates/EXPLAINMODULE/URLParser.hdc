@@ -272,3 +272,11 @@ HDT=Templates\PrlYY_App\PrlYY_Stamp_App.hdt
 [PrlYY_Stamp_AppSave]
 HDC=Templates\PrlYY_App\PrlYY_Stamp_AppSave.hdc
 HDT=Templates\PrlYY_App\PrlYY_Stamp_AppSave.hdt
+
+[WfTodoTaskDown]
+HDC=Templates\WorkFlow\WfTodoTaskList.hdc
+HDT=Templates\WorkFlow\WfTodoTaskDown.hdT
+
+[WfFlowDown]
+HDC=Templates\WorkFlow\WfFlowList.hdc
+HDT=Templates\WorkFlow\WfFlowDown.hdT

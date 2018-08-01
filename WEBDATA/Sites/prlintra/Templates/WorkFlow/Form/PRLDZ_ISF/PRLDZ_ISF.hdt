@@ -50,15 +50,20 @@
   function PostMall2() {
     Run_Div_Show();
     var PreDeptCode = '<HDPrint Value=#ParentDeptCode# Replace=#DBField2Js#>';
-    //青羊
-    if (PreDeptCode == '0003') {
+
+    //佛山
+    if (PreDeptCode == '0002') {
+      url = 'http://121.9.230.202/MallAppService/MallService.asmx/InsertContract';
+      datainfo.OrganizationID = '06C36E50-AFB4-44AF-A75E-0D1623DCD551';
+    }//青羊
+    else if (PreDeptCode == '0003') {
       url = 'http://171.221.248.15/MallOAService/MallService.asmx/InsertContract';
       datainfo.OrganizationID = 'BDA02110-39BF-48CE-8D00-E4D31A45EE88';
     }
-    //佛山
-    else if (PreDeptCode == '0002') {
-      url = 'http://121.9.230.202/MallAppService/MallService.asmx/InsertContract';
-      datainfo.OrganizationID = '06C36E50-AFB4-44AF-A75E-0D1623DCD551';
+    //东站
+    else if (PreDeptCode == '0004') {
+      url = 'http://222.209.94.164:81/MallOAService/MallService.asmx/InsertContract';
+      datainfo.OrganizationID = '4DAA125D-6312-4681-B226-6875651B1CC1';
     }
     //参数
     var data = {
@@ -157,7 +162,7 @@
         //功能：document 加载完成后调用
         $(document).ready(function(){
           var PreDeptCode = '<HDPrint Value=#ParentDeptCode# Replace=#DBField2Js#>';
-          if (PreDeptCode == '0003' || PreDeptCode == '0002') {
+          if (PreDeptCode == '0002' || PreDeptCode == '0003' || PreDeptCode == '0004') {
             $("[JQ=MALL2]").show();
           }
           else{

@@ -1,0 +1,72 @@
+[Permission]
+
+
+[Master]
+;寻找待完成的任务——执行人为当前用户、“待执行”或“执行中”状态，任务开始时间<=当前系统时间
+SQL=select A.Code Code,a.ModelGid,a.FlowGid,decode(A.Memo,null,'',decode(instr(c.flownote,a.memo),0, '<br>'||A.Memo,'')) Memo,a.Name Name,to_char(a.BTime,'yyyy.mm.dd hh24:mi') BTime, b.Code ModelCode, b.Name ModelName ,c.creatername,c.creatercode,c.flownote,to_char(c.createdate,'yyyy.mm.dd hh24:mi') Cdate,d.applyfee from WF_task a, WF_Model b ,wf_flow c,v_prl_flow_all d where a.EntGid = __ENTGID__ and b.EntGid = __ENTGID__ and c.EntGid = __ENTGID__ and a.ModelGid = b.ModelGid and b.ModelGid = c.ModelGid and a.flowgid = c.flowgid and BTime <= sysdate and nvl(DeadLine,SYSDATE) >= sysdate  and a.ExecGid = __USRGID__ and a.Stat in (1, 2) and c.flowgid = d.flowgid(+)
+
+Count=select count(1) from WF_task a, WF_Model b ,wf_flow c,v_prl_flow_all d where a.EntGid = __ENTGID__ and b.EntGid = __ENTGID__ and c.EntGid = __ENTGID__ and a.ModelGid = b.ModelGid and b.ModelGid = c.ModelGid and a.flowgid = c.flowgid and BTime <= sysdate and nvl(DeadLine,SYSDATE) >= sysdate  and a.ExecGid = __USRGID__ and a.Stat in (1, 2) and c.flowgid = d.flowgid(+)
+
+
+[Detail]
+;工作流程模型名称列表
+LoopSql1=select classify || '-' || name name, modelgid, stat, decode(stat, 0, '(未)', 2, '(停)', 5, '(废)') stattext from wf_model w where w.entgid = __ENTGID__ and w.modelgid in (select modelgid from wf_task where entgid = __ENTGID__ and execgid = __USRGID__ union select modelgid from wf_task_history where entgid = __ENTGID__ and execgid = __USRGID__ ) order by classify, name 
+LoopHDT1=Templates\WorkFlow\WF_Model_Option.hdt
+LoopVAR1=WF_Model_Option
+
+
+
+
+
+;工作流程分类名称列表
+LoopSql2=select distinct classify name, classify modelgid from WF_Model where entgid=__ENTGID__ order by length(name)
+LoopHDT2=Templates\WorkFlow\WF_Model_Option.hdt
+LoopVAR2=WF_Model_Type
+
+[Where]
+100= and b.ModelGid = ##selModelGid##
+110= and lower(a.Name) like lower('%' || ##txtTaskName## || '%')
+200= and a.BTime >= to_date(##txtBTime1##, 'yyyy.mm.dd hh24:mi:ss')
+210= and a.BTime <= to_date(##txtBTime2##, 'yyyy.mm.dd hh24:mi:ss')
+
+110= and (c.CreaterCode like '%' || ##txtCreaterCode## || '%' or c.CreaterName like '%' || ##txtCreaterCode## || '%')
+120= and b.CLASSIFY = ##selModelType##
+400= and c.Stat = ##selStat##
+620= and c.FlowNote like '%' || ##txtFlowNote## || '%'
+640= and b.Name like '%' || ##selModelName## || '%'
+700= and a.flowgid in (select FlowGid from WF_task where EntGid = __ENTGID__ and ExecCode like lower('%' || ##txtExecInfo## || '%') or ExecName like lower('%' || ##txtExecInfo## || '%'))
+
+
+
+[DefaultWhere]
+DefaultWhere= 
+
+[OrderBy]
+1=##SelOrderBy##
+
+
+[DefaultOrderBy]
+DefaultOrderBy= a.BTime Desc 
+
+[GroupBy]
+
+[AddtionalSQL]
+
+
+[Title]
+Text1=工作流程-当前待执行任务
+Text2=
+Text3=
+Text4=
+Text5=
+log=
+ChangePage=1
+PageKind=0
+showsql=
+
+[Link]
+;URL1=
+;URL2=
+;URL3=
+URL4=
+URL5=

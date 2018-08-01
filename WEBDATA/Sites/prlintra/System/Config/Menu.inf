@@ -15,7 +15,6 @@
 
 ^1^人事资料^^^_Self^Hr1
 ^2^员工一览表^HrInfoList^##HDNet_AppName##/__ExplainModule?url=Hr&usrgid={##usrgid##}&hrtarget=HrInfoList&target=emp^_blank^
-^2^员工状态看板^HrInfoList^##HDNet_AppName##/__ExplainModule?url=HrEmpState&usrgid={##usrgid##}^_blank^
 ^2^------------------^line^#^_self^
 ^2^人事资料管理^HrEmpList^##HDNet_AppName##/__ExplainModule?url=Hr&usrgid={##usrgid##}&hrtarget=HrEmpList&target=emp^_blank^
 ^2^人事资料权限^HrRtList^##HDNet_AppName##/__ExplainModule?url=HrRtList&usrgid={##usrgid##}^MainPage^

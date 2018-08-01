@@ -1,0 +1,19 @@
+[Rep_BeginLine]
+工作流程
+发起人
+流程步骤
+金额
+任务开始时间
+备注
+[Rep_EndLine]
+<HDLoop>
+[Rep_BeginLine]
+<HDPrint Value=#ModelName# Replace=#None#>
+<HDPrint Value=#creatername# Replace=#None#>
+<HDPrint Value=#Name# Replace=#None#>
+#NoForm#<HDPrint Value=#applyfee# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#BTime# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#FlowNote# Replace=#DBField2Excel#>
+[Rep_EndLine]
+</HDLoop>
+

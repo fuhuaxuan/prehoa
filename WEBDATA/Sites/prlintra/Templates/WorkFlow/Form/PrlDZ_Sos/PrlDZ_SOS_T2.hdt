@@ -13,15 +13,10 @@
   <INPUT type="text" style="display:none" name="CurUrl" value="<HDPrint Value=#Url# Replace=#DBField2Input#>">
   <!--发起人UsrGid-->
   <INPUT type="text" style="display:none" name="T1Gid" value="<HDPrint Value=#FillUsrGid# Replace=#DBField2Input#>">
-  <INPUT type="text" style="display:none" name="T2Gid" value="<HDPrint Value=#T2Gid# Replace=#DBField2Input#>">
-  <input type="text" style="display:none" name="FillUsrDeptGid" value="<HDPrint Value=#FillUsrDeptGid# Replace=#DBField2Input#>">
-  <input type="text" style="display:none" name="ParentDeptCode" value="<HDPrint Value=#ParentDeptCode# Replace=#DBField2Input#>">
 <INPUT type="text" style="display:none" name="AppOrder" value="<HDPrint Value=#AppOrder# Replace=#DBField2Input#>">
 <INPUT type="text" style="display:none" name="AppType" value="<HDPrint Value=#AppType# Replace=#DBField2Input#>">
+<INPUT type="text" style="display:none" name="T2Gid" value="<HDPrint Value=#T2Gid# Replace=#DBField2Input#>">
 <INPUT type="text" style="display:none" name="F1Gid" value="123">
-<select name="selApp_1" class="JQList" multiple style="display:none"><HDPrint Value=#AppList# Replace=#None#></select>
-  <!--抄送人-->
-  <select name="selTcc_1" class="JQList" multiple style="display:none"><HDPrint Value=#Tcclist# Replace=#None#></select>
   <!--意见标志：同意；否决-->
   <input type="text" style="display:none" name="AppAssign" value="">
 
@@ -90,6 +85,7 @@
     if (!confirm(sConfirm)){
       return false;
     }
+
     //获取当前表单对象
     var JqObj = $("form[name=frmDo]");
     //表单参数设定

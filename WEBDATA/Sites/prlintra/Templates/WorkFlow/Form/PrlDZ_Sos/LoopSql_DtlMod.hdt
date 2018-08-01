@@ -1,0 +1,19 @@
+<script>
+  <hdloop>
+    if ('<HDPrint Value=#aType# Replace=#DBField2Js#>' == '10') {
+      CallUnit('<HDPrint Value=#Gid# Replace=#DBField2Js#>',
+      '<HDPrint Value=#fNo# Replace=#DBField2Js#>',
+      '<HDPrint Value=#floorNo# Replace=#DBField2Js#>',
+      '<HDPrint Value=#fArea# Replace=#DBField2Js#>',
+      '<HDPrint Value=#jArea# Replace=#DBField2Js#>',
+      '<HDPrint Value=#fmr# Replace=#DBField2Js#>')
+    }else{
+      AddUnit('<HDPrint Value=#Gid# Replace=#DBField2Js#>',
+      '<HDPrint Value=#fNo# Replace=#DBField2Js#>',
+      '<HDPrint Value=#floorNo# Replace=#DBField2Js#>',
+      '<HDPrint Value=#fArea# Replace=#DBField2Js#>',
+      '<HDPrint Value=#jArea# Replace=#DBField2Js#>',
+      '<HDPrint Value=#fmr# Replace=#DBField2Js#>')
+    }
+  </hdloop>
+</script>

@@ -60,6 +60,7 @@
         <option value="待租">待租</option>
         <option value="被租">被租</option>
         <option value="空闲">空闲</option>
+        <option value="停用">停用</option>
       </select>
     </td>
   </tr>
@@ -74,7 +75,7 @@
       <HDIF Equal(<HDPrint Value=#chkRtID5#>, 1)>
         <INPUT TYPE="button" name="btnDownload" class="NormalSbt" value="下载Excel" onclick="return DownLoad()">
       </HDIF>
-      
+
     </td>
   </tr>
   <tr>
@@ -150,7 +151,7 @@
   //下载Excel
   function DownLoad(){
     document.all.Rep_Download.value = '1';
-    //获取当前表单对象 
+    //获取当前表单对象
     var JqObj = $("form[name=frmDo]");
     //表单参数设定
     JqObj.attr({
@@ -189,7 +190,7 @@
       $("input[name=selOrderAsc]").val(sJQAsc);
       $("input[name=selOrderColumn]").val(sJQColumn);
 
-      //获取当前表单对象 
+      //获取当前表单对象
       var JqObj = $("form[name=frmDo]");
       //表单参数设定
       JqObj.attr({

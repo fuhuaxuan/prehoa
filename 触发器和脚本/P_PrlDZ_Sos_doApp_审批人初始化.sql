@@ -1,4 +1,4 @@
-create or replace procedure P_PrlYY_ISF_doApp(p_EntGid    varchar2, --企业Gid
+create or replace procedure P_PrlDZ_Sos_doApp(p_EntGid    varchar2, --企业Gid
                                               p_ModelGid  varchar, --模型Gid
                                               p_FlowGid   varchar, --流程Gid
                                               p_AppAssign varchar2 --意见
@@ -6,17 +6,17 @@ create or replace procedure P_PrlYY_ISF_doApp(p_EntGid    varchar2, --企业Gid
   v_Stage   varchar2(1024); -- 过程场景
   v_ErrText varchar2(1024); -- Oracle错误信息
 
-  v_UsrGid    varchar2(32); --用户Gid
-  v_ModelCode varchar2(32); --模型代码
-  v_DeptGid   varchar2(32); --当前用户部门
-
+  v_UsrGid      varchar2(32); --用户Gid
+  v_ModelCode   varchar2(32); --模型代码
+  v_DeptGid     varchar2(32); --当前用户部门
+  v_ComGid      varchar2(32); --项目ID
 begin
   commit;
-
   v_Stage := '取出流程信息';
-  select f.fillusrgid, f.filldeptgid
+  select f.FillUsrGid,
+         f.FillDeptGid
     into v_UsrGid, v_DeptGid
-    from wf_PrlYY_ISF f
+    from wf_PrlDZ_Sos f
    where f.entgid = p_EntGid
      and f.flowgid = p_FlowGid;
 
@@ -29,64 +29,108 @@ begin
 
   if p_AppAssign <> '终止' then
     --插入审批人
-    insert into wf_PrlYY_ISF_App
+    insert into wf_PrlDZ_Sos_App
       (EntGid,
+       ModelGid,
        FlowGid,
-       dtlGid,
+       Gid,
        AppGid,
        AppCode,
        AppName,
        AppOrder,
        AppType)
       select p_EntGid,
+             p_ModelGid,
              p_FlowGid,
              sys_guid(),
-             v.PostGid AppGid,
-             v.PostCode AppCode,
-             v.PostName AppName,
-             '10' AppOrder,
-             '10' AppType
-        from v_Post v
-       where v.EntGid = p_EntGid
-         and v.deptGid = v_DeptGid
-         and v.atype = 10
-         and rownum = 1
-      union
-      select p_EntGid,
-             p_FlowGid,
-             sys_guid(),
-             o.AppGid,
-             o.AppCode,
-             o.AppName,
-             o.ModelNote AppOrder,
-             o.ModelNote AppType
-        from v_wf_model_usr_app o
-       where o.EntGid = p_EntGid
-         and o.ModelGid = p_ModelGid
-         and replace(lower(o.Modelcode), lower(v_ModelCode), '') in
-             ('_ta15', '_ta2', '_ta3', '_ta4', '_ta45', '_ta5');
-  
-    commit;
+             t.AppGid,
+             t.AppCode,
+             t.AppName,
+             t.AppOrder,
+             t.AppType
+        from (select v.PostGid  AppGid,
+                     v.PostCode AppCode,
+                     v.PostName AppName,
+                     20         AppOrder,
+                     20         AppType
+                from v_Post v
+               where v.EntGid = p_EntGid
+                 and v.deptGid = v_DeptGid
+                 and v.atype = 10
+                 and rownum = 1
+              union
+              select v.PostGid  AppGid,
+                     v.PostCode AppCode,
+                     v.PostName AppName,
+                     30          AppOrder,
+                     30         AppType
+                from v_Post v
+               where v.EntGid = p_EntGid
+                 and v.deptGid = v_DeptGid
+                 and v.atype = 30
+                 and rownum = 1
+              union
+              select v.PostGid  AppGid,
+                     v.PostCode AppCode,
+                     v.PostName AppName,
+                     40          AppOrder,
+                     40         AppType
+                from v_Post v
+               where v.EntGid = p_EntGid
+                 and v.deptGid = v_DeptGid
+                 and v.atype = 40
+                 and rownum = 1
+              union
+              select v.PostGid  AppGid,
+                     v.PostCode AppCode,
+                     v.PostName AppName,
+                     50          AppOrder,
+                     50         AppType
+                from v_Post v
+               where v.EntGid = p_EntGid
+                 and v.deptGid = v_DeptGid
+                 and v.atype = 71
+                 and rownum = 1
+              union
+              select v.PostGid  AppGid,
+                     v.PostCode AppCode,
+                     v.PostName AppName,
+                     60          AppOrder,
+                     60         AppType
+                from v_Post v
+               where v.EntGid = p_EntGid
+                 and v.deptGid = v_DeptGid
+                 and v.atype = 80
+                 and rownum = 1
+              union
+              select o.AppGid, o.AppCode, o.AppName, 70 AppOrder, 70 AppType
+                from v_wf_model_usr_app o
+               where o.EntGid = p_EntGid
+                 and o.ModelGid = p_ModelGid
+                 and replace(lower(o.Modelcode), lower(v_ModelCode), '') in
+                     ('_th7')
+                 and rownum = 1) t;
+ 
     --取出审批人中重复的审批人
-    delete from wf_PrlYY_ISF_App f
+    delete from wf_PrlDZ_Sos_App f
      where f.EntGid = p_EntGid
        and f.FlowGid = p_FlowGid
        and f.Apporder > 0
        and f.Appdate is null
        and not exists (select 1
-              from (select max(t.appType) appType,
+              from (select min(t.apporder) apporder,
                            t.EntGid,
                            t.FlowGid,
                            t.AppGid
-                      from wf_PrlYY_ISF_App t
+                      from wf_PrlDZ_Sos_App t
                      where t.EntGid = p_EntGid
                        and t.FlowGid = p_FlowGid
-                       and t.AppOrder < 100
+                       and t.AppOrder <= 100
                        and t.AppDate is null
                      group by t.EntGid, t.FlowGid, t.AppGid) a
              where f.EntGid = a.EntGid
                and f.FlowGid = a.FlowGid
-               and f.appType = a.appType);
+               and f.apporder = a.apporder);
     v_Stage := '插入审批人';
     if p_AppAssign = '提交' then
       insert into WF_Task
@@ -121,7 +165,7 @@ begin
           from WF_Task_Define d,
                (select *
                   from (select *
-                          from wf_PrlYY_ISF_App t
+                          from wf_PrlDZ_Sos_App t
                          where t.entgid = p_EntGid
                            and t.flowgid = p_FlowGid
                            and t.AppOrder <= 100

@@ -10,7 +10,8 @@ select f.entgid,
        f.fillusrdeptgid FillDeptGid,
        f.fillusrdeptcode FillDeptCode,
        f.fillusrdept filldeptname,
-       f.askfee || '' FMemo
+       f.askfee || '' FMemo,
+       f.askfee applyfee
   from wf_prlzb_fee f
 union
 select f.entgid,
@@ -24,7 +25,8 @@ select f.entgid,
        f.fillusrdeptgid FillDeptGid,
        f.fillusrdeptcode FillDeptCode,
        f.fillusrdept filldeptname,
-       f.payfee || '' FMemo
+       f.payfee || '' FMemo,
+       f.payfee applyfee
   from wf_prlzb_pay f
 union
 select f.entgid,
@@ -38,5 +40,6 @@ select f.entgid,
        f.filldeptgid,
        f.filldeptcode,
        f.filldeptname,
-       f.sumfee || '' FMemo
+       f.sumfee || '' FMemo,
+       f.sumfee applyfee
   from wf_prlzb_baoxiao f;

@@ -371,8 +371,8 @@
       $("select[name=selUnit_1]").empty();
       calcAll();
     }
-    $("input[id=s_Unit]").val("select fgid,fno,nvl(farea,0),floorno,nvl(fmr,0),nvl(jArea,0),FSTAT from prl_GROUNDH WHERE deptsource = '<HDPrint Value=#ParentDeptCode#>'"+JsWhere);
-    $("input[id=c_Unit]").val("select count(*) from prl_GROUNDH WHERE deptsource = '<HDPrint Value=#ParentDeptCode#>'"+JsWhere);
+    $("input[id=s_Unit]").val("select fgid,fno,nvl(farea,0),floorno,nvl(fmr,0),nvl(jArea,0),FSTAT from prl_GROUNDH WHERE deptsource = '<HDPrint Value=#ParentDeptCode#>' and fStat not in ('停用') "+JsWhere);
+    $("input[id=c_Unit]").val("select count(*) from prl_GROUNDH WHERE deptsource = '<HDPrint Value=#ParentDeptCode#>' and fStat not in ('停用') "+JsWhere);
 
     calcContract();
   }
@@ -1470,8 +1470,8 @@
 <FORM NAME="frmDataInterface_Unit" ACTION="">
   <INPUT TYPE="hidden" name="DataInterface_Title" ID="t_Unit" value="Unit 单位_选择列表">
 
-  <INPUT TYPE="hidden" name="DataInterface_Sql" ID="s_Unit" value="select fgid,fno,nvl(farea,0),floorno,nvl(fmr,0),nvl(jArea,0),FSTAT from prl_GROUNDH WHERE deptsource = '<HDPrint Value=#ParentDeptCode#>'">
-  <INPUT TYPE="hidden" name="DataInterface_CountSql" ID="c_Unit" value="select count(*) from prl_GROUNDH WHERE deptsource = '<HDPrint Value=#ParentDeptCode#>'">
+  <INPUT TYPE="hidden" name="DataInterface_Sql" ID="s_Unit" value="select fgid,fno,nvl(farea,0),floorno,nvl(fmr,0),nvl(jArea,0),FSTAT from prl_GROUNDH WHERE deptsource = '<HDPrint Value=#ParentDeptCode#>' and fStat not in ('停用')">
+  <INPUT TYPE="hidden" name="DataInterface_CountSql" ID="c_Unit" value="select count(*) from prl_GROUNDH WHERE deptsource = '<HDPrint Value=#ParentDeptCode#>' and fStat not in ('停用')">
   <INPUT TYPE="hidden" name="DataInterface_OrderSql" value="order by fno">
   <INPUT TYPE="hidden" name="DataInterface_UsrGid" value="<HDPrint Value=#UsrGid#>">
   <INPUT TYPE="hidden" name="DataInterface_AppName" value="##HDNet_AppName##">
