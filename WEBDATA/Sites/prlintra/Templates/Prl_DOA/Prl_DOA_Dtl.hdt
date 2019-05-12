@@ -70,13 +70,16 @@
   <col style="padding-left:4px;">
   <tr class="listtr">
     <td rowspan="2">年份</td>
+    <td rowspan="2">年度总预算[元]</td>
+    <td rowspan="2">已使用总预算[元]</td>
+    <td colspan="5">使用中预算[元]</td>
     <td rowspan="2">剩余预算[元]<font color="red">*</font></td>
-    <td colspan="4">使用中预算[元]</td>
   </tr>
   <tr class="listtr">
     <td>费用单</td>
     <td>付款单</td>
     <td>个人报销单</td>
+    <td>预算分配</td>
     <td>合计</td>
   </tr>
   <HDPrint Value=#FeeList# Replace=#None#>
@@ -180,8 +183,8 @@
     //提交时，提示
     if (!(confirm(sConfirm)))
       return false;
-    
-    //获取当前表单对象 
+
+    //获取当前表单对象
     var JqObj = $("form[name=frmDo]");
     //表单参数设定
     JqObj.attr({

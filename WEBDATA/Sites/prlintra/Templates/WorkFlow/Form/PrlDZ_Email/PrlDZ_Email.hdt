@@ -1,18 +1,57 @@
+<script language="javascript" src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
 <script language="javascript">
-  var browser = JQGetBrowser();
-  if (browser.mobile){
-    location.replace('##HDNet_AppName##/Main?UsrGid=<HDPrint Value=#CurUsrGid# Replace=#DBField2Js#>');
-  }
-  else{
-    if (self.opener != null) {
-      try{
-        self.opener.location.reload();
-      }
-      catch(e){
-      }
-      window.opener = null;
-      window.open(' ', '_self', ' ');
+  function PostPush() {
+    var url = 'http://61.129.70.178/MallAppService/PushService.asmx/PushInfo';
+    var platform = '<HDPrint Value=#platform# Replace=#DBField2Js#>';
+    if (platform != '') {
+      platform = parseInt(platform,10);
+    }else{
+      platform = 0
     }
-    window.close();
+    var body = {Title:"鹏瑞利OA",Content:"您有新的待执行任务",Platform:platform,RegIDs:"<HDPrint Value=#registrationid# Replace=#DBField2Js#>"}
+    //参数
+    var data = {
+      data : JSON.stringify(body)
+    };
+    //回调函数
+    var cb = {
+      //成功，处理函数
+      success : function (ret){
+        return true;
+      },
+      //失败，处理函数
+      failed : function (ret){
+        return false;
+      }
+    };
+    //调用Ajax函数
+    JQAjax(url,data,cb);
+  }
+  function toNext(){
+    var browser = JQGetBrowser();
+    if (browser.mobile){
+      location.replace('##HDNet_AppName##/Main?UsrGid=<HDPrint Value=#CurUsrGid# Replace=#DBField2Js#>');
+    }
+    else{
+      if (self.opener != null) {
+        try{
+          self.opener.location.reload();
+        }
+        catch(e){
+        }
+        window.opener = null;
+        window.open(' ', '_self', ' ');
+      }
+      window.close();
+    }
+  }
+  if ('<HDPrint Value=#registrationid# Replace=#DBField2Js#>' != '') {
+    PostPush();
+    setTimeout(function () {
+      toNext();
+    }, 2000);
+  }else{
+    toNext();
   }
 </script>

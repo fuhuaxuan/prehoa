@@ -20,6 +20,8 @@ Sql1=select f.*,FillUsrDept FillDeptName,'费用' MCode,wf.stat Flowstat from wf_^
 ;取出当前流程，当前用户，下一步操作
 SQl2=select wt.Code NextStepCode,wt.Name NextStepName from wf_task wt where wt.EntGid = __ENTGID__ and wt.ModelGid = ##ModelGid## and wt.FlowGid = ##FlowGid## and wt.ExecGid = __USRGID__ and wt.stat = 1
 
+SQL3=select count(*) isEndCount from wf_prl_fee f,wf_flow t where f.entgid = __ENTGID__ and f.flowgid = ##FlowGid## and f.entgid = t.entgid and f.flowgid = t.flowgid and t.stat = 3 and f.fillusrgid = __USRGID__ and f.Stat in ('已完成','30') and not exists (select 1 from wf_prl_pay p,wf_flow wf where p.entgid = f.entgid and p.entgid = wf.entgid and p.feeflowgid = f.flowgid and p.flowgid = wf.flowgid and p.stat not in ('终止') and (wf.stat < 3 or p.isend = '10')) and f.confirmfee > (select nvl(sum(p.payfee),0) from wf_prl_pay p,wf_flow wf where p.entgid = f.entgid and p.entgid = wf.entgid and p.feeflowgid = f.flowgid and p.flowgid = wf.flowgid and p.stat not in ('终止') and wf.stat < 4)
+
 ;显示邮件
 LoopSQL19=select 1 from dual
 LoopHDT19=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_Email.hdt

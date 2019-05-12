@@ -23,16 +23,27 @@ Sql1=select f.*,FillUsrDept FillDeptName,decode(wf.stat,'0', '未执行','1', '待执
 ;取出本流程已审批的审批人的个数，用于判断是否显示审批人
 SQL2=select count(*) IsShow from wf_^^ModelCodeT^^_App where EntGid = __ENTGID__ and  FlowGid = ##FlowGid## 
 
+SQL3=select count(*) isEndCount from wf_prl_fee f,wf_flow t where f.entgid = __ENTGID__ and f.flowgid = ##FlowGid## and f.entgid = t.entgid and f.flowgid = t.flowgid and t.stat = 3 and f.Stat in ('已完成','30') and exists (select 1 from wf_prl_pay p,wf_flow wf where p.entgid = f.entgid and p.entgid = wf.entgid and p.feeflowgid = f.flowgid and p.flowgid = wf.flowgid and p.stat not in ('终止') and wf.stat < 4)
+
 ;显示本流程附件信息
 LoopSQL1=select replace(Attach_Url,' ','%20') Attach_Url,Attach_Title from wf_^^ModelCodeT^^_Attach where EntGid = __ENTGID__ and  FlowGid = ##FlowGid## order by Attach_Title
 LoopHDT1=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AttachList.hdt
 LoopVAR1=AttachList
 
 ;显示本流程已审批审批人信息
-LoopSQL2=select a.*,decode(a.apptype,0,'发起人',10,'部门经理',20,'部门总经理',30,'财务经理',35,'总经理',40,'项目总经理',50,'资产经理',60,'部门总监',80,'财务总监',85,'资产经理',90,'区域总经理',95,'Deputy CEO',100,'CEO',110,'执行委员会',120,'发起人确认') apptypetext  from wf_^^ModelCodeT^^_App a where FlowGid = ##FlowGid## order by AppDate,AppType
+LoopSQL2=select a.*,decode(a.apptype,0,'发起人',10,'部门经理',20,'部门总经理',23,'成本合约经理',30,'财务经理',35,'总经理',40,'项目总经理',50,'资产经理',60,'部门总监',80,'财务总监',85,'资产经理',90,'区域总经理',95,'Deputy CEO',100,'CEO',110,'执行委员会',120,'发起人确认') apptypetext  from wf_^^ModelCodeT^^_App a where FlowGid = ##FlowGid## order by AppDate,AppType
 LoopHDT2=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AppList.hdt
 LoopVAR2=AppList
 
+;显示本流程已审批审批人信息
+LoopSQL5=select a.*,decode(a.apptype,0,'发起人',10,'部门经理',20,'部门总经理',23,'成本合约经理',30,'财务经理',35,'总经理',40,'项目总经理',50,'资产经理',60,'部门总监',80,'财务总监',85,'资产经理',90,'区域总经理',95,'Deputy CEO',100,'CEO',110,'执行委员会',120,'发起人确认') apptypetext  from wf_^^ModelCodeT^^_App a where FlowGid = ##FlowGid## order by AppDate,AppOrder
+LoopHDT5=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AppEmail.hdt
+LoopVAR5=AppEmail
+
+;显示本流程已审批审批人信息
+LoopSQL3=select p.modelgid Pmodelgid,wm.code PModelCode, p.flowgid pflowgid, p.num pNum, p.partnum, decode(p.isend,10,'是','否') IsEnd,p.stat,p.PayFee,p.CompanyName,p.AcgOneName,p.AcgTwoName,p.DoaCode,p.DoaName from wf_prl_pay p, wf_flow wf,wf_model wm where p.entgid = __ENTGID__ and p.entgid = wf.entgid  and p.entgid = wm.entgid and p.flowgid = wf.flowgid and p.modelgid = wm.modelgid and p.stat not in ('终止') and wf.stat < 4 and exists (select 1 from wf_^^ModelCodeT^^ f where f.entgid = p.entgid and f.flowgid = p.feeflowgid and f.flowgid = ##FlowGid## )  order by p.partnum
+LoopHDT3=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_PayList.hdt
+LoopVAR3=PayList
 
 ;显示邮件
 LoopSQL19=select 1 from dual

@@ -54,9 +54,9 @@
       $("table#tb_Dtl>tbody").empty();
     }
 
-    var s_Acg = "select v.gid, v.code, v.name, v.parentgid, v.parentcode, v.parentname, c.year, round(nvl(c.leftfee, 0) - nvl(c.YesFee, 0), 2) fFee from v_acg v, v_PRL_ACG_Fee c where v.entgid = '<HDPrint Value=#EntGid#>' and v.entgid = c.entgid and v.type = 20 and v.gid = c.acggid and c.comgid = '"+JsObj.value+"' and c.year = nvl(substr('<HDPrint Value=#createdate# Replace=#DBField2Input#>', 0, 4), to_char(sysdate, 'YYYY')) and v.code in ('7.01','7.02','7.03','7.04','7.05','7.06','7.07','7.08','7.09','7.1', '8.02', '8.03', '8.04', '8.07', '6.03', '4.05', '4.06', '4.10', '4.14', '4.16')";
+    var s_Acg = "select v.gid, v.code, v.name, v.parentgid, v.parentcode, v.parentname, c.year, round(nvl(c.leftfee, 0) - nvl(c.YesFee, 0), 2) fFee from v_acg v, v_PRL_ACG_Fee c where v.entgid = '<HDPrint Value=#EntGid#>' and v.entgid = c.entgid and v.type = 20 and v.gid = c.acggid and c.comgid = '"+JsObj.value+"' and c.year = nvl(substr('<HDPrint Value=#createdate# Replace=#DBField2Input#>', 0, 4), to_char(sysdate, 'YYYY')) and v.code in ('7.01','7.02','7.03','7.04','7.05','7.06','7.07','7.08','7.09','7.1', '8.02', '8.03', '8.04', '8.07','8.09', '6.03', '4.05', '4.06', '4.10', '4.14', '4.16')";
 
-    var c_Acg = "select count(*) from v_acg v, v_PRL_ACG_Fee c where v.entgid = '<HDPrint Value=#EntGid#>' and v.entgid = c.entgid and v.type = 20 and v.gid = c.acggid and c.comgid = '"+JsObj.value+"' and c.year = nvl(substr('<HDPrint Value=#createdate# Replace=#DBField2Input#>', 0, 4), to_char(sysdate, 'YYYY')) and v.code in ('7.01','7.02','7.03','7.04','7.05','7.06','7.07','7.08','7.09','7.1', '8.02', '8.03', '8.04', '8.07', '6.03', '4.05', '4.06', '4.10', '4.14', '4.16')";
+    var c_Acg = "select count(*) from v_acg v, v_PRL_ACG_Fee c where v.entgid = '<HDPrint Value=#EntGid#>' and v.entgid = c.entgid and v.type = 20 and v.gid = c.acggid and c.comgid = '"+JsObj.value+"' and c.year = nvl(substr('<HDPrint Value=#createdate# Replace=#DBField2Input#>', 0, 4), to_char(sysdate, 'YYYY')) and v.code in ('7.01','7.02','7.03','7.04','7.05','7.06','7.07','7.08','7.09','7.1', '8.02', '8.03', '8.04', '8.07','8.09', '6.03', '4.05', '4.06', '4.10', '4.14', '4.16')";
 
     $("input#s_Acg").val(s_Acg);
     $("input#c_Acg").val(c_Acg);
@@ -65,7 +65,7 @@
   *函数功能：明细新增一行
   *参数说明：使用JQTr_Add() 函数新增行时，需写在 tbody 标记中
   */
-  function CallAcg(AcgGid,AcgCode,AcgName,PAcgGid,PAcgCode,PAcgName,Year,AcgFee,ApplyFee)
+  function CallAcg(AcgGid,AcgCode,AcgName,PAcgGid,PAcgCode,PAcgName,Year,AcgFee,FeeDate,ApplyFee)
   {
     var sTbId = 'tb_Dtl';
     var sTrClass = 'listtd';
@@ -84,6 +84,9 @@
     }
     if (ApplyFee == null){
       ApplyFee = '';
+    }
+    if (FeeDate == null){
+      FeeDate = '';
     }
     if(!JQgetSingle("AcgGid_1",AcgGid)){
       alert('对不起，已经存在该项目！');
@@ -107,6 +110,7 @@
     +'</td>';
 
     tdArr[k++] = '<td>'+AcgFee+'</td>';
+    tdArr[k++] = '<td><INPUT TYPE="text" NAME="FeeDate_1" ID="FeeDate_1'+ iRow +'" maxlength="10" class="JQDate JQMust" value = "'+FeeDate+'"></td>';
 
     tdArr[k++] = '<td>'
       +'<INPUT TYPE="text" NAME="ApplyFee_1" ID="ApplyFee_1'+ iRow +'" JQRow="ApplyFee_1" JQRowName="SumFee" maxlength="16" class="JQFloat JQMust" value = "'+ApplyFee+'" JQMin="0" JQMax="'+AcgFee+'">'
@@ -285,6 +289,7 @@
     <td align="center">项目大类</td>
     <td align="center">项目小类</td>
     <td align="center">剩余预算</td>
+    <td align="center">费用发生日期<font color="red">*</font></td>
     <td align="center">本次申请金额[元]<font color="red">*</font></td>
     <td align="center">操作</td>
   </tr>
@@ -293,7 +298,7 @@
   </tbody>
   <tfoot>
   <tr class="ListTdFocus">
-    <td align="right" colspan="4">报销金额汇总[元]：</td>
+    <td align="right" colspan="5">报销金额汇总[元]：</td>
     <td align="right"><input type="text" name="SumFee" style="border:0;width:100%" value='<HDPrint Value=#SumFee# Replace=#DBField2Input#>' readonly class="listtdfocus"  JQRowSum="ApplyFee_1" JQBit="2"></td>
     <td align="center">&nbsp;</td>
   </tr>
@@ -376,8 +381,8 @@
 <FORM NAME="frmDataInterface_Acg" ACTION="">
   <INPUT TYPE="hidden" name="DataInterface_Title" ID="t_Acg" value="项目选择列表">
 
-<INPUT TYPE="hidden" name="DataInterface_Sql" ID="s_Acg" value="select v.gid, v.code, v.name, v.parentgid, v.parentcode, v.parentname, c.year, round(nvl(c.leftfee, 0) - nvl(c.YesFee, 0), 2) fFee from v_acg v, v_PRL_ACG_Fee c where v.entgid = '<HDPrint Value=#EntGid#>' and v.entgid = c.entgid and v.type = 20 and v.gid = c.acggid and c.comgid = '<HDPrint Value=#comGid# Replace=#DBField2Input#>' and c.year = nvl(substr('<HDPrint Value=#createdate# Replace=#DBField2Input#>', 0, 4), to_char(sysdate, 'YYYY')) and v.code in ('7.01','7.02','7.03','7.04','7.05','7.06','7.07','7.08','7.09','7.1', '8.02', '8.03', '8.04', '8.07', '6.03', '4.05', '4.06', '4.10', '4.14', '4.16')">
-  <INPUT TYPE="hidden" name="DataInterface_CountSql" ID="c_Acg" value="select count(*) from v_acg v, v_PRL_ACG_Fee c where v.entgid = '<HDPrint Value=#EntGid#>' and v.entgid = c.entgid and v.type = 20 and v.gid = c.acggid and c.comgid = '<HDPrint Value=#comGid# Replace=#DBField2Input#>' and c.year = nvl(substr('<HDPrint Value=#createdate# Replace=#DBField2Input#>', 0, 4), to_char(sysdate, 'YYYY')) and v.code in ('7.01','7.02','7.03','7.04','7.05','7.06','7.07','7.08','7.09','7.1', '8.02', '8.03', '8.04', '8.07', '6.03', '4.05', '4.06', '4.10', '4.14', '4.16')">
+<INPUT TYPE="hidden" name="DataInterface_Sql" ID="s_Acg" value="select v.gid, v.code, v.name, v.parentgid, v.parentcode, v.parentname, c.year, round(nvl(c.leftfee, 0) - nvl(c.YesFee, 0), 2) fFee from v_acg v, v_PRL_ACG_Fee c where v.entgid = '<HDPrint Value=#EntGid#>' and v.entgid = c.entgid and v.type = 20 and v.gid = c.acggid and c.comgid = '<HDPrint Value=#comGid# Replace=#DBField2Input#>' and c.year = nvl(substr('<HDPrint Value=#createdate# Replace=#DBField2Input#>', 0, 4), to_char(sysdate, 'YYYY')) and v.code in ('7.01','7.02','7.03','7.04','7.05','7.06','7.07','7.08','7.09','7.1', '8.02', '8.03', '8.04', '8.07','8.09', '6.03', '4.05', '4.06', '4.10', '4.14', '4.16')">
+  <INPUT TYPE="hidden" name="DataInterface_CountSql" ID="c_Acg" value="select count(*) from v_acg v, v_PRL_ACG_Fee c where v.entgid = '<HDPrint Value=#EntGid#>' and v.entgid = c.entgid and v.type = 20 and v.gid = c.acggid and c.comgid = '<HDPrint Value=#comGid# Replace=#DBField2Input#>' and c.year = nvl(substr('<HDPrint Value=#createdate# Replace=#DBField2Input#>', 0, 4), to_char(sysdate, 'YYYY')) and v.code in ('7.01','7.02','7.03','7.04','7.05','7.06','7.07','7.08','7.09','7.1', '8.02', '8.03', '8.04', '8.07','8.09', '6.03', '4.05', '4.06', '4.10', '4.14', '4.16')">
 
   <INPUT TYPE="hidden" name="DataInterface_OrderSql" value="order by v.code">
   <INPUT TYPE="hidden" name="DataInterface_UsrGid" value="<HDPrint Value=#UsrGid#>">

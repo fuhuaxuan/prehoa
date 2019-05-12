@@ -1,0 +1,16 @@
+[Rep_BeginLine]
+编号
+面积
+最近操作类型
+最近操作人
+最近操作时间
+[Rep_EndLine]
+<HDLoop>
+[Rep_BeginLine]
+#NoForm#<HDPrint Value=#fno# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#farea# Replace=#DBField2Excel#>
+<HDPrint Value=#OpType# Replace=#None#>
+<HDPrint Value=#OpName# Replace=#None#>
+#NoForm#<HDPrint Value=#OpDate# Replace=#DBField2Excel#>
+[Rep_EndLine]
+</HDLoop>

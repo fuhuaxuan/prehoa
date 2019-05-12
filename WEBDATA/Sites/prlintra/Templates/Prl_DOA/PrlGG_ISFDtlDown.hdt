@@ -1,0 +1,116 @@
+[Rep_BeginLine]
+类型
+单号
+发起人
+发起日期
+状态
+类别
+类别2
+楼层
+单位
+面积
+建筑面积
+业态
+租户
+商店营业名称
+联系人
+地址
+电话
+Email
+Fax
+免租期-年
+免租期-月
+免租期-日
+交付日期
+牵连关系实体交易
+免租期-年
+免租期-月
+免租期-日
+装修期-月
+装修期-日
+细节
+装修期起始
+装修期结束
+合同起始
+合同截止
+租金形式
+收银方式
+POS机-日
+POS机-月
+法律费用-日
+法律费用-月
+总费用-日
+总费用-月
+预付租金 + 物业管理费
+保证金
+方式
+新
+目前
+批准预算
+增添保证金
+文本费用
+装修补贴
+总金额
+其它费用名称
+其它费用名称
+其它费用总金额
+[Rep_EndLine]
+<HDLoop>
+[Rep_BeginLine]
+#NoForm#<HDPrint value=#ISFFlowType# Replace=#DBField2Excel#>
+<HDPrint value=#Num# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#FillUsrName# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#CreateDate# Replace=#DBField2Excel#>
+<HDPrint value=#FStatText# Replace=#DBField2Excel#>:<HDPrint value=#StatText# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#Atype# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#Category# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#Dept# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#unit# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#Area# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#BuildArea# Replace=#DBField2Excel#>
+<HDPrint value=#Trade# Replace=#None#>:<HDPrint value=#TradeName# Replace=#None#>
+#NoForm#<HDPrint value=#lessee# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#Tradingname# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#Contactor# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#Address# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#Phone# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#Email# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#Fax# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#leaseTermY# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#leaseTermM# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#leaseTermD# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#HandoverDate# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#related# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#FreeRentY# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#FreeRentM# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#FreeRentD# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#FitoutM# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#FitoutD# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#FitoutD# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#FitoutDate1# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#FitoutDate2# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#Contractdate1# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#Contractdate2# Replace=#DBField2Excel#>
+<HDPrint value=#Rate# Replace=#None#>-<HDPrint value=#Rate1# Replace=#None#>
+#NoForm#<HDPrint value=#COLLECTION# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#POSFeeD# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#POSFeeM# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#LegalFeeD# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#LegalFeeM# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#TotalFeeD# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#TotalFeeM# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#AGR# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#Security# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#Incash# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#BRCNew# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#BRCExist# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#BRCBudget# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#SDTopUp# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#AdminFee# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#FitAllowance# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#TotalFee# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#OtherFeeName# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#OtherFee# Replace=#DBField2Excel#>
+#NoForm#<HDPrint value=#OtherTotalFee# Replace=#DBField2Excel#>
+[Rep_EndLine]
+</HDLoop>

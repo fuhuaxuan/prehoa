@@ -30,6 +30,10 @@ Sql2=insert into wf_^^ModelCodeT^^_App (EntGid,FlowGid,dtlgid,AppGid,AppCode,App
 ;更新项目的预算费用
 SQL4=update PRL_ACG_COMPANY o set (LeftBudgutFee,OpUsrGid,OpUsrCode,OpUsrName,OpDate,OpMemo,OpModelCode,OpFlowGid,OpNum) = (select o.LeftBudgutFee - nvl(##confirmfee##,0),__USRGID__,__USRCODE__,__USRNAME__,sysdate,'费用申请单扣减',##ModelCode##,##FlowGid##,##Num## from dual) where o.entgid = __ENTGID__ and exists (select 1 from WF_^^ModelCodeT^^ wf where wf.entgid = __ENTGID__ and wf.flowgid = ##FlowGid## and o.ACGGID = wf.acgtwogid and o.CompanyGid = wf.CompanyGid and to_char(wf.CreateDate,'YYYY') = o.Year) 
 
+SQL5=update PRL_ACG_COMPANY o set (LeftBudgutFee,OpUsrGid,OpUsrCode,OpUsrName,OpDate,OpMemo,OpModelCode,OpFlowGid,OpNum) = (select o.LeftBudgutFee - nvl(##Nconfirmfee##,0),__USRGID__,__USRCODE__,__USRNAME__,sysdate,'费用申请单扣减',##ModelCode##,##FlowGid##,##Num## from dual) where o.entgid = __ENTGID__ and exists (select 1 from WF_^^ModelCodeT^^ wf where wf.entgid = __ENTGID__ and wf.flowgid = ##FlowGid## and o.ACGGID = wf.acgtwogid and o.CompanyGid = wf.CompanyGid and to_char(add_months(wf.CreateDate,12),'YYYY') = o.Year) 
+
+SQL6=insert into PRL_ACG_COMPANY (EntGid,Gid,CompanyGid,AcgGid,LeftBudgutFee,Year,OpUsrGid,OpUsrCode,OpUsrName,OpDate,OpMemo,OpModelCode,OpFlowGid,OpNum) select __ENTGID__,sys_guid(),wf.CompanyGid,wf.acgtwogid,0-nvl(##Nconfirmfee##,0),to_char(add_months(wf.CreateDate,12),'YYYY'),__USRGID__,__USRCODE__,__USRNAME__,sysdate,'费用申请单扣减',##ModelCode##,##FlowGid##,##Num## from WF_^^ModelCodeT^^ wf where wf.entgid = __ENTGID__ and wf.flowgid = ##FlowGid## and not exists (select 1 from PRL_ACG_COMPANY o where wf.entgid = __ENTGID__ and wf.flowgid = ##FlowGid## and o.ACGGID = wf.acgtwogid and o.CompanyGid = wf.CompanyGid and to_char(add_months(wf.CreateDate,12),'YYYY') = o.Year) 
+
 [AddtionalSQLUseWhere]
 ;显示，单条数据的查询，可以用于HDT显示，有select命令。从SQL1～SQL20共支持20条，同时会使用上面的[where]中的sql语句
 ;示例

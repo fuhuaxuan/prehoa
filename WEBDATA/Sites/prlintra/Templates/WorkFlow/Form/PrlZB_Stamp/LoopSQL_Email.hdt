@@ -4,7 +4,7 @@
 <tr><td>[单号] : <HDPrint Value=#Num#>；</td></tr>
 <tr><td>[发起人] : <HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]；</td></tr>
 <tr><td>[发起时间] : <HDPrint Value=#CreateDate#>；</td></tr>
-<tr><td>[是否关联流程] : <HDPrint Value=#mIsFlow#>（单号<HDPrint Value=#mNum#>）；</td></tr>
+<tr><td>[是否关联流程] : <HDPrint Value=#mIsFlow#>（单号：<a id="a_flow" href="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#mModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&ModelCode=<HDPrint Value=#mModelCode#>&FlowGid=<HDPrint Value=#mFlowGid#>" target="_blank"><HDPrint Value=#mNum#></a>）；</td></tr>
 <tr><td>[部门类型] : <HDPrint Value=#DeptType#>；</td></tr>
 <tr><td>[申请类型] : <HDPrint Value=#ApplyType#>；</td></tr>
 <tr><td>[申请印章种类] : <HDPrint Value=#StampType#>；</td></tr>
@@ -28,3 +28,4 @@
 <tr><td>[附件信息] : <HDPrint Value=#AttachList# Replace=#None#> ；</td></tr>
 <tr><td>-----------内容展示完毕-----------</td></tr>
 </table>
+<HDPrint Value=#AppEmail# Replace=#None#>

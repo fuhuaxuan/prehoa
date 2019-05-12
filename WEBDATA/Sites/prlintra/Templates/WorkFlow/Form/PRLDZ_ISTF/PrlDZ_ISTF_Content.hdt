@@ -112,13 +112,13 @@
 </TABLE>
 </h3>
 <div id="tb_Order">
-<table cellpadding="0" cellspacing="1" class="ListBar" width="100%" id="tb_Base">
+<table cellpadding="0" cellspacing="1" class="ListBar" width="100%" id="tb_Base"style="margin-bottom:5px">
   <col style="padding-left:4px;width:10%">
   <col style="padding-left:4px;width:23%">
   <col style="padding-left:4px;width:10%">
-  <col style="padding-left:4px;width:20%">
+  <col style="padding-left:4px;width:23%">
   <col style="padding-left:4px;width:10%">
-  <col style="padding-left:4px;width:26%">
+  <col style="padding-left:4px;width:23%">
   <tr valign="top">
     <td class="DtlBarTitle">上一版本ISF/ISCF:</a></td>
     <td class="listtd"><a href="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#OldModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#OldModelGid#>&FlowGid=<HDPrint Value=#OldFlowGid#>" target="_blank"><HDPrint Value=#OldNum#></a></td>
@@ -198,15 +198,93 @@
     <td class="DtlBarTitle"></td>
     <td class="listtd"></td>
   </tr>
+  <tr valign="top">
+    <td class="listtd" colspan="6">C、本年度已缴/预估租金费用明细</td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">本年度预算[元/年]:</td>
+    <td class="listtd"><HDPrint Value=#CFee#></td>
+    <td class="DtlBarTitle"></td>
+    <td class="listtd"></td>
+    <td class="DtlBarTitle"></td>
+    <td class="listtd"></td>
+  </tr>
 </table>
-<table width="100%" class="ListBar" cellpadding="0"  cellspacing="1" id="tb_Dtl"  style="margin-top:5px;">
+&nbsp;&nbsp;D、退租品牌本年度已缴费用明细
+<table width="100%" class="ListBar JQMust" cellpadding="0"  cellspacing="1" id="tb_FeeD" style="margin-bottom:5px">
   <colgroup>
-     <col style="width:10%">
-     <col style="width:14%">
-     <col style="width:14%">
-     <col style="width:14%">
-     <col style="width:14%">
-     <col style="width:14%">
+     <col style="width:15%">
+     <col style="width:13%">
+     <col style="width:13%">
+     <col style="width:13%">
+     <col style="width:13%">
+     <col style="width:13%">
+     <col style="width:20%">
+  </colgroup>
+  <thead>
+  <tr class="DtlBarTitle" align="center">
+    <td>日期(退租品牌)<br></td>
+    <td>固定租金<br>psm/day(㎡/天)</td>
+    <td>物管费<br>psm/day(㎡/天)</td>
+    <td>市场推广费<br>psm/mth(㎡/月)</td>
+    <td>提成租金(纯扣租户)<br>psm/day(㎡/天)</td>
+    <td>总租金<br>元</td>
+    <td>备注</td>
+  </tr>
+  </thead>
+  <tbody>
+  <HDPrint Value=#DFeeList# Replace=#None#>
+  </tbody>
+  <tfoot>
+  <tr class="ListTdFocus">
+    <td colspan="5">合计：</td>
+    <td><HDPrint Value=#DFee#></td>
+    <td align="center" colspan="2">&nbsp;</td>
+  </tr>
+  </tfoot>
+</table>
+&nbsp;&nbsp;E、替换品牌本年度已缴费用明细
+<table width="100%" class="ListBar JQMust" cellpadding="0"  cellspacing="1" id="tb_FeeE" style="margin-bottom:5px">
+  <colgroup>
+     <col style="width:15%">
+     <col style="width:13%">
+     <col style="width:13%">
+     <col style="width:13%">
+     <col style="width:13%">
+     <col style="width:13%">
+     <col style="width:20%">
+  </colgroup>
+  <thead>
+  <tr class="DtlBarTitle" align="center">
+    <td>日期(替换品牌)<br></td>
+    <td>固定租金<br>psm/day(㎡/天)</td>
+    <td>物管费<br>psm/day(㎡/天)</td>
+    <td>市场推广费<br>psm/mth(㎡/月)</td>
+    <td>提成租金(纯扣租户)<br>psm/day(㎡/天)</td>
+    <td>总租金<br>元</td>
+    <td>备注</td>
+  </tr>
+  </thead>
+  <tbody>
+  <HDPrint Value=#EFeeList# Replace=#None#>
+  </tbody>
+  <tfoot>
+  <tr class="ListTdFocus">
+    <td colspan="5">合计：</td>
+    <td><HDPrint Value=#EFee#></td>
+    <td align="center" colspan="2">&nbsp;</td>
+  </tr>
+  </tfoot>
+</table>
+&nbsp;&nbsp;F、结算费用明细
+<table width="100%" class="ListBar" cellpadding="0"  cellspacing="1" id="tb_Dtl"  style="margin-bottom:5px;">
+  <colgroup>
+     <col style="width:15%">
+     <col style="width:13%">
+     <col style="width:13%">
+     <col style="width:13%">
+     <col style="width:13%">
+     <col style="width:13%">
      <col style="width:20%">
   </colgroup>
   <thead>
@@ -235,13 +313,14 @@
   </tr>
   </tfoot>
 </table>
-<table cellpadding="0" cellspacing="1" class="ListBar" width="100%" style="margin-top:5px;">
+&nbsp;&nbsp;G、
+<table cellpadding="0" cellspacing="1" class="ListBar" width="100%">
   <col style="padding-left:4px;width:15%">
-  <col style="padding-left:4px;width:17%">
+  <col style="padding-left:4px;width:18%">
   <col style="padding-left:4px;width:15%">
-  <col style="padding-left:4px;width:17%">
+  <col style="padding-left:4px;width:18%">
   <col style="padding-left:4px;width:15%">
-  <col style="padding-left:4px;width:17%">
+  <col style="padding-left:4px;width:18%">
   <tr>
     <td class="DtlBarTitle">未完成租约期限的租金及费用：</td>
     <td class="ListTd"><HDPrint Value=#NumA#></td>

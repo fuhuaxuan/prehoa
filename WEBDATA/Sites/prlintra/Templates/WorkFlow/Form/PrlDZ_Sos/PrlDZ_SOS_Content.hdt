@@ -7,7 +7,7 @@
     JQChgHeight();
   });
 
-  function AddUnit(aType,Line,Gid,fNo,floorNo,fArea,jArea,fmr){
+  function AddUnit(aType,Line,Gid,fNo,floorNo,fArea,jArea,fmr,fmrY,fmrM){
     var sTbId = 'tb_Dtl'+aType;
     var sTrClass = 'listtd';
     var tdArr = new Array();
@@ -21,14 +21,18 @@
       fArea = '';
       jArea = '';
       fmr = '';
+      fmrY = '';
+      fmrM = '';
     }
 
     tdArr[k++] = '<td align="center">'+ Line +'</td>';
-    tdArr[k++] = '<td>'+fNo+'</td>';
-    tdArr[k++] = '<td>'+floorNo+'</td>';
-    tdArr[k++] = '<td align="right">'+fArea+'</td>';
-    tdArr[k++] = '<td align="right">'+jArea+'</td>';
-    tdArr[k++] = '<td align="right">'+fmr+'</td>';
+    tdArr[k++] = '<td align="center">'+fNo+'</td>';
+    tdArr[k++] = '<td align="center">'+floorNo+'</td>';
+    tdArr[k++] = '<td align="center">'+fArea+'</td>';
+    tdArr[k++] = '<td align="center">'+jArea+'</td>';
+    tdArr[k++] = '<td align="center">'+fmr+'</td>';
+    tdArr[k++] = '<td align="center">'+fmrY+'</td>';
+    tdArr[k++] = '<td align="center">'+fmrM+'</td>';
     //新增一行
     JQTr_Add(sTbId,sTrClass,tdArr);
   }
@@ -105,11 +109,13 @@
       <table width="100%" class="ListBar" cellpadding="0"  cellspacing="1" id="tb_Dtl10">
         <colgroup>
            <col style="width:5%">
-           <col style="width:20%">
-           <col style="width:20%">
            <col style="width:15%">
            <col style="width:15%">
-           <col style="width:20%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:10%">
+           <col style="width:10%">
+           <col style="width:10%">
            <col style="width:5%">
         </colgroup>
         <thead>
@@ -119,7 +125,9 @@
           <td>楼层</td>
           <td>面积</td>
           <td>建筑面积</td>
-          <td>预算</td>
+          <td>预算单价<br>租金+物管+推广</td>
+          <td>年度总预算</td>
+          <td>月总租金</td>
         </tr>
         </thead>
         <tbody>
@@ -127,9 +135,10 @@
         <tfoot>
         <tr class="ListTdFocus">
           <td align="right" colspan="3">合计：</td>
-          <td align="right" JQ="fAreaSum1"><HDPrint Value=#fAreaSum1#></td>
-          <td align="right" JQ="jAreaSum1"><HDPrint Value=#jAreaSum1#></td>
-          <td align="right"></td>
+          <td align="center" JQ="fAreaSum1"><HDPrint Value=#fAreaSum1#></td>
+          <td align="center" JQ="jAreaSum1"><HDPrint Value=#jAreaSum1#></td>
+          <td align="center" colspan="2"></td>
+          <td align="center" JQ="fmrMSum1"><HDPrint Value=#fmrMSum1#></td>
         </tr>
         </tfoot>
       </table>
@@ -141,11 +150,13 @@
       <table width="100%" class="ListBar JQMust" cellpadding="0"  cellspacing="1" id="tb_Dtl20">
         <colgroup>
            <col style="width:5%">
-           <col style="width:20%">
-           <col style="width:20%">
            <col style="width:15%">
            <col style="width:15%">
-           <col style="width:20%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:10%">
+           <col style="width:10%">
+           <col style="width:10%">
            <col style="width:5%">
         </colgroup>
         <thead>
@@ -155,7 +166,9 @@
           <td>楼层</td>
           <td>面积</td>
           <td>建筑面积</td>
-          <td>预算</td>
+          <td>预算单价<br>租金+物管+推广</td>
+          <td>年度总预算</td>
+          <td>月总租金</td>
         </tr>
         </thead>
         <tbody>
@@ -163,9 +176,10 @@
         <tfoot>
         <tr class="ListTdFocus">
           <td align="right" colspan="3">合计：</td>
-          <td align="right" JQ="fAreaSum2"><HDPrint Value=#fAreaSum2#></td>
-          <td align="right" JQ="jAreaSum2"><HDPrint Value=#jAreaSum2#></td>
-          <td align="right"></td>
+          <td align="center" JQ="fAreaSum2"><HDPrint Value=#fAreaSum2#></td>
+          <td align="center" JQ="jAreaSum2"><HDPrint Value=#jAreaSum2#></td>
+          <td align="center" colspan="2"></td>
+          <td align="center" JQ="fmrMSum2"><HDPrint Value=#fmrMSum2#></td>
         </tr>
         </tfoot>
       </table>
@@ -175,6 +189,9 @@
         }
         if ('<HDPrint Value=#jAreaSum1# Replace=#DBField2Js#>' != '<HDPrint Value=#jAreaSum2# Replace=#DBField2Js#>') {
           $("[JQ=jAreaSum2]").css("color","red")
+        }
+        if ('<HDPrint Value=#fmrMSum1# Replace=#DBField2Js#>' != '<HDPrint Value=#fmrMSum2# Replace=#DBField2Js#>') {
+          $("[JQ=fmrMSum2]").css("color","red")
         }
       </script>
     </td>

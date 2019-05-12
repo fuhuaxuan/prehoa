@@ -56,3 +56,4 @@
 <tr><td>[附件信息] : <HDPrint Value=#AttachList# Replace=#None#></td></tr>
 <tr><td>-----------内容展示完毕-----------</td></tr>
 </table>
+<HDPrint Value=#AppEmail# Replace=#None#>

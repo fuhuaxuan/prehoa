@@ -1,0 +1,12 @@
+<script>
+  <hdloop>
+    Add_Dtl('<HDPrint Value=#DataName# Replace=#DBField2Js#>',
+      '<HDPrint Value=#Gid# Replace=#DBField2Js#>',
+      '<HDPrint Value=#DataA# Replace=#DBField2Js#>',
+      '<HDPrint Value=#DataB# Replace=#DBField2Js#>',
+      '<HDPrint Value=#DataC# Replace=#DBField2Js#>',
+      '<HDPrint Value=#DataD# Replace=#DBField2Js#>',
+      '<HDPrint Value=#DataE# Replace=#DBField2Js#>',
+      '<HDPrint Value=#Memo# Replace=#DBField2Js#>')
+  </hdloop>
+</script>

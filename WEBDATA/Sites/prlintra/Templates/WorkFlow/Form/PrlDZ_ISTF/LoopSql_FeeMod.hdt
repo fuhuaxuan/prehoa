@@ -1,0 +1,14 @@
+<script>
+  <hdloop>
+    Add_Fee('<HDPrint Value=#aType# Replace=#DBField2Js#>',
+      '<HDPrint Value=#Gid# Replace=#DBField2Js#>',
+      '<HDPrint Value=#bDate# Replace=#DBField2Js#>',
+      '<HDPrint Value=#eDate# Replace=#DBField2Js#>',
+      '<HDPrint Value=#TBRD# Replace=#DBField2Js#>',
+      '<HDPrint Value=#PMFD# Replace=#DBField2Js#>',
+      '<HDPrint Value=#Apfixed# Replace=#DBField2Js#>',
+      '<HDPrint Value=#GTO# Replace=#DBField2Js#>',
+      '<HDPrint Value=#Rent# Replace=#DBField2Js#>',
+      '<HDPrint Value=#Memo# Replace=#DBField2Js#>')
+  </hdloop>
+</script>

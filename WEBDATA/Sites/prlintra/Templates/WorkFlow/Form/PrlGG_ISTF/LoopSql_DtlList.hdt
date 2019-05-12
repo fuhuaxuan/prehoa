@@ -1,0 +1,11 @@
+<hdloop>
+  <tr class="listtd" valign="top" onmouseover="this.className='listtdfocus';" onmouseout="this.className='listtd'">
+    <td class="DtlBarTitle"><HDPrint Value=#DataName#></td>
+    <td><HDPrint Value=#DataA#></td>
+    <td><HDPrint Value=#DataB#></td>
+    <td><HDPrint Value=#DataC#></td>
+    <td><HDPrint Value=#DataD#></td>
+    <td><HDPrint Value=#DataE#></td>
+    <td><HDPrint Value=#Memo#></td>
+  </tr>
+</hdloop>

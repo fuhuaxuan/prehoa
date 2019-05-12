@@ -53,6 +53,21 @@ begin
        where v.EntGid = p_EntGid
          and v.deptGid = v_DeptGid
          and v.atype = 10
+         and rownum = 1
+      union 
+      select p_EntGid,
+             p_ModelGid,
+             p_FlowGid,
+             sys_guid(),
+             v.PostGid AppGid,
+             v.PostCode AppCode,
+             v.PostName AppName,
+             13 AppOrder,
+             13 AppType
+        from v_Post v
+       where v.EntGid = p_EntGid
+         and v.deptGid = v_DeptGid
+         and v.atype = 15
          and rownum = 1;
     insert into wf_PrlZB_Baoxiao_App
       (EntGid,

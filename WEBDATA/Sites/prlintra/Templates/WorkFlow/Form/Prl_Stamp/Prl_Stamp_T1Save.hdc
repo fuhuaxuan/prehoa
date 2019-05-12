@@ -14,7 +14,7 @@ SQL2=select 1 from dual where ##Stat## <> '提交' union select 1 from v_Post v wh
 Remind2=对不起，下一步审批人部门经理未找到，请与管理员联系。<script>alert('对不起，下一步审批人部门经理未找到，请与管理员联系。');history.back()</script>
 
 ;检查判断的Sql语句，查不到结果是报错，从SQL1～SQL5，共可以写5句
-SQL3=select 1 from dual where ##Stat## <> '提交' union select 1 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=40 and ##Stat## = '提交'
+SQL3=select 1 from dual where ##Stat## <> '提交' union select 1 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##ComGid## and v.atype=40 and ##Stat## = '提交'
 Remind3=对不起，下一步审批人项目总经理未找到，请与管理员联系。<script>alert('对不起，下一步审批人项目总经理未找到，请与管理员联系。');history.back()</script>
 
 [Detail]

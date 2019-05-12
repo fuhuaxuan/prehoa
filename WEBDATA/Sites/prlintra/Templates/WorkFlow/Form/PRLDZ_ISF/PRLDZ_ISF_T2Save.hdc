@@ -35,6 +35,10 @@ Sql3=delete from Wf_Prl_ISF_App where EntGid = __ENTGID__ and FlowGid = ##FlowGi
 ;²åÈë±¾Á÷³ÌÖĞÉóÅúÈË¶şĞÅÏ¢
 SQL4=insert into Wf_Prl_ISF_App (EntGid,FlowGid,dtlgid,AppGid,AppCode,AppName,AppType,AppOrder,AppAssign,AppMemo,AppDate) select __ENTGID__,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,##AppType##,##AppOrder##,##AppAssign##, ##AppMemo##,sysdate from dual
 
+
+SQL5=insert into Wf_Prl_ISF_App (EntGid,FlowGid,dtlgid,AppGid,AppCode,AppName,AppType,AppOrder) select __ENTGID__,##FlowGid##,sys_guid(),##LastGid##,##LastCode##,##LastName##,##LastType##,##LastOrder## from dual where ##AppAssign## = '·µ»ØºËÊµ'
+
+SQL6=insert into Wf_Prl_ISF_App (EntGid,FlowGid,dtlgid,AppGid,AppCode,AppName,AppType,AppOrder) select __ENTGID__,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,##AppType##,##AppOrder## from dual where ##AppAssign## = '·µ»ØºËÊµ'
 [AddtionalSQLUseWhere]
 ;ÏÔÊ¾£¬µ¥ÌõÊı¾İµÄ²éÑ¯£¬¿ÉÒÔÓÃÓÚHDTÏÔÊ¾£¬ÓĞselectÃüÁî¡£´ÓSQL1¡«SQL20¹²Ö§³Ö20Ìõ£¬Í¬Ê±»áÊ¹ÓÃÉÏÃæµÄ[where]ÖĞµÄsqlÓï¾ä
 ;Ê¾Àı
@@ -88,7 +92,7 @@ Log=
 PageKind=0
 
 ;Í¬Òâ£¬Á÷×ªµ½ÏÂÒ»²½
-WF1=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_T2 | T2Gid | and ##AppAssign## = 'Í¬Òâ' and ##NextApp## <> '0'| ^^AppFlowMemo^^)
+WF1=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_T2 | NextGid | and ##AppAssign## = 'Í¬Òâ' and ##NextApp## <> '0'| ^^AppFlowMemo^^)
 
 ;·ñ¾ö£¬·µ»Ø·¢ÆğÈË
 WF2=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TMod | null | and ##AppAssign## = '·ñ¾ö' |^^AppFlowMemo^^)
@@ -96,5 +100,8 @@ WF2=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TMod | null | and ##AppAssign## = '·ñ¾
 ;Í¬Òâ²¢½áÊøÁ÷³Ì£¬³­ËÍÈ¡³ıµ±Ç°ÉóÅúÈËÍâµÄËùÓĞÉóÅúÈË+²¿ÃÅÖúÀí+¼°×Ê²ú¾­Àí
 WF3=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_Tcc | selTcc_1 | and ##AppAssign## = 'Í¬Òâ' and ##NextApp## = '0'|^^AppFlowMemo^^)
 
+;·µ»ØºËÊµ£¬·µ»ØÉÏÒ»²½
+WF4=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_T2 | LastGid | and ##AppAssign## = '·µ»ØºËÊµ'| ^^AppFlowMemo^^)
+
 ;Í¬Òâ£¬Ã»ÓĞÏÂÒ»²½£¬½áÊø
-WF4=WFFlowFinish( ^^CurUrl^^ | and ##AppAssign## = 'Í¬Òâ' and ##NextApp## = '0')
+WF5=WFFlowFinish( ^^CurUrl^^ | and ##AppAssign## = 'Í¬Òâ' and ##NextApp## = '0')

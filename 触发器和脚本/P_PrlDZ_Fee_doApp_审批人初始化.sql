@@ -9,6 +9,7 @@ create or replace procedure P_PrlDZ_Fee_doApp(p_EntGid    varchar2, --企业Gid
   v_UsrGid      varchar2(32); --用户Gid
   v_ModelCode   varchar2(32); --模型代码
   v_DeptGid     varchar2(32); --当前用户部门
+  v_ComGid     varchar2(32); --项目Gid
   v_PreDeptCode varchar2(32); --所属部门代码
 
   v_AppFee    number(20, 2);
@@ -28,7 +29,8 @@ begin
          nvl(bVALUE, 0),
          nvl(cVALUE, 0),
          nvl(dVALUE, 0),
-         nvl(eVALUE, 0)
+         nvl(eVALUE, 0),
+         f.companyGid
     into v_AppFee,
          v_UsrGid,
          v_DeptGid,
@@ -37,7 +39,8 @@ begin
          v_BFee,
          v_CFee,
          v_DFee,
-         v_EFee
+         v_EFee,
+         v_ComGid
     from wf_Prl_Fee f
    where f.entgid = p_EntGid
      and f.flowgid = p_FlowGid;
@@ -82,11 +85,33 @@ begin
               select v.PostGid  AppGid,
                      v.PostCode AppCode,
                      v.PostName AppName,
+                     20         AppOrder,
+                     20         AppType
+                from v_Post v
+               where v.EntGid = p_EntGid
+                 and v.deptGid = v_DeptGid
+                 and v.atype = 15
+                 and rownum = 1
+              union
+              select v.PostGid  AppGid,
+                     v.PostCode AppCode,
+                     v.PostName AppName,
+                     23         AppOrder,
+                     23         AppType
+                from v_Post v
+               where v.EntGid = p_EntGid
+                 and v.deptGid = v_DeptGid
+                 and v.atype = 23
+                 and rownum = 1
+              union
+              select v.PostGid  AppGid,
+                     v.PostCode AppCode,
+                     v.PostName AppName,
                      30         AppOrder,
                      30         AppType
                 from v_Post v
                where v.EntGid = p_EntGid
-                 and v.deptGid = v_DeptGid
+                 and v.deptGid = v_ComGid
                  and v.atype = 30
                  and rownum = 1
               union
@@ -97,7 +122,7 @@ begin
                      35         AppType
                 from v_Post v
                where v.EntGid = p_EntGid
-                 and v.deptGid = v_DeptGid
+                 and v.deptGid = v_ComGid
                  and v.atype = 35
                  and rownum = 1
               union
@@ -108,7 +133,7 @@ begin
                      40         AppType
                 from v_Post v
                where v.EntGid = p_EntGid
-                 and v.deptGid = v_DeptGid
+                 and v.deptGid = v_ComGid
                  and v.atype = 40
                  and rownum = 1
               union
@@ -119,7 +144,7 @@ begin
                      50         AppType
                 from v_Post v
                where v.EntGid = p_EntGid
-                 and v.deptGid = v_DeptGid
+                 and v.deptGid = v_ComGid
                  and v.atype = 71
                  and rownum = 1
                  and v_AppFee > v_bFee
@@ -155,7 +180,7 @@ begin
                      90         AppType
                 from v_Post v
                where v.EntGid = p_EntGid
-                 and v.deptGid = v_DeptGid
+                 and v.deptGid = v_ComGid
                  and v.atype = 80
                  and rownum = 1
                  and v_AppFee > v_cFee

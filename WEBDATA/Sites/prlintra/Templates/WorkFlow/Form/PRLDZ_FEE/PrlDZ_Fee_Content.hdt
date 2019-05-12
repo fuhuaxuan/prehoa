@@ -36,6 +36,9 @@
 <HDIF EqualNot(<HDPrint Value=#IsShow# Replace=#None#>, 0)>
 <HDPrint Value=#AppList# Replace=#None#>
 </HDIF>
+<HDIF EqualNot(<HDPrint Value=#isEndCount# Replace=#none#>, 0)>
+<HDPrint Value=#PayList# Replace=#None#>
+</HDIF>
 <h3 class="SubTitleBar" >
 <TABLE cellspacing="1" cellpadding="0" width="100%">
   <col style="padding-left:4px;">

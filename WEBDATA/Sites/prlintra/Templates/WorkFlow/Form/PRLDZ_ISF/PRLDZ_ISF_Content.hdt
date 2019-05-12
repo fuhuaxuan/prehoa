@@ -103,6 +103,7 @@
         <li>P6：面积（计租面积）总和</li>
         <li>P7：免租期租金短缺：（第一年取决于计租方式的总租金单价-免租期取决于计租方式的总租金单价）*计租面积*免租期天数(其中：免租期天数计算：取免租期日期段对应的天数) 【ISCF 与 ISF 一样，为 0 】</li>
         <li>P8：起租日（只对ISCF有效，ISCF 合同开始日期 - ISF 合同开始日期</li>
+        <li>P9：Rental 出租，并且保证金标准-保证金实际</li>
     </FieldSet>
     </td>
   </tr>
@@ -196,9 +197,16 @@
       <br>
       <HDPrint Value=#CategoryText1# Replace=#None#>
       <script language="javascript">
-        if ('<HDPrint Value=#Category# Replace=#DBField2Js#>' == 'Others 其他'){
-          document.write(':<HDPrint Value=#CategoryTextText# Replace=#None#>');
-        }
+        //函数：ready
+        //功能：document 加载完成后调用
+        $(document).ready(function(){
+          if ('<HDPrint Value=#Category# Replace=#DBField2Js#>' == 'Others 其他'){
+            document.write(':<HDPrint Value=#CategoryTextText# Replace=#None#>');
+          }
+          if ('<HDPrint Value=#Atype# Replace=#DBField2Js#>' == 'Renewal 续约租赁') {
+              $("tr[JQ=sale]").show();
+          }
+        });
       </script>
     </td>
     <td class="DtlBarTitle">Unit No.:<br>单位:</td>
@@ -264,8 +272,7 @@
   </tr>
   <tr valign="top">
     <td class="DtlBarTitle">Free of rent Period:<br>免租期:</td>
-    <td class="listtd"><HDPrint Value=#FreeRentMText#  Replace=#None#>月/
-     <HDPrint Value=#FreeRentDText#  Replace=#None#>日
+    <td class="listtd"><HDPrint Value=#FreeRentYText#  Replace=#None#>年/<HDPrint Value=#FreeRentMText#  Replace=#None#>月/<HDPrint Value=#FreeRentDText#  Replace=#None#>日
     </td>
     <td class="DtlBarTitle">Fit-Out Period:<br>装修期:</td>
     <td class="listtd"><HDPrint Value=#FitoutMText#  Replace=#None#>月/
@@ -281,6 +288,14 @@
     <td class="listtd" colspan="2"><HDPrint Value=#Rate1Text# Replace=#None#>（<HDPrint Value=#RateText#  Replace=#None#>）</td>
     <td class="DtlBarTitle">Method of collection:<br>收银方式:</td>
     <td class="listtd"><HDPrint Value=#CollectionText#  Replace=#None#></td>
+  </tr>
+  <tr valign="top" JQ="sale" style="display:none">
+    <td class="DtlBarTitle">月销售[元/月]:</td>
+    <td class="listtd"><HDPrint Value=#MonthSaleText# Replace=#None#></td>
+    <td class="DtlBarTitle">是否遵守原合约:</td>
+    <td class="listtd"><HDPrint Value=#IsHYText# Replace=#None#></td>
+    <td class="DtlBarTitle">是否欠租:</td>
+    <td class="listtd" colspan="2"><HDPrint Value=#IsQZText# Replace=#None#></td>
   </tr>
 </table>
 
@@ -432,7 +447,10 @@
     <td class="listtd"><HDPrint Value=#LegalFeeDText#  Replace=#None#></td>
     <td class="listtd"><HDPrint Value=#LegalFeeMText#  Replace=#None#></td>
     <td class="DtlBarTitle">Security Deposit (mths):<br>保证金:</td>
-    <td class="listtd"><HDPrint Value=#SecurityText#  Replace=#None#></td>
+    <td class="listtd">
+      标准：<HDPrint Value=#SecurityStandText#  Replace=#None#><br>
+      实际：<HDPrint Value=#SecurityText#  Replace=#None#><br>
+    </td>
     <td class="DtlBarTitle">Existing:<br>目前:</td>
     <td class="listtd"><HDPrint Value=#BRCExistText#  Replace=#None#></td>
   </tr>
@@ -481,6 +499,58 @@
     <td class="listtd"><HDPrint Value=#OtherTotalFeeText#  Replace=#None#></td>
   </tr>
   <tr valign="top">
+    <td class="DtlBarTitle">附件类型:</td>
+    <td class="listtd" colspan="6"><HDPrint Value=#AttachType# Replace=#None#>
+       <script>
+        //函数：ready
+        //功能：document 加载完成后调用
+        $(document).ready(function(){
+          var AttachType = '<HDPrint Value=#AttachType# Replace=#DBField2Js#>';
+          if (AttachType == '') {
+            AttachType = '个人';
+          }
+
+          $("tr[JQ=tr_10]").hide();
+          $("tr[JQ=tr_20]").hide();
+          $("tr[JQ=tr_30]").hide();
+          $("tr[JQ=tr_40]").hide();
+          if (AttachType == '个人') {
+            $("tr[JQ=tr_10]").show();
+          } else if (AttachType == '公司') {
+            $("tr[JQ=tr_20]").show();
+            $("tr[JQ=tr_30]").show();
+          } else {
+            $("tr[JQ=tr_10]").show();
+            $("tr[JQ=tr_20]").show();
+            $("tr[JQ=tr_30]").show();
+            $("tr[JQ=tr_40]").show();
+          }
+        });
+
+      </script>
+    </td>
+  </tr>
+  <tr valign="top" JQ="tr_10">
+    <td class="DtlBarTitle">身份证:</td>
+    <td class="listtd" colspan="6" JQ="td_10"></td>
+  </tr>
+  <tr valign="top" JQ="tr_20" style="display:none">
+    <td class="DtlBarTitle">营业执照:</td>
+    <td class="listtd" colspan="6" JQ="td_20"></td>
+  </tr>
+  <tr valign="top" JQ="tr_30" style="display:none">
+    <td class="DtlBarTitle">商标注册证:</td>
+    <td class="listtd" colspan="6" JQ="td_30"></td>
+  </tr>
+  <tr valign="top" JQ="tr_40" style="display:none">
+    <td class="DtlBarTitle">授权书:</td>
+    <td class="listtd" colspan="6" JQ="td_40"></td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">其他:</td>
+    <td class="listtd" colspan="6" JQ="td_50"></td>
+  </tr>
+  <tr valign="top">
     <td class="DtlBarTitle">Special Terms and Conditions/Remarks:<br>特别条件/评语:</td>
     <td class="listtd" colspan="6"><HDPrint Value=#MemoText#  Replace=#None#></td>
   </tr>
@@ -490,11 +560,8 @@
     <td class="listtd" colspan="3"><HDPrint Value=#EndMemo#></td>
   </tr>
   </HDIF>
-  <tr valign="top">
-    <td class="DtlBarTitle">AttachInfo:<br>附件信息:</td>
-    <td class="listtd" colspan="6"><HDPrint Value=#AttachList# Replace=#None#></td>
-  </tr>
 </table>
+<HDPrint Value=#AttachList# Replace=#None#>
 </div>
 </form>
 <script language="javascript">

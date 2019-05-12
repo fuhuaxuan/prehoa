@@ -59,6 +59,7 @@ begin
       v_Body    := v_Body || '     <col style="width:15%">';
       v_Body    := v_Body || '     <col style="width:15%">';
       v_Body    := v_Body || '     <col style="width:15%">';
+      v_Body    := v_Body || '     <col style="width:15%">';
       v_Body    := v_Body || '  </colgroup>';
       v_Body    := v_Body || '  <thead>';
       v_Body    := v_Body ||
@@ -68,7 +69,8 @@ begin
       v_Body    := v_Body || '    <td>楼层</td>';
       v_Body    := v_Body || '    <td>面积</td>';
       v_Body    := v_Body || '    <td>建筑面积</td>';
-      v_Body    := v_Body || '    <td>预算</td>';
+      v_Body    := v_Body || '    <td>预算单价<br>租金+物管+推广</td>';
+      v_Body    := v_Body || '    <td>月总租金</td>';
       v_Body    := v_Body || '  </tr>';
       v_Body    := v_Body || '  </thead>';
       v_Body    := v_Body || '  <tbody>';
@@ -82,11 +84,12 @@ begin
                  order by f.Line) loop
         v_Body    := ' <tr valign="top" style="background-color: white" align="center">';
         v_Body    := v_Body || '<td align="center">' || D.Line || '</td>';
-        v_Body    := v_Body || '<td>' || D.fNo || '</td>';
-        v_Body    := v_Body || '<td>' || D.floorNo || '</td>';
-        v_Body    := v_Body || '<td align="right">' || D.fArea || '</td>';
-        v_Body    := v_Body || '<td align="right">' || D.jArea || '</td>';
-        v_Body    := v_Body || '<td align="right">' || D.fmr || '</td>';
+        v_Body    := v_Body || '<td align="center">' || D.fNo || '</td>';
+        v_Body    := v_Body || '<td align="center">' || D.floorNo || '</td>';
+        v_Body    := v_Body || '<td align="center">' || D.fArea || '</td>';
+        v_Body    := v_Body || '<td align="center">' || D.jArea || '</td>';
+        v_Body    := v_Body || '<td align="center">' || D.fmr || '</td>';
+        v_Body    := v_Body || '<td align="center">' || D.fmrM || '</td>';
         v_Body    := v_Body || ' </tr>';
         v_Content := v_Content || v_Body;
       end loop;
@@ -94,11 +97,12 @@ begin
       v_Body    := v_Body || '  <tfoot>';
       v_Body    := v_Body || '  <tr style="background-color: white">';
       v_Body    := v_Body || '    <td align="right" colspan="3">合计：</td>';
-      v_Body    := v_Body || '    <td align="right">' || R.fAreaSum1 ||
+      v_Body    := v_Body || '    <td align="center">' || R.fAreaSum1 ||
                    '</td>';
-      v_Body    := v_Body || '    <td align="right">' || R.jAreaSum1 ||
+      v_Body    := v_Body || '    <td align="center">' || R.jAreaSum1 ||
                    '</td>';
-      v_Body    := v_Body || '    <td align="right"></td>';
+      v_Body    := v_Body || '    <td align="center"></td>';
+      v_Body    := v_Body || '    <td align="center"></td>';
       v_Body    := v_Body || '  </tr>';
       v_Body    := v_Body || '  </tfoot>';
       v_Body    := v_Body || '</table>';
@@ -114,6 +118,7 @@ begin
     v_Body    := v_Body || '     <col style="width:15%">';
     v_Body    := v_Body || '     <col style="width:15%">';
     v_Body    := v_Body || '     <col style="width:15%">';
+      v_Body    := v_Body || '     <col style="width:15%">';
     v_Body    := v_Body || '  </colgroup>';
     v_Body    := v_Body || '  <thead>';
     v_Body    := v_Body ||
@@ -123,7 +128,8 @@ begin
     v_Body    := v_Body || '    <td>楼层</td>';
     v_Body    := v_Body || '    <td>面积</td>';
     v_Body    := v_Body || '    <td>建筑面积</td>';
-    v_Body    := v_Body || '    <td>预算</td>';
+    v_Body    := v_Body || '    <td>预算单价<br>租金+物管+推广</td>';
+    v_Body    := v_Body || '    <td>月总租金</td>';
     v_Body    := v_Body || '  </tr>';
     v_Body    := v_Body || '  </thead>';
     v_Body    := v_Body || '  <tbody>';
@@ -137,11 +143,12 @@ begin
                order by f.Line) loop
       v_Body    := ' <tr valign="top" style="background-color: white" align="center">';
       v_Body    := v_Body || '<td align="center">' || D.Line || '</td>';
-      v_Body    := v_Body || '<td>' || D.fNo || '</td>';
-      v_Body    := v_Body || '<td>' || D.floorNo || '</td>';
-      v_Body    := v_Body || '<td align="right">' || D.fArea || '</td>';
-      v_Body    := v_Body || '<td align="right">' || D.jArea || '</td>';
-      v_Body    := v_Body || '<td align="right">' || D.fmr || '</td>';
+      v_Body    := v_Body || '<td align="center">' || D.fNo || '</td>';
+      v_Body    := v_Body || '<td align="center">' || D.floorNo || '</td>';
+      v_Body    := v_Body || '<td align="center">' || D.fArea || '</td>';
+      v_Body    := v_Body || '<td align="center">' || D.jArea || '</td>';
+      v_Body    := v_Body || '<td align="center">' || D.fmr || '</td>';
+        v_Body    := v_Body || '<td align="center">' || D.fmrM || '</td>';
       v_Body    := v_Body || ' </tr>';
       v_Content := v_Content || v_Body;
     end loop;
@@ -149,11 +156,12 @@ begin
     v_Body    := v_Body || '  <tfoot>';
     v_Body    := v_Body || '  <tr style="background-color: white">';
     v_Body    := v_Body || '    <td align="right" colspan="3">合计：</td>';
-    v_Body    := v_Body || '    <td align="right">' || R.fAreaSum2 ||
+    v_Body    := v_Body || '    <td align="center">' || R.fAreaSum2 ||
                  '</td>';
-    v_Body    := v_Body || '    <td align="right">' || R.jAreaSum2 ||
+    v_Body    := v_Body || '    <td align="center">' || R.jAreaSum2 ||
                  '</td>';
-    v_Body    := v_Body || '    <td align="right"></td>';
+    v_Body    := v_Body || '    <td align="center"></td>';
+    v_Body    := v_Body || '    <td align="center"></td>';
     v_Body    := v_Body || '  </tr>';
     v_Body    := v_Body || '  </tfoot>';
     v_Body    := v_Body || '</table>';
@@ -164,13 +172,14 @@ begin
     for U in (select distinct hr.Email
                 from hr_emp hr
                where hr.entgid = R.EntGid
+                 and hr.Email is not null
                  and exists (select 1
                         from wf_task t
                        where t.EntGid = hr.EntGid
                          and t.FlowGid = R.Flowgid
                          and t.ExecGid = hr.UsrGid
                          and t.Stat = 1)) loop
-      v_Email := U.EMAIL || ',';
+      v_Email := v_Email || U.EMAIL || ',';
     end loop;
     if v_Email is not null then
       HDNet_SendMail(v_Title, v_Email, v_Content);

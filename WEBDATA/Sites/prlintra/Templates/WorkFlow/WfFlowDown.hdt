@@ -9,11 +9,11 @@
 <HDLoop>
 [Rep_BeginLine]
 <HDPrint Value=#ModelName# Replace=#None#>
-<HDPrint Value=#FlowNote# Replace=#None#>
+#NoForm#<HDPrint Value=#FlowNote# Replace=#DBField2Excel#>
 <HDPrint Value=#creatername# Replace=#None#>
 #NoForm#<HDPrint Value=#Flowcreatedate# Replace=#DBField2Excel#>
 #NoForm#<HDPrint Value=#FlowFinishDate# Replace=#DBField2Excel#>
-<HDPrint Value=#Flowstat# Replace=#None# Replace=#None#>
+<HDPrint Value=#Fstat# Replace=#None#>
 [Rep_EndLine]
 </HDLoop>
 

@@ -18,7 +18,7 @@ SqlForCondition1=select wm.Code ModelCode, wm.Name ModelName,d.Name StepName,rep
 SqlForCondition2=select substr(f.FillDeptCode,0,4) ProCode from WF_^^ModelCodeT^^ f where f.EntGid = __ENTGID__ and f.FlowGid = ##FlowGid##
 
 ;取出本流程主表信息
-Sql1=select * from WF_^^ModelCodeT^^ where EntGid = __ENTGID__ and  FlowGid = ##FlowGid##
+Sql1=select f.*,to_char(CreateDate,'YYYY') fDate from WF_^^ModelCodeT^^ f where EntGid = __ENTGID__ and  FlowGid = ##FlowGid##
 
 ;取出本流程已审批的审批人的个数，用于判断是否显示审批人
 SQL2=select count(*) IsShow from wf_^^ModelCodeT^^_App where EntGid = __ENTGID__ and  FlowGid = ##FlowGid##
@@ -100,7 +100,7 @@ PageKind=0
 [Ajax]
 ;此Section“[Ajax]”,表明以下内容是为了Ajax应用而配置的文件。
 ;需要显示一条的内容，可以支持21条, Detail, Detail1～Detail20
-Detail=
+Detail1=select v.LeftFee - v.YesFee AcgFee from v_PRL_ACG_Fee v where v.EntGid = __ENTGID__ and v.AcgGid = ##AcgGid## and v.Year = ##Year## and v.ComGid = ##ComGid##
 
 ;需要循环显示的内容,可以支持11条，Master, Master1～Master10
 Master=

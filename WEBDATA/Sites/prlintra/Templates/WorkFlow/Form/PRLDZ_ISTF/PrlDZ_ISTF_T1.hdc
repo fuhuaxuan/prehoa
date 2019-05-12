@@ -15,7 +15,11 @@ SqlForCondition1=select wm.Code ModelCode, wm.Name ModelName,d.Name StepName fro
 SqlForCondition2=select d.Gid FillDeptGid, d.Code2 FillDeptCode, d.Name FillDeptName,substr(d.Code2, 0, 4) ParentDeptCode from HR_Emp hr,Dept d where hr.EntGid=__ENTGID__ and hr.EntGid=d.EntGid and hr.UsrGid = __USRGID__ and hr.DeptGid = d.Gid
 
 ;取出旧的ISF/ISCF的信息
-SQL1=select num OldNum,f.modelgid OldModelGid,m.code OldModelCode,FlowGid OldFlowGid,DEPT,area,BuildArea,tradename,trade,lessee,tradingname,address,contactor,phone,email,fax,leaseTermY,leaseTermM,leaseTermD,to_char(HandoverDate,'YYYY.MM.DD') HandoverDate,Related,Detail,Rate1,Rate,to_char(contractDate1,'YYYY.MM.DD') contractDate1,to_char(contractdate2,'YYYY.MM.DD') contractdate2,freeRentM,freeRentD,to_char(freeRentdate1,'YYYY.MM.DD') freeRentdate1,to_char(freeRentdate2,'YYYY.MM.DD') freeRentdate2,fitoutM,fitoutD,to_char(fitoutdate1,'YYYY.MM.DD') fitoutdate1,to_char(fitoutdate2,'YYYY.MM.DD') fitoutdate2,collection from WF_PRL_ISF f,wf_model m where FlowGid = ##OldFlowGid## and f.EntGid=__ENTGID__ and f.EntGid = m.EntGid and f.modelgid = m.modelgid
+SqlForCondition3=select num OldNum,f.modelgid OldModelGid,m.code OldModelCode,FlowGid OldFlowGid,DEPT,area,BuildArea,tradename,trade,lessee,tradingname,address,contactor,phone,email,fax,leaseTermY,leaseTermM,leaseTermD,to_char(HandoverDate,'YYYY.MM.DD') HandoverDate,Related,Detail,Rate1,Rate,to_char(contractDate1,'YYYY.MM.DD') contractDate1,to_char(contractdate2,'YYYY.MM.DD') contractdate2,freeRentM,freeRentD,fitoutM,fitoutD,to_char(fitoutdate1,'YYYY.MM.DD') fitoutdate1,to_char(fitoutdate2,'YYYY.MM.DD') fitoutdate2,collection,Security from WF_PRL_ISF f,wf_model m where FlowGid = ##OldFlowGid## and f.EntGid=__ENTGID__ and f.EntGid = m.EntGid and f.modelgid = m.modelgid
+
+SqlForCondition4=select max(yeartype) maxyeartype from wf_PRL_ISF_dtl a where EntGid=__ENTGID__ and FlowGid = ##OldFlowGid##  and lower(a.TBID) in ('tb_dtl30')
+
+SQL1=select sum(nvl(fmrY,0)) CFee from wf_PRL_ISF_ground t,Prl_Groundh g where t.EntGid = __ENTGID__ and t.FlowGid = ##OldFlowGid## and lower(t.fno) = lower(g.fno) and g.DEPTSOURCE = ##ParentDeptCode##
 
 ;显示单位信息
 LoopSQL1=select * from wf_PRL_ISF_ground where EntGid = __ENTGID__ and FlowGid = ##OldFlowGid## order by fNo
@@ -27,6 +31,11 @@ LoopVAR1=UnitList
 LoopSQL2=select distinct v.PostGid ItemGid,v.PostName ItemName from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=10 order by v.PostName
 LoopHDT2=Templates\WorkFlow\Form\^^ModelCode^^\LoopSql_Option.hdt
 LoopVAR2=T2List
+
+LoopSQL3=select d.TBRD,d.PMFD,d.Apfixed,decode(lower(d.TBID),'tb_dtl10',to_char(freerentdate1,'YYYY.MM.DD'),decode(yeartype,1,to_char(add_months(to_date('^^contractDate1^^','YYYY.MM.DD'),nvl('^^freeRentM^^',0)+(nvl('^^freeRentD^^',0)/30)),'YYYY.MM.DD'),to_char(add_months(to_date('^^contractDate1^^','YYYY.MM.DD'), ((yeartype) - 1) * 12), 'YYYY.MM.DD'))) sDate,decode(lower(d.TBID),'tb_dtl10',to_char(freerentdate2,'YYYY.MM.DD'),decode(yeartype,'^^maxyeartype^^','^^contractdate2^^',to_char(add_months(to_date('^^contractDate1^^','YYYY.MM.DD'), (yeartype) * 12) - 1, 'YYYY.MM.DD'))) eDate from wf_PRL_ISF_Dtl d where EntGid = __ENTGID__ and FlowGid = ##OldFlowGid## and lower(d.TBID) in ('tb_dtl10','tb_dtl30') order by TbID,YearType,FreeRentDate1
+LoopHDT3=Templates\WorkFlow\Form\PRLDZ_ISTF\Loopsql_ISFDtl.hdt
+LoopVAR3=ISFDtlList
+
 
 [AddtionalSQL]
 ;操作，没有返回的结果，是在数据库中执行，有Insert, Update, Delete命令。从SQL1～SQL20共支持20条

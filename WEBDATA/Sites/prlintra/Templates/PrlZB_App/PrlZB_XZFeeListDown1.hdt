@@ -1,0 +1,53 @@
+[Rep_BeginLine]
+Name of Company(公司)
+#NoForm#<HDPrint Value=#ComName1# Replace=#DBField2Excel#>
+Month(月份)
+#NoForm#<HDPrint Value=#Month# Replace=#DBField2Excel#>
+[Rep_EndLine]
+[Rep_BeginLine]
+Name of department (部门名称)
+1.04-Hotel expense (酒店入住费用)
+1.06+4.01-Entertainment (招待费用)
+11.06-Handphone charges (通话费)
+1.01+1.02+1.03-Transport (差旅费)
+1.07-Others (其他)
+Total (总计)
+[Rep_EndLine]
+<HDLoop>
+[Rep_BeginLine]
+#NoForm#<HDPrint Value=#fillDeptName# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#F1Fee# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#F2Fee# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#F3Fee# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#F4Fee# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#F5Fee# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#FSumFee# Replace=#DBField2Excel#>
+[Rep_EndLine]
+</HDLoop>
+[Rep_BeginLine]
+Total for the month
+#NoForm#<HDPrint Value=#F1FeeSum# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#F2FeeSum# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#F3FeeSum# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#F4FeeSum# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#F5FeeSum# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#FFeeSum# Replace=#DBField2Excel#>
+[Rep_EndLine]
+[Rep_BeginLine]
+Total for last month
+#NoForm#<HDPrint Value=#F1FeeSumL# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#F2FeeSumL# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#F3FeeSumL# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#F4FeeSumL# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#F5FeeSumL# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#FFeeSumL# Replace=#DBField2Excel#>
+[Rep_EndLine]
+[Rep_BeginLine]
+Total for YTD
+#NoForm#<HDPrint Value=#F1FeeSumT# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#F2FeeSumT# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#F3FeeSumT# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#F4FeeSumT# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#F5FeeSumT# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#FFeeSumT# Replace=#DBField2Excel#>
+[Rep_EndLine]

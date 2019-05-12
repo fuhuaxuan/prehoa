@@ -9,6 +9,7 @@ create or replace procedure P_PrlDZ_Baoxiao_doApp(p_EntGid    varchar2, --企业Gi
   v_UsrGid      varchar2(32); --用户Gid
   v_ModelCode   varchar2(32); --模型代码
   v_DeptGid     varchar2(32); --当前用户部门
+  v_ComGid     varchar2(32); --项目Gid
   v_PreDeptCode varchar2(32); --所属部门代码
 
   v_AppFee number(20, 2);
@@ -20,8 +21,9 @@ begin
          f.FillUsrGid,
          f.filldeptgid,
          substr(f.filldeptcode, 0, 4),
-         f.iscm
-    into v_AppFee, v_UsrGid, v_DeptGid, v_PreDeptCode, v_IsCM
+         f.iscm,
+         f.comGid
+    into v_AppFee, v_UsrGid, v_DeptGid, v_PreDeptCode, v_IsCM, v_ComGid
     from wf_Prl_Baoxiao f
    where f.entgid = p_EntGid
      and f.flowgid = p_FlowGid;
@@ -61,7 +63,7 @@ begin
                      3          AppType
                 from v_Post v
                where v.EntGid = p_EntGid
-                 and v.deptGid = v_DeptGid
+                 and v.deptGid = v_ComGid
                  and v.atype = 3
                  and rownum = 1
                  and exists
@@ -69,7 +71,7 @@ begin
                         from wf_prl_baoxiao_dtl d
                        where d.entgid = v.EntGid
                          and d.flowgid = p_FlowGid
-                         and d.acgcode in ('7.05', '8.02', '8.04'))
+                         and d.acgcode in ('7.05','7.09','7.1', '8.02', '8.04','8.09','8.1','8.11','8.12'))
                  and rownum = 1
               union
               select v.PostGid  AppGid,
@@ -86,11 +88,22 @@ begin
               select v.PostGid  AppGid,
                      v.PostCode AppCode,
                      v.PostName AppName,
+                     20         AppOrder,
+                     20         AppType
+                from v_Post v
+               where v.EntGid = p_EntGid
+                 and v.deptGid = v_DeptGid
+                 and v.atype = 15
+                 and rownum = 1
+              union
+              select v.PostGid  AppGid,
+                     v.PostCode AppCode,
+                     v.PostName AppName,
                      30         AppOrder,
                      30         AppType
                 from v_Post v
                where v.EntGid = p_EntGid
-                 and v.deptGid = v_DeptGid
+                 and v.deptGid = v_ComGid
                  and v.atype = 30
                  and rownum = 1
               union
@@ -101,7 +114,7 @@ begin
                      35         AppType
                 from v_Post v
                where v.EntGid = p_EntGid
-                 and v.deptGid = v_DeptGid
+                 and v.deptGid = v_ComGid
                  and v.atype = 35
                  and rownum = 1
               union
@@ -112,7 +125,7 @@ begin
                      40         AppType
                 from v_Post v
                where v.EntGid = p_EntGid
-                 and v.deptGid = v_DeptGid
+                 and v.deptGid = v_ComGid
                  and v.atype = 40
                  and rownum = 1
               union
@@ -123,7 +136,7 @@ begin
                      50         AppType
                 from v_Post v
                where v.EntGid = p_EntGid
-                 and v.deptGid = v_DeptGid
+                 and v.deptGid = v_ComGid
                  and v.atype = 71
                  and rownum = 1
                  and ((v_AppFee > 2000 and v_IsCM is null) or v_IsCM = '是')
@@ -156,7 +169,7 @@ begin
                      90         AppType
                 from v_Post v
                where v.EntGid = p_EntGid
-                 and v.deptGid = v_DeptGid
+                 and v.deptGid = v_ComGid
                  and v.atype = 80
                  and rownum = 1
                  and v_AppFee > 10000

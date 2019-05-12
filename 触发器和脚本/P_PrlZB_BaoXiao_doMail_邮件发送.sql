@@ -46,12 +46,16 @@ begin
     v_Body    := '[公司名称] : ' || R.Comname;
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
     v_Body    := '<table cellpadding="0" cellspacing="1" class="ListBar" width="100%" style="background-color: #d9dbdf;">';
-    v_Body    := v_Body || '<col style="padding-left:4px;width:80%">';
+    v_Body    := v_Body || '<col style="padding-left:4px;width:40%">';
+    v_Body    := v_Body || '<col style="padding-left:4px;width:20%">';
+    v_Body    := v_Body || '<col style="padding-left:4px;width:20%">';
     v_Body    := v_Body || '<col style="padding-left:4px;width:20%">';
     v_Body    := v_Body ||
                  '<tr style="background-color: #ecedef;" align="center">';
-    v_Body    := v_Body || '<td>项目信息</td>';
+    v_Body    := v_Body || '<td>科目</td>';
+    v_Body    := v_Body || '<td>项目</td>';
     v_Body    := v_Body || '<td>本次申请金额[元]</td>';
+    v_Body    := v_Body || '<td>备注</td>';
     v_Body    := v_Body || '</tr>';
     v_Content := v_Content || v_TStart || v_Body;
   
@@ -62,7 +66,9 @@ begin
       v_Body := '<tr valign="top" style="background-color: white">';
       v_Body := v_Body || '<td>[' || D.Acgcode || ']' || D.Acgname ||
                 '</td>';
+      v_Body := v_Body || '<td>' || D.TypeName || '</td>';
       v_Body := v_Body || '<td align="center">' || D.Applyfee || '</td>';
+      v_Body := v_Body || '<td>' || D.Memo || '</td>';
       v_Body := v_Body || '</tr>';
       v_Content := v_Content || v_Body;
     end loop;
@@ -78,13 +84,14 @@ begin
     for U in (select hr.Email
                 from hr_emp hr
                where hr.entgid = R.EntGid
+                 and hr.Email is not null
                  and exists (select 1
                         from wf_task t
                        where t.EntGid = hr.EntGid
                          and t.FlowGid = R.Flowgid
                          and t.ExecGid = hr.UsrGid
                          and t.Stat = 1)) loop
-      v_Email := U.EMAIL || ',';
+      v_Email := v_Email || U.EMAIL || ',';
     end loop;
     if v_Email is not null then
       HDNet_SendMail(v_Title, v_Email, v_Content);

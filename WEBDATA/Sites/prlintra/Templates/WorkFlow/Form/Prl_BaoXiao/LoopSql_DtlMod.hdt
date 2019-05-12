@@ -8,6 +8,7 @@
     '<HDPrint Value=#PAcgName# Replace=#DBField2Js#>',
     '<HDPrint Value=#Year# Replace=#DBField2Js#>',
     '<HDPrint Value=#AcgFee# Replace=#DBField2Js#>',
+    '<HDPrint Value=#FeeDate# Replace=#DBField2Js#>',
     '<HDPrint Value=#ApplyFee# Replace=#DBField2Js#>');
   </hdloop>
 </script>

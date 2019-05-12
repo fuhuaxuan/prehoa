@@ -33,7 +33,7 @@ LoopHDT1=Templates\WorkFlow\Form\^^ModelCode^^\LoopSql_Option.hdt
 LoopVAR1=AttachList
 
 ;TMod时，获取本流程审批人信息
-LoopSQL2=select a.*,decode(a.apptype,10,'发起人',20,'部门经理',30,'总经理',35,'项目总经理',40,'审批人',50,'财务印章',60,'公司公章',70,'法定代表人名章',80,'公司股东章',90,'合同用章') apptypetext  from WF_^^ModelCode^^_App a where FlowGid = ##FlowGid## order by AppDate,AppOrder
+LoopSQL2=select a.*,decode(a.apptype,10,'发起人',20,'部门经理',30,'财务经理',35,'总经理',40,'商场总经理',50,'资产经理',60,'区域总经理',70,'总部招商总监',100,'发起人确认') apptypetext  from WF_^^ModelCode^^_App a where FlowGid = ##FlowGid## order by AppDate,AppOrder
 LoopHDT2=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AppList.hdt
 LoopVAR2=AppList
 

@@ -10,8 +10,9 @@ create or replace procedure P_Prl_Stamp_doApp(p_EntGid    varchar2, --企业Gid
   v_ModelCode   varchar2(32); --模型代码
   v_DeptGid     varchar2(32); --当前用户部门
   v_PreDeptCode varchar2(32); --所属部门代码
+  v_ComGid     varchar2(32); --项目Gid
   v_StampType   varchar2(128); --印章类型
-  v_ComGid      varchar2(32); --项目ID
+  v_ApplyType   varchar2(128); --印章类型
   v_Count       int;
 begin
   commit;
@@ -20,8 +21,9 @@ begin
          f.FillDeptGid,
          substr(f.FillDeptCode, 0, 4),
          f.Stamptype,
+         f.ApplyType,
          f.Comgid
-    into v_UsrGid, v_DeptGid, v_PreDeptCode, v_StampType, v_ComGid
+    into v_UsrGid, v_DeptGid, v_PreDeptCode, v_StampType, v_ApplyType, v_ComGid
     from wf_prl_Stamp f
    where f.entgid = p_EntGid
      and f.flowgid = p_FlowGid;
@@ -69,21 +71,45 @@ begin
                      v.PostCode AppCode,
                      v.PostName AppName,
                      2          AppOrder,
+                     23         AppType
+                from v_Post v
+               where v.EntGid = p_EntGid
+                 and v.deptGid = v_ComGid
+                 and v.atype = 23
+                 and rownum = 1
+                 and v_ApplyType = '合同签署用印'
+              union
+              select v.PostGid  AppGid,
+                     v.PostCode AppCode,
+                     v.PostName AppName,
+                     3          AppOrder,
+                     25         AppType
+                from v_Post v
+               where v.EntGid = p_EntGid
+                 and v.deptGid = v_ComGid
+                 and v.atype = 30
+                 and rownum = 1
+                 and v_ApplyType = '合同签署用印'
+              union
+              select v.PostGid  AppGid,
+                     v.PostCode AppCode,
+                     v.PostName AppName,
+                     4          AppOrder,
                      30         AppType
                 from v_Post v
                where v.EntGid = p_EntGid
-                 and v.deptGid = v_DeptGid
+                 and v.deptGid = v_ComGid
                  and v.atype = 35
                  and rownum = 1
               union
               select v.PostGid  AppGid,
                      v.PostCode AppCode,
                      v.PostName AppName,
-                     3          AppOrder,
+                     5          AppOrder,
                      35         AppType
                 from v_Post v
                where v.EntGid = p_EntGid
-                 and v.deptGid = v_DeptGid
+                 and v.deptGid = v_ComGid
                  and v.atype = 40
                  and rownum = 1) t;
   
@@ -104,7 +130,7 @@ begin
                                '合同用章',
                                90),
                         Line) loop
-      select count(*)
+      select max(AppOrder)
         into v_Count
         from wf_Prl_Stamp_App t
        where t.entgid = p_EntGid

@@ -24,36 +24,6 @@
       }
     }
   }
-  //全部计算
-  function CallT(){
-    //批量计算每行的合计
-    $("input[name=Line_1]").each(function (i){
-      var DataA = $("input[name=DataA_1]:eq("+i+")").val();
-      var DataB = $("input[name=DataB_1]:eq("+i+")").val();
-      var $DataC = $("input[name=DataC_1]:eq("+i+")");
-      var DataD = $("input[name=DataD_1]:eq("+i+")").val();
-      var $DataE = $("input[name=DataE_1]:eq("+i+")");
-      if (DataA == ''){
-        DataA = 0;
-      }
-      if (DataB == ''){
-        DataB = 0;
-      }
-      if (DataD == ''){
-        DataD = 0;
-      }
-      //C=A-B
-      var DataC = parseFloat(DataA) - parseFloat(DataB);
-      $DataC.val(DataC.toFixed(2));
-      //E=D-C
-      var DataE = parseFloat(DataD) - parseFloat(DataC);
-      $DataE.val(DataE.toFixed(2));
-    });
-    //重新计算合计
-    $("input[JQRowSum]").each(function(){
-      JQSum($(this),'JQRow');
-    });
-  }
   /*
   *函数名称：新增附件添加到附件列表中
   *参数：sFileName-附件名称
@@ -136,13 +106,17 @@
 
     tdArr[k++] = '<td class="DtlBarTitle">'+DataName+'<INPUT TYPE="hidden" NAME="Line_1" value="'+ i +'" class="JQText"><INPUT TYPE="hidden" NAME="DataName_1" value="'+ DataName +'" class="JQText"></td>';
 
-    tdArr[k++] = '<td><INPUT TYPE="text" NAME="DataA_1" ID="DataA_1'+ iRow +'" JQRow="DataA_1" JQRowName="DataASum" maxlength="16" class="JQFloat JQMust" value = "'+DataA+'" onblur="CallT()"></td>';
+    //if (i < 4 || i == 5) {
+    //  tdArr[k++] = '<td><INPUT TYPE="text" NAME="DataA_1" ID="DataA_1'+ iRow +'" JQRow="DataA_1" JQRowName="DataASum" maxlength="16" class="JQFloat" value = "'+DataA+'" style="border:0px" readonly></td>';
+    //}else{
+      tdArr[k++] = '<td><INPUT TYPE="text" NAME="DataA_1" ID="DataA_1'+ iRow +'" JQRow="DataA_1" JQRowName="DataASum" maxlength="16" class="JQFloat JQMust" value = "'+DataA+'" onblur="callF()" JQBit="4"></td>';
+    //}
 
-    tdArr[k++] = '<td><INPUT TYPE="text" NAME="DataB_1" ID="DataB_1'+ iRow +'" JQRow="DataB_1" JQRowName="DataBSum" maxlength="16" class="JQFloat JQMust" value = "'+DataB+'" onblur="CallT()"></td>';
+    tdArr[k++] = '<td><INPUT TYPE="text" NAME="DataB_1" ID="DataB_1'+ iRow +'" JQRow="DataB_1" JQRowName="DataBSum" maxlength="16" class="JQFloat JQMust" value = "'+DataB+'" onblur="callF()"></td>';
 
     tdArr[k++] = '<td><INPUT TYPE="text" NAME="DataC_1" ID="DataC_1'+ iRow +'" JQRow="DataC_1" JQRowName="DataCSum" maxlength="16" class="JQFloat" value = "'+DataC+'" style="border:0px" readonly></td>';
 
-    tdArr[k++] = '<td><INPUT TYPE="text" NAME="DataD_1" ID="DataD_1'+ iRow +'" JQRow="DataD_1" JQRowName="DataDSum" maxlength="16" class="JQFloat JQMust" value = "'+DataD+'" onblur="CallT()"></td>';
+    tdArr[k++] = '<td><INPUT TYPE="text" NAME="DataD_1" ID="DataD_1'+ iRow +'" JQRow="DataD_1" JQRowName="DataDSum" maxlength="16" class="JQFloat JQMust" value = "'+DataD+'" onblur="callF()"></td>';
 
     tdArr[k++] = '<td><INPUT TYPE="text" NAME="DataE_1" ID="DataE_1'+ iRow +'" JQRow="DataE_1" JQRowName="DataESum" maxlength="16" class="JQFloat" value = "'+DataE+'" style="border:0px" readonly></td>';
 
@@ -152,13 +126,207 @@
     JQTr_Add(sTbId,sTrClass,tdArr);
   }
 
+  //判断日期大小
+  function callDate(JsObj,aType,JsRow){
+    var JsDate1 = $("input#"+aType+"bDate_1"+JsRow).val();
+    var JsDate2 = $("input#"+aType+"eDate_1"+JsRow).val();
+    if (JsDate1 != '' && JsDate2 != '' ){
+      if (JQDateCompare(JsDate1,JsDate2) <= 0){
+        alert('开始日期必填小于结束日期！');
+        JsObj.focus();
+        JsObj.value = '';
+      }
+    }
+  }
+
+
+  function callG(){
+    var CFee = $("input[name=CFee]").val();
+    var DFee = $("input[name=DFee]").val();
+    var EFee = $("input[name=EFee]").val();
+    var NumA = $("input[name=DataESum]").val();
+    var NumB = $("input[name=DataBSum]").val();
+    var NumC = $("input[name=NumC]").val();
+    var NumD = $("input[name=NumD]").val();
+    if (CFee == '') {
+      CFee = 0;
+    }
+    if (DFee == '') {
+      DFee = 0;
+    }
+    if (EFee == '') {
+      EFee = 0;
+    }
+    if (NumA == '') {
+      NumA = 0;
+    }
+    if (NumB == '') {
+      NumB = 0;
+    }
+    if (NumC == '') {
+      NumC = 0;
+    }
+    if (NumD == '') {
+      NumD = 0;
+    }
+    //C-D-E+NumD
+    var NumE = (parseFloat(CFee) - parseFloat(DFee) - parseFloat(EFee) + parseFloat(NumD)).toFixed(2);
+    console.log(NumE)
+    $("input[name=NumA]").val((0 - parseFloat(NumA)).toFixed(2));
+    $("input[name=NumB]").val(NumB);
+    $("input[name=NumE]").val(NumE);
+
+    $("input[JQRowSum]").each(function(){
+      JQSum($(this),'JQRow');
+    });
+  }
+
+  //全部计算
+  function callF(){
+    //批量计算每行的合计
+    $("input[name=Line_1]").each(function (i){
+      var DataA = $("input[name=DataA_1]:eq("+i+")").val();
+      var DataB = $("input[name=DataB_1]:eq("+i+")").val();
+      var $DataC = $("input[name=DataC_1]:eq("+i+")");
+      var DataD = $("input[name=DataD_1]:eq("+i+")").val();
+      var $DataE = $("input[name=DataE_1]:eq("+i+")");
+      if (DataA == ''){
+        DataA = 0;
+      }
+      if (DataB == ''){
+        DataB = 0;
+      }
+      if (DataD == ''){
+        DataD = 0;
+      }
+      //C=A-B
+      var DataC = parseFloat(DataA) - parseFloat(DataB);
+      $DataC.val(DataC.toFixed(2));
+      //E=D-C
+      var DataE = parseFloat(DataD) - parseFloat(DataC);
+      $DataE.val(DataE.toFixed(2));
+    });
+    //重新计算合计
+    $("input[JQRowSum]").each(function(){
+      JQSum($(this),'JQRow');
+    });
+
+    callG();
+  }
+
+  function callDE(){
+    callFee('D');
+    callFee('E');
+
+    //重新计算合计
+    $("input[JQRowSum]").each(function(){
+      JQSum($(this),'JQRow');
+    });
+
+    callG();
+  }
+
+  function callFee(aType){
+    //批量计算每行的合计
+    $("input[name="+aType+"Line_1]").each(function (i){
+      var bDate = $("input[name="+aType+"bDate_1]:eq("+i+")").val();
+      var eDate = $("input[name="+aType+"eDate_1]:eq("+i+")").val();
+      var TBRD = $("input[name="+aType+"TBRD_1]:eq("+i+")").val();
+      var PMFD = $("input[name="+aType+"PMFD_1]:eq("+i+")").val();
+      var Apfixed = $("input[name="+aType+"Apfixed_1]:eq("+i+")").val();
+      var GTO = $("input[name="+aType+"GTO_1]:eq("+i+")").val();
+      var $Rent = $("input[name="+aType+"Rent_1]:eq("+i+")");
+      //(D1+D2+D4)*面积*天数 + D3*面积*月份
+      if (TBRD == ''){
+        TBRD = 0;
+      }
+      if (PMFD == ''){
+        PMFD = 0;
+      }
+      if (Apfixed == ''){
+        Apfixed = 0;
+      }
+      if (GTO == ''){
+        GTO = 0;
+      }
+      //天数
+      var day = 0,month = 0;
+      var sDay = 24 * 3600 * 1000;
+      var sMonth = 365 / 12;
+      var sArea = $("input[name=Area]").val();
+      if (sArea == '') {
+        sArea = 0;
+      }
+      //console.log('area:'+month)
+      if (bDate != '' && eDate != '') {
+        var bD = new Date(bDate.replace('.','/').replace('.','/'));
+        var eD = new Date(eDate.replace('.','/').replace('.','/'));
+        var tD = eD - bD;
+        //console.log('d:'+tD)
+        day = Math.floor(tD / sDay) + 1;
+        //console.log('day:'+day)
+        month = day / sMonth;
+        //console.log('month:'+month)
+      }
+      var a = parseFloat(TBRD) + parseFloat(PMFD) + parseFloat(GTO)
+      var b = parseFloat(Apfixed)
+        //console.log('a:'+a)
+        //console.log('a:'+b)
+      var Rent = (a * parseFloat(sArea) * day + b * parseFloat(sArea) * month).toFixed(2);
+      $Rent.val(Rent);
+    });
+  }
+  function Add_Fee(aType,Gid,bDate,eDate,TBRD,PMFD,Apfixed,GTO,Rent,Memo)
+  {
+    var sTbId = 'tb_Fee'+aType;
+    var sTrClass = 'listtd';
+    var tdArr = new Array();
+    var iRow = Math.floor(Math.random() * (1 + 100000 - 1) + 1);
+    var i = $("table#"+sTbId+">tbody>tr").length + 1;
+    var k = 0;
+    if (Gid == null){
+      Gid = '';
+      bDate = '';
+      eDate = '';
+      TBRD = '';
+      PMFD = '';
+      Apfixed = '';
+      GTO = '';
+      Rent = '';
+      Memo = '';
+    }
+
+    tdArr[k++] = '<td align="center">'
+      +'<INPUT TYPE="text" NAME="'+aType+'bDate_1" id="'+aType+'bDate_1'+ iRow +'" maxlength="10" class="JQDate JQMust" value = "'+bDate+'" style="width:45%" onblur="callDate(this,\''+ aType +'\',\''+ iRow +'\');callDE()">'
+      +'~<INPUT TYPE="text" NAME="'+aType+'eDate_1" id="'+aType+'eDate_1'+ iRow +'" maxlength="10" class="JQDate JQMust" value = "'+eDate+'" style="width:45%" onblur="callDate(this,\''+ aType +'\',\''+ iRow +'\');callDE()">'
+      +'<INPUT TYPE="hidden" NAME="'+aType+'aType_1" value="'+ aType +'" class="JQText">'
+      +'<INPUT TYPE="hidden" NAME="'+aType+'Line_1" value="'+ i +'" class="JQText">'
+    +'</td>';
+
+    tdArr[k++] = '<td><INPUT TYPE="text" NAME="'+aType+'TBRD_1" maxlength="16" class="JQFloat JQMust" value = "'+TBRD+'" onblur="callDE()" JQBit="4"></td>';
+
+    tdArr[k++] = '<td><INPUT TYPE="text" NAME="'+aType+'PMFD_1" maxlength="16" class="JQFloat JQMust" value = "'+PMFD+'" onblur="callDE()" JQBit="4"></td>';
+
+    tdArr[k++] = '<td><INPUT TYPE="text" NAME="'+aType+'Apfixed_1" maxlength="16" class="JQFloat JQMust" value = "'+Apfixed+'" onblur="callDE()"></td>';
+
+    tdArr[k++] = '<td><INPUT TYPE="text" NAME="'+aType+'GTO_1" maxlength="16" class="JQFloat JQMust" value = "'+GTO+'" onblur="callDE()" JQBit="4"></td>';
+
+    tdArr[k++] = '<td><INPUT TYPE="text" NAME="'+aType+'Rent_1" JQRow="'+aType+'Rent_1" JQRowName="'+aType+'Fee" maxlength="16" class="JQFloat" value = "'+Rent+'" style="border:0px" readonly></td>';
+
+    tdArr[k++] = '<td><textarea type="text" rows=2 NAME="'+aType+'Memo_1" class="JQText"  maxlength="1000">'+Memo+'</textarea></td>';
+
+    tdArr[k++] ='<td align="center"><a href="javascript:void(0)" onclick="javascript:JQTr_Del();JqReCal(\''+aType+'\')">删除</a></td>';
+    //新增一行
+    JQTr_Add(sTbId,sTrClass,tdArr);
+  }
+
   /*
   *函数功能：删除行，重新计算
   */
-  function JqReCal()
+  function JqReCal(aType)
   {
     //重新计算行号
-    $("input[name=Line_1]").each(function(i){
+    $("input[name="+aType+"Line_1]").each(function(i){
       $(this).val(i+1);
     });
     //重新计算合计
@@ -231,7 +399,7 @@
 </TABLE>
 </h3>
 
-<table cellpadding="0" cellspacing="1" class="ListBar" width="100%" id="tb_Order">
+<table cellpadding="0" cellspacing="1" class="ListBar" width="100%" id="tb_Order" style="margin-bottom:5px">
   <col style="padding-left:4px;width:10%">
   <col style="padding-left:4px;width:23%">
   <col style="padding-left:4px;width:10%">
@@ -288,7 +456,7 @@
     <td class="DtlBarTitle">Floor:<br>楼层:</td>
     <td class="listtd"><HDPrint Value=#Dept#></td>
     <td class="DtlBarTitle">Area[sqm]:面积[㎡]:<br>建筑面积[㎡]:</td>
-    <td class="listtd"><HDPrint Value=#Area#><br><HDPrint Value=#BuildArea#></td>
+    <td class="listtd"><HDPrint Value=#Area#><br><HDPrint Value=#BuildArea#><INPUT TYPE="hidden" name="Area" value="<HDPrint Value=#Area# Replace=#DBField2Input#>"></td>
     <td class="DtlBarTitle">Trade/Trade Code:<br>业态/业态代号:</td>
     <td class="listtd">[<HDPrint Value=#Trade#>]<HDPrint Value=#TradeName#></td>
   </tr>
@@ -357,15 +525,95 @@
     <td class="DtlBarTitle"></td>
     <td class="listtd"></td>
   </tr>
+  <tr valign="top">
+    <td class="listtd" colspan="6">C、本年度已缴/预估租金费用明细</td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">本年度预算[元/年]:<font color =red>*</font></td>
+    <td class="listtd"><INPUT TYPE="text" NAME="CFee" maxlength="10" value="<HDPrint Value=#CFee# Replace=#DBField2Input#>" class="JQFloat JQMust" onblur="callG()"></td>
+    <td class="DtlBarTitle"></td>
+    <td class="listtd"></td>
+    <td class="DtlBarTitle"></td>
+    <td class="listtd"></td>
+  </tr>
 </table>
-<table width="100%" class="ListBar JQMust" cellpadding="0"  cellspacing="1" id="tb_Dtl" style="margin-top:5px;">
+&nbsp;&nbsp;D、退租品牌本年度已缴费用明细
+<table width="100%" class="ListBar" cellpadding="0"  cellspacing="1" id="tb_FeeD" style="margin-bottom:5px">
   <colgroup>
-     <col style="width:10%">
-     <col style="width:14%">
-     <col style="width:14%">
-     <col style="width:14%">
-     <col style="width:14%">
-     <col style="width:14%">
+     <col style="width:15%">
+     <col style="width:13%">
+     <col style="width:13%">
+     <col style="width:13%">
+     <col style="width:13%">
+     <col style="width:13%">
+     <col style="width:15%">
+     <col style="width:5%">
+  </colgroup>
+  <thead>
+  <tr class="DtlBarTitle" align="center">
+    <td>日期(退租品牌)<font color="red">*</font><br><A HREF="javascript:Add_Fee('D');">[新增]</A></td>
+    <td>固定租金<font color="red">*</font><br>psm/day(㎡/天)</td>
+    <td>物管费<font color="red">*</font><br>psm/day(㎡/天)</td>
+    <td>市场推广费<font color="red">*</font><br>psm/mth(㎡/月)</td>
+    <td>提成租金(纯扣租户)<font color="red">*</font><br>psm/day(㎡/天)</td>
+    <td>总租金<br>元</td>
+    <td>备注</td>
+    <td>操作</td>
+  </tr>
+  </thead>
+  <tbody>
+  </tbody>
+  <tfoot>
+  <tr class="ListTdFocus">
+    <td colspan="5">合计：</td>
+    <td><input type="text" name="DFee" style="border:0;width:100%" value='<HDPrint Value=#DFee# Replace=#DBField2Input#>' readonly class="listtdfocus" JQRowSum="DRent_1" JQBit="2"></td>
+    <td align="center" colspan="2">&nbsp;</td>
+  </tr>
+  </tfoot>
+</table>
+&nbsp;&nbsp;E、替换品牌本年度已缴费用明细
+<table width="100%" class="ListBar" cellpadding="0"  cellspacing="1" id="tb_FeeE" style="margin-bottom:5px">
+  <colgroup>
+     <col style="width:15%">
+     <col style="width:13%">
+     <col style="width:13%">
+     <col style="width:13%">
+     <col style="width:13%">
+     <col style="width:13%">
+     <col style="width:15%">
+     <col style="width:5%">
+  </colgroup>
+  <thead>
+  <tr class="DtlBarTitle" align="center">
+    <td>日期(替换品牌)<font color="red">*</font><br><A HREF="javascript:Add_Fee('E');">[新增]</A></td>
+    <td>固定租金<font color="red">*</font><br>psm/day(㎡/天)</td>
+    <td>物管费<font color="red">*</font><br>psm/day(㎡/天)</td>
+    <td>市场推广费<font color="red">*</font><br>psm/mth(㎡/月)</td>
+    <td>提成租金(纯扣租户)<font color="red">*</font><br>psm/day(㎡/天)</td>
+    <td>总租金<br>元</td>
+    <td>备注</td>
+    <td>操作</td>
+  </tr>
+  </thead>
+  <tbody>
+  </tbody>
+  <tfoot>
+  <tr class="ListTdFocus">
+    <td colspan="5">合计：</td>
+    <td><input type="text" name="EFee" style="border:0;width:100%" value='<HDPrint Value=#EFee# Replace=#DBField2Input#>' readonly class="listtdfocus" JQRowSum="ERent_1" JQBit="2"></td>
+    <td align="center" colspan="2">&nbsp;</td>
+  </tr>
+  </tfoot>
+</table>
+&nbsp;&nbsp;F、结算费用明细
+<table width="100%" class="ListBar JQMust" cellpadding="0"  cellspacing="1" id="tb_Dtl" style="margin-bottom:5px;">
+  <colgroup>
+     <col style="width:15%">
+     <col style="width:13%">
+     <col style="width:13%">
+     <col style="width:13%">
+     <col style="width:13%">
+     <col style="width:13%">
      <col style="width:20%">
   </colgroup>
   <thead>
@@ -403,16 +651,17 @@
   </tfoot>
 </table>
 <HDPrint Value=#DtlList# Replace=#None#>
-<table cellpadding="0" cellspacing="1" class="ListBar" width="100%" style="margin-top:5px;">
+&nbsp;&nbsp;G、
+<table cellpadding="0" cellspacing="1" class="ListBar" width="100%">
   <col style="padding-left:4px;width:15%">
   <col style="padding-left:4px;width:85%">
   <tr>
-    <td class="DtlBarTitle">未完成租约期限的租金及费用：<font color =red>*</font></td>
-    <td class="ListTd"><input type="text" NAME="NumA" maxlength="16" Class="JQFloat JQMust" value="<HDPrint Value=#NumA# Replace=#DBField2Input#>" style="width:120px;" JQRow="Num" JQRowName="NumSum"></td>
+    <td class="DtlBarTitle">未完成租约期限的租金及费用：</td>
+    <td class="ListTd"><input type="text" NAME="NumA" maxlength="16" Class="JQFloat" value="<HDPrint Value=#NumA# Replace=#DBField2Input#>" style="width:120px;border:0px" readonly JQRow="Num" JQRowName="NumSum"></td>
   </tr>
   <tr>
-    <td class="DtlBarTitle">租金（含物业费）减免额：<font color =red>*</font></td>
-    <td class="ListTd"><input type="text" NAME="NumB" maxlength="64" Class="JQFloat JQMust" value="<HDPrint Value=#NumB# Replace=#DBField2Input#>" style="width:120px;" JQRow="Num" JQRowName="NumSum"></td>
+    <td class="DtlBarTitle">租金（含物业费）减免额：</td>
+    <td class="ListTd"><input type="text" NAME="NumB" maxlength="64" Class="JQFloat" value="<HDPrint Value=#NumB# Replace=#DBField2Input#>" style="width:120px;border:0px" readonly JQRow="Num" JQRowName="NumSum"></td>
   </tr>
   <tr>
     <td class="DtlBarTitle">装修补贴：<font color =red>*</font></td>
@@ -420,11 +669,11 @@
   </tr>
   <tr>
     <td class="DtlBarTitle">提前终止的补偿款（包括可没收的款项）：<font color =red>*</font></td>
-    <td class="ListTd"><input type="text" NAME="NumD" maxlength="64" Class="JQFloat JQMust" value="<HDPrint Value=#NumD# Replace=#DBField2Input#>" style="width:120px;" JQRow="Num" JQRowName="NumSum"></td>
+    <td class="ListTd"><input type="text" NAME="NumD" maxlength="64" Class="JQFloat JQMust" value="<HDPrint Value=#NumD# Replace=#DBField2Input#>" style="width:120px;" onblur="callG()" JQRow="Num" JQRowName="NumSum"></td>
   </tr>
   <tr>
-    <td class="DtlBarTitle">本会计年度的预计租金损失：<font color =red>*</font></td>
-    <td class="ListTd"><input type="text" NAME="NumE" maxlength="64" Class="JQFloat JQMust" value="<HDPrint Value=#NumE# Replace=#DBField2Input#>" style="width:120px;"></td>
+    <td class="DtlBarTitle">本会计年度的预计租金损失：</td>
+    <td class="ListTd"><input type="text" NAME="NumE" maxlength="64" Class="JQFloat" value="<HDPrint Value=#NumE# Replace=#DBField2Input#>" style="width:120px;border:0px" readonly></td>
   </tr>
   <tr>
     <td class="DtlBarTitle">冲减直线法租金收入的金额：<font color =red>*</font></td>
@@ -432,7 +681,7 @@
   </tr>
   <tr>
     <td class="DtlBarTitle">欠租金额：<font color =red>*</font></td>
-    <td class="ListTd"><input type="text" NAME="NumG" maxlength="64" Class="JQFloat JQMust" value="<HDPrint Value=#NumG# Replace=#DBField2Input#>" style="width:120px;" JQRow="Num" JQRowName="NumSum"></td>
+    <td class="ListTd"><input type="text" NAME="NumG" maxlength="64" Class="JQFloat JQMust" value="<HDPrint Value=#NumG# Replace=#DBField2Input#>" style="width:120px;"></td>
   </tr>
   <tr>
     <td class="DtlBarTitle">合计：</td>
@@ -455,6 +704,8 @@
     </td>
   </tr>
 </table>
+<HDPrint Value=#FeeList# Replace=#None#>
+<HDPrint Value=#ISFDtlList# Replace=#None#>
 <TABLE width="100%" class="ButtonBar" cellpadding="0" cellspacing="0">
   <col style="width:100%">
   <TR>

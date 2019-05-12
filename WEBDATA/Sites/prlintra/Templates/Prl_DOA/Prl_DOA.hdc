@@ -46,7 +46,7 @@ DefaultOrderBy=s.code
 Text1=^^ModeleAtype^^-^^ModeleName^^
 
 ;是否翻页：1是，0否
-ChangePage=1
+ChangePage=0
 
 ;翻页时的每页记录数，如果没有的话，则取HDNet默认值20
 ChangePageRow=30

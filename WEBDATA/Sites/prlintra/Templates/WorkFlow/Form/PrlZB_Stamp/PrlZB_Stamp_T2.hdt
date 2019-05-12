@@ -16,6 +16,15 @@
 <INPUT type="text" style="display:none" name="AppOrder" value="<HDPrint Value=#AppOrder# Replace=#DBField2Input#>">
 <INPUT type="text" style="display:none" name="AppType" value="<HDPrint Value=#AppType# Replace=#DBField2Input#>">
 <INPUT type="text" style="display:none" name="T2Gid" value="<HDPrint Value=#T2Gid# Replace=#DBField2Input#>">
+
+<INPUT type="text" style="display:none" name="LastGid" value="<HDPrint Value=#LastGid# Replace=#DBField2Input#>">
+<INPUT type="text" style="display:none" name="LastCode" value="<HDPrint Value=#LastCode# Replace=#DBField2Input#>">
+<INPUT type="text" style="display:none" name="LastName" value="<HDPrint Value=#LastName# Replace=#DBField2Input#>">
+<INPUT type="text" style="display:none" name="LastType" value="<HDPrint Value=#LastType# Replace=#DBField2Input#>">
+<INPUT type="text" style="display:none" name="LastOrder" value="<HDPrint Value=#LastOrder# Replace=#DBField2Input#>">
+
+<INPUT type="text" style="display:none" name="NextGid" value="<HDPrint Value=#NextGid# Replace=#DBField2Input#>">
+
 <INPUT type="text" style="display:none" name="F1Gid" value="123">
   <!--意见标志：同意；否决-->
   <input type="text" style="display:none" name="AppAssign" value="">
@@ -32,6 +41,7 @@
       <B>工具栏：</B>
       <A name="btn_1" HREF="javascript:CheckSubmit('同意');void(0)"><FONT class="IconYes">　&nbsp;</FONT> 同意 </A>
       <A name="btn_1" HREF="javascript:CheckSubmit('否决');void(0)"><FONT class="IconNo">　&nbsp;</FONT> 否决 </A>
+      <A name="btn_1" HREF="javascript:CheckSubmit('返回核实');void(0)" style="display:<HDPrint Value=#isShow#>"><FONT class="IconYes">　&nbsp;</FONT> 返回核实 </A>
       |
       <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
       <A HREF="javascript:window.close();void(0)"><FONT class="IconClose">　&nbsp;</FONT> 关闭</A>
@@ -39,6 +49,11 @@
   </TR>
 </TABLE>
 </div>
+<FieldSet style="Font-Family:Tahoma;Font-Size:9pt;display:<HDPrint Value=#isShow#>">
+<Legend><font color="red">审批提醒</font></Legend>
+<li>1、"否决"：不同意此事，直接返回发起人修改</li>
+<li>2、"返回核实"：请上一步审批人作出相应解释，并返回上一步审批人审批</li>
+</FieldSet>
 <iframe onload="JQAutoHeight(this)" id="iframeDtl" frameborder ='0' width="100%"  scrolling="no" style="width:100%" src="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_Content&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid#>"></iframe>
 <br>
 <h3 class="SubTitleBar"><FONT style="padding-left:10px">审核信息</FONT></h3>
@@ -71,7 +86,7 @@
     //定义 提交提示文字
     var sConfirm = '您确定已经阅读完毕这份申请单，并作出 “' + OpText + '” 的审核意见吗？';
     //否决时，判断必填
-    if(OpText == '否决'){
+    if(OpText == '否决' || OpText == '返回核实'){
       sCss = 'JQNo'
     }
     //提交时，验证必填项

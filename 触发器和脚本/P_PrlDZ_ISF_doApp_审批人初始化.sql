@@ -111,6 +111,18 @@ begin
               select v.PostGid  AppGid,
                      v.PostCode AppCode,
                      v.PostName AppName,
+                     45         AppOrder,
+                     45         AppType
+                from v_Post v
+               where v.EntGid = p_EntGid
+                 and v.deptGid = v_DeptGid
+                 and v.atype = 71
+                 and rownum = 1
+                 and v_PreDeptCode in ('0001','0023')
+              union
+              select v.PostGid  AppGid,
+                     v.PostCode AppCode,
+                     v.PostName AppName,
                      50         AppOrder,
                      50         AppType
                 from v_Post v

@@ -115,6 +115,7 @@
     <td style="cursor:hand;" JQAsc="" JQColumn="s.farea">面积</td>
     <td style="cursor:hand;" JQAsc="" JQColumn="s.Jarea">建筑面积</td>
     <td style="cursor:hand;" JQAsc="" JQColumn="s.fmr">预算</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="s.fmrY">年度总预算</td>
     <td style="cursor:hand;" JQAsc="" JQColumn="s.fstat">租赁状态</td>
     <td style="cursor:hand;" JQAsc="" JQColumn="s.OpType">最近操作类型</td>
     <td style="cursor:hand;" JQAsc="" JQColumn="s.OpName">最近操作人</td>
@@ -129,6 +130,7 @@
     <td align="right"><HDPrint Value=#farea#></td>
     <td align="right"><HDPrint Value=#Jarea#></td>
     <td align="right"><HDPrint Value=#fmr#></td>
+    <td align="right"><HDPrint Value=#fmrY#></td>
     <td align="center"><HDPrint Value=#fstat#></td>
     <td align="center"><HDPrint Value=#OpType#></td>
     <td align="center"><HDPrint Value=#OpName#></td>

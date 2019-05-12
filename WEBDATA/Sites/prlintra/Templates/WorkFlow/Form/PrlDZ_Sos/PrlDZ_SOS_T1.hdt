@@ -20,7 +20,7 @@
     $("select[name=selFileList_1]").append(JsOption);
   }
 
-  function CallUnit(Gid,fNo,floorNo,fArea,jArea,fmr){
+  function CallUnit(Gid,fNo,floorNo,fArea,jArea,fmr,fmrY,fmrM){
     var sTbId = 'tb_Dtl10';
     var sTrClass = 'listtd';
     var tdArr = new Array();
@@ -31,9 +31,13 @@
       Gid = '';
       fNo = '';
       floorNo = '';
-      fArea = '';
-      jArea = '';
-      fmr = '';
+      fArea = '0';
+      jArea = '0';
+      fmr = '0';
+      fmrY = '0';
+    }
+    if (fmrM == null) {
+      fmrM = '0';
     }
     if (!JQgetSingle("Gid_1","10"+fNo)){
       alert('对不起，已经存在该单位！');
@@ -49,26 +53,28 @@
 
     tdArr[k++] = '<td>'+fNo+'<INPUT TYPE="hidden" NAME="fNo_1" ID="fNo_1'+ iRow +'" maxlength="32" class="JQText JQMust" value = "'+fNo+'"></td>';
 
-    tdArr[k++] = '<td>'+floorNo+'<INPUT TYPE="hidden" NAME="floorNo_1" ID="floorNo_1'+ iRow +'" maxlength="32" class="JQText" value = "'+floorNo+'"></td>';
+    tdArr[k++] = '<td>'+floorNo+'<INPUT TYPE="hidden" NAME="floorNo_1" ID="floorNo_1'+ iRow +'" maxlength="16" class="JQText" value = "'+floorNo+'"></td>';
 
     tdArr[k++] = '<td>'+fArea+'<INPUT TYPE="hidden" NAME="fArea_1" ID="fArea_1'+ iRow +'" JQRow="fArea_1" maxlength="16" class="JQFloat" value = "'+fArea+'"></td>';
 
     tdArr[k++] = '<td>'+jArea+'<INPUT TYPE="hidden" NAME="jArea_1" ID="jArea_1'+ iRow +'" JQRow="jArea_1" maxlength="16" class="JQFloat" value = "'+jArea+'"></td>';
 
-    tdArr[k++] = '<td>'+fmr+'<INPUT TYPE="hidden" NAME="fmr_1" ID="fmr_1'+ iRow +'" maxlength="16" class="JQInt" value = "'+fmr+'"></td>';
+    tdArr[k++] = '<td>'+fmr+'<INPUT TYPE="hidden" NAME="fmr_1" ID="fmr_1'+ iRow +'" maxlength="16" class="JQFloat" JQbit="4" value = "'+fmr+'"></td>';
+
+    tdArr[k++] = '<td><INPUT TYPE="text" NAME="fmrY_1" ID="fmrY_1'+ iRow +'" JQRow="fmrY_1" maxlength="16" class="JQText" value = "'+fmrY+'" readonly style="border:0"></td>';
+
+    tdArr[k++] = '<td><INPUT TYPE="text" NAME="fmrM_1" ID="fmrM_1'+ iRow +'" JQRow="fmrM_1" maxlength="16" class="JQText" value = "'+fmrM+'" readonly style="border:0"></td>';
 
     tdArr[k++] ='<td align="center"><a href="javascript:void(0)" onclick="javascript:JQTr_Del();JqReCal()">删除</a></td>';
 
     //新增一行
     JQTr_Add(sTbId,sTrClass,tdArr);
-    $("input[JQRowSum]").each(function(){
-      JQSum($(this),'JQRow');
-    });
+    callT()
   }
 
 
 
-  function AddUnit(Gid,fNo,floorNo,fArea,jArea,fmr){
+  function AddUnit(Gid,fNo,floorNo,fArea,jArea,fmr,fmrY,fmrM){
     var sTbId = 'tb_Dtl20';
     var sTrClass = 'listtd';
     var tdArr = new Array();
@@ -82,6 +88,8 @@
       fArea = '';
       jArea = '';
       fmr = '';
+      fmrM = '';
+      fmrY = '';
     }
 
     tdArr[k++] = '<td align="center">'
@@ -94,16 +102,38 @@
 
     tdArr[k++] = '<td><INPUT TYPE="text" NAME="floorNo_1" ID="floorNo_1'+ iRow +'" maxlength="32" class="JQText JQMust" value = "'+floorNo+'"></td>';
 
-    tdArr[k++] = '<td><INPUT TYPE="text" NAME="fArea_1" ID="fArea_1'+ iRow +'" JQRow="fArea_2" maxlength="16" class="JQFloat JQMust" value = "'+fArea+'"></td>';
+    tdArr[k++] = '<td><INPUT TYPE="text" NAME="fArea_1" ID="fArea_1'+ iRow +'" JQRow="fArea_2" maxlength="16" class="JQFloat JQMust" value = "'+fArea+'" onblur="callT()"></td>';
 
-    tdArr[k++] = '<td><INPUT TYPE="text" NAME="jArea_1" ID="jArea_1'+ iRow +'" JQRow="jArea_2" maxlength="16" class="JQFloat JQMust" value = "'+jArea+'"></td>';
+    tdArr[k++] = '<td><INPUT TYPE="text" NAME="jArea_1" ID="jArea_1'+ iRow +'" JQRow="jArea_2" maxlength="16" class="JQFloat JQMust" value = "'+jArea+'" onblur="callT()"></td>';
 
-    tdArr[k++] = '<td><INPUT TYPE="text" NAME="fmr_1" ID="fmr_1'+ iRow +'" maxlength="16" class="JQInt" value = "'+fmr+'"></td>';
+    tdArr[k++] = '<td><INPUT TYPE="text" NAME="fmr_1" ID="fmr_1'+ iRow +'" maxlength="16" class="JQFloat" value = "'+fmr+'" JQbit="4" onblur="callT()"></td>';
+
+    tdArr[k++] = '<td><INPUT TYPE="text" NAME="fmrY_1" ID="fmrY_1'+ iRow +'" maxlength="16"  value = "'+fmrY+'" class="JQFloat JQMust"></td>';
+
+    tdArr[k++] = '<td><INPUT TYPE="text" NAME="fmrM_1" ID="fmrM_1'+ iRow +'"  JQRow="fmrM_2" maxlength="16" class="JQText" value = "'+fmrM+'" readonly style="border:0"></td>';
 
     tdArr[k++] ='<td align="center"><a href="javascript:void(0)" onclick="javascript:JQTr_Del();JqReCal()">删除</a></td>';
 
     //新增一行
     JQTr_Add(sTbId,sTrClass,tdArr);
+    $("input[JQRowSum]").each(function(){
+      JQSum($(this),'JQRow');
+    });
+  }
+
+  function callT(){
+    $("input[name=Line_1]").each(function(i){
+      var JsArea = $("input[name=fArea_1]").eq(i).val();
+      var JsFmr = $("input[name=fmr_1]").eq(i).val();
+
+      //基数 = 365/12
+      var JsBase = 365/12;
+
+      //判断 为空，则为 0
+      if (JsArea == ''){JsArea = '0';}
+      if (JsFmr == ''){JsFmr = '0';}
+      $("input[name=fmrM_1]").eq(i).val(parseFloat(parseFloat(JsFmr) * JsBase * parseFloat(JsArea)).toFixed(2))
+    })
     $("input[JQRowSum]").each(function(){
       JQSum($(this),'JQRow');
     });
@@ -255,21 +285,25 @@
       <table width="100%" class="ListBar" cellpadding="0"  cellspacing="1" id="tb_Dtl10">
         <colgroup>
            <col style="width:5%">
-           <col style="width:20%">
-           <col style="width:20%">
            <col style="width:15%">
            <col style="width:15%">
-           <col style="width:20%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:10%">
+           <col style="width:10%">
+           <col style="width:10%">
            <col style="width:5%">
         </colgroup>
         <thead>
         <tr class="DtlBarTitle" align="center">
-          <td >序号</td>
+          <td>序号</td>
           <td>单位</td>
           <td>楼层</td>
           <td>面积</td>
           <td>建筑面积</td>
-          <td>预算</td>
+          <td>预算单价<br>租金+物管+推广</td>
+          <td>年度总预算</td>
+          <td>月总租金</td>
           <td>操作</td>
         </tr>
         </thead>
@@ -278,11 +312,12 @@
         <tfoot>
         <tr class="ListTdFocus">
           <td align="right">合计：</td>
-          <td align="right"></td>
-          <td align="right"></td>
-          <td align="right"><input type="text" name="fAreaSum1" style="border:0;width:100%" value='<HDPrint Value=#fAreaSum1# Replace=#DBField2Input#>' readonly class="listtdfocus"  JQRowSum="fArea_1" JQBit="2"></td>
-          <td align="right"><input type="text" name="jAreaSum1" style="border:0;width:100%" value='<HDPrint Value=#jAreaSum1# Replace=#DBField2Input#>' readonly class="listtdfocus"  JQRowSum="jArea_1" JQBit="2"></td>
-          <td align="right"></td>
+          <td align="center"></td>
+          <td align="center"></td>
+          <td align="center"><input type="text" name="fAreaSum1" style="border:0;width:100%" value='<HDPrint Value=#fAreaSum1# Replace=#DBField2Input#>' readonly class="listtdfocus"  JQRowSum="fArea_1" JQBit="2"></td>
+          <td align="center"><input type="text" name="jAreaSum1" style="border:0;width:100%" value='<HDPrint Value=#jAreaSum1# Replace=#DBField2Input#>' readonly class="listtdfocus"  JQRowSum="jArea_1" JQBit="2"></td>
+          <td align="center" colspan="2"></td>
+          <td align="center"><input type="text" name="fmrMSum1" style="border:0;width:100%" value='<HDPrint Value=#fmrMSum1# Replace=#DBField2Input#>' readonly class="listtdfocus"  JQRowSum="fmrM_1" JQBit="2"></td>
           <td align="center">&nbsp;</td>
         </tr>
         </tfoot>
@@ -295,11 +330,13 @@
       <table width="100%" class="ListBar JQMust" cellpadding="0"  cellspacing="1" id="tb_Dtl20">
         <colgroup>
            <col style="width:5%">
-           <col style="width:20%">
-           <col style="width:20%">
            <col style="width:15%">
            <col style="width:15%">
-           <col style="width:20%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:10%">
+           <col style="width:10%">
+           <col style="width:10%">
            <col style="width:5%">
         </colgroup>
         <thead>
@@ -309,7 +346,9 @@
           <td>楼层</td>
           <td>面积</td>
           <td>建筑面积</td>
-          <td>预算</td>
+          <td>预算单价<br>租金+物管+推广</td>
+          <td>年度总预算</td>
+          <td>月总租金</td>
           <td>操作</td>
         </tr>
         </thead>
@@ -318,11 +357,12 @@
         <tfoot>
         <tr class="ListTdFocus">
           <td align="right">合计：</td>
-          <td align="right"></td>
-          <td align="right"></td>
-          <td align="right"><input type="text" name="fAreaSum2" style="border:0;width:100%" value='<HDPrint Value=#fAreaSum2# Replace=#DBField2Input#>' readonly class="listtdfocus"  JQRowSum="fArea_2" JQBit="2"></td>
-          <td align="right"><input type="text" name="jAreaSum2" style="border:0;width:100%" value='<HDPrint Value=#jAreaSum2# Replace=#DBField2Input#>' readonly class="listtdfocus"  JQRowSum="jArea_2" JQBit="2"></td>
-          <td align="right"></td>
+          <td align="center"></td>
+          <td align="center"></td>
+          <td align="center"><input type="text" name="fAreaSum2" style="border:0;width:100%" value='<HDPrint Value=#fAreaSum2# Replace=#DBField2Input#>' readonly class="listtdfocus"  JQRowSum="fArea_2" JQBit="2"></td>
+          <td align="center"><input type="text" name="jAreaSum2" style="border:0;width:100%" value='<HDPrint Value=#jAreaSum2# Replace=#DBField2Input#>' readonly class="listtdfocus"  JQRowSum="jArea_2" JQBit="2"></td>
+          <td align="center" colspan="2"></td>
+          <td align="center"><input type="text" name="fmrMSum2" style="border:0;width:100%" value='<HDPrint Value=#fmrMSum2# Replace=#DBField2Input#>' readonly class="listtdfocus"  JQRowSum="fmrM_2" JQBit="2"></td>
           <td align="center">&nbsp;</td>
         </tr>
         </tfoot>
@@ -338,9 +378,9 @@
     <td class="listtd" colspan="3"><textarea rows="5" id ="EndMemo" name="EndMemo" class="JQText JQEnd" maxlength="1000"><HDPrint Value=#EndMemo# Replace=#DBField2InputField#></textarea></td>
   </tr>
   <tr valign="top">
-    <td class="DtlBarTitle">附件信息:<br><font color="gray">(双击删除)</font></td>
+    <td class="DtlBarTitle">附件信息:<font color="red">*</font><br><font color="gray">(双击删除)</font></td>
     <td class="listtd" colspan="3">
-      <SELECT NAME="selFileList_1" size="3" style="width:250;" multiple><HDPrint Value=#AttachList# Replace=#None#></SELECT><br>
+      <SELECT NAME="selFileList_1" size="3" style="width:250;" multiple class="JQMust"><HDPrint Value=#AttachList# Replace=#None#></SELECT><br>
       <input type="hidden" name="HDTempPath" value="<HDPrint Value=#NewGid# Replace=#DBField2Input#>">
       <iframe FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid# Replace=#DBField2Input#>&CallBackFun=AddAttach" height=28></iframe>
     </td>
@@ -421,7 +461,7 @@
 <FORM NAME="frmDataInterface_Unit" ACTION="">
   <INPUT TYPE="hidden" name="DataInterface_Title" ID="t_Unit" value="Unit 单位_选择列表">
 
-  <INPUT TYPE="hidden" name="DataInterface_Sql" ID="s_Unit" value="select fgid,fno,floorno,nvl(farea,0),nvl(jArea,0),nvl(fmr,0) from prl_GROUNDH WHERE deptsource = '<HDPrint Value=#ParentDeptCode#>' and fStat not in ('停用')">
+  <INPUT TYPE="hidden" name="DataInterface_Sql" ID="s_Unit" value="select fgid,fno,floorno,nvl(farea,0),nvl(jArea,0),nvl(fmr,0),nvl(fmrY,0) from prl_GROUNDH WHERE deptsource = '<HDPrint Value=#ParentDeptCode#>' and fStat not in ('停用')">
   <INPUT TYPE="hidden" name="DataInterface_CountSql" ID="c_Unit" value="select count(*) from prl_GROUNDH WHERE deptsource = '<HDPrint Value=#ParentDeptCode#>' and fStat not in ('停用')">
   <INPUT TYPE="hidden" name="DataInterface_OrderSql" value="order by fno">
   <INPUT TYPE="hidden" name="DataInterface_UsrGid" value="<HDPrint Value=#UsrGid#>">
@@ -432,6 +472,7 @@
   <input type="hidden" name="DataInterface_Cols" value="4^面积^left^80">
   <input type="hidden" name="DataInterface_Cols" value="5^建筑面积^left^80">
   <input type="hidden" name="DataInterface_Cols" value="6^批准预算^left^80">
+  <input type="hidden" name="DataInterface_Cols" value="7^总预算^left^80">
 
   <input type="hidden" name="DataInterface_Search" value="fno^单位编号^1">
   <input type="hidden" name="DataInterface_Search" value="floorno^楼层^1">
@@ -439,7 +480,7 @@
   <input TYPE="hidden" name="DataInterface_Search_Cols" value="">
 
   <INPUT TYPE="hidden" name="DataInterface_FieldTo" value="">
-  <INPUT TYPE="hidden" name="DataInterface_FieldBy" value="1^2^3^4^5^6">
+  <INPUT TYPE="hidden" name="DataInterface_FieldBy" value="1^2^3^4^5^6^7">
   <INPUT TYPE="hidden" name="DataInterface_CallBckFunc" value="CallUnit">
   <INPUT TYPE="hidden" name="DataInterface_Close" value="false">
 </FORM>

@@ -20,6 +20,12 @@ SqlForCondition2=select distinct AppOrder,AppType from Wf_Prl_ISF_App a where a.
 ;取出本流程主表信息
 Sql1=select substr(f.FillUsrDeptCode, 0, 4) ParentDeptCode,f.* from Wf_^^ModelCodeT^^ f where f.EntGid = __ENTGID__ and f.FlowGid = ##FlowGid##
 
+SQL2=select decode(count(*),0,'none','') isShow from Wf_Prl_ISF_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppOrder > 0 and AppOrder < ##AppOrder## and appdate is not null
+
+SQL3=select AppGid LastGid,AppCode LastCode,AppName LastName,AppType LastType,AppOrder LastOrder from Wf_Prl_ISF_App a where a.EntGid = __ENTGID__ and a.FlowGid = ##FlowGid## and a.AppDate is not null and a.AppOrder in (select max(t.AppOrder) from Wf_Prl_ISF_App t where t.EntGid = __ENTGID__ and t.FlowGid = ##FlowGid## and t.AppOrder < ##AppOrder## and t.appdate is not null)
+
+SQL4=select AppGid NextGid from Wf_Prl_ISF_App a where a.EntGid = __ENTGID__ and a.FlowGid = ##FlowGid## and a.AppDate is null and a.AppOrder in (select min(t.AppOrder) from Wf_Prl_ISF_App t where t.EntGid = __ENTGID__ and t.FlowGid = ##FlowGid## and t.AppOrder > ##AppOrder## and t.appdate is null)
+
 ;得到下一批审批人信息
 LoopSQL1=select AppGid ItemGid, AppName ItemName from Wf_Prl_ISF_App a where a.EntGid = __ENTGID__ and a.FlowGid = ##FlowGid## and a.AppDate is null and a.AppOrder in (select min(t.AppOrder) from Wf_Prl_ISF_App t where t.EntGid = __ENTGID__ and t.FlowGid = ##FlowGid## and t.AppOrder > ##AppOrder## and t.appdate is null)
 LoopHDT1=Templates\WorkFlow\Form\^^ModelCode^^\LoopSql_Option.hdt

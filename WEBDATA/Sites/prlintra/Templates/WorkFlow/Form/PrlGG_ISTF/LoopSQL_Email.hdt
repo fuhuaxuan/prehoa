@@ -1,0 +1,29 @@
+<table border="0" style="100%">
+<tr><td>您好：</td></tr>
+<tr><td>[流程名称] : <HDPrint Value=#ModelName#>；</td></tr>
+<tr><td>[发起人] : <HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]；</td></tr>
+<tr><td>[单号] : <HDPrint Value=#Num#>；</td></tr>
+<tr><td>[类别] : <HDPrint Value=#category#> <HDPrint Value=#categoryText#>；</td></tr>
+<tr><td>[单位] : <font JQ="JQUnit"></font></td></tr>
+<tr><td>[位置] : <font JQ="JQFloor"></font></td></tr>
+<HDPrint Value=#unitList# Replace=#None#>
+<tr><td>[租户] : <HDPrint Value=#lessee#>；</td></tr>
+<tr><td>[商店营业名称] : <HDPrint Value=#tradingname#>；</td></tr>
+<tr><td>[租赁期限] : <HDPrint Value=#leasetermy#>年/<HDPrint Value=#leasetermm#> 月/<HDPrint Value=#leasetermd#>日；</td></tr>
+<tr><td>[交付日期] : <HDPrint Value=#handoverdate#>；</td></tr>
+<tr><td>[合同起始日期] : <HDPrint Value=#contractdate1#>；</td></tr>
+<tr><td>[截止日期] : <HDPrint Value=#contractdate2#>；</td></tr>
+<tr><td>[免租期] : <HDPrint Value=#freerentm#> 月/<HDPrint Value=#freerentd#> 天；</td></tr>
+<tr><td>[申请终止日期] : <font color="BLUE"><HDPrint Value=#Terminationdate#></font>；</td></tr>
+<tr><td>结算费用项目合计:</td></tr>
+<tr><td>[实际应缴金额C=A-B]:<HDPrint Value=#DataCSum#>；</td></tr>
+<tr><td>[实际缴纳金额D]:<HDPrint Value=#DataDSum#>；</td></tr>
+<tr><td>[应退还(追缴)金额E=D-C]:<HDPrint Value=#DataESum#>；</td></tr>
+<tr><td>[未完成租约期限的租金及费用] : <font color="blue"><HDPrint Value=#NumA#></font>；</td></tr>
+<tr><td>[提前终止的补偿款] : <font color="blue"><HDPrint Value=#NumD#></font>；</td></tr>
+<tr><td>[欠租金额] : <font color="blue"><HDPrint Value=#NumG#></font>；</td></tr>
+<tr><td>[退场原因] : <HDPrint Value=#Remarks#>；</td></tr>
+<tr><td>[附件信息] : <HDPrint Value=#AttachList# Replace=#None#></td></tr>
+<tr><td>-----------内容展示完毕-----------</td></tr>
+</table>
+<HDPrint Value=#AppEmail# Replace=#None#>

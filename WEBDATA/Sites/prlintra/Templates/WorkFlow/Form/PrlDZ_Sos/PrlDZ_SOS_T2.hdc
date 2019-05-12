@@ -20,8 +20,11 @@ SqlForCondition2=select distinct AppOrder,AppType from Wf_^^ModelCode^^_App a wh
 ;取出本流程主表信息
 Sql1=select * from WF_^^ModelCode^^ where EntGid = __ENTGID__ and  FlowGid = ##FlowGid##
 
-;取出下一个审批人
-SQL2=select AppGid T2Gid from Wf_^^ModelCode^^_App a where a.EntGid = __ENTGID__ and a.FlowGid = ##FlowGid## and a.AppDate is null and a.AppOrder in (select min(t.AppOrder) from Wf_^^ModelCode^^_App t where t.EntGid = __ENTGID__ and t.FlowGid = ##FlowGid## and t.AppOrder > ##AppOrder## and t.appdate is null)
+SQL2=select decode(count(*),0,'none','') isShow from Wf_^^ModelCode^^_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppOrder > 0 and AppOrder < ##AppOrder## and appdate is not null
+
+SQL3=select AppGid LastGid,AppCode LastCode,AppName LastName,AppType LastType,AppOrder LastOrder from Wf_^^ModelCode^^_App a where a.EntGid = __ENTGID__ and a.FlowGid = ##FlowGid## and a.AppDate is not null and a.AppOrder in (select max(t.AppOrder) from Wf_^^ModelCode^^_App t where t.EntGid = __ENTGID__ and t.FlowGid = ##FlowGid## and t.AppOrder < ##AppOrder## and t.appdate is not null)
+
+SQL4=select AppGid NextGid from Wf_^^ModelCode^^_App a where a.EntGid = __ENTGID__ and a.FlowGid = ##FlowGid## and a.AppDate is null and a.AppOrder in (select min(t.AppOrder) from Wf_^^ModelCode^^_App t where t.EntGid = __ENTGID__ and t.FlowGid = ##FlowGid## and t.AppOrder > ##AppOrder## and t.appdate is null)
 
 [AddtionalSQL]
 ;操作，没有返回的结果，是在数据库中执行，有Insert, Update, Delete命令。从SQL1～SQL20共支持20条

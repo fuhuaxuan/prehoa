@@ -9,7 +9,7 @@
 </style>
 <script language="javascript">
 
-  function AddUnit(aType,Line,Gid,fNo,floorNo,fArea,jArea,fmr){
+  function AddUnit(aType,Line,Gid,fNo,floorNo,fArea,jArea,fmr,fmrY,fmrM){
     var sTbId = 'tb_Dtl'+aType;
     var sTrClass = 'listtd';
     var tdArr = new Array();
@@ -23,14 +23,18 @@
       fArea = '';
       jArea = '';
       fmr = '';
+      fmrY = '';
+      fmrM = '';
     }
 
     tdArr[k++] = '<td class="PrintTdRT" align="center">'+ Line +'</td>';
-    tdArr[k++] = '<td class="PrintTdRT">'+fNo+'</td>';
-    tdArr[k++] = '<td class="PrintTdRT">'+floorNo+'</td>';
-    tdArr[k++] = '<td class="PrintTdRT" align="right">'+fArea+'</td>';
-    tdArr[k++] = '<td class="PrintTdRT" align="right">'+jArea+'</td>';
-    tdArr[k++] = '<td class="PrintTdRT" align="right">'+fmr+'</td>';
+    tdArr[k++] = '<td class="PrintTdRT" align="center">'+fNo+'</td>';
+    tdArr[k++] = '<td class="PrintTdRT" align="center">'+floorNo+'</td>';
+    tdArr[k++] = '<td class="PrintTdRT" align="center">'+fArea+'</td>';
+    tdArr[k++] = '<td class="PrintTdRT" align="center">'+jArea+'</td>';
+    tdArr[k++] = '<td class="PrintTdRT" align="center">'+fmr+'</td>';
+    tdArr[k++] = '<td class="PrintTdRT" align="center">'+fmrY+'</td>';
+    tdArr[k++] = '<td class="PrintTdRT" align="center">'+fmrM+'</td>';
     //新增一行
     JQTr_Add(sTbId,sTrClass,tdArr);
   }
@@ -87,8 +91,9 @@
            <col style="width:15%">
            <col style="width:15%">
            <col style="width:15%">
-           <col style="width:15%">
-           <col style="width:15%">
+           <col style="width:10%">
+           <col style="width:10%">
+           <col style="width:10%">
         </colgroup>
         <thead>
         <tr align="center">
@@ -97,7 +102,9 @@
           <td class="PrintTdRT">楼层</td>
           <td class="PrintTdRT">面积</td>
           <td class="PrintTdRT">建筑面积</td>
-          <td class="PrintTdRT">预算</td>
+          <td class="PrintTdRT">预算单价<br>租金+物管+推广</td>
+          <td class="PrintTdRT">年度总预算</td>
+          <td class="PrintTdRT">月总租金</td>
         </tr>
         </thead>
         <tbody>
@@ -105,9 +112,11 @@
         <tfoot>
         <tr>
           <td class="PrintTdRT" align="right" colspan="3">合计：</td>
-          <td class="PrintTdRT" align="right" id="fAreaSum1"><HDPrint Value=#fAreaSum1#></td>
-          <td class="PrintTdRT" align="right" id="jAreaSum1"><HDPrint Value=#jAreaSum1#></td>
-          <td class="PrintTdRT" align="right" id="fmrSum1"></td>
+          <td class="PrintTdRT" align="center" id="fAreaSum1"><HDPrint Value=#fAreaSum1#></td>
+          <td class="PrintTdRT" align="center" id="jAreaSum1"><HDPrint Value=#jAreaSum1#></td>
+          <td class="PrintTdRT" align="center"></td>
+          <td class="PrintTdRT" align="center"></td>
+          <td class="PrintTdRT" align="center"><HDPrint Value=#fmrMSum1#></td>
         </tr>
         </tfoot>
       </table>
@@ -122,8 +131,9 @@
            <col style="width:15%">
            <col style="width:15%">
            <col style="width:15%">
-           <col style="width:15%">
-           <col style="width:15%">
+           <col style="width:10%">
+           <col style="width:10%">
+           <col style="width:10%">
         </colgroup>
         <thead>
         <tr align="center">
@@ -132,7 +142,9 @@
           <td class="PrintTdRT">楼层</td>
           <td class="PrintTdRT">面积</td>
           <td class="PrintTdRT">建筑面积</td>
-          <td class="PrintTdRT">预算</td>
+          <td class="PrintTdRT">预算单价<br>租金+物管+推广</td>
+          <td class="PrintTdRT">年度总预算</td>
+          <td class="PrintTdRT">月总租金</td>
         </tr>
         </thead>
         <tbody>
@@ -140,9 +152,11 @@
         <tfoot>
         <tr>
           <td class="PrintTdRT" align="right" colspan="3">合计：</td>
-          <td class="PrintTdRT" align="right" id="fAreaSum2"><HDPrint Value=#fAreaSum2#></td>
-          <td class="PrintTdRT" align="right" id="jAreaSum2"><HDPrint Value=#jAreaSum2#></td>
-          <td class="PrintTdRT" align="right" id="fmrSum2"></td>
+          <td class="PrintTdRT" align="center" id="fAreaSum2"><HDPrint Value=#fAreaSum2#></td>
+          <td class="PrintTdRT" align="center" id="jAreaSum2"><HDPrint Value=#jAreaSum2#></td>
+          <td class="PrintTdRT" align="center"></td>
+          <td class="PrintTdRT" align="center"></td>
+          <td class="PrintTdRT" align="center"><HDPrint Value=#fmrMSum2#></td>
         </tr>
         </tfoot>
       </table>

@@ -18,7 +18,7 @@ SqlForCondition1=select wm.Code ModelCode, wm.Name ModelName from wf_Model wm wh
 SqlForCondition2=select substr(f.FillUsrDeptCode,0,4) ProCode from Wf_PRL_ISTF f where f.EntGid = __ENTGID__ and f.FlowGid = ##FlowGid##
 
 ;取出旧的ISF/ISCF的信息
-SQL1=select f.num OldNum,f.modelgid OldModelGid,m.code OldModelCode,f.FlowGid OldFlowGid,f.DEPT,f.unit,f.area,f.BuildArea,f.tradename,f.trade,f.lessee,f.tradingname,f.address,f.contactor,f.phone,f.email,f.fax,f.leaseTermY,f.leaseTermM,f.leaseTermD,to_char(f.HandoverDate,'YYYY.MM.DD') HandoverDate,f.Related,f.Detail,f.Rate1,f.Rate,to_char(f.contractDate1,'YYYY.MM.DD') contractDate1,to_char(f.contractdate2,'YYYY.MM.DD') contractdate2,f.freeRentM,f.freeRentD,to_char(f.freeRentdate1,'YYYY.MM.DD') freeRentdate1,to_char(f.freeRentdate2,'YYYY.MM.DD') freeRentdate2,f.fitoutM,f.fitoutD,to_char(f.fitoutdate1,'YYYY.MM.DD') fitoutdate1,to_char(f.fitoutdate2,'YYYY.MM.DD') fitoutdate2,f.collection,nvl(nvl(numa,0)+nvl(numb,0)+nvl(numc,0)+nvl(numd,0)+nvl(numg,0), 0) DataTotal from WF_PRL_ISF f,wf_model m,Wf_PRL_ISTF o where f.FlowGid = o.OldFlowGid and f.EntGid=__ENTGID__ and f.EntGid = m.EntGid and f.modelgid = m.modelgid and o.FlowGid = ##FlowGid##
+SQL1=select f.num OldNum,f.modelgid OldModelGid,m.code OldModelCode,f.FlowGid OldFlowGid,f.DEPT,f.unit,f.area,f.BuildArea,f.tradename,f.trade,f.lessee,f.tradingname,f.address,f.contactor,f.phone,f.email,f.fax,f.leaseTermY,f.leaseTermM,f.leaseTermD,to_char(f.HandoverDate,'YYYY.MM.DD') HandoverDate,f.Related,f.Detail,f.Rate1,f.Rate,to_char(f.contractDate1,'YYYY.MM.DD') contractDate1,to_char(f.contractdate2,'YYYY.MM.DD') contractdate2,f.freeRentM,f.freeRentD,f.fitoutM,f.fitoutD,to_char(f.fitoutdate1,'YYYY.MM.DD') fitoutdate1,to_char(f.fitoutdate2,'YYYY.MM.DD') fitoutdate2,f.collection,nvl(nvl(numa,0)+nvl(numb,0)+nvl(numc,0)+nvl(numd,0)+nvl(numg,0), 0) DataTotal from WF_PRL_ISF f,wf_model m,Wf_PRL_ISTF o where f.FlowGid = o.OldFlowGid and f.EntGid=__ENTGID__ and f.EntGid = m.EntGid and f.modelgid = m.modelgid and o.FlowGid = ##FlowGid##
 
 Sql2=select f.*,FillUsrDept FillDeptName,decode(f.mallstat,0,'已发送至Mall，处理失败',10,'已发送至Mall,未接收',100,'已发送至Mall，成功') mallstattext,decode(f.category,10,'Early Termination 提前终止',20,'Termination 到期终止',30,'Others 其他:'||f.categorytext) categoryText1,decode(wf.stat,'0', '未执行','1', '待执行','2', '执行中','3', '<FONT COLOR="blue">已完成</FONT>','4', '<font color="gray">已停止</font>','5', '<FONT COLOR="red">已作废</FONT>','6', '<FONT COLOR="red">已超时</FONT>') Flowstat,decode(f.stat,'0','未开始','1','填写中','10','已提交，审批中','12','已同意','13','已否决','30','已完成','40','已终止合同','100','发起人结束流程',f.Stat) StatText from Wf_PRL_ISTF f,wf_flow wf where f.EntGid = __ENTGID__ and f.EntGid = wf.EntGid and f.FlowGid = wf.FlowGid and f.FlowGid = ##FlowGid##
 
@@ -38,6 +38,11 @@ LoopSQL2=select a.*,decode(a.apptype,0,'发起人',10,'部门经理',32,'部门总经理',30
 LoopHDT2=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AppList.hdt
 LoopVAR2=AppList
 
+;显示本流程已审批审批人信息
+LoopSQL5=select a.*,decode(a.apptype,0,'发起人',10,'部门经理',32,'部门总经理',30,'财务经理',35,'总经理',40,'项目总经理',50,'资产经理',60,'租赁部总监',80,'财务总监',85,'资产经理',90,'区域总经理',95,'Deputy CEO',100,'CEO') apptypetext  from Wf_Prl_Isf_App a where FlowGid = ##FlowGid## order by AppDate,AppOrder
+LoopHDT5=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AppEmail.hdt
+LoopVAR5=AppEmail
+
 ;显示本流程明细信息
 LoopSQL3=select * from Wf_PRL_ISTF_Dtl where EntGid = __ENTGID__ and FlowGid = ##FlowGid## order by Line
 LoopHDT3=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_DtlList.hdt
@@ -47,6 +52,16 @@ LoopVAR3=DtlList
 LoopSQL4=select g.* from wf_PRL_ISF_ground g,Wf_PRL_ISTF f where f.EntGid = __ENTGID__ and f.FlowGid = ##FlowGid## and g.FlowGid = f.OldFlowGid order by g.fNo
 LoopHDT4=Templates\WorkFlow\Form\^^ModelCode^^\LoopSql_UnitDtl.hdt
 LoopVAR4=UnitList
+
+;显示本流程明细信息
+LoopSQL5=select * from Wf_PRL_ISTF_Fee where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and aType = 'D' order by Line
+LoopHDT5=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_FeeList.hdt
+LoopVAR5=DFeeList
+
+;显示本流程明细信息
+LoopSQL6=select * from Wf_PRL_ISTF_Fee where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and aType = 'E' order by Line
+LoopHDT6=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_FeeList.hdt
+LoopVAR6=EFeeList
 
 ;显示邮件
 LoopSQL19=select 1 from dual

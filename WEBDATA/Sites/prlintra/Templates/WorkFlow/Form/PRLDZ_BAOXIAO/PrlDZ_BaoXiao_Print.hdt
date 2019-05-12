@@ -52,13 +52,21 @@
 </table>
 <table width="645" cellspacing="0" cellpadding="0" align="center" ID="tb_Dtl" style="border-left:1 solid black;">
   <colgroup>
-     <col style="width:80%">
+     <col style="width:35%">
+     <col style="width:15%">
+     <col style="width:10%">
+     <col style="width:10%">
+     <col style="width:10%">
      <col style="width:20%">
   </colgroup>
   <thead>
   <tr align="center">
-    <td class="PrintTdRT">项目小类</td>
+    <td class="PrintTdRT">报销科目</td>
+    <td class="PrintTdRT">项目地址</td>
+    <td class="PrintTdRT">费用开始日期</td>
+    <td class="PrintTdRT">费用结束日期</td>
     <td class="PrintTdRT">本次申请金额[元]</td>
+    <td class="PrintTdRT">备注</td>
   </tr>
   </thead>
   <tbody>
@@ -66,8 +74,9 @@
   </tbody>
   <tfoot>
   <tr>
-    <td align="right" class="PrintTdRT">报销金额汇总[元]：</td>
-    <td align="center"  class="PrintTdRT"><HDPrint Value=#SumFee#></td>
+    <td align="right" colspan="4" class="PrintTdRT">报销金额汇总[元]：</td>
+    <td align="center" class="PrintTdRT"><HDPrint Value=#SumFee#></td>
+    <td align="center" class="PrintTdRT"></td>
   </tr>
   </tfoot>
 </table>

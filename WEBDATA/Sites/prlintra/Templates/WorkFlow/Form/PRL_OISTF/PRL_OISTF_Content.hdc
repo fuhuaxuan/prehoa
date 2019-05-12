@@ -32,6 +32,11 @@ LoopSQL2=select a.*,decode(a.apptype,0,'发起人',10,'部门经理',30,'财务经理',32,'
 LoopHDT2=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AppList.hdt
 LoopVAR2=AppList
 
+;显示本流程已审批审批人信息
+LoopSQL5=select a.*,decode(a.apptype,0,'发起人',10,'部门经理',30,'财务经理',32,'部门总经理',40,'项目总经理',50,'资产经理',60,'租赁部总监',80,'财务总监',90,'区域总经理',95,'Deputy CEO',100,'CEO') apptypetext  from Wf_prl_oisf_App a where FlowGid = ##FlowGid## order by AppDate,AppType
+LoopHDT5=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AppEmail.hdt
+LoopVAR5=AppEmail
+
 ;显示本流程明细信息
 LoopSQL3=select * from wf_^^ModelCode^^_Dtl where EntGid = __ENTGID__ and FlowGid = ##FlowGid## order by Line
 LoopHDT3=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_DtlList.hdt

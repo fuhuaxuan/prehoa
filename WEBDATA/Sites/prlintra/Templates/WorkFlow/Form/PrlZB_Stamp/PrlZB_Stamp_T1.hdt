@@ -201,7 +201,7 @@
       <input type="checkbox" name="StampType_1" value="公司公章" class="JQRadio JQMust1 JQMust2  JQSave">公司公章<br>
       <input type="checkbox" name="StampType_1" value="法定代表人名章" class="JQRadio JQMust1 JQMust2  JQSave">法定代表人名章<br>
       <input type="checkbox" name="StampType_1" value="公司股东章" class="JQRadio JQMust1 JQMust2  JQSave">公司股东章<br>
-      <input type="checkbox" name="StampType_1" value="合同用章" class="JQRadio JQMust1 JQMust2  JQSave">合同用章
+      <input type="checkbox" name="StampType_1" value="合同章" class="JQRadio JQMust1 JQMust2  JQSave">合同章
       <input type="hidden" name="StampType" value="<HDPrint Value=#StampType# Replace=#DBField2Input#>" JQChkName="StampType_1" JQChkTab=";">
       <script language="javascript">
         JQcheckBoxVal("StampType_1",";",'<HDPrint Value=#StampType# Replace=#DBField2Js#>');

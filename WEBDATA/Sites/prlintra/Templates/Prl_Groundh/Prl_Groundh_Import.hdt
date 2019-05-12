@@ -49,12 +49,13 @@
 
 <h3 class="SubTitleBar"><FONT style="padding-left:10px">导入字段说明</FONT></h3>
 <table width="100%" class="ListBar" cellpadding=0 cellspacing=1>
-  <col style="width:16%; padding-left:4px">
-  <col style="width:16%; padding-left:4px">
-  <col style="width:16%; padding-left:4px">
-  <col style="width:16%; padding-left:4px">
-  <col style="width:16%; padding-left:4px">
-  <col style="width:16%; padding-left:4px">
+  <col style="width:14%; padding-left:4px">
+  <col style="width:14%; padding-left:4px">
+  <col style="width:14%; padding-left:4px">
+  <col style="width:14%; padding-left:4px">
+  <col style="width:14%; padding-left:4px">
+  <col style="width:14%; padding-left:4px">
+  <col style="width:14%; padding-left:4px">
   <TR>
     <TD class="DtlBarTitle" align="center">第1列</TD>
     <TD class="DtlBarTitle" align="center">第2列</TD>
@@ -62,6 +63,7 @@
     <TD class="DtlBarTitle" align="center">第4列</TD>
     <TD class="DtlBarTitle" align="center">第5列</TD>
     <TD class="DtlBarTitle" align="center">第6列</TD>
+    <TD class="DtlBarTitle" align="center">第7列</TD>
   </TR>
   <TR valign="top">
     <TD class="ListTD">
@@ -101,6 +103,12 @@
       <b>是否必填：</b><font color="red">是</font><br/>
       <b>备注：</b>请输入数字，以免报错<br/>
     </TD>
+    <TD class="ListTD">
+      <b>名称：</b>年度总预算<br/>
+      <b>数据类型(大小)：</b>数字<br/>
+      <b>是否必填：</b><font color="red">是</font><br/>
+      <b>备注：</b>请输入数字，以免报错<br/>
+    </TD>
   </TR>
 </TABLE>
 
@@ -119,8 +127,8 @@ function CheckSubmit(){
   if (!JQcheck("JQMust")){
     return false;
   }
-  
-  //获取当前表单对象 
+
+  //获取当前表单对象
   var JqObj = $("form[name=frmDo]");
   //表单参数设定
   JqObj.attr({
@@ -177,16 +185,18 @@ function CheckSubmit(){
     <td nowrap><font color="red">面积<font></td>
     <td nowrap><font color="red">建筑面积<font></td>
     <td nowrap><font color="red">预算<font></td>
+    <td nowrap><font color="red">年度总预算<font></td>
   </tr>
   <HDLoop>
   <tr class="listtd" onmouseover="this.className='listtdfocus';" onmouseout="this.className='listtd'">
-    <td nowrap><HDPrint Value=#Line# Replace=#None#></td> 
+    <td nowrap><HDPrint Value=#Line# Replace=#None#></td>
     <td nowrap><HDPrint Value=#deptName# Replace=#None#></td>
     <td nowrap><HDPrint Value=#FNo# Replace=#None#></td>
     <td nowrap><HDPrint Value=#floorno# Replace=#None#></td>
     <td nowrap><HDPrint Value=#farea# Replace=#None#></td>
     <td nowrap><HDPrint Value=#Jarea# Replace=#None#></td>
     <td nowrap><HDPrint Value=#fmr# Replace=#None#></td>
+    <td nowrap><HDPrint Value=#fmrY# Replace=#None#></td>
   </tr>
   </HDLoop>
 </table>
@@ -218,7 +228,7 @@ function CheckSubmit(){
   //提交时，提示
   if (!(confirm('您确认要导入数据吗？导入后，数据将不可更改！')))
     return false;
-  //获取当前表单对象 
+  //获取当前表单对象
   var JqObj = $("form[name=frmList]");
   //表单参数设定
   JqObj.attr({

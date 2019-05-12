@@ -31,18 +31,23 @@ LoopHDT1=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AttachList.hdt
 LoopVAR1=AttachList
 
 ;显示本流程已审批审批人信息
-LoopSQL2=select a.*,decode(a.apptype,0,'发起人',10,'部门经理',15,'医务部主任',20,'院长',30,'医疗总经理',40,'医疗顾问',45,'医疗副总裁',50,'医疗CEO') apptypetext  from wf_^^ModelCode^^_App a where FlowGid = ##FlowGid## order by AppDate,AppType
+LoopSQL2=select a.*,decode(a.apptype,0,'发起人',10,'部门经理',15,'财务经理',20,'院长',30,'区域总经理',40,'医疗顾问',45,'医疗副总裁',50,'CEO') apptypetext  from wf_^^ModelCode^^_App a where FlowGid = ##FlowGid## order by AppDate,AppType
 LoopHDT2=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AppList.hdt
 LoopVAR2=AppList
+
+;显示本流程已审批审批人信息
+LoopSQL5=select a.*,decode(a.apptype,0,'发起人',10,'部门经理',15,'财务经理',20,'院长',30,'区域总经理',40,'医疗顾问',45,'医疗副总裁',50,'CEO') apptypetext  from WF_^^ModelCode^^_App a where FlowGid = ##FlowGid## order by AppDate,AppOrder
+LoopHDT5=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AppEmail.hdt
+LoopVAR5=AppEmail
 
 LoopSQL3=select fd.TBID,to_char(fd.FreeRentDate1,'YYYY.MM.DD') FreeRentDate1,to_char(fd.FreeRentDate2,'YYYY.MM.DD') FreeRentDate2,fd.yeartype,to_char(fd.TBRD,'FM999999999990.9990') tbrd,to_char(fd.tbrm,'FM999999999990.9990') tbrm,to_char(fd.pmfd,'FM999999999990.9990') pmfd,to_char(fd.pmfm,'FM999999999990.9990') pmfm,to_char(fd.progtod,'FM999999999990.9990') progtod,to_char(fd.progtom,'FM999999999990.9990') progtom from wf_^^ModelCode^^_dtl fd where fd.EntGid = __ENTGID__ and fd.FlowGid = ##FlowGid## and lower(fd.TBID) in ('tb_dtl10','tb_dtl30') order by fd.TBID,fd.yeartype
 LoopHDT3=Templates\WorkFlow\Form\^^ModelCode^^\LoopSql_EmailDtl.hdt
 LoopVAR3=EmailDtl
 
 ;显示本流程明细信息
-LoopSQL5=select fd.TBID,to_char(fd.FreeRentDate1,'YYYY.MM.DD') FreeRentDate1,to_char(fd.FreeRentDate2,'YYYY.MM.DD') FreeRentDate2,fd.yeartype,to_char(fd.TBRD,'FM999999999990.9990') tbrd,to_char(fd.tbrm,'FM999999999990.9990') tbrm,to_char(fd.pmfd,'FM999999999990.9990') pmfd,to_char(fd.pmfm,'FM999999999990.9990') pmfm,to_char(fd.progtod,'FM999999999990.9990') progtod,to_char(fd.progtom,'FM999999999990.9990') progtom from wf_^^ModelCode^^_dtl fd where fd.EntGid = __ENTGID__ and fd.FlowGid = ##FlowGid## order by fd.TBID,fd.yeartype
-LoopHDT5=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_DtlList.hdt
-LoopVAR5=DtlList
+LoopSQL4=select fd.TBID,to_char(fd.FreeRentDate1,'YYYY.MM.DD') FreeRentDate1,to_char(fd.FreeRentDate2,'YYYY.MM.DD') FreeRentDate2,fd.yeartype,to_char(fd.TBRD,'FM999999999990.9990') tbrd,to_char(fd.tbrm,'FM999999999990.9990') tbrm,to_char(fd.pmfd,'FM999999999990.9990') pmfd,to_char(fd.pmfm,'FM999999999990.9990') pmfm,to_char(fd.progtod,'FM999999999990.9990') progtod,to_char(fd.progtom,'FM999999999990.9990') progtom from wf_^^ModelCode^^_dtl fd where fd.EntGid = __ENTGID__ and fd.FlowGid = ##FlowGid## order by fd.TBID,fd.yeartype
+LoopHDT4=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_DtlList.hdt
+LoopVAR4=DtlList
 
 ;显示邮件
 LoopSQL19=select 1 from dual

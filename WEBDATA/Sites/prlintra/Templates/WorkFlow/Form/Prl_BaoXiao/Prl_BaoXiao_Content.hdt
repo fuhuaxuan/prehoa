@@ -185,12 +185,14 @@
      <col style="width:40%">
      <col style="width:40%">
      <col style="width:10%">
+     <col style="width:10%">
      <col style="width:5%">
   </colgroup>
   <thead>
   <tr class="listtr">
     <td align="center">项目大类</td>
     <td align="center">项目小类</td>
+    <td align="center">费用发生日期</td>
     <td align="center">本次申请金额[元]</td>
   </tr>
   </thead>
@@ -199,7 +201,7 @@
   </tbody>
   <tfoot>
   <tr class="ListTdFocus">
-    <td align="right" colspan="2">报销金额汇总[元]：</td>
+    <td align="right" colspan="3">报销金额汇总[元]：</td>
     <td align="center"><HDPrint Value=#SumFee#></td>
   </tr>
   </tfoot>

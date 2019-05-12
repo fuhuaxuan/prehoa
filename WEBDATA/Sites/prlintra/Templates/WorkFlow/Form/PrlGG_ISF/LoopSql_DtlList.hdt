@@ -1,0 +1,21 @@
+<hdloop>
+  <script language="javascript">
+    var sTrClass = 'listtd';
+    var tdArr = new Array();
+    var JsTbId = '<HDPrint Value=#TbId# Replace=#DBField2Js#>';
+    var k = 0;
+    if (JsTbId == 'tb_Dtl10'){
+      tdArr[k++] = '<td align="center">免:<HDPrint Value=#FreeRentDate1# Replace=#None#>~<HDPrint Value=#FreeRentDate2# Replace=#None#></td>';
+    }
+    if (JsTbId == 'tb_Dtl20'){
+      tdArr[k++] = '<td align="center"><HDPrint Value=#FreeRentDate1# Replace=#None#>~<HDPrint Value=#FreeRentDate2# Replace=#None#></td>';
+    }
+    if (JsTbId == 'tb_Dtl30'){
+      tdArr[k++] = '<td align="center">Yr <HDPrint Value=#YearType#> 第<HDPrint Value=#YearType#>年</td>';
+    }
+    tdArr[k++] = '<td align="right"><HDPrint Value=#TBRD# Replace=#None#></td>';
+    tdArr[k++] = '<td align="right"><HDPrint Value=#TBRM# Replace=#None#></td>';
+    //新增一行
+    JQTr_Add(JsTbId,sTrClass,tdArr);
+  </script>
+</hdloop>

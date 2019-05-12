@@ -58,7 +58,7 @@
     }//ÇàÑò
     else if (PreDeptCode == '0003') {
       url = 'http://171.221.248.15/MallOAService/MallService.asmx/InsertContract';
-      datainfo.OrganizationID = 'BDA02110-39BF-48CE-8D00-E4D31A45EE88';
+      datainfo.OrganizationID = '245B59A6-D452-4473-8F10-4AB9DB9FCB65';
     }
     //¶«Õ¾
     else if (PreDeptCode == '0004') {

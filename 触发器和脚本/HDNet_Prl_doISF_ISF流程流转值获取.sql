@@ -15,6 +15,7 @@ create or replace procedure HDNET_Prl_doISF(p_EntGid  varchar2, --企业Gid
   v_P6     number(20, 4); --面积（计租面积）总和
   v_P7     number(20, 4); --免租期租金短缺（第一年取决于计租方式的总租金单价-免租期取决于计租方式的总租金单价）*计租面积*免租期天数(其中：免租期天数计算：取免租期日期段对应的天数)
   v_P8     number(20, 4); --起租日（ISCF 合同开始日期 - ISF 合同开始日期）
+  v_P9     number(20, 4); --保证金差异（标准 - 实际）
   v_CBDate Date; --ISCF 合同开始日期
 
   v_Category varchar2(64); --类别
@@ -47,6 +48,7 @@ create or replace procedure HDNET_Prl_doISF(p_EntGid  varchar2, --企业Gid
 begin
   v_Result := 40;
   v_P8     := 0;
+  v_P9     := 0;
   v_Stage  := '取出参数P1-P6，判断当前流程是ISF还是ISCF';
   select nvl(f.sPARAM1, 0),
          nvl(f.sPARAM2, 0),
@@ -60,8 +62,9 @@ begin
          f.ContractDate1,
          nvl(f.BRCNew, 0),
          nvl(f.MZQCNew, 0),
-         Category,
-         nvl(LeaseTermM, 0)
+         f.Category,
+         nvl(f.LeaseTermM, 0),
+         nvl(f.SecurityStand, 0) - nvl(f.Security, 0)
     into v_P1,
          v_P2,
          v_P3,
@@ -75,7 +78,8 @@ begin
          v_YearFee,
          v_FreeFee,
          v_Category,
-         v_D2
+         v_D2,
+         v_P9
     from wf_PRL_ISF f
    where f.EntGid = p_EntGid
      and f.FlowGid = p_FlowGid;
@@ -126,7 +130,7 @@ begin
       from wf_PRL_ISF f
      where f.EntGid = p_EntGid
        and f.FlowGid = v_OldFlowGid;
-
+  
     v_Stage       := '取出Old ISF' || v_OldFlowGid || '免租期天数';
     v_Old_FreeDay := 0;
     select count(*)
@@ -143,25 +147,25 @@ begin
          and fd.FlowGid = v_OldFlowGid
          and lower(fd.TbID) = 'tb_dtl10';
     end if;
-
+  
     v_Stage  := '计算Old ISF' || v_OldFlowGid || ' P7 免租期租金短缺';
     v_Old_P7 := (v_Old_YearFee - v_Old_FreeFee) * v_Old_P6 * v_Old_FreeDay;
-
+  
     v_Stage := '计算P8';
     if v_CBDate is not null and v_Old_CBDate is not null then
       v_P8 := v_CBDate - v_Old_CBDate;
     end if;
-
+  
     v_Stage := '计算新的P3';
     if v_Old_P3 = v_P3 then
       v_P3 := 0;
     end if;
-
+  
     v_Stage := '计算新的P4';
     if v_Old_P4 = v_P4 then
       v_P4 := 0;
     end if;
-
+  
     v_Stage := '计算新的P7';
     if v_Old_P7 = v_P7 then
       v_P7 := 0;
@@ -211,18 +215,23 @@ begin
       v_Result := 100;
     end if;
   elsif v_D1 = '其它' then
-    if (v_P1 > 0 or v_P2 > 0) or v_P4 > 0 or (v_P3 > v_T3 or v_P7 > v_T7) or
+    if (v_P1 > 0 or v_P2 > 0) or v_P4 > 0 or
+       (v_Category = 'Rental 出租' and v_P9 > 0) or (v_P3 > v_T3 or v_P7 > v_T7) or
        v_P8 > 0 then
       v_Result := 60;
     end if;
     if (v_P1 > 10 or v_P2 > 50000) or v_P4 > 80000 or
+       (v_Category = 'Rental 出租' and v_P9 > 10000) or
        (v_P3 > v_T3 or v_P7 > v_T7) or v_P8 > 30 then
       v_Result := 80;
     end if;
-    if (v_P1 > 10 or v_P2 > 50000) or v_P4 > 80000 or (v_P6 > v_T6 and v_P3 > v_T3) then
+    if (v_P1 > 10 or v_P2 > 50000) or v_P4 > 80000 or
+       (v_Category = 'Rental 出租' and v_P9 > 10000) or
+       (v_P6 > v_T6 and v_P3 > v_T3) then
       v_Result := 90;
     end if;
-    if (v_P1 > 10 and v_P2 > 50000) or v_P4 > 300000 then
+    if (v_P1 > 10 and v_P2 > 50000) or v_P4 > 300000 or
+       (v_Category = 'Rental 出租' and v_P9 > 50000) then
       v_Result := 100;
     end if;
   end if;

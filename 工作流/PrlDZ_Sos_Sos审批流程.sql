@@ -7,6 +7,7 @@ declare
   v_TaskGid varchar2(32);
   v_TaskGid_T1 varchar2(32);     --开始步骤
   v_TaskGid_T2 varchar2(32);
+  v_TaskGid_T3 varchar2(32);
   v_TaskGid_Tcc varchar2(32);
   v_TaskGid_Tend varchar2(32);   --结束步骤
   v_Count int;
@@ -15,6 +16,7 @@ BEGIN
   v_TaskGid := sys_guid();
   v_TaskGid_T1 := sys_guid();
   v_TaskGid_T2 := sys_guid();
+  v_TaskGid_T3 := sys_guid();
   v_TaskGid_Tcc := sys_guid();
   v_TaskGid_Tend := sys_guid();
 
@@ -58,6 +60,9 @@ BEGIN
   select v_EntGid, v_ModelGid, v_TaskGid_T2, v_ModelCode || '_T2', '请审批','审批', 1, 0, 0, 0 from dual;
 
   insert into WF_Task_Define(EntGid, ModelGid, TaskDefGid, Code, Name, Note, OrderValue, IsStart, IsEnd, IsMCF)
+  select v_EntGid, v_ModelGid, v_TaskGid_T3, v_ModelCode || '_T3', '发起人确认','审批', 1, 0, 0, 0 from dual;
+
+  insert into WF_Task_Define(EntGid, ModelGid, TaskDefGid, Code, Name, Note, OrderValue, IsStart, IsEnd, IsMCF)
   select v_EntGid, v_ModelGid, v_TaskGid_Tcc, v_ModelCode||'_Tcc', '抄送人阅读', '抄送', 1, 0, 0, 1 from dual;
 
   insert into WF_Task_Define(EntGid, ModelGid, TaskDefGid, Code, Name, Note, OrderValue, IsStart, IsEnd, IsMCF)
@@ -81,6 +86,9 @@ BEGIN
   select v_EntGid, v_ModelGid, v_TaskGid_T2, '**SpecGid**', '**SpecCode**', '@流程中指定@', 1 from dual;
 
   insert into WF_Task_Define_Exec(EntGid, ModelGid, TaskDefGid, ExecGidEx, ExecCodeEx, ExecNameEx, OwnerValue)
+  select v_EntGid, v_ModelGid, v_TaskGid_T3, '**CreateGid**', '**CreateCode**', '@发起人@', 1 from dual;
+
+  insert into WF_Task_Define_Exec(EntGid, ModelGid, TaskDefGid, ExecGidEx, ExecCodeEx, ExecNameEx, OwnerValue)
   select v_EntGid, v_ModelGid, v_TaskGid_Tcc, '**SpecGid**', '**SpecCode**', '@流程中指定@', 1 from dual;
 
 --6、定义工作流程步骤走向
@@ -92,13 +100,16 @@ BEGIN
   select v_EntGid, v_ModelGid, v_TaskGid_T1, v_TaskGid_Tend from dual;
 
   insert into WF_Task_Define_Condition(EntGid, ModelGid, FromTaskDef, ToTaskDef)
-  select v_EntGid, v_ModelGid, v_TaskGid_T2, v_TaskGid_Tend from dual;
+  select v_EntGid, v_ModelGid, v_TaskGid_T2, v_TaskGid_T1 from dual;
+
+  insert into WF_Task_Define_Condition(EntGid, ModelGid, FromTaskDef, ToTaskDef)
+  select v_EntGid, v_ModelGid, v_TaskGid_T2, v_TaskGid_T3 from dual;
 
   insert into WF_Task_Define_Condition(EntGid, ModelGid, FromTaskDef, ToTaskDef)
   select v_EntGid, v_ModelGid, v_TaskGid_T2, v_TaskGid_Tcc from dual;
 
   insert into WF_Task_Define_Condition(EntGid, ModelGid, FromTaskDef, ToTaskDef)
-  select v_EntGid, v_ModelGid, v_TaskGid_T2, v_TaskGid_T1 from dual;
+  select v_EntGid, v_ModelGid, v_TaskGid_T3, v_TaskGid_Tend from dual;
 
 --7、为管理员以及相关人员设置权限
 --监视权限  　　 作废权限  　　 变更权限  　　 模型设置权限  

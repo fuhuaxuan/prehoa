@@ -13,6 +13,14 @@ Remind1=¶Ô²»Æğ£¬ÄúÖ¸¶¨µÄÁ÷³ÌÉêÇëµ¥Ã»ÓĞÕÒµ½<script>alert('¶Ô²»Æğ£¬ÄúÖ¸¶¨µÄÁ÷³ÌÉêÇ
 SQL2=select 1 from dual where ##Stat## <> 'Ìá½»' union select 1 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillUsrDeptGid## and v.atype=10 and ##Stat## = 'Ìá½»'
 Remind2=¶Ô²»Æğ£¬ÏÂÒ»²½ÉóÅúÈË²¿ÃÅ¾­ÀíÎ´ÕÒµ½£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ¡£<script>alert('¶Ô²»Æğ£¬ÏÂÒ»²½ÉóÅúÈË²¿ÃÅ¾­ÀíÎ´ÕÒµ½£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ¡£');history.back()</script>
 
+;¼ì²éÅĞ¶ÏµÄSqlÓï¾ä£¬²é²»µ½½á¹ûÊÇ±¨´í£¬´ÓSQL1¡«SQL5£¬¹²¿ÉÒÔĞ´5¾ä
+SQL4=select 1 from dual where ##Stat## <> 'Ìá½»' union select 1 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##CompanyGid## and v.atype=30 and ##Stat## = 'Ìá½»'
+Remind4=¶Ô²»Æğ£¬ÏÂÒ»²½ÉóÅúÈË²ÆÎñ¾­ÀíÎ´ÕÒµ½£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ¡£<script>alert('¶Ô²»Æğ£¬ÏÂÒ»²½ÉóÅúÈË²ÆÎñ¾­ÀíÎ´ÕÒµ½£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ¡£');history.back()</script>
+
+;¼ì²éÅĞ¶ÏµÄSqlÓï¾ä£¬²é²»µ½½á¹ûÊÇ±¨´í£¬´ÓSQL1¡«SQL5£¬¹²¿ÉÒÔĞ´5¾ä
+SQL5=select 1 from dual where ##Stat## <> 'Ìá½»' union select 1 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##CompanyGid## and v.atype=40 and ##Stat## = 'Ìá½»'
+Remind5=¶Ô²»Æğ£¬ÏÂÒ»²½ÉóÅúÈËÉÌ³¡×Ü¾­ÀíÎ´ÕÒµ½£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ¡£<script>alert('¶Ô²»Æğ£¬ÏÂÒ»²½ÉóÅúÈËÉÌ³¡×Ü¾­ÀíÎ´ÕÒµ½£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ¡£');history.back()</script>
+
 [Detail]
 ;ÏÔÊ¾£¬²éÑ¯µÃµ½µÄ½á¹û¿ÉÒÔÓÃÓÚHDTÏÔÊ¾£¬´ÓSQL1¡«SQL20¹²Ö§³Ö20Ìõ
 ;È¡³ö±¾Á÷³ÌÄ£ĞÍĞÅÏ¢

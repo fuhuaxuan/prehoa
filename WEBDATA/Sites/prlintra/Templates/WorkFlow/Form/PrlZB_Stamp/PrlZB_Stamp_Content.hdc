@@ -26,9 +26,14 @@ LoopHDT1=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AttachList.hdt
 LoopVAR1=AttachList
 
 ;显示本流程已审批审批人信息
-LoopSQL2=select a.*,decode(a.apptype,0,'发起人',20,'部门经理',30,'总经理',35,'项目总经理',40,'审批人',50,'财务印章',60,'公司公章',70,'法定代表人名章',80,'公司股东章',90,'合同用章') apptypetext  from WF_^^ModelCode^^_App a where FlowGid = ##FlowGid## order by AppDate,AppOrder
+LoopSQL2=select a.*,decode(a.apptype,0,'发起人',20,'部门经理',30,'总经理',35,'项目总经理',40,'审批人',50,'财务印章',60,'公司公章',70,'法定代表人名章',80,'公司股东章',90,'合同章') apptypetext  from WF_^^ModelCode^^_App a where FlowGid = ##FlowGid## order by AppDate,AppOrder
 LoopHDT2=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AppList.hdt
 LoopVAR2=AppList
+
+;显示本流程已审批审批人信息
+LoopSQL5=select a.*,decode(a.apptype,0,'发起人',20,'部门经理',30,'总经理',35,'项目总经理',40,'审批人',50,'财务印章',60,'公司公章',70,'法定代表人名章',80,'公司股东章',90,'合同章') apptypetext  from WF_^^ModelCode^^_App a where FlowGid = ##FlowGid## order by AppDate,AppOrder
+LoopHDT5=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AppEmail.hdt
+LoopVAR5=AppEmail
 
 ;显示邮件
 LoopSQL19=select 1 from dual

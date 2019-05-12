@@ -37,6 +37,10 @@
       <td class="NewTd3"><select name="emp20_1" style="width:400px;height:40px" multiple></select></td>
     </tr>
     <tr class="NewTr3">
+      <td class="NewTd2">23成本合约经理 <a href="javascript:void(ChangeSelect('23'))">[选择]</a></td>
+      <td class="NewTd3"><select name="emp23_1" style="width:400px;height:40px" multiple></select></td>
+    </tr>
+    <tr class="NewTr3">
       <td class="NewTd2">25财务会计 <a href="javascript:void(ChangeSelect('25'))">[选择]</a></td>
       <td class="NewTd3"><select name="emp25_1" style="width:400px;height:40px" multiple></select></td>
     </tr>

@@ -15,7 +15,7 @@ Remind1=¶Ô²»Æð£¬ÄúÖ¸¶¨µÄÁ÷³ÌÉêÇëµ¥Ã»ÓÐÕÒµ½<script>alert('¶Ô²»Æð£¬ÄúÖ¸¶¨µÄÁ÷³ÌÉêÇ
 SqlForCondition1=select wm.Code ModelCode, wm.Name ModelName,d.Name StepName from wf_Model wm,WF_Task_Define d where wm.EntGid = d.EntGid(+) and wm.EntGid = __ENTGID__ and wm.ModelGid = d.ModelGid(+) and wm.ModelGid = ##ModelGid## and lower(d.code(+)) = replace(lower(##Url##),'save')
 
 ;¶¨ÒåÁ÷³Ì±¸×¢
-SQLForCondition3=select ##ApplyType## || '-' || ##SosType## TheMemo from dual
+SQLForCondition3=select '²¿ÃÅ£º'|| ##FillDeptName## || '-' || ##ApplyType## || '-' || ##SosType## TheMemo from dual
 
 SQLForCondition4=select 'µ¥ºÅ£º'|| ##Num##|| '£»' || ##TheMemo##  TheFlowMemo,'´ýÐÞ¸Ä - ' || ##TheMemo## ModFlowMemo,'´ýÉóÅú - ·¢ÆðÈË£º' || ##CurUsrName## ||'£»' || ##TheMemo## AppFlowMemo from dual
 
@@ -29,7 +29,7 @@ SQL1=update wf_flow set flownote = ##TheFlowMemo## where EntGid = __ENTGID__ and
 SQL2=insert into Wf_^^ModelCode^^ (EntGid,ModelGid,FlowGid,Num,LastUpdDate,Stat,FillUsrGid,FillUsrCode,FillUsrName,FillDeptGid,FillDeptCode,FillDeptName)select __ENTGID__,##ModelGid##,##FlowGid##,##Num##,sysdate,##Stat##,__USRGID__,__USRCODE__,__USRNAME__,##FillDeptGid##,##FillDeptCode##,##FillDeptName## from dual where ##IsNew## = '0'
 
 ;TMod-¸üÐÂ±¾Á÷³ÌÖ÷±íÐÅÏ¢£¬±£´æ£¬Ìá½»
-SQL3=update Wf_^^ModelCode^^ set (LastUpdDate,Stat,ApplyType,SosType,fAreaSum1,jAreaSum1,fAreaSum2,jAreaSum2,Memo) = (select sysdate,##Stat##,##ApplyType##,##SosType##,##fAreaSum1##,##jAreaSum1##,##fAreaSum2##,##jAreaSum2##,##Memo## from dual) where FlowGid = ##FlowGid## and EntGid = __ENTGID__ and ##Stat## <> 'ÖÕÖ¹'
+SQL3=update Wf_^^ModelCode^^ set (LastUpdDate,Stat,ApplyType,SosType,fAreaSum1,jAreaSum1,fAreaSum2,jAreaSum2,fmrMSum1,fmrMSum2,Memo) = (select sysdate,##Stat##,##ApplyType##,##SosType##,##fAreaSum1##,##jAreaSum1##,##fAreaSum2##,##jAreaSum2##,##fmrMSum1##,##fmrMSum2##,##Memo## from dual) where FlowGid = ##FlowGid## and EntGid = __ENTGID__ and ##Stat## <> 'ÖÕÖ¹'
 
 ;¸üÐÂ±¾Á÷³ÌÁ÷³ÌÖ÷±íÐÅÏ¢£¬ÖÕÖ¹
 SQL6=update Wf_^^ModelCode^^ set (LastUpdDate,Stat,EndMemo) = (select sysdate,##Stat##,##EndMemo## from dual) where FlowGid = ##FlowGid## and EntGid = __ENTGID__ and ##Stat## = 'ÖÕÖ¹'
@@ -62,7 +62,7 @@ SQL13=delete from Wf_^^ModelCode^^_Attach where EntGid = __ENTGID__ and FlowGid 
 
 
 ;²åÈë±¾Á÷³ÌÃ÷Ï¸ÐÅÏ¢
-LoopSql1=insert into Wf_^^ModelCode^^_Dtl (EntGid,ModelGid,FlowGid,Gid,Line,aType,deptSource,fNo,floorNo,fArea,JArea,fmr) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),##%Line%##,##%aType%##,##%deptSource%##,##%fNo%##,##%floorNo%##,##%fArea%##,##%JArea%##,##%fmr%## from dual where ##Stat## <> 'ÖÕÖ¹'
+LoopSql1=insert into Wf_^^ModelCode^^_Dtl (EntGid,ModelGid,FlowGid,Gid,Line,aType,deptSource,fNo,floorNo,fArea,JArea,fmr,fmrM,fmrY) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),##%Line%##,##%aType%##,##%deptSource%##,##%fNo%##,##%floorNo%##,##%fArea%##,##%JArea%##,##%fmr%##,##%fmrM%##,##%fmrY%## from dual where ##Stat## <> 'ÖÕÖ¹'
 
 ;²åÈë±¾Á÷³Ì¸½¼þÐÅÏ¢
 AttachSqlAdd1=insert into Wf_^^ModelCode^^_Attach (EntGid,ModelGid,FlowGid,Gid,AttachTitle,AttachUrl,AttachSize) select __ENTGID__,##ModelGid## ,##FlowGid##,@@AttachID@@, @@FileName@@, @@FilePath@@,@@FileSize@@ from dual where ##Stat## <> 'ÖÕÖ¹'

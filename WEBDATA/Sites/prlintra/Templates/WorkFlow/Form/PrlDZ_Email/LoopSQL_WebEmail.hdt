@@ -17,14 +17,52 @@
 
 </form>
 <script language="javascript">
-  $("textarea[name=Content]").val($("div#tb_Email").html());
-  var JsEmail = '';
-  <HDPrint Value=#AppList# Replace=#None#>
-  frmMail.Email.value = JsEmail;
-  if (!!JsEmail){
-    frmMail.submit();
+  function PostPush() {
+    var url = 'http://61.129.70.178/MallAppService/PushService.asmx/PushInfo';
+    var platform = '<HDPrint Value=#platform# Replace=#DBField2Js#>';
+    if (platform != '') {
+      platform = parseInt(platform,10);
+    }else{
+      platform = 0
+    }
+    var body = {Title:"鹏瑞利OA",Content:"您有新的待执行任务",Platform:platform,RegIDs:"<HDPrint Value=#registrationid# Replace=#DBField2Js#>"}
+    //参数
+    var data = {
+      data : JSON.stringify(body)
+    };
+    //回调函数
+    var cb = {
+      //成功，处理函数
+      success : function (ret){
+        return true;
+      },
+      //失败，处理函数
+      failed : function (ret){
+        return false;
+      }
+    };
+    //调用Ajax函数
+    JQAjax(url,data,cb);
   }
-  else{
-    window.close();
+
+  function toNext(){
+    $("textarea[name=Content]").val($("div#tb_Email").html());
+    var JsEmail = '';
+    <HDPrint Value=#AppList# Replace=#None#>
+    frmMail.Email.value = JsEmail;
+    if (!!JsEmail){
+      frmMail.submit();
+    }
+    else{
+      window.close();
+    }
+  }
+  if ('<HDPrint Value=#registrationid# Replace=#DBField2Js#>' != '') {
+    PostPush();
+    setTimeout(function () {
+      toNext();
+    }, 2000);
+  }else{
+    toNext();
   }
 </script>

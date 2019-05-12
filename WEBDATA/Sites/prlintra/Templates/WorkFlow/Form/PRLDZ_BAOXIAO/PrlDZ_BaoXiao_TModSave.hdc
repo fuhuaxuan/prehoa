@@ -10,7 +10,7 @@ SQL1=select 1 from WF_Flow where EntGid = __ENTGID__ and FlowGid = ##FlowGid##
 Remind1=对不起，您指定的流程申请单没有找到<script>alert('对不起，您指定的流程申请单没有找到');window.close()</script>
 
 ;检查判断的Sql语句，查不到结果是报错，从SQL1～SQL5，共可以写5句
-SQL2=select 1 from dual where ##Stat## <> '提交' union select 1 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=3 and ##Stat## = '提交' and ##IsT15## <> '0' union select 1 from dual where ##Stat## = '提交' and ##IsT15## = '0'
+SQL2=select 1 from dual where ##Stat## <> '提交' union select 1 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##ComGid## and v.atype=3 and ##Stat## = '提交' and ##IsT15## <> '0' union select 1 from dual where ##Stat## = '提交' and ##IsT15## = '0'
 Remind2=对不起，下一步审批人行政未找到，请与管理员联系。<script>alert('对不起，下一步审批人行政未找到，请与管理员联系。');history.back()</script>
 
 ;检查判断的Sql语句，查不到结果是报错，从SQL1～SQL5，共可以写5句
@@ -18,8 +18,12 @@ SQL3=select 1 from dual where ##Stat## <> '提交' union select 1 from v_Post v wh
 Remind3=对不起，下一步审批人部门经理未找到，请与管理员联系。<script>alert('对不起，下一步审批人部门经理未找到，请与管理员联系。');history.back()</script>
 
 ;检查判断的Sql语句，查不到结果是报错，从SQL1～SQL5，共可以写5句
-SQL4=select 1 from dual where ##Stat## <> '提交' union select 1 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=30 and ##Stat## = '提交'
+SQL4=select 1 from dual where ##Stat## <> '提交' union select 1 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##ComGid## and v.atype=30 and ##Stat## = '提交'
 Remind4=对不起，下一步审批人财务经理未找到，请与管理员联系。<script>alert('对不起，下一步审批人财务经理未找到，请与管理员联系。');history.back()</script>
+
+;检查判断的Sql语句，查不到结果是报错，从SQL1～SQL5，共可以写5句
+SQL5=select 1 from dual where ##Stat## <> '提交' union select 1 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##ComGid## and v.atype=40 and ##Stat## = '提交'
+Remind5=对不起，下一步审批人商场总经理未找到，请与管理员联系。<script>alert('对不起，下一步审批人商场总经理未找到，请与管理员联系。');history.back()</script>
 
 [Detail]
 ;显示，单条数据的查询，可以用于HDT显示，有select命令。从SQL1～SQL20共支持20条
@@ -35,7 +39,7 @@ SQLForCondition2=select '单号：' || ##Num## || '；公司：' || ##ComName## || ';金
 SQL1=update wf_flow set flownote = ##TheFlowMemo## where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and ##Stat## <> '终止'
 
 ;更新本流程主表信息，保存，提交
-SQL2=update Wf_^^ModelCodeT^^ set (LastUpdDate,Stat,ApplyUsrGid,ApplyUsrCode,ApplyUsrName,IsCM,ComGid,ComName,SumFee,Memo,PayMan,PayBank,PayAccount) = (select sysdate,##Stat##,##ApplyUsrGid##,##ApplyUsrCode##,##ApplyUsrName##,##IsCM##,##ComGid##,##ComName##,##SumFee##,##Memo##,##PayMan##,##PayBank##,##PayAccount## from dual) where FlowGid = ##FlowGid## and EntGid = __ENTGID__ and ##Stat## <> '终止'
+SQL2=update Wf_^^ModelCodeT^^ set (LastUpdDate,Stat,ApplyUsrGid,ApplyUsrCode,ApplyUsrName,IsCM,ComGid,ComName,SumFee,Memo,PayMan,PayBank,PayAccount,PayUsrGid,PayUsrCode,PayPosition) = (select sysdate,##Stat##,##ApplyUsrGid##,##ApplyUsrCode##,##ApplyUsrName##,##IsCM##,##ComGid##,##ComName##,##SumFee##,##Memo##,##PayMan##,##PayBank##,##PayAccount##,##PayUsrGid##,##PayUsrCode##,##PayPosition## from dual) where FlowGid = ##FlowGid## and EntGid = __ENTGID__ and ##Stat## <> '终止'
 
 ;更新本流程流程主表信息，终止
 SQL3=update Wf_^^ModelCodeT^^ set (LastUpdDate,Stat,EndMemo) = (select sysdate,##Stat##,##EndMemo## from dual) where FlowGid = ##FlowGid## and EntGid = __ENTGID__ and ##Stat## = '终止'
@@ -55,7 +59,7 @@ SQL8=update Wf_^^ModelCodeT^^_App set AppOrder = AppOrder + 200 where EntGid = _
 SQL9=insert into Wf_^^ModelCodeT^^_App (EntGid,ModelGid,FlowGid,Gid,AppGid,AppCode,AppName,AppType,AppOrder,AppAssign,AppMemo,AppDate) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,0,0,##Stat##,##AppMemo##,sysdate from dual where ##Stat## <> '保存'
 
 ;插入本流程明细信息
-LoopSql2=insert into Wf_^^ModelCodeT^^_Dtl (EntGid,ModelGid,FlowGid,Gid,Line,AcgGid,AcgCode,AcgName,PAcgGid,PAcgCode,PAcgName,AcgFee,ApplyFee) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),##%Line%##,##%AcgGid%##, ##%AcgCode%##, ##%AcgName%##, ##%PAcgGid%##, ##%PAcgCode%##, ##%PAcgName%##, ##%AcgFee%##, ##%ApplyFee%## from dual where ##Stat## <> '终止'
+LoopSql2=insert into Wf_^^ModelCodeT^^_Dtl (EntGid,ModelGid,FlowGid,Gid,Line,AcgGid,AcgCode,AcgName,PAcgGid,PAcgCode,PAcgName,AcgFee,FeeDate,FeeEDate,ApplyFee,TypeGid,TypeName,Memo) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),##%Line%##,##%AcgGid%##, ##%AcgCode%##, ##%AcgName%##, ##%PAcgGid%##, ##%PAcgCode%##, ##%PAcgName%##, ##%AcgFee%##,to_date(##%FeeDate%##,'YYYY.MM.DD'),to_date(##%FeeEDate%##,'YYYY.MM.DD'), ##%ApplyFee%##,##%TypeGid%##,##%TypeName%##,##%Memo%## from dual where ##Stat## <> '终止'
 
 ;--更新审批人
 LoopSql3=call P_^^ModelCode^^_doApp(__ENTGID__,##ModelGid##,##%FlowGid%##,##Stat##)

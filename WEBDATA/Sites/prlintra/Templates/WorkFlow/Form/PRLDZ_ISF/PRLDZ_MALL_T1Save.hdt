@@ -20,7 +20,7 @@
         window.opener = null;
         window.open(' ', '_self', ' ');
       }
-      location.replace('##HDNet_AppName##/WFFlowPage?Url=PrlDZ_ISF_Email&UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid# Replace=#DBField2Js#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>');
+      location.replace('##HDNet_AppName##/WFFlowPage?Url=Prl_OISF_Email&UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid# Replace=#DBField2Js#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>');
     }
   }
 </SCRIPT>

@@ -26,6 +26,9 @@
         <A HREF="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_Print&UsrGid=<HDPrint Value=#UsrGid#>&FlowGid=<HDPrint Value=#FlowGid#>&ModelGid=<HDPrint Value=#ModelGid#>" target="_blank"><FONT class="IconPrint">　&nbsp;</FONT> 打印</A>
         </HDIF>
       </HDIF>
+      <HDIF EqualNot(<HDPrint Value=#isEndCount# Replace=#none#>, 0)>
+      <A HREF="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_End&UsrGid=<HDPrint Value=#UsrGid#>&FlowGid=<HDPrint Value=#FlowGid#>&ModelGid=<HDPrint Value=#ModelGid#>" onclick="javascript:if (!(confirm('你确定要作废本流程并还原预算吗？\n该操作是不能还原的！'))) return false;" target="_blank"><FONT class="IconDefault">　&nbsp;</FONT> 作废并还原预算</A>
+      </HDIF>
       |
       <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
       <A HREF="javascript:window.close();void(0)"><FONT class="IconClose">　&nbsp;</FONT> 关闭</A>

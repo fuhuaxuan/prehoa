@@ -1,0 +1,221 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<script language="javascript">
+  //窗口改变，重计算iframe的高度
+  $(window).resize(function (){
+    JQChgHeight();
+  });
+
+</script>
+<HDPrint Value=#EmailPhone# Replace=#None#>
+<form name="frmDtl" method="Post" action="">
+<HDIF EqualNot(<HDPrint Value=#IsDtl# Replace=#None#>, 1)>
+<table cellpadding="0" cellspacing="1" align="center" width="100%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:20%">
+  <col style="padding-left:4px;width:40%">
+  <col style="padding-left:4px;width:30%">
+  <TR>
+    <TD class="newtd2">单号:</TD>
+    <TD class="newtd3"><HDPrint Value=#Num#></td>
+    <td class="title" rowspan="3" align="center"><HDPrint Value=#ModelName#></td>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2">发起人:</TD>
+    <TD class="newtd3"><HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]</td>
+    <TD>流程状态:<HDPrint Value=#Flowstat# Replace=#None#></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2">发起日期:</TD>
+    <TD class="newtd3"><HDPrint Value=#CreateDate#></td>
+    <TD>单据状态:<font color="blue"><HDPrint Value=#stat#></font></TD>
+  </TR>
+</table>
+</HDIF>
+<!--显示审批人信息-->
+<HDIF EqualNot(<HDPrint Value=#IsShow# Replace=#None#>, 0)>
+<HDPrint Value=#AppList# Replace=#None#>
+</HDIF>
+
+<h3 class="SubTitleBar" >
+<TABLE cellspacing="1" cellpadding="0" width="100%">
+  <col style="padding-left:4px;">
+  <col style="width:20px;" align="center">
+  <TR>
+    <TD align="left" style="padding-left:10px;"><b>单据信息</b></TD>
+    <TD onclick="JQExpandEx('tb_Order');" style="cursor:hand" class="IconUp">　&nbsp;</TD>
+  </TR>
+</TABLE>
+</h3>
+<div id="tb_Order">
+<table cellpadding="0" cellspacing="1" class="ListBar" width="100%" id="tb_Base">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:23%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:23%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:23%">
+  <tr valign="top">
+    <td class="DtlBarTitle">上一版本ISF/ISCF: <br>下一版本ISF/ISCF: </td>
+    <td class="listtd" colspan="5">
+    <HDIF EqualNot(<HDPrint Value=#ISFNum# Replace=#None#>, )>
+    <a href="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ISFModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ISFModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#ISFFlowGid#>" target="_blank"><HDPrint Value=#ISFNum#></a>
+    </HDIF>
+    <br>
+    <HDIF EqualNot(<HDPrint Value=#ISCFNum# Replace=#None#>, )>
+      <a href="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ISCFModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ISCFModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#ISCFFlowGid#>" target="_blank"><HDPrint Value=#ISCFNum#></a>
+    </HDIF>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">类别: </td>
+    <td class="listtd"><HDPrint Value=#Atype#></td>
+    <td class="DtlBarTitle">单位:</td>
+    <td class="listtd" JQ="JQUnit"></td>
+    <td class="DtlBarTitle">位置</td>
+    <td class="listtd" JQ="JQFloor"></td>
+  </tr>
+<HDPrint Value=#unitList# Replace=#None#>
+  <tr valign="top">
+    <td class="listtd" colspan="6">A、租户信息</td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">租户:</td>
+    <td class="listtd"><HDPrint Value=#Lessee#></td>
+    <td class="DtlBarTitle">商店营业名称:</td>
+    <td class="listtd"><HDPrint Value=#Tradingname#></td>
+    <td class="DtlBarTitle">联系人:</td>
+    <td class="listtd"><HDPrint Value=#Contactor#></td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">地址:</td>
+    <td class="listtd" colspan="3"><HDPrint Value=#Address#></td>
+    <td class="DtlBarTitle">电话号码:</td>
+    <td class="listtd"><HDPrint Value=#Phone#></td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">电子邮件:</td>
+    <td class="listtd"><HDPrint Value=#Email#></td>
+    <td class="DtlBarTitle">传真号码:</td>
+    <td class="listtd"><HDPrint Value=#Fax#></td>
+    <td class="DtlBarTitle"></td>
+    <td class="listtd"></td>
+  </tr>
+  <tr valign="top">
+    <td class="listtd" colspan="6">B、合同信息</td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">租赁期限:</td>
+    <td class="listtd"><HDPrint Value=#LeaseTermY#>年/<HDPrint Value=#LeaseTermM#>月/<HDPrint Value=#LeaseTermD#>日</td>
+    <td class="DtlBarTitle">交付日期:</td>
+    <td class="listtd"><HDPrint Value=#HandoverDate#></td>
+    <td class="DtlBarTitle">免租期:</td>
+    <td class="listtd"><HDPrint Value=#FreeRentM#>月/<HDPrint Value=#FreeRentD#>日</td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">合同起始日期:</td>
+    <td class="listtd"><HDPrint Value=#ContractDate1#>~<HDPrint Value=#ContractDate2#></td>
+    <td class="DtlBarTitle">租金方式:</td>
+    <td class="listtd"><HDPrint Value=#Rate#></td>
+    <td class="DtlBarTitle"></td>
+    <td class="listtd"></td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">预付租金+费用:</td>
+    <td class="listtd"><HDPrint Value=#AGR#></td>
+    </td>
+    <td class="DtlBarTitle">保证金:</td>
+    <td class="listtd"><HDPrint Value=#Security#></td>
+    <td class="DtlBarTitle">方式</td>
+    <td class="listtd"><HDPrint Value=#Incash#></td>
+  </tr>
+  <tr valign="top">
+    <td class="listtd" colspan="6">C、租赁条件</td>
+  </tr>
+  <tr valign="top">
+    <td class="listtd" colspan="4" rowspan="4">
+      <table width="100%" class="ListBar" cellpadding="0"  cellspacing="1" style="margin-top:1px">
+        <colgroup>
+           <col style="width:20%">
+           <col style="width:35%">
+           <col style="width:35%">
+        </colgroup>
+        <thead>
+        <tr class="DtlBarTitle" align="center">
+          <td>序号</td>
+          <td>固定租金[元/天]</td>
+          <td>固定租金[元/月]</td>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+      <table width="100%" class="ListBar" cellpadding="0"  cellspacing="1" id="tb_Dtl10" style="margin-top:2px;">
+        <colgroup>
+           <col style="width:20%">
+           <col style="width:35%">
+           <col style="width:35%">
+        </colgroup>
+        <tbody>
+        </tbody>
+      </table>
+      <table width="100%" class="ListBar" cellpadding="0"  cellspacing="1" id="tb_Dtl20" style="margin-top:2px;">
+        <colgroup>
+           <col style="width:20%">
+           <col style="width:35%">
+           <col style="width:35%">
+        </colgroup>
+        <tbody>
+        </tbody>
+      </table>
+      <table width="100%" class="ListBar JQMust" cellpadding="0"  cellspacing="1" id="tb_Dtl30" style="margin-top:2px;margin-bottom:2px;">
+        <colgroup>
+           <col style="width:20%">
+           <col style="width:35%">
+           <col style="width:35%">
+        </colgroup>
+        <tbody>
+        </tbody>
+      </table>
+      <HDPrint Value=#DtlList# Replace=#None#>
+    </td>
+    <td class="DtlBarTitle">新:</td>
+    <td class="listtd"><HDPrint Value=#BRCNew#></td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">目前:</td>
+    <td class="listtd"><HDPrint Value=#BRCExist#></td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">批准预算:</td>
+    <td class="listtd"><HDPrint Value=#BRCBudget#></td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">合同期内总收入:</td>
+    <td class="listtd"><HDPrint Value=#TotalFee#></td>
+  </tr>
+  <tr valign="top">
+    <td class="listtd" colspan="6">D、其他信息</td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">特别条件/评语/备注:</td>
+    <td class="listtd" colspan="5"><HDPrint Value=#Memo#></td>
+  </tr>
+  <tr JQ="TMod_1" style="display:none">
+    <td class="DtlBarTitle">终止原因:</td>
+    <td class="listtd" colspan="5"><HDPrint Value=#EndMemo#></td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">附件信息:</td>
+    <td class="listtd" colspan="5"><HDPrint Value=#AttachList# Replace=#None#></td>
+  </tr>
+</table>
+</div>
+</form>
+<script language="javascript">
+  if('<HDPrint Value=#IsPrint# Replace=#DBField2Js#>' == '1'){
+    window.print();
+  }
+</script>

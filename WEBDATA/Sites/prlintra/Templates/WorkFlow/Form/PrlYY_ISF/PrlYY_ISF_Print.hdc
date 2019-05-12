@@ -22,7 +22,7 @@ SqlForCondition3=select wf.*,decode(substr(d.Code2,0,4),'0001','沈阳鹏瑞利长峰购
 ;取出发起人的部门代码
 SqlForCondition4=select substr(f.FillDeptCode,0,4) ProCode from wf_^^ModelCode^^ f where f.EntGid = __ENTGID__ and f.FlowGid = ##FlowGid##
 
-SQL2=select wm_concat(replace(replace(g.FLOORNO,'B','地下'),'F','层')) FLOORNO from wf_^^ModelCode^^_ground f,PrlYY_groundh g where f.EntGid = __ENTGID__ and f.fgid = g.fgid and f.FlowGid = ##FlowGid## group by flowgid
+SQL2=select wm_concat(replace(replace(g.FLOORNO,'B','地下'),'F','层')) FLOORNO from wf_^^ModelCode^^_ground f,PrlYY_groundh g where f.EntGid = __ENTGID__ and lower(f.fno) = lower(g.fno) and f.FlowGid = ##FlowGid## group by flowgid
 
 [AddtionalSQL]
 ;操作，没有返回的结果，是在数据库中执行，由Insert, Update, Delete命令。从SQL1～SQL20共支持20条

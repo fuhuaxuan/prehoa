@@ -15,7 +15,7 @@ Remind1=∂‘≤ª∆£¨ƒ˙÷∏∂®µƒ¡˜≥Ã…Í«Îµ•√ª”–’“µΩ<script>alert('∂‘≤ª∆£¨ƒ˙÷∏∂®µƒ¡˜≥Ã…Í«
 SqlForCondition1=select wm.Code ModelCode, wm.Name ModelName,d.Name StepName from wf_Model wm,WF_Task_Define d where wm.EntGid = d.EntGid(+) and wm.EntGid = __ENTGID__ and wm.ModelGid = d.ModelGid(+) and wm.ModelGid = ##ModelGid## and lower(d.code(+)) = replace(lower(##Url##),'save')
 
 ;…Û≈˙±∏◊¢
-SQLForCondition2=select ##CurUsrName##||':'||##AppAssign##||' - ' || ApplyType || '-' || SosType AppFlowMemo from WF_^^ModelCode^^ where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## 
+SQLForCondition2=select ##CurUsrName##||':'||##AppAssign##||' - ≤ø√≈£∫' || FillDeptName || '-' || ApplyType || '-' || SosType AppFlowMemo from WF_^^ModelCode^^ where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## 
 
 ; «∑Ò¥Ê‘⁄œ¬“ªº∂…Û≈˙»À? 0 Ω· ¯£¨µΩœ¬“ª≤Ω
 SQLForCondition4=select count(*) NextApp from Wf_^^ModelCode^^_App a where a.EntGid = __ENTGID__ and a.FlowGid = ##FlowGid## and a.AppDate is null and a.AppOrder in (select min(t.AppOrder) from Wf_^^ModelCode^^_App t where t.EntGid = __ENTGID__ and t.FlowGid = ##FlowGid## and t.AppOrder > ##AppOrder## and t.appdate is null)
@@ -25,7 +25,7 @@ SQLForCondition4=select count(*) NextApp from Wf_^^ModelCode^^_App a where a.Ent
 ;∏¸–¬±æ¡˜≥Ã÷–÷˜±Ì–≈œ¢
 Sql1=update WF_^^ModelCode^^ set (LastUpdDate,Stat) = (select sysdate,##AppAssign## from dual) where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## 
 
-Sql2=update WF_^^ModelCode^^ set (LastUpdDate,Stat) = (select sysdate,'“—ÕÍ≥…' from dual) where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## and ##AppAssign## = 'Õ¨“‚' and ##NextApp## = '0'
+Sql2=update WF_^^ModelCode^^ set (LastUpdDate,Stat) = (select sysdate,'“—…Û≈˙' from dual) where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## and ##AppAssign## = 'Õ¨“‚' and ##NextApp## = '0'
 
 Sql3=delete from Wf_^^ModelCode^^_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppGid = __USRGID__ and AppOrder = ##AppOrder##
 
@@ -34,9 +34,10 @@ Sql4=delete from Wf_^^ModelCode^^_App where EntGid = __ENTGID__ and FlowGid = ##
 ;≤Â»Î±æ¡˜≥Ã÷–…Û≈˙»À“ª–≈œ¢
 SQL5=insert into Wf_^^ModelCode^^_App (EntGid,ModelGid,FlowGid,Gid,AppGid,AppCode,AppName,AppOrder,AppType,AppAssign,AppMemo,AppDate) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,##AppOrder##,##AppType##,##AppAssign##, ##AppMemo##,sysdate from dual
 
-SQL6=update prl_groundh g set g.FSTAT = 'Õ£”√' where exists (select 1 from Wf_^^ModelCode^^_Dtl fd where fd.EntGid = __ENTGID__ and fd.FlowGid = ##FlowGid## and fd.fNo = g.fNo and fd.deptSource = g.deptSource and fd.aType = 10) and ##NextApp## = '0'
 
-SQL7=insert into prl_groundh(fGid,deptSource,fNo,floorNo,fArea,jArea,fmr,FSTAT,OPTYPE,OPDATE,OPGID,OPCODE,OPNAME) select (select max(fgid) from prl_groundh)+1,fd.deptSource,fd.fNo,fd.floorNo,fd.fArea,fd.jArea,fd.fmr,'Œ¥◊‚','SOS'||f.ApplyType,sysdate,f.fillUsrGid,f.fillUsrCode,f.Num from Wf_^^ModelCode^^ f,Wf_^^ModelCode^^_Dtl fd where f.EntGid = __ENTGID__ and f.EntGid = fd.EntGid and f.FlowGid = fd.FlowGid and f.FlowGid = ##FlowGid## and fd.aType = 20 and ##NextApp## = '0'
+SQL6=insert into Wf_^^ModelCode^^_App (EntGid,ModelGid,FlowGid,Gid,AppGid,AppCode,AppName,AppType,AppOrder) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),##LastGid##,##LastCode##,##LastName##,##LastType##,##LastOrder## from dual where ##AppAssign## = '∑µªÿ∫À µ'
+
+SQL7=insert into Wf_^^ModelCode^^_App (EntGid,ModelGid,FlowGid,Gid,AppGid,AppCode,AppName,AppType,AppOrder) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,##AppType##,##AppOrder## from dual where ##AppAssign## = '∑µªÿ∫À µ'
 
 [AddtionalSQLUseWhere]
 ;œ‘ æ£¨µ•Ãı ˝æ›µƒ≤È—Ø£¨ø…“‘”√”⁄HDTœ‘ æ£¨”–select√¸¡Ó°£¥”SQL1°´SQL20π≤÷ß≥÷20Ãı£¨Õ¨ ±ª· π”√…œ√Êµƒ[where]÷–µƒsql”Ôæ‰
@@ -91,12 +92,12 @@ Log=
 PageKind=0
 
 ;Õ¨“‚£¨¡˜◊™µΩœ¬“ª≤Ω
-WF1=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_T2 | T2Gid | and ##AppAssign## = 'Õ¨“‚' and ##NextApp## <> '0'| ^^AppFlowMemo^^)
+WF1=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_T2 | NextGid | and ##AppAssign## = 'Õ¨“‚' and ##NextApp## <> '0'| ^^AppFlowMemo^^)
 
 ;∑Òæˆ£¨∑µªÿ∑¢∆»À
 WF2=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T1 | T1Gid | and ##AppAssign## = '∑Òæˆ' | ^^AppFlowMemo^^)
 
-WF4=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_Tcc | T1Gid | and ##AppAssign## = 'Õ¨“‚' and ##NextApp## = '0' | ^^AppFlowMemo^^)
+WF4=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T3 | null | and ##AppAssign## = 'Õ¨“‚' and ##NextApp## = '0' | ^^AppFlowMemo^^)
 
-;¡˜≥ÃΩ· ¯
-WF5=WFFlowFinish( ^^CurUrl^^ | and ##AppAssign## = 'Õ¨“‚' and ##NextApp## = '0')
+;∑µªÿ∫À µ£¨∑µªÿ…œ“ª≤Ω
+WF5=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_T2 | LastGid | and ##AppAssign## = '∑µªÿ∫À µ'| ^^AppFlowMemo^^)

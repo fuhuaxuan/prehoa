@@ -1,0 +1,11 @@
+<hdloop>
+  <tr class="listtd" valign="top" onmouseover="this.className='listtdfocus';" onmouseout="this.className='listtd'">
+    <td><HDPrint Value=#bDate#>~<HDPrint Value=#eDate#></td>
+    <td><HDPrint Value=#TBRD#></td>
+    <td><HDPrint Value=#PMFD#></td>
+    <td><HDPrint Value=#Apfixed#></td>
+    <td><HDPrint Value=#GTO#></td>
+    <td><HDPrint Value=#Rent#></td>
+    <td><HDPrint Value=#Memo#></td>
+  </tr>
+</hdloop>

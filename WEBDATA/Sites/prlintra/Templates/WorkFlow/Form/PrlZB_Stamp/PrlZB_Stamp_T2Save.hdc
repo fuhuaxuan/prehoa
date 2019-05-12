@@ -25,12 +25,16 @@ SQLForCondition4=select count(*) NextApp from Wf_^^ModelCode^^_App a where a.Ent
 ;更新本流程中主表信息
 Sql1=update WF_^^ModelCode^^ set (LastUpdDate,Stat) = (select sysdate,decode(##AppAssign##,'同意',decode(##NextApp##,'0','已完成','审批中'),##AppAssign##) from dual) where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## 
 
-Sql3=delete from Wf_^^ModelCode^^_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppGid = __USRGID__ and AppOrder = ##AppOrder##
+Sql2=delete from Wf_^^ModelCode^^_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppGid = __USRGID__ and AppOrder = ##AppOrder##
 
-Sql4=delete from Wf_^^ModelCode^^_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppDate is null and ##AppAssign## = '否决'
+Sql3=delete from Wf_^^ModelCode^^_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppDate is null and ##AppAssign## = '否决'
 
 ;插入本流程中审批人一信息
-SQL5=insert into Wf_^^ModelCode^^_App (EntGid,ModelGid,FlowGid,Gid,AppGid,AppCode,AppName,AppOrder,AppType,AppAssign,AppMemo,AppDate) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,##AppOrder##,##AppType##,##AppAssign##, ##AppMemo##,sysdate from dual
+SQL4=insert into Wf_^^ModelCode^^_App (EntGid,ModelGid,FlowGid,Gid,AppGid,AppCode,AppName,AppOrder,AppType,AppAssign,AppMemo,AppDate) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,##AppOrder##,##AppType##,##AppAssign##, ##AppMemo##,sysdate from dual
+
+SQL6=insert into Wf_^^ModelCode^^_App (EntGid,ModelGid,FlowGid,Gid,AppGid,AppCode,AppName,AppType,AppOrder) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),##LastGid##,##LastCode##,##LastName##,##LastType##,##LastOrder## from dual where ##AppAssign## = '返回核实'
+
+SQL7=insert into Wf_^^ModelCode^^_App (EntGid,ModelGid,FlowGid,Gid,AppGid,AppCode,AppName,AppType,AppOrder) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,##AppType##,##AppOrder## from dual where ##AppAssign## = '返回核实'
 
 [AddtionalSQLUseWhere]
 ;显示，单条数据的查询，可以用于HDT显示，有select命令。从SQL1～SQL20共支持20条，同时会使用上面的[where]中的sql语句
@@ -85,12 +89,15 @@ Log=
 PageKind=0
 
 ;同意，流转到下一步
-WF1=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_T2 | T2Gid | and ##AppAssign## = '同意' and ##NextApp## <> '0'| ^^AppFlowMemo^^)
+WF1=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_T2 | NextGid | and ##AppAssign## = '同意' and ##NextApp## <> '0'| ^^AppFlowMemo^^)
 
 ;否决，返回发起人
 WF2=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T1 | T1Gid | and ##AppAssign## = '否决' | ^^AppFlowMemo^^)
 
-WF4=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_Tcc | T1Gid | and ##AppAssign## = '同意' and ##NextApp## = '0' | ^^AppFlowMemo^^)
+WF3=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_Tcc | T1Gid | and ##AppAssign## = '同意' and ##NextApp## = '0' | ^^AppFlowMemo^^)
+
+;返回核实，返回上一步
+WF4=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_T2 | LastGid | and ##AppAssign## = '返回核实'| ^^AppFlowMemo^^)
 
 ;流程结束
 WF5=WFFlowFinish( ^^CurUrl^^ | and ##AppAssign## = '同意' and ##NextApp## = '0')

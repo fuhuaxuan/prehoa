@@ -81,7 +81,7 @@ SQL7=delete from wf_^^ModelCode^^_Dtl where EntGid = __ENTGID__ and FlowGid = ##
 SQL8=insert into wf_^^ModelCode^^_App (EntGid,ModelGid,FlowGid,Gid,AppGid,AppCode,AppName,AppType,AppAssign,AppMemo,AppDate) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,10,##Stat##,##AppMemo##,sysdate from dual where ##Stat## <> '保存'
 
 ;插入本流程明细信息
-LoopSql2=insert into wf_^^ModelCode^^_Dtl (EntGid,ModelGid,FlowGid,Gid,Line,AcgGid,AcgCode,AcgName,PAcgGid,PAcgCode,PAcgName,AcgFee,ApplyFee) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),##%Line%##,##%AcgGid%##, ##%AcgCode%##, ##%AcgName%##, ##%PAcgGid%##, ##%PAcgCode%##, ##%PAcgName%##, ##%AcgFee%##, ##%ApplyFee%## from dual where ##Stat## <> '终止'
+LoopSql2=insert into wf_^^ModelCode^^_Dtl (EntGid,ModelGid,FlowGid,Gid,Line,AcgGid,AcgCode,AcgName,PAcgGid,PAcgCode,PAcgName,AcgFee,FeeDate,ApplyFee) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),##%Line%##,##%AcgGid%##, ##%AcgCode%##, ##%AcgName%##, ##%PAcgGid%##, ##%PAcgCode%##, ##%PAcgName%##, ##%AcgFee%##,to_date(##%FeeDate%##,'YYYY.MM.DD'), ##%ApplyFee%## from dual where ##Stat## <> '终止'
 
 ;插入本流程附件信息
 AttachSqlAdd1=insert into wf_^^ModelCode^^_Attach (EntGid,ModelGid,FlowGid,Attach_Gid,Attach_Title,Attach_Url,Attach_Size) select __ENTGID__,##ModelGid## ,##FlowGid##,@@AttachID@@, @@FileName@@, @@FilePath@@,@@FileSize@@ from dual where ##Stat## <> '终止'

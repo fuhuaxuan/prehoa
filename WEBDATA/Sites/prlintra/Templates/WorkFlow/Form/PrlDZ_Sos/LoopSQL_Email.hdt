@@ -6,8 +6,8 @@
 <tr><td>[发起时间] : <HDPrint Value=#CreateDate#>；</td></tr>
 <tr><td>[申请类型] : <HDPrint Value=#ApplyType#>；</td></tr>
 <tr><td>[分类] : <HDPrint Value=#SosType#>；</td></tr>
-<tr JQ="pre" style="display:none"><td>[调整前:] <br>
-    <table width="100%" cellpadding="0"  cellspacing="1" id="tb_Email10" style="background-color: #d9dbdf;">
+<tr JQ="pre" style="display:none"><td>[调整前] <br>
+    <table JQ="pre" style="display:none" width="100%" cellpadding="0"  cellspacing="1" id="tb_Email10" style="background-color: #d9dbdf;">
         <colgroup>
           <col style="width:10%">
            <col style="width:15%">
@@ -23,7 +23,8 @@
           <td>楼层</td>
           <td>面积</td>
           <td>建筑面积</td>
-          <td>预算</td>
+          <td>预算单价<br>租金+物管+推广</td>
+          <td>月总租金</td>
         </tr>
         </thead>
         <tbody>
@@ -31,14 +32,15 @@
         <tfoot>
         <tr style="background-color: white;">
           <td align="right" colspan="3">合计：</td>
-          <td align="right" JQ="fAreaSum1"><HDPrint Value=#fAreaSum1#></td>
-          <td align="right" JQ="jAreaSum1"><HDPrint Value=#jAreaSum1#></td>
-          <td align="right"></td>
+          <td align="center" JQ="fAreaSum1"><HDPrint Value=#fAreaSum1#></td>
+          <td align="center" JQ="jAreaSum1"><HDPrint Value=#jAreaSum1#></td>
+          <td align="center"></td>
+          <td align="center" JQ="fmrMSum1"><HDPrint Value=#fmrMSum1#></td>
         </tr>
         </tfoot>
       </table>
 </td></tr>
-<tr><td>[调整后:] <br>
+<tr><td>[调整后] <br>
     <table width="100%" class="ListBar" cellpadding="0"  cellspacing="1" id="tb_Email20" style="background-color: #d9dbdf;">
         <colgroup>
           <col style="width:10%">
@@ -47,6 +49,7 @@
            <col style="width:15%">
            <col style="width:15%">
            <col style="width:15%">
+           <col style="width:15%">
         </colgroup>
         <thead>
         <tr style="background-color: #ecedef;" align="center">
@@ -55,7 +58,8 @@
           <td>楼层</td>
           <td>面积</td>
           <td>建筑面积</td>
-          <td>预算</td>
+          <td>预算单价<br>租金+物管+推广</td>
+          <td>月总租金</td>
         </tr>
         </thead>
         <tbody>
@@ -63,21 +67,20 @@
         <tfoot>
         <tr style="background-color: white;">
           <td align="right" colspan="3">合计：</td>
-          <td align="right" JQ="fAreaSum2"><HDPrint Value=#fAreaSum2#></td>
-          <td align="right" JQ="jAreaSum2"><HDPrint Value=#jAreaSum2#></td>
-          <td align="right"></td>
+          <td align="center" JQ="fAreaSum2"><HDPrint Value=#fAreaSum2#></td>
+          <td align="center" JQ="jAreaSum2"><HDPrint Value=#jAreaSum2#></td>
+          <td align="center"></td>
+          <td align="center" JQ="fmrMSum2"><HDPrint Value=#fmrMSum2#></td>
         </tr>
         </tfoot>
       </table>
       <script language="javascript">
-        $(document).ready(function(){
-          var applyType = '<HDPrint Value=#ApplyType# Replace=#DBField2Js#>'
-          if(applyType == '新增'){
-              $("[JQ=pre]").hide();
-            }else{
-              $("[JQ=pre]").show();
-            }
-        });
+        var applyType = '<HDPrint Value=#ApplyType# Replace=#DBField2Js#>'
+        if(applyType == '新增'){
+          $("[JQ=pre]").hide();
+        }else{
+          $("[JQ=pre]").show();
+        }
         if ('<HDPrint Value=#fAreaSum1# Replace=#DBField2Js#>' != '<HDPrint Value=#fAreaSum2# Replace=#DBField2Js#>') {
           $("[JQ=fAreaSum2]").css("color","red")
         }
@@ -91,3 +94,4 @@
 <tr><td>-----------内容展示完毕-----------</td></tr>
 </table>
 <HDPrint Value=#EmailDtl# Replace=#None#>
+<HDPrint Value=#AppEmail# Replace=#None#>

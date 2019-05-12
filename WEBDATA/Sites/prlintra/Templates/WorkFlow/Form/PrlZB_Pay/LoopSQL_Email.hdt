@@ -5,7 +5,7 @@
 <tr><td>[发起人] : <HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]；</td></tr>
 <tr><td>[发起时间] : <HDPrint Value=#CreateDate#>；</td></tr>
 <HDIF EqualNot(<HDPrint Value=#feeflowgid# Replace=#DBField2Input#>1, 1)>
-<tr><td>[费用单号] : <HDPrint Value=#feeNum#>-<HDPrint Value=#partnum#>；</td></tr>
+<tr><td>[费用单号] : <a id="a_Fee" href="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#FeeModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&ModelCode=<HDPrint Value=#FeeModelCode#>&FlowGid=<HDPrint Value=#FeeFlowGid#>" target="_blank"><HDPrint Value=#feeNum#></a>-<HDPrint Value=#partnum#>；</td></tr>
 <tr><td>[是否尾款] : <HDPrint Value=#isendtext#>；</td></tr>
 </HDIF>
 <tr><td>[公司名称] : <HDPrint Value=#companyname#>；</td></tr>
@@ -37,3 +37,4 @@
 <tr><td>[附件信息] : <HDPrint Value=#AttachList# Replace=#None#></td></tr>
 <tr><td>-----------内容展示完毕-----------</td></tr>
 </table>
+<HDPrint Value=#AppEmail# Replace=#None#>

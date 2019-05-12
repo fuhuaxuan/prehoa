@@ -63,6 +63,10 @@
       <td class="NewTd3" colspan=3 id="emp20"></td>
     </tr>
     <tr id="dept" style="display:'none'">
+      <td class="NewTd2">23成本合约经理 </td>
+      <td class="NewTd3" colspan=3 id="emp23"></td>
+    </tr>
+    <tr id="dept" style="display:'none'">
       <td class="NewTd2">25财务会计 </td>
       <td class="NewTd3" colspan=3 id="emp25"></td>
     </tr>

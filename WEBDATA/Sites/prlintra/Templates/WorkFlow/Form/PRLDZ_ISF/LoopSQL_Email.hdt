@@ -3,7 +3,13 @@
 <tr><td>[流程名称] : <HDPrint Value=#ModelName#>；</td></tr>
 <tr><td>[单号] : <HDPrint Value=#Num#>；</td></tr>
 <tr><td>[发起人] : <HDPrint Value=#FillUsrName#>[<HDPrint Value=#fillusrdept#>]；</td></tr>
-<tr><td>[发起时间] : <HDPrint Value=#CreateDate#>]；</td></tr>
+<tr><td>[发起时间] : <HDPrint Value=#CreateDate#>；</td></tr>
+<HDIF EqualNot(<HDPrint Value=#ISFNum# Replace=#None#>, )>
+<tr><td>[上一版本ISF/ISCF] : <a href="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ISFModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ISFModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#ISFFlowGid#>" target="_blank"><HDPrint Value=#ISFNum#></a>；</td></tr>
+</HDIF>
+<HDIF EqualNot(<HDPrint Value=#ISCFNum# Replace=#None#>, )>
+<tr><td>[下一版本ISF/ISCF] : <a href="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ISCFModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ISCFModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#ISCFFlowGid#>" target="_blank"><HDPrint Value=#ISCFNum#></a>；</td></tr>
+</HDIF>
 <tr><td>[Category 类别] : <HDPrint Value=#atype#> <HDPrint Value=#Category#> <HDPrint Value=#CategoryText#>；</td></tr>
 <tr><td>[Unit No. 单位] : <HDPrint Value=#UnitList2# Replace=#None#></td></tr>
 <tr><td>[Area 面积] : <HDPrint Value=#Area#>；</td></tr>
@@ -21,6 +27,12 @@
 <tr><td>[Existing 目前] : <HDPrint Value=#brcexist#> RMB/㎡/天；</td></tr>
 <tr><td>[Budget 批准预算] : <HDPrint Value=#brcbudget#> RMB/㎡/天；</td></tr>
 <tr><td>[Special Terms and Conditions/Remarks :特别条件/评语] : <HDPrint Value=#Memo# Replace=#DBField2InputField#>；</td></tr>
-<tr><td>[附件信息] : <HDPrint Value=#AttachList# Replace=#None#></td></tr>
+<tr><td>附件类型 : <HDPrint Value=#AttachType# Replace=#None#></td></tr>
+<tr JQ="tr_10"><td>身份证:<span JQ="td_10"></span></td></tr>
+<tr JQ="tr_20" style="display:none"><td>营业执照 : <span JQ="td_20"></span></td></tr>
+<tr JQ="tr_30" style="display:none"><td>商标注册证 : <span JQ="td_30"></span></td></tr>
+<tr JQ="tr_40" style="display:none"><td>授权书 : <span JQ="td_40"></span></td></tr>
+<tr><td>其他 : <span JQ="td_50"></span></td></tr>
 <tr><td>-----------内容展示完毕-----------</td></tr>
 </table>
+<HDPrint Value=#AppEmail# Replace=#None#>

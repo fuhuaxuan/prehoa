@@ -35,6 +35,9 @@ Sql3=delete from Wf_^^ModelCode^^_App where EntGid = __ENTGID__ and FlowGid = ##
 ;≤Â»Î±æ¡˜≥Ã÷–…Û≈˙»À∂˛–≈œ¢
 SQL4=insert into wf_^^ModelCode^^_App (EntGid,FlowGid,dtlgid,AppGid,AppCode,AppName,AppType,AppOrder,AppAssign,AppMemo,AppDate) select __ENTGID__,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,##AppType##,##AppOrder##,##AppAssign##, ##note##,sysdate from dual
 
+SQL5=insert into Wf_^^ModelCode^^_App (EntGid,FlowGid,dtlgid,AppGid,AppCode,AppName,AppType,AppOrder) select __ENTGID__,##FlowGid##,sys_guid(),##LastGid##,##LastCode##,##LastName##,##LastType##,##LastOrder## from dual where ##AppAssign## = '∑µªÿ∫À µ'
+
+SQL6=insert into Wf_^^ModelCode^^_App (EntGid,FlowGid,dtlgid,AppGid,AppCode,AppName,AppType,AppOrder) select __ENTGID__,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,##AppType##,##AppOrder## from dual where ##AppAssign## = '∑µªÿ∫À µ'
 [AddtionalSQLUseWhere]
 ;œ‘ æ£¨µ•Ãı ˝æ›µƒ≤È—Ø£¨ø…“‘”√”⁄HDTœ‘ æ£¨”–select√¸¡Ó°£¥”SQL1°´SQL20π≤÷ß≥÷20Ãı£¨Õ¨ ±ª· π”√…œ√Êµƒ[where]÷–µƒsql”Ôæ‰
 ; æ¿˝
@@ -88,7 +91,7 @@ Log=
 PageKind=0
 
 ;Õ¨“‚£¨¡˜◊™µΩœ¬“ª≤Ω
-WF1=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_T2 | selApp_1 | and ##AppAssign## = 'Õ¨“‚' and ##NextApp## <> '0'| ^^AppFlowMemo^^)
+WF1=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_T2 | NextGid | and ##AppAssign## = 'Õ¨“‚' and ##NextApp## <> '0'| ^^AppFlowMemo^^)
 
 WF2=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_Tcc | null | and ##AppAssign## = 'Õ¨“‚' and ##NextApp## = '0'|^^AppFlowMemo^^)
 
@@ -98,5 +101,9 @@ WF3=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_Tcc | T1Gid | and ##AppAssign## = 'Õ¨“
 WF4=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T1 | T1Gid | and ##AppAssign## = '∑Òæˆ' |^^AppFlowMemo^^)
 
 
+;∑µªÿ∫À µ£¨∑µªÿ…œ“ª≤Ω
+WF5=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_T2 | LastGid | and ##AppAssign## = '∑µªÿ∫À µ'| ^^AppFlowMemo^^)
+
+
 ;Õ¨“‚£¨√ª”–œ¬“ª≤Ω£¨Ω· ¯
-WF5=WFFlowFinish( ^^CurUrl^^ | and ##AppAssign## = 'Õ¨“‚' and ##NextApp## = '0')
+WF6=WFFlowFinish( ^^CurUrl^^ | and ##AppAssign## = 'Õ¨“‚' and ##NextApp## = '0')

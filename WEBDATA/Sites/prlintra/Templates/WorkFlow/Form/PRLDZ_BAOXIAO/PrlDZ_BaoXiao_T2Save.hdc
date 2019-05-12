@@ -35,6 +35,10 @@ Sql3=delete from Wf_^^ModelCodeT^^_App where EntGid = __ENTGID__ and FlowGid = #
 ;插入本流程中审批人二信息
 SQL4=insert into Wf_^^ModelCodeT^^_App (EntGid,ModelGid,FlowGid,gid,AppGid,AppCode,AppName,AppType,AppOrder,AppAssign,AppMemo,AppDate) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,##AppType##,##AppOrder##,##AppAssign##, ##AppMemo##,sysdate from dual
 
+SQL5=insert into Wf_^^ModelCodeT^^_App (EntGid,ModelGid,FlowGid,gid,AppGid,AppCode,AppName,AppType,AppOrder) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),##LastGid##,##LastCode##,##LastName##,##LastType##,##LastOrder## from dual where ##AppAssign## = '返回核实'
+
+SQL6=insert into Wf_^^ModelCodeT^^_App (EntGid,ModelGid,FlowGid,gid,AppGid,AppCode,AppName,AppType,AppOrder) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,##AppType##,##AppOrder## from dual where ##AppAssign## = '返回核实'
+
 [AddtionalSQLUseWhere]
 ;显示，单条数据的查询，可以用于HDT显示，有select命令。从SQL1～SQL20共支持20条，同时会使用上面的[where]中的sql语句
 ;示例
@@ -94,5 +98,8 @@ WF2=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T3 | F1Gid | and ##AppAssign## = '同意
 ;同意，流转到下一步
 WF3=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_T2 | selApp_1 | and ##AppAssign## = '同意' and ##NextApp## <> '0'| ^^AppFlowMemo^^)
 
+;返回核实，返回上一步
+WF4=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_T2 | LastGid | and ##AppAssign## = '返回核实'| ^^AppFlowMemo^^)
+
 ;否决，返回发起人
-WF4=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TMod | Null | and ##AppAssign## = '否决' |^^AppFlowMemo^^)
+WF5=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TMod | Null | and ##AppAssign## = '否决' |^^AppFlowMemo^^)

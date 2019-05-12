@@ -8,6 +8,8 @@
       '<HDPrint Value=#floorNo# Replace=#DBField2Js#>',
       '<HDPrint Value=#fArea# Replace=#DBField2Js#>',
       '<HDPrint Value=#jArea# Replace=#DBField2Js#>',
-      '<HDPrint Value=#fmr# Replace=#DBField2Js#>')
+      '<HDPrint Value=#fmr# Replace=#DBField2Js#>',
+      '<HDPrint Value=#fmrY# Replace=#DBField2Js#>',
+      '<HDPrint Value=#fmrM# Replace=#DBField2Js#>')
   </hdloop>
 </script>

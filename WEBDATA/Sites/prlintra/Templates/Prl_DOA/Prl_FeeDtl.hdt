@@ -68,6 +68,10 @@
     <td>日期 in </td>
     <td><input type="Text" name="txt_BDate" class="JQDate" style="width:40%">~<input type="Text" name="txt_EDate" class="JQDate" style="width:40%"></td>
   </tr>
+  <tr>
+    <td>单号 ≈ </td>
+    <td><input type="Text" name="txt_Num" class="JQDate" style="width:90%"></td>
+  </tr>
   <tr >
     <td colspan="4">
      <a href="javascript:void(0)" onclick="JQExpand('tb_Search','font_Icon');" class="IconDown">　&nbsp;显示说明信息</a>（请进行相应的查询，找到您需要的信息）
@@ -92,6 +96,7 @@
   //数据提交后，对页面查询条件重新赋值
   document.all.sel_Company.value = '<HDPrint value=#sel_Company# Replace=#DBField2Js#>';
   document.all.txt_BDate.value = '<HDPrint value=#txt_BDate# Replace=#DBField2Js#>';
+  document.all.txt_Num.value = '<HDPrint value=#txt_Num# Replace=#DBField2Js#>';
   document.all.txt_EDate.value = '<HDPrint value=#txt_EDate# Replace=#DBField2Js#>';
   if ('<HDPrint Value=#NotFirst# Replace=#DBField2Js#>' == ''){
     document.all.txt_BDate.value = '<HDPrint value=#BDate# Replace=#DBField2Js#>';

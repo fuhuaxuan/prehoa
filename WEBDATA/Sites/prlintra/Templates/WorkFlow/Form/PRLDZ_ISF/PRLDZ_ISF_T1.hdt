@@ -10,23 +10,7 @@
     frmISF.target='_self';
     frmISF.submit();
   }
-  /*
-  *函数名称：新增附件添加到附件列表中
-  *参数：sFileName-附件名称
-  */
-  function AddAttach(JsFileName)
-  {
-    if (JsFileName == '')
-      return false;
-    //判断是否存在附件
-    if (!JQgetSingle("selFileList_1",JsFileName)){
-      alert('对不起，已经存在该附件！');
-      return false;
-    }
-    //添加到附件表中
-    var JsOption = "<option value='"+JsFileName+"'>"+JsFileName+"</option>";
-    $("select[name=selFileList_1]").append(JsOption);
-  }
+
   //单位选择后，计算
   function CallUnit(fgid,fno,farea,floorno,fmr,fjArea){
     //判断是否存在附件
@@ -828,7 +812,7 @@
       JsValMZQ = parseFloat(Math.max(parseFloat(JsAMZQ),parseFloat(JsCMZQ)) + parseFloat(JsBMZQ)).toFixed(4);
     }
     //max(租金+物业管理费,预估提成租金)
-    if (JsRate == '租金（含物管费）扣率取高'){
+    if (JsRate == '租金（含物管费）扣率取高' || JsRate == '租金（含物管费与推广费）扣率取高'){
       JsVal = parseFloat(Math.max(parseFloat(JsA) + parseFloat(JsB),parseFloat(JsC))).toFixed(4);
       JsValMZQ = parseFloat(Math.max(parseFloat(JsAMZQ) + parseFloat(JsBMZQ),parseFloat(JsCMZQ))).toFixed(4);
     }
@@ -898,8 +882,8 @@
       if (JsC == ''){JsC = '0';}
       JsC = JsC * JsArea;
       var JsT = parseFloat(JsA) + parseFloat(JsB) + parseFloat(JsC);
-      JsT = parseFloat(JsT * 3).toFixed(4);
-      $("input[name=Security]").val(JsT);
+      JsT = parseFloat(JsT * 3).toFixed(2);
+      $("input[name=SecurityStand]").val(JsT);
     }
   }
   //判断日期大小
@@ -1014,6 +998,22 @@
       <script language="javascript">
         $("input[name=Atype][value='<HDPrint Value=#Atype# Replace=#DBField2Js#>']").prop("checked",true);
         $("input[name=Category][value='<HDPrint Value=#Category# Replace=#DBField2Js#>']").prop("checked",true);
+        //函数：ready
+        //功能：document 加载完成后调用
+        $(document).ready(function(){
+          $("input[name=Atype]").change(function (){
+            $("tr[JQ=sale]").hide();
+            $("input[name=MonthSale]").removeClass("JQMust");
+            if ($(this).val() == 'Renewal 续约租赁') {
+              $("tr[JQ=sale]").show();
+              $("input[name=MonthSale]").addClass("JQMust");
+            }
+          });
+          if ('<HDPrint Value=#Atype# Replace=#DBField2Js#>' == 'Renewal 续约租赁') {
+              $("tr[JQ=sale]").show();
+              $("input[name=MonthSale]").addClass("JQMust");
+          }
+        });
       </script>
     </td>
     <td class="DtlBarTitle"><a href="javascript:DataInterface(frmDataInterface_Unit);void(0)">Unit No.[choose]:<br>单位[选择]:</a><font color="red">*</font></td>
@@ -1119,17 +1119,18 @@
   <tr valign="top">
     <td class="DtlBarTitle">Contract Date:<br>合同起始日期:<font color="red">*</font></td>
     <td class="listtd">
-      <INPUT TYPE="text" NAME="ContractDate1" maxlength="10" value="<HDPrint Value=#ContractDate1# Replace=#DBField2Input#>" class="JQText" style="width:60px;border:0px;" readonly>~<INPUT TYPE="text" NAME="ContractDate2" maxlength="10" value="<HDPrint Value=#ContractDate2# Replace=#DBField2Input#>" class="JQText" style="width:60px;border:0px;" readonly>
+      <INPUT TYPE="text" NAME="ContractDate1" maxlength="10" value="<HDPrint Value=#ContractDate1# Replace=#DBField2Input#>" class="JQText" style="width:80px;border:0px;" readonly>~<INPUT TYPE="text" NAME="ContractDate2" maxlength="10" value="<HDPrint Value=#ContractDate2# Replace=#DBField2Input#>" class="JQText" style="width:80px;border:0px;" readonly>
     </td>
     <td class="listtd" colspan="4">
       <input type="radio" name="Rate1" value="联营形式" class="JQRadio JQMust" checked>联营形式
       <input type="radio" name="Rate1" value="租金形式" class="JQRadio JQMust">租金形式
-      <div id="Rate2" style="display:inline">
-        （<input type="radio" name="Rate2" value="固定租金与提成租金二者取高" class="JQRadio JQMust" onclick="setRate2(this.value);calcNew();">固定租金与提成租金二者取高
+      <div id="Rate2" style="display:inline"><br>
+        <input type="radio" name="Rate2" value="固定租金与提成租金二者取高" class="JQRadio JQMust" onclick="setRate2(this.value);calcNew();">固定租金与提成租金二者取高
         <input type="radio" name="Rate2" value="租金（含物管费）扣率取高" class="JQRadio JQMust" onclick="setRate2(this.value);calcNew();">租金（含物管费）扣率取高
+        <input type="radio" name="Rate2" value="租金（含物管费与推广费）扣率取高" class="JQRadio JQMust" onclick="setRate2(this.value);calcNew();">租金（含物管费与推广费）扣率取高
         <input type="radio" name="Rate2" value="租金+扣率" class="JQRadio JQMust" onclick="setRate2(this.value);calcNew();">租金+扣率
         <input type="radio" name="Rate2" value="固定租金" class="JQRadio JQMust" onclick="setRate2(this.value);calcNew();">固定租金
-        <input type="radio" name="Rate2" value="扣率" class="JQRadio JQMust" onclick="setRate2(this.value);calcNew();">扣率）
+        <input type="radio" name="Rate2" value="扣率" class="JQRadio JQMust" onclick="setRate2(this.value);calcNew();">扣率
       </div>
       <INPUT TYPE="hidden" NAME="Rate" maxlength="32" value="<HDPrint Value=#Rate# Replace=#DBField2Input#>" class="JQText">
       <script language="javascript">
@@ -1147,6 +1148,26 @@
       <input type="radio" name="Collection" value="不用" class="JQRadio JQMust">不用
       <script language="javascript">
       $("input[name=Collection][value='<HDPrint Value=#Collection# Replace=#DBField2Js#>']").prop("checked",true);
+      </script>
+    </td>
+  </tr>
+  <tr valign="top" JQ="sale" style="display:none">
+    <td class="DtlBarTitle">月销售[元/月]:<font color="red">*</font></td>
+    <td class="listtd"><INPUT TYPE="text" NAME="MonthSale" maxlength="32" value="<HDPrint Value=#MonthSale# Replace=#DBField2Input#>" class="JQFloat" JQBit="4"></td>
+    <td class="DtlBarTitle">是否遵守原合约:<font color="red">*</font></td>
+    <td class="listtd">
+      <input type="radio" name="IsHY" value="是" class="JQRadio JQMust" checked>是
+      <input type="radio" name="IsHY" value="否" class="JQRadio JQMust">否
+      <script language="javascript">
+      $("input[name=IsHY][value='<HDPrint Value=#IsHY# Replace=#DBField2Js#>']").prop("checked",true);
+      </script>
+    </td>
+    <td class="DtlBarTitle">是否欠租:<font color="red">*</font></td>
+    <td class="listtd" colspan="2">
+      <input type="radio" name="IsQZ" value="否" class="JQRadio JQMust" checked>否
+      <input type="radio" name="IsQZ" value="是" class="JQRadio JQMust">是
+      <script language="javascript">
+      $("input[name=IsQZ][value='<HDPrint Value=#IsQZ# Replace=#DBField2Js#>']").prop("checked",true);
       </script>
     </td>
   </tr>
@@ -1308,7 +1329,10 @@
     <td class="listtd"><INPUT TYPE="text" NAME="LegalFeeD" maxlength="16" value="<HDPrint Value=#LegalFeeD# Replace=#DBField2Input#>" class="JQFloat JQMust" JQBit="4" JQRow="FeeD" JQRowName="TotalFeeD" onblur="calcFee()"></td>
     <td class="listtd"><INPUT TYPE="text" NAME="LegalFeeM" maxlength="16" value="<HDPrint Value=#LegalFeeM# Replace=#DBField2Input#>" class="JQFloat" JQBit="4" style="border:0px" readonly JQRow="FeeM" JQRowName="TotalFeeM"></td>
     <td class="DtlBarTitle">Security Deposit (mths):<br>保证金:<font color="red">*</font></td>
-    <td class="listtd"><INPUT TYPE="text" NAME="Security" maxlength="16" value="<HDPrint Value=#Security# Replace=#DBField2Input#>" class="JQFloat JQMust" JQBit="4"></td>
+    <td class="listtd">
+      标准：<INPUT TYPE="text" NAME="SecurityStand" maxlength="16" value="<HDPrint Value=#SecurityStand# Replace=#DBField2Input#>" class="JQText" readonly style="border:0px;width:80%"><br>
+      实际：<INPUT TYPE="text" NAME="Security" maxlength="16" value="<HDPrint Value=#Security# Replace=#DBField2Input#>" class="JQFloat JQMust" JQBit="2" style="width:80%">
+    </td>
     <td class="DtlBarTitle">Existing:<br>目前:<font color="red">*</font></td>
     <td class="listtd"><INPUT TYPE="text" NAME="BRCExist" maxlength="16" value="<HDPrint Value=#BRCExist# Replace=#DBField2Input#>" class="JQFloat JQMust" JQBit="4"></td>
   </tr>
@@ -1361,6 +1385,122 @@
     <td class="DtlBarTitle">OtherFee:<br>其它费用金额:<font color="red">*</font></td>
     <td class="listtd"><INPUT TYPE="text" NAME="OtherFee" maxlength="16" value="<HDPrint Value=#OtherFee# Replace=#DBField2Input#>" class="JQFloat JQMust" JQBit="4" onblur="calcFee()"></td>
     <td class="listtd"><INPUT TYPE="text" NAME="OtherTotalFee" maxlength="16" value="<HDPrint Value=#OtherTotalFee# Replace=#DBField2Input#>" class="JQFloat" JQBit="4" onblur="calcFeeM()"></td>
+  <tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">附件类型:<font color="red">*</font></td>
+    <td class="listtd" colspan="7">
+      <input type="radio" name="AttachType" value="个人" class="JQRadio JQMust" checked>个人
+      <input type="radio" name="AttachType" value="公司" class="JQRadio JQMust">公司
+      <input type="radio" name="AttachType" value="代理商" class="JQRadio JQMust">代理商
+      <script language="javascript">
+        $("input[name=AttachType][value='<HDPrint Value=#AttachType# Replace=#DBField2Js#>']").prop("checked",true);
+        //函数：ready
+        //功能：document 加载完成后调用
+        $(document).ready(function(){
+          $("input[name=AttachType]").change(function(){
+            chgAttachType($(this).val())
+          });
+          var AttachType = '<HDPrint Value=#AttachType# Replace=#DBField2Js#>';
+          if (AttachType == '') {
+            AttachType = '个人';
+          }
+          chgAttachType(AttachType);
+        });
+
+        function chgAttachType(AttachType){
+          $("tr[JQ=tr_10]").hide();
+          $("tr[JQ=tr_20]").hide();
+          $("tr[JQ=tr_30]").hide();
+          $("tr[JQ=tr_40]").hide();
+          $("select[name=fileList10_1]").removeClass("JQMust");
+          $("select[name=fileList20_1]").removeClass("JQMust");
+          $("select[name=fileList30_1]").removeClass("JQMust");
+          $("select[name=fileList40_1]").removeClass("JQMust");
+          if (AttachType == '个人') {
+            $("tr[JQ=tr_10]").show();
+            $("select[name=fileList10_1]").addClass("JQMust");
+            $("select[name=fileList20_1]").empty();
+            $("select[name=fileList30_1]").empty();
+            $("select[name=fileList40_1]").empty();
+          } else if (AttachType == '公司') {
+            $("tr[JQ=tr_20]").show();
+            $("tr[JQ=tr_30]").show();
+            $("select[name=fileList10_1]").empty();
+            $("select[name=fileList20_1]").addClass("JQMust");
+            $("select[name=fileList30_1]").addClass("JQMust");
+            $("select[name=fileList40_1]").empty();
+          } else {
+            $("tr[JQ=tr_10]").show();
+            $("tr[JQ=tr_20]").show();
+            $("tr[JQ=tr_30]").show();
+            $("tr[JQ=tr_40]").show();
+            $("select[name=fileList10_1]").addClass("JQMust");
+            $("select[name=fileList20_1]").addClass("JQMust");
+            $("select[name=fileList30_1]").addClass("JQMust");
+            $("select[name=fileList40_1]").addClass("JQMust");
+          }
+        }
+        var g_Type = '';
+        function chgAttach(JsType){
+          g_Type = JsType;
+        }
+        /*
+        *函数名称：新增附件添加到附件列表中
+        *参数：sFileName-附件名称
+        */
+        function AddAttach(JsFileName)
+        {
+          if (JsFileName == '')
+            return false;
+          //判断是否存在附件
+          if (!JQgetSingle("fileList",JsFileName,"^")){
+            alert('对不起，已经存在该附件！');
+            return false;
+          }
+          //添加到附件表中
+          var JsOption = "<option value='"+JsFileName+"'>"+JsFileName+"</option>";
+          $("select[name=fileList"+g_Type+"_1]").append(JsOption);
+        }
+      </script>
+      <input type="hidden" name="HDTempPath" value="<HDPrint Value=#NewGid# Replace=#DBField2Input#>">
+      <SELECT NAME="selFileList_1" size="3" style="width:250;display:none" multiple></SELECT>
+    </td>
+  </tr>
+  <tr valign="top" JQ="tr_10">
+    <td class="DtlBarTitle">身份证:<font color="red">*</font><br><font color="gray">(双击删除)</font></td>
+    <td class="listtd" colspan="6">
+      <SELECT NAME="fileList10_1" size="3" style="width:250;" class="JQMust" multiple></SELECT><br>
+      <iframe FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid# Replace=#DBField2Input#>&CallBackFun=chgAttach('10');WinObj.AddAttach" height=28></iframe>
+    </td>
+  </tr>
+  <tr valign="top" JQ="tr_20" style="display:none">
+    <td class="DtlBarTitle">营业执照:<font color="red">*</font><br><font color="gray">(双击删除)</font></td>
+    <td class="listtd" colspan="6">
+      <SELECT NAME="fileList20_1" size="3" style="width:250;" multiple></SELECT><br>
+      <iframe FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid# Replace=#DBField2Input#>&CallBackFun=chgAttach('20');WinObj.AddAttach" height=28></iframe>
+    </td>
+  </tr>
+  <tr valign="top" JQ="tr_30" style="display:none">
+    <td class="DtlBarTitle">商标注册证:<font color="red">*</font><br><font color="gray">(双击删除)</font></td>
+    <td class="listtd" colspan="6">
+      <SELECT NAME="fileList30_1" size="3" style="width:250;" multiple></SELECT><br>
+      <iframe FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid# Replace=#DBField2Input#>&CallBackFun=chgAttach('30');WinObj.AddAttach" height=28></iframe>
+    </td>
+  </tr>
+  <tr valign="top" JQ="tr_40" style="display:none">
+    <td class="DtlBarTitle">授权书:<font color="red">*</font><br><font color="gray">(双击删除)</font></td>
+    <td class="listtd" colspan="6">
+      <SELECT NAME="fileList40_1" size="3" style="width:250;" multiple></SELECT><br>
+      <iframe FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid# Replace=#DBField2Input#>&CallBackFun=chgAttach('40');WinObj.AddAttach" height=28></iframe>
+    </td>
+  </tr>
+  <tr valign="top" JQ="tr_50">
+    <td class="DtlBarTitle">其他:<br><font color="gray">(双击删除)</font></td>
+    <td class="listtd" colspan="6">
+      <SELECT NAME="fileList50_1" size="3" style="width:250;" multiple></SELECT><br>
+      <iframe FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid# Replace=#DBField2Input#>&CallBackFun=chgAttach('50');WinObj.AddAttach" height=28></iframe>
+    </td>
+      <HDPrint Value=#AttachList# Replace=#None#>
   </tr>
   <tr valign="top">
     <td class="DtlBarTitle">Special Terms and Conditions/Remarks:<br>特别条件/评语:<font color="red">*</font><br><font color="gray">(2000字以内)</font></td>
@@ -1369,14 +1509,6 @@
   <tr>
     <td class="DtlBarTitle">发起人备注:<br><font color="gray">(500字内)</font></td>
     <td class="listtd" colspan="6"><textarea class="JQText JQNo" rows="5" id="AppMemo" name="AppMemo" maxlength="500"></textarea></td>
-  </tr>
-  <tr valign="top">
-    <td class="DtlBarTitle">Upload Attachment:<br>上传附件:<br><font color="gray">(double click to del)<br>(双击删除)</font></td>
-    <td class="listtd" colspan="6">
-      <SELECT NAME="selFileList_1" size="3" style="width:250;" multiple><HDPrint Value=#AttachList# Replace=#None#></SELECT><br>
-      <input type="hidden" name="HDTempPath" value="<HDPrint Value=#NewGid# Replace=#DBField2Input#>">
-      <iframe FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid# Replace=#DBField2Input#>&CallBackFun=AddAttach" height=28></iframe>
-    </td>
   </tr>
 </table>
 </div>
@@ -1416,6 +1548,22 @@
       alert('Pls Choose ISF/ISCF！\n请选择ISF/ISCF！');
       return false;
     }
+
+    //把单位拼起来
+    var JsUnitList = $("select[name=selUnit_1]>option").map(function() {
+        return $(this).val();
+      }).get().join(';');
+    //单位
+    $("input[name=UnitList]").val(JsUnitList);
+    //所有附件集中
+    var JsObj = $("select[name=selFileList_1]");
+    JsObj.empty();
+    $("select[name^=fileList]>option").each(function() {
+      if ($(this).val() != null) {
+       JsObj.append("<option value='"+$(this).val()+"'>"+$(this).val()+"</option>");
+     }
+    });
+
     //提交时，验证必填项
     if (!JQcheck(sCss)){
       return false;
@@ -1439,13 +1587,6 @@
       if (!(confirm(sConfirm)))
         return false;
     }
-    //把单位拼起来
-    var JsUnitList = $("select[name=selUnit_1]>option").map(function() {
-        return $(this).val();
-      }).get().join(';');
-    //单位
-    $("input[name=UnitList]").val(JsUnitList);
-
     //状态赋值
     $("input[name=Stat]").val(OpText);
 

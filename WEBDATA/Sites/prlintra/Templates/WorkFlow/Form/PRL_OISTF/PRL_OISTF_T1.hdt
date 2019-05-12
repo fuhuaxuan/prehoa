@@ -421,7 +421,7 @@
   </tr>
   <tr>
     <td class="DtlBarTitle">Ç·×â½ð¶î£º<font color =red>*</font></td>
-    <td class="ListTd"><input type="text" NAME="NumG" maxlength="64" Class="JQFloat JQMust" value="<HDPrint Value=#NumG# Replace=#DBField2Input#>" style="width:120px;" JQRow="Num" JQRowName="NumSum"></td>
+    <td class="ListTd"><input type="text" NAME="NumG" maxlength="64" Class="JQFloat JQMust" value="<HDPrint Value=#NumG# Replace=#DBField2Input#>" style="width:120px;"></td>
   </tr>
   <tr>
     <td class="DtlBarTitle">ºÏ¼Æ£º</td>

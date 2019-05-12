@@ -109,6 +109,87 @@
     <td class="PrintTdRT"></td>
     <td class="PrintTdRT"></td>
   </tr>
+  <tr valign="top">
+    <td class="PrintTdRT" colspan="6">C、本年度已缴/预估租金费用明细</td>
+  </tr>
+  <tr valign="top">
+    <td class="PrintTdRT">本年度预算[元/年]:</td>
+    <td class="PrintTdRT"><HDPrint Value=#CFee#></td>
+    <td class="PrintTdRT"></td>
+    <td class="PrintTdRT"></td>
+    <td class="PrintTdRT"></td>
+    <td class="PrintTdRT"></td>
+  </tr>
+</table>
+<table width="645"  align="center" cellpadding="0"  cellspacing="1" id="tb_FeeD"  style="border-left:1 solid black;">
+  <colgroup>
+     <col style="width:20%">
+     <col style="width:12%">
+     <col style="width:12%">
+     <col style="width:12%">
+     <col style="width:12%">
+     <col style="width:12%">
+     <col style="width:20%">
+  </colgroup>
+  <thead>
+  <tr>
+    <td class="PrintTdRT" colspan="7">D、退租品牌本年度已缴费用明细</td>
+  </tr>
+  <tr align="center">
+    <td class="PrintTdRT">日期(退租品牌)<br></td>
+    <td class="PrintTdRT">固定租金<br>psm/day<br>(㎡/天)</td>
+    <td class="PrintTdRT">物管费<br>psm/day<br>(㎡/天)</td>
+    <td class="PrintTdRT">市场推广费<br>psm/mth<br>(㎡/月)</td>
+    <td class="PrintTdRT">提成租金<br>(纯扣租户)<br>psm/day<br>(㎡/天)</td>
+    <td class="PrintTdRT">总租金<br>元</td>
+    <td class="PrintTdRT">备注</td>
+  </tr>
+  </thead>
+  <tbody>
+  <HDPrint Value=#DFeeList# Replace=#None#>
+  </tbody>
+  <tfoot>
+  <tr>
+    <td class="PrintTdRT" colspan="5">合计：</td>
+    <td class="PrintTdRT" align="center"><HDPrint Value=#DFee#></td>
+    <td class="PrintTdRT" align="center" colspan="2">&nbsp;</td>
+  </tr>
+  </tfoot>
+</table>
+<table  width="645"  align="center" cellpadding="0"  cellspacing="1" id="tb_FeeE"  style="border-left:1 solid black;">
+  <colgroup>
+     <col style="width:20%">
+     <col style="width:12%">
+     <col style="width:12%">
+     <col style="width:12%">
+     <col style="width:12%">
+     <col style="width:12%">
+     <col style="width:20%">
+  </colgroup>
+  <thead>
+  <tr>
+    <td class="PrintTdRT" colspan="7">E、替换品牌本年度已缴费用明细</td>
+  </tr>
+  <tr align="center">
+    <td class="PrintTdRT">日期(替换品牌)<br></td>
+    <td class="PrintTdRT">固定租金<br>psm/day<br>(㎡/天)</td>
+    <td class="PrintTdRT">物管费<br>psm/day<br>(㎡/天)</td>
+    <td class="PrintTdRT">市场推广费<br>psm/mth<br>(㎡/月)</td>
+    <td class="PrintTdRT">提成租金<br>(纯扣租户)<br>psm/day<br>(㎡/天)</td>
+    <td class="PrintTdRT">总租金<br>元</td>
+    <td class="PrintTdRT">备注</td>
+  </tr>
+  </thead>
+  <tbody>
+  <HDPrint Value=#EFeeList# Replace=#None#>
+  </tbody>
+  <tfoot>
+  <tr>
+    <td class="PrintTdRT" colspan="5">合计：</td>
+    <td class="PrintTdRT" align="center"><HDPrint Value=#EFee#></td>
+    <td class="PrintTdRT" align="center" colspan="2">&nbsp;</td>
+  </tr>
+  </tfoot>
 </table>
 <table width="645" cellspacing="0" cellpadding="0" align="center" style="border-left:1 solid black;">
   <colgroup>
@@ -121,6 +202,9 @@
      <col style="width:20%">
   </colgroup>
   <thead>
+  <tr>
+    <td class="PrintTdRT" colspan="7">F、结算费用明细</td>
+  </tr>
   <tr align="center">
     <td class="PrintTdRT">结算费用项目</td>
     <td class="PrintTdRT">根据合同应缴金额(A)</td>
@@ -151,6 +235,9 @@
   <col style="padding-left:4px;width:20%">
   <col style="padding-left:4px;width:30%">
   <col style="padding-left:4px;width:20%">
+  <tr>
+    <td class="PrintTdRT" colspan="4">G、</td>
+  </tr>
   <tr>
     <td class="PrintTdRT">未完成租约期限的租金及费用：</td>
     <td class="PrintTdRT"><HDPrint Value=#NumA#></td>

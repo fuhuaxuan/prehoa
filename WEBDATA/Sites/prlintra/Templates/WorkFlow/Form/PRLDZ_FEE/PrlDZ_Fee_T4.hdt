@@ -2,7 +2,7 @@
 <script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
 <script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
 <SCRIPT LANGUAGE="JavaScript">
-  
+
 </script>
 
 <form name="frmDo" method="Post" action="">
@@ -83,24 +83,38 @@
     $("input[name=AppAssign]").val(OpText);
 
     var AskFee = '<HDPrint Value=#Askfee# Replace=#DBField2Js#>';
+    var NAskFee = '<HDPrint Value=#NAskFee# Replace=#DBField2Js#>';
+
     var Confirmfee = $("input[name=Confirmfee]").val();
+    var NConfirmfee = $("input[name=NConfirmfee]").val();
     if (AskFee == ''){
       AskFee = 0;
     }
+    if (NAskFee == ''){
+      NAskFee = 0;
+    }
     if (Confirmfee == ''){
       Confirmfee = 0;
+    }
+    if (NConfirmfee == ''){
+      NConfirmfee = 0;
     }
     if (parseFloat(Confirmfee) > parseFloat(AskFee)){
       alert('本次确认金额不能超过本次申请金额，请调整!');
       $("input[name=Confirmfee]").val(AskFee);
       return false;
     }
+    if ((parseFloat(Confirmfee) + parseFloat(NConfirmfee)) > (parseFloat(AskFee) + parseFloat(NAskFee))){
+      alert('本次确认总金额不能超过本次申请总金额，请调整!');
+      $("input[name=NConfirmfee]").val(NAskFee);
+      return false;
+    }
     //提交时，提示文字
     if (!confirm(sConfirm)){
       return false;
     }
-    
-    //获取当前表单对象 
+
+    //获取当前表单对象
     var JqObj = $("form[name=frmDo]");
     //表单参数设定
     JqObj.attr({

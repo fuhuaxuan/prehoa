@@ -27,7 +27,7 @@ SQL1=update wf_flow set flownote = ##TheFlowMemo## where EntGid = __ENTGID__ and
 SQL2=insert into wf_^^ModelCode^^ (EntGid,ModelGid,FlowGid,Num,LastUpdDate,Stat,FillUsrGid,FillUsrCode,FillUsrName,FillDeptGid,FillDeptCode,FillDeptName)select __ENTGID__,##ModelGid##,##FlowGid##,##Num##,sysdate,##Stat##,__USRGID__,__USRCODE__,__USRNAME__,##FillDeptGid##,##FillDeptCode##,##FillDeptName## from dual where ##IsNew## <= 0
 
 ;TMod-更新本流程主表信息，保存，提交
-SQL3=update wf_^^ModelCode^^ set (LastUpdDate,Stat,FillUsrGid,FillUsrCode,FillUsrName,FillDeptGid,FillDeptCode,FillDeptName,ApplyUsrGid,ApplyUsrCode,ApplyUsrName,IsCM,ComGid,ComName,SumFee,Memo,PayMan,PayBank,PayAccount) = (select sysdate,##Stat##,__USRGID__,__USRCODE__,__USRNAME__,##FillDeptGid##,##FillDeptCode##,##FillDeptName##,##ApplyUsrGid##,##ApplyUsrCode##,##ApplyUsrName##,##IsCM##,##ComGid##,##ComName##,##SumFee##,##Memo##,##PayMan##,##PayBank##,##PayAccount## from dual) where FlowGid = ##FlowGid## and EntGid = __ENTGID__ and ##Stat## <> '终止'
+SQL3=update wf_^^ModelCode^^ set (LastUpdDate,Stat,FillUsrGid,FillUsrCode,FillUsrName,FillDeptGid,FillDeptCode,FillDeptName,ApplyUsrGid,ApplyUsrCode,ApplyUsrName,IsCM,ComGid,ComName,SumFee,Memo,PayMan,PayBank,PayAccount,PayUsrGid,PayUsrCode,PayPosition) = (select sysdate,##Stat##,__USRGID__,__USRCODE__,__USRNAME__,##FillDeptGid##,##FillDeptCode##,##FillDeptName##,##ApplyUsrGid##,##ApplyUsrCode##,##ApplyUsrName##,##IsCM##,##ComGid##,##ComName##,##SumFee##,##Memo##,##PayMan##,##PayBank##,##PayAccount##,##PayUsrGid##,##PayUsrCode##,##PayPosition## from dual) where FlowGid = ##FlowGid## and EntGid = __ENTGID__ and ##Stat## <> '终止'
 
 ;更新本流程流程主表信息，终止
 SQL4=update wf_^^ModelCode^^ set (LastUpdDate,Stat,EndMemo) = (select sysdate,##Stat##,##EndMemo## from dual) where FlowGid = ##FlowGid## and EntGid = __ENTGID__ and ##Stat## = '终止'
@@ -47,7 +47,7 @@ SQL8=update wf_^^ModelCode^^_App set AppOrder = AppOrder + 100 where EntGid = __
 SQL9=insert into Wf_^^ModelCode^^_App (EntGid,ModelGid,FlowGid,Gid,AppGid,AppCode,AppName,AppType,AppOrder,AppAssign,AppMemo,AppDate) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,0,0,##Stat##,##AppMemo##,sysdate from dual where ##Stat## <> '保存'
 
 ;插入本流程明细信息
-LoopSql2=insert into Wf_^^ModelCode^^_Dtl (EntGid,ModelGid,FlowGid,Gid,Line,AcgGid,AcgCode,AcgName,PAcgGid,PAcgCode,PAcgName,AcgFee,ApplyFee) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),##%Line%##,##%AcgGid%##, ##%AcgCode%##, ##%AcgName%##, ##%PAcgGid%##, ##%PAcgCode%##, ##%PAcgName%##, ##%AcgFee%##, ##%ApplyFee%## from dual where ##Stat## <> '终止'
+LoopSql2=insert into Wf_^^ModelCode^^_Dtl (EntGid,ModelGid,FlowGid,Gid,Line,AcgGid,AcgCode,AcgName,PAcgGid,PAcgCode,PAcgName,AcgFee,FeeDate,FeeEDate,ApplyFee,TypeGid,TypeName,Memo) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),##%Line%##,##%AcgGid%##, ##%AcgCode%##, ##%AcgName%##, ##%PAcgGid%##, ##%PAcgCode%##, ##%PAcgName%##, ##%AcgFee%##, to_date(##%FeeDate%##,'YYYY.MM.DD'),to_date(##%FeeEDate%##,'YYYY.MM.DD'),##%ApplyFee%##,##%TypeGid%##,##%TypeName%##,##%Memo%## from dual where ##Stat## <> '终止'
 
 ;--更新审批人
 LoopSql3=call P_^^ModelCode^^_doApp(__ENTGID__,##ModelGid##,##%FlowGid%##,##Stat##)

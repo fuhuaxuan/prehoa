@@ -1,0 +1,51 @@
+<script>
+  var sTBRD = 0,sPMFD = 0,sApfixed = 0;
+  var sArea = $("input[name=Area]").val();
+  if (sArea == '') {
+    sArea = 0;
+  }
+  <hdloop>
+    var bDate = '<HDPrint Value=#sDate# Replace=#DBField2Js#>';
+    var eDate = '<HDPrint Value=#eDate# Replace=#DBField2Js#>';
+    var TBRD = '<HDPrint Value=#TBRD# Replace=#DBField2Js#>';
+    var PMFD = '<HDPrint Value=#PMFD# Replace=#DBField2Js#>';
+    var Apfixed = '<HDPrint Value=#Apfixed# Replace=#DBField2Js#>';
+    if (TBRD == ''){
+      TBRD = 0;
+    }
+    if (PMFD == ''){
+      PMFD = 0;
+    }
+    if (Apfixed == ''){
+      Apfixed = 0;
+    }
+    //ÌìÊý
+    var day = 0,month = 0;
+    var sDay = 24 * 3600 * 1000;
+    var sMonth = 365 / 12;
+    if (bDate != '' && eDate != '') {
+      var bD = new Date(bDate.replace('.','/').replace('.','/'));
+      var eD = new Date(eDate.replace('.','/').replace('.','/'));
+      var tD = eD - bD;
+      day = Math.floor(tD / sDay) + 1;
+      month = day / sMonth;
+      //console.log('month:'+month)
+    }
+    var a = parseFloat(TBRD) * parseFloat(sArea) * day;
+    var b = parseFloat(PMFD) * parseFloat(sArea) * day;
+    var c = parseFloat(Apfixed) * parseFloat(sArea) * month;
+
+    console.log(TBRD+"/"+PMFD+"/"+Apfixed)
+    sTBRD += a;
+    sPMFD += b;
+    sApfixed += c;
+  </hdloop>
+  $("input[name=DataA_1]:eq(0)").val(sTBRD.toFixed(4));
+  $("input[name=DataA_1]:eq(1)").val(sPMFD.toFixed(4));
+  $("input[name=DataA_1]:eq(2)").val(sApfixed.toFixed(2));
+  callF();
+  var Security = '<HDPrint Value=#Security# Replace=#DBField2Js#>';
+  if (Security != '') {
+      $("input[name=DataA_1]:eq(4)").val(Security)
+  }
+</script>

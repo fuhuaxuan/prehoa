@@ -20,7 +20,7 @@ Sql1=
 
 [Master]
 ;显示，多条记录的查询，可在HDT页面中直接使用<HDLoop>显示，并能够提供翻页。
-SQL=select t.Line,nvl(t.fno,'<font color="red">不能为空!</font>') fno,nvl(to_char(t.farea),'<font color="red">不能为空!</font>') farea,nvl(to_char(t.Jarea),'<font color="red">不能为空!</font>') Jarea,nvl(to_char(t.fmr),'<font color="red">不能为空!</font>') fmr,nvl(t.floorno,'<font color="red">不能为空!</font>') floorno,decode(t.deptsource,null,'<font color="red">不能为空!</font>',decode(d.name,null,t.deptsource||'<font color="red">非有效一级项目!</font>',t.deptsource||d.name)) deptName from Prl_Groundh_Temp t,dept d where t.EntGid = __ENTGID__ and t.ImportGid = __USRGID__ and t.EntGid = d.EntGid(+) and lower(t.deptsource) = lower(d.code2(+)) and length(d.code1(+)) = 8
+SQL=select t.Line,nvl(t.fno,'<font color="red">不能为空!</font>') fno,nvl(to_char(t.farea),'<font color="red">不能为空!</font>') farea,nvl(to_char(t.Jarea),'<font color="red">不能为空!</font>') Jarea,nvl(to_char(t.fmr),'<font color="red">不能为空!</font>') fmr,nvl(to_char(t.fmrY),'<font color="red">不能为空!</font>') fmrY,nvl(t.floorno,'<font color="red">不能为空!</font>') floorno,decode(t.deptsource,null,'<font color="red">不能为空!</font>',decode(d.name,null,t.deptsource||'<font color="red">非有效一级项目!</font>',t.deptsource||d.name)) deptName from Prl_Groundh_Temp t,dept d where t.EntGid = __ENTGID__ and t.ImportGid = __USRGID__ and t.EntGid = d.EntGid(+) and lower(t.deptsource) = lower(d.code2(+)) and length(d.code1(+)) = 8
 
 Count=SELECT 1 from dual
 [DefaultWhere]

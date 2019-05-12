@@ -145,7 +145,7 @@
 </table>
 </div>
 <script language="javascript">
-  if ('<HDPrint Value=#IsRt# Replace=#DBField2Js#>' != '0'){
+  if ('<HDPrint Value=#IsRt# Replace=#DBField2Js#>' != '0' && '<HDPrint Value=#IsMall# Replace=#DBField2Js#>' == ''){
     if ('<HDPrint Value=#Category# Replace=#DBField2Js#>' == 'Licence 短期租约(固定)' || '<HDPrint Value=#Category# Replace=#DBField2Js#>' == 'Licence 短期租约(非固定)'){
       $("div#div_PARAM2").css("display",'');
     }

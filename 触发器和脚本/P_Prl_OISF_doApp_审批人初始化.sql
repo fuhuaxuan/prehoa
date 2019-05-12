@@ -95,6 +95,18 @@ begin
               select v.PostGid  AppGid,
                      v.PostCode AppCode,
                      v.PostName AppName,
+                     45         AppOrder,
+                     45         AppType
+                from v_Post v
+               where v.EntGid = p_EntGid
+                 and v.deptGid = v_DeptGid
+                 and v.atype = 71
+                 and rownum = 1
+                 and v_PreDeptCode in ('0001','0023')
+              union
+              select v.PostGid  AppGid,
+                     v.PostCode AppCode,
+                     v.PostName AppName,
                      50         AppOrder,
                      50         AppType
                 from v_Post v
@@ -176,7 +188,8 @@ begin
                      group by t.EntGid, t.FlowGid, t.AppGid) a
              where f.EntGid = a.EntGid
                and f.FlowGid = a.FlowGid
-               and f.appType = a.appType);v_Stage := '插入审批人';
+               and f.appType = a.appType);
+    v_Stage := '插入审批人';
     if p_AppAssign = '提交' then
       insert into WF_Task
         (EntGid,

@@ -1,6 +1,10 @@
 <hdloop>
 <tr valign="top" style="background-color: white">
-  <td>[<HDPrint Value=#AcgCode#>]<HDPrint Value=#AcgName#></td>
-  <td align="center"><HDPrint Value=#ApplyFee#></td>
+  <td>报销科目：[<HDPrint Value=#AcgCode#>]<HDPrint Value=#AcgName#><br>项目地址：<HDPrint Value=#TypeName#></td>
+  <td align="center">
+    <HDPrint Value=#FeeDate#><br><HDPrint Value=#FeeEDate#>
+    <br><HDPrint Value=#ApplyFee#>元
+  </td>
+  <td><HDPrint Value=#Memo#></td>
 </tr>
 </hdloop>

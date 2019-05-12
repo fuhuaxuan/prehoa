@@ -1,0 +1,18 @@
+<HDLoop>
+<tr valign="top">
+  <td class="PrintTdRT"><HDPrint Value=#Apptypetext#></td>
+  <td class="PrintTdRT"><HDPrint Value=#AppName#></td>
+  <td class="PrintTdRT">
+    <script>
+      if ('<HDPrint Value=#AppAssign# Replace=#DBField2Js#>' == ''){
+        document.write('<font color="gray">Œ¥…Û≈˙</font>');
+      }
+      else{
+        document.write('<HDPrint Value=#AppAssign#>');
+      }
+    </script>
+  </td>
+  <td class="PrintTdRT"><HDPrint Value=#AppDate#></td>
+  <td class="PrintTdRT"><HDPrint Value=#AppMemo#></td>
+</tr>
+</HDLoop>

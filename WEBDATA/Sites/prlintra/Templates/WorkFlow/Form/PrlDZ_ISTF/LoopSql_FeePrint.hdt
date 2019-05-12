@@ -1,0 +1,11 @@
+<hdloop>
+  <tr align="center">
+    <td class="PrintTdRT"><HDPrint Value=#bDate#>~<HDPrint Value=#eDate#></td>
+    <td class="PrintTdRT"><HDPrint Value=#TBRD#></td>
+    <td class="PrintTdRT"><HDPrint Value=#PMFD#></td>
+    <td class="PrintTdRT"><HDPrint Value=#Apfixed#></td>
+    <td class="PrintTdRT"><HDPrint Value=#GTO#></td>
+    <td class="PrintTdRT"><HDPrint Value=#Rent#></td>
+    <td class="PrintTdRT"><HDPrint Value=#Memo#></td>
+  </tr>
+</hdloop>

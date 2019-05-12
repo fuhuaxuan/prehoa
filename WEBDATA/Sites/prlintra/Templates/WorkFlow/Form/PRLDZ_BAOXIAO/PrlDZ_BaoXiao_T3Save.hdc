@@ -10,7 +10,7 @@ SQL1=select 1 from WF_Flow where EntGid = __ENTGID__ and FlowGid = ##FlowGid##
 Remind1=对不起，您指定的流程申请单没有找到<script>alert('对不起，您指定的流程申请单没有找到');window.close()</script>
 
 ;检查判断的Sql语句，查不到结果是报错，从SQL1～SQL5，共可以写5句
-SQL2=select 1 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=31
+SQL2=select 1 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##ComGid## and v.atype=31
 Remind2=对不起，下一步审批人出纳未找到，请与管理员联系。<script>alert('对不起，下一步审批人出纳未找到，请与管理员联系。');history.back()</script>
 [Detail]
 ;显示，单条数据的查询，可以用于HDT显示，有select命令。从SQL1～SQL20共支持20条
@@ -31,7 +31,7 @@ SQLForCondition2=select ##CurUsrName##||':'||##AppAssign##||' - 报销人：' || App
 ;40:项目总经理;
 ;50:区域总监;
 ;71:资产经理 AssetManager
-SqlForCondition4=select v.PostGid AppGid,v.Email AppEmail from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype=31
+SqlForCondition4=select v.PostGid AppGid,v.Email AppEmail from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##ComGid## and v.atype=31
 
 
 [AddtionalSQL]
@@ -46,7 +46,7 @@ SQL2=insert into Wf_^^ModelCodeT^^_App (EntGid,ModelGid,FlowGid,Gid,AppGid,AppCo
 Sql4=update WF_^^ModelCodeT^^ set (LastUpdDate,IsTake) = (select sysdate,'是' from dual) where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid##
 
 ;更新预算费用列表
-SQL6=update PRL_ACG_COMPANY c set (LeftBudgutFee,OpUsrGid,OpUsrCode,OpUsrName,OpDate,OpMemo,OpModelCode,OpFlowGid,OpNum) = (select c.LeftBudgutFee - d.ApplyFee,__USRGID__,__USRCODE__,__USRNAME__,sysdate,'个人报销单扣减',##ModelCode##,##FlowGid##,f.num from WF_^^ModelCodeT^^ f,WF_^^ModelCodeT^^_Dtl d where f.EntGid = c.EntGid and f.Entgid = d.Entgid AND f.FlowGid = ##FlowGid## and f.FlowGid = d.Flowgid and f.ComGid = c.COMPANYGid and d.AcgGid = c.AcgGid and c.Year = to_char(f.createdate,'YYYY')) where c.Entgid = __ENTGID__ and exists (select 1 from WF_^^ModelCodeT^^ f,WF_^^ModelCodeT^^_Dtl d where f.EntGid = c.EntGid and f.Entgid = d.Entgid AND f.FlowGid = ##FlowGid## and f.FlowGid = d.Flowgid and f.ComGid = c.COMPANYGid and d.AcgGid = c.AcgGid and c.Year = to_char(f.createdate,'YYYY')) 
+SQL6=update PRL_ACG_COMPANY c set (LeftBudgutFee,OpUsrGid,OpUsrCode,OpUsrName,OpDate,OpMemo,OpModelCode,OpFlowGid,OpNum) = (select c.LeftBudgutFee - nvl(sum(d.ApplyFee),0),__USRGID__,__USRCODE__,__USRNAME__,sysdate,'个人报销单扣减',##ModelCode##,##FlowGid##,f.num from WF_^^ModelCodeT^^ f,WF_^^ModelCodeT^^_Dtl d where f.EntGid = c.EntGid and f.Entgid = d.Entgid AND f.FlowGid = ##FlowGid## and f.FlowGid = d.Flowgid and f.ComGid = c.COMPANYGid and d.AcgGid = c.AcgGid and c.Year = to_char(f.createdate,'YYYY') group by  f.flowgid,f.num,d.AcgGid) where c.Entgid = __ENTGID__ and exists (select 1 from WF_^^ModelCodeT^^ f,WF_^^ModelCodeT^^_Dtl d where f.EntGid = c.EntGid and f.Entgid = d.Entgid AND f.FlowGid = ##FlowGid## and f.FlowGid = d.Flowgid and f.ComGid = c.COMPANYGid and d.AcgGid = c.AcgGid and c.Year = to_char(f.createdate,'YYYY'))
 
 [AddtionalSQLUseWhere]
 ;显示，单条数据的查询，可以用于HDT显示，有select命令。从SQL1～SQL20共支持20条，同时会使用上面的[where]中的sql语句

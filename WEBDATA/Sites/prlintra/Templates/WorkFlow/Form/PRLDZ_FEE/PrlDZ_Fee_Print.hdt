@@ -85,23 +85,29 @@
   </tr>
 </table>
 <table width="645" cellspacing="0" cellpadding="0" align="center" style="border-left:1 solid black;">
-<col style="width:10%">
-<col style="width:10%">
-<col style="width:10%">
-<col style="width:10%">
-<col style="width:10%">
-<col style="width:25%">
+<col style="width:15%">
+<col style="width:35%">
+<col style="width:15%">
+<col style="width:35%">
 <tr>
   <td class="PrintTdRT">推荐及理由</td>
-  <td class="PrintTdRT" colspan="5"><HDPrint Value=#reason#></td>
+  <td class="PrintTdRT" colspan="3"><HDPrint Value=#reason#></td>
 </tr>
 <tr>
+  <td class="PrintTdRT">本次申请金额</td>
+  <td class="PrintTdRT">
+    今年：<HDPrint Value=#Askfee#>
+    明年：<HDPrint Value=#NAskfee#>
+  </td>
   <td class="PrintTdRT">剩余预算金额</td>
   <td class="PrintTdRT"><HDPrint Value=#controlfee#></td>
-  <td class="PrintTdRT">本次申请金额</td>
-  <td class="PrintTdRT"><HDPrint Value=#askfee#></td>
+</tr>
+<tr>
   <td class="PrintTdRT">本次实际金额</td>
-  <td class="PrintTdRT"><HDPrint Value=#confirmfeetext#></td>
+  <td class="PrintTdRT" colspan="3">
+    今年：<HDPrint Value=#confirmfeeText#>
+    明年：<HDPrint Value=#NConfirmfee#>
+  </td>
 </tr>
 </table>
 <HDPrint Value=#AppList# Replace=#None#>

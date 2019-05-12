@@ -1,0 +1,15 @@
+<table border="0" style="width:100%;">
+<tr><td>您好 :</td></tr>
+<tr><td>[流程名称] : <HDPrint Value=#ModelName#>；</td></tr>
+<tr><td>[单号] : <HDPrint Value=#Num#>；</td></tr>
+<tr><td>[发起人] : <HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]；</td></tr>
+<tr><td>[发起时间] : <HDPrint Value=#CreateDate#>]；</td></tr>
+<tr><td>[公司名称] : <HDPrint Value=#ComName#>；</td></tr>
+<tr><td>[分配前项目] : [<HDPrint Value=#PAcgCode#>]<HDPrint Value=#PAcgName#>；</td></tr>
+<tr><td>[分配前项目] : [<HDPrint Value=#CAcgCode#>]<HDPrint Value=#CAcgName#>；</td></tr>
+<tr><td>[分配预算]: <HDPrint Value=#ApplyFee#> 元；</td></tr>
+<tr><td>[备注] : <HDPrint Value=#memo#> ；</td></tr>
+<tr><td>[附件信息] : <HDPrint Value=#AttachList# Replace=#None#></td></tr>
+<tr><td>-----------内容展示完毕-----------</td></tr>
+</table>
+<HDPrint Value=#AppEmail# Replace=#None#>

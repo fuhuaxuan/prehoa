@@ -8,6 +8,11 @@
     '<HDPrint Value=#PAcgName# Replace=#DBField2Js#>',
     '<HDPrint Value=#Year# Replace=#DBField2Js#>',
     '<HDPrint Value=#AcgFee# Replace=#DBField2Js#>',
-    '<HDPrint Value=#ApplyFee# Replace=#DBField2Js#>');
+    '<HDPrint Value=#FeeDate# Replace=#DBField2Js#>',
+    '<HDPrint Value=#FeeEDate# Replace=#DBField2Js#>',
+    '<HDPrint Value=#ApplyFee# Replace=#DBField2Js#>',
+    '<HDPrint Value=#Memo# Replace=#DBField2Js#>',
+    '<HDPrint Value=#TypeGid# Replace=#DBField2Js#>',
+    '<HDPrint Value=#TypeName# Replace=#DBField2Js#>');
   </hdloop>
 </script>

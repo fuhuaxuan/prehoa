@@ -17,7 +17,7 @@
       </HDIF>
      |
       <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
-      
+
       <a HREF="##HDNet_AppName##/__ExplainModule?URL=Prl_Groundh_List&UsrGid=<HDPrint Value=#UsrGid#>"><FONT class="IconBack">　&nbsp;</FONT> 返回列表</A>
     </TD>
   </TR>
@@ -47,6 +47,11 @@
     <td class="listtd"><HDPrint Value=#Jarea#></td>
     <td class="DtlBarTitle">预算:</td>
     <td class="listtd"><HDPrint Value=#fmr#></td>
+  </tr>
+  <tr>
+    <td class="DtlBarTitle">年度总预算:</td>
+    <td class="listtd"><HDPrint Value=#fmrY#></td>
+    <td class="listtd" colspan="4"></td>
   </tr>
 </table>
 

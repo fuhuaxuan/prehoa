@@ -19,8 +19,7 @@
     }
     //存放将要发送到服务器的内容
     var sParams = '&fGid='+JsGid+'&sdeptsource='+Jsdeptsource+'&sfno='+Jsfno;
-    http.open('POST', '##HDNet_AppName##/__ExplainAjax?Url=Prl_Groundh_Add&UsrGid=<HDPrint 
-    Value=#UsrGid#>&OpAtype=0');
+    http.open('POST', '##HDNet_AppName##/__ExplainAjax?Url=Prl_Groundh_Add&UsrGid=<HDPrint Value=#UsrGid#>&OpAtype=0');
 
     http.onreadystatechange = function () {
       if (http.readyState == 4) {
@@ -59,7 +58,7 @@
       <A name="btn_1" HREF="javascript:CheckSubmit();void(0)"><FONT class="IconSave">　&nbsp;</FONT> 保存 </A>
      |
       <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
-      <a HREF="##HDNet_AppName##/__ExplainModule?URL=Prl_Groundh_List&UsrGid=<HDPrint Value=#UsrGid#>"><FONT 
+      <a HREF="##HDNet_AppName##/__ExplainModule?URL=Prl_Groundh_List&UsrGid=<HDPrint Value=#UsrGid#>"><FONT
       class="IconBack">　&nbsp;</FONT> 返回列表</A>
     </TD>
   </TR>
@@ -80,32 +79,34 @@
       <select name="deptsource" class="JQSelect JQMust" onchange="checkFno();">
         <option value="">--请选择--</option>
         <hdloop>
-        <option value="<HDPrint Value=#DeptCode# Replace=#DBField2Input#>"><HDPrint Value=#DeptName# 
-        Replace=#DBField2Input#></option>
+        <option value="<HDPrint Value=#DeptCode# Replace=#DBField2Input#>"><HDPrint Value=#DeptName# Replace=#DBField2Input#></option>
         </hdloop>
       </select>
       <script language="javascript">
-        $("select[name=deptsource] option[value='<HDPrint Value=#deptsource# 
-        Replace=#DBField2Js#>']").prop("selected",true);
+        $("select[name=deptsource] option[value='<HDPrint Value=#deptsource# Replace=#DBField2Js#>']").prop("selected",true);
       </script>
     </td>
     <td class="DtlBarTitle">编号:<font color ="red">*</font></td>
-    <td class="listtd"><input type="text" NAME="fno" maxlength="64" class="JQText JQMust" value="<HDPrint 
+    <td class="listtd"><input type="text" NAME="fno" maxlength="64" class="JQText JQMust" value="<HDPrint
     Value=#fno# Replace=#DBField2Input#>" onchange="checkFno();"></td>
     <td class="DtlBarTitle">楼层:<font color ="red">*</font></td>
-    <td class="listtd"><input type="text" NAME="floorno" maxlength="32" class="JQText JQMust" value="<HDPrint 
+    <td class="listtd"><input type="text" NAME="floorno" maxlength="32" class="JQText JQMust" value="<HDPrint
     Value=#floorno# Replace=#DBField2Input#>"></td>
   </tr>
   <tr>
     <td class="DtlBarTitle">面积:<font color ="red">*</font></td>
-    <td class="listtd"><input type="text" NAME="farea" maxlength="16" class="JQFloat JQMust" value="<HDPrint 
+    <td class="listtd"><input type="text" NAME="farea" maxlength="16" class="JQFloat JQMust" value="<HDPrint
     Value=#farea# Replace=#DBField2Input#>"></td>
     <td class="DtlBarTitle">建筑面积:<font color ="red">*</font></td>
-    <td class="listtd"><input type="text" NAME="Jarea" maxlength="16" class="JQFloat JQMust" value="<HDPrint 
+    <td class="listtd"><input type="text" NAME="Jarea" maxlength="16" class="JQFloat JQMust" value="<HDPrint
     Value=#Jarea# Replace=#DBField2Input#>"></td>
     <td class="DtlBarTitle">预算:<font color ="red">*</font></td>
-    <td class="listtd"><input type="text" NAME="fmr" maxlength="16" class="JQFloat JQMust" JQBit="4" 
-    value="<HDPrint Value=#fmr# Replace=#DBField2Input#>"></td>
+    <td class="listtd"><input type="text" NAME="fmr" maxlength="16" class="JQFloat JQMust" JQBit="4" value="<HDPrint Value=#fmr# Replace=#DBField2Input#>"></td>
+  </tr>
+  <tr>
+    <td class="DtlBarTitle">年度总预算:<font color ="red">*</font></td>
+    <td class="listtd"><input type="text" NAME="fmrY" maxlength="16" class="JQFloat JQMust" value="<HDPrint Value=#fmrY# Replace=#DBField2Input#>"></td>
+    <td class="listtd" colspan="4"></td>
   </tr>
 </table>
 </form>

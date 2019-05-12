@@ -34,7 +34,7 @@ begin
                and f.FlowGid = p_FlowGid
                and f.modelgid = wm.modelgid) loop
     v_Stage   := 'FlowGid：' || R.Flowgid || '；模型：' || R.ModelName;
-    v_Title   := R.Mcode || '待审提醒:' || R.FilldeptName;
+    v_Title   := '医疗'|| R.Mcode || ':' || R.FilldeptName;
     v_Content := v_Content || v_Head;
   
     v_Body    := '[流程名称] : ' || R.ModelName;
@@ -157,13 +157,14 @@ begin
     for U in (select distinct hr.Email
                 from hr_emp hr
                where hr.entgid = R.EntGid
+                 and hr.Email is not null
                  and exists (select 1
                         from wf_task t
                        where t.EntGid = hr.EntGid
                          and t.FlowGid = R.Flowgid
                          and t.ExecGid = hr.UsrGid
                          and t.Stat = 1)) loop
-      v_Email := U.EMAIL || ',';
+      v_Email := v_Email || U.EMAIL || ',';
     end loop;
     if v_Email is not null then
       HDNet_SendMail(v_Title, v_Email, v_Content);

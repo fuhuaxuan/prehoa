@@ -38,11 +38,11 @@ SqlForCondition1=select Name ModuleName,Atype ModuleAtype from rt where lower(id
 [^^AddtionalSQL^^]
 ;操作，没有返回的结果，是在数据库中执行，有Insert, Update, Delete命令。从SQL1～SQL20共支持20条
 
-;更新数据
-SQL1=insert into PRL_ACG_COMPANY (EntGid,Gid,year,COMPANYGid,ACGGID,LeftBudgutFee) select __ENTGID__,sys_guid(),t.year,t.COMPANYGid,t.ACGGID,t.LeftBudgutFee from PRL_ACG_COMPANY_Temp t where t.entgid = __ENTGID__ and not exists (select 1 from PRL_ACG_COMPANY ac where ac.entgid = __ENTGID__ and t.COMPANYGid = ac.COMPANYGid and t.ACGGid = ac.ACGGid and t.year = ac.year) and t.ACGGID is not null
-
 ;改成覆盖的。不要累计
-SQL2=update PRL_ACG_COMPANY ac set ac.LeftBudgutFee = (select nvl(t.LeftBudgutFee,0) from PRL_ACG_COMPANY_Temp t where t.entgid = __ENTGID__ and t.COMPANYGid = ac.COMPANYGid and t.ACGGid = ac.ACGGid and t.year = ac.year) where exists (select 1 from PRL_ACG_COMPANY_Temp t where t.entgid = __ENTGID__ and t.COMPANYGid = ac.COMPANYGid and t.ACGGid = ac.ACGGid and t.year = ac.year)
+SQL1=update PRL_ACG_COMPANY ac set ac.LeftBudgutFee = ac.LeftBudgutFee + (select nvl(t.LeftBudgutFee,0) from PRL_ACG_COMPANY_Temp t where t.entgid = __ENTGID__ and t.COMPANYGid = ac.COMPANYGid and t.ACGGid = ac.ACGGid and t.year = ac.year) where exists (select 1 from PRL_ACG_COMPANY_Temp t where t.entgid = __ENTGID__ and t.COMPANYGid = ac.COMPANYGid and t.ACGGid = ac.ACGGid and t.year = ac.year)
+
+;更新数据
+SQL2=insert into PRL_ACG_COMPANY (EntGid,Gid,year,COMPANYGid,ACGGID,LeftBudgutFee) select __ENTGID__,sys_guid(),t.year,t.COMPANYGid,t.ACGGID,t.LeftBudgutFee from PRL_ACG_COMPANY_Temp t where t.entgid = __ENTGID__ and not exists (select 1 from PRL_ACG_COMPANY ac where ac.entgid = __ENTGID__ and t.COMPANYGid = ac.COMPANYGid and t.ACGGid = ac.ACGGid and t.year = ac.year) and t.ACGGID is not null
 
 ;删除临时表
 SQL3=delete from  PRL_ACG_COMPANY_Temp t where t.ENTGID = __ENTGID__ 

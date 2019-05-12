@@ -73,6 +73,17 @@ begin
               select v.PostGid  AppGid,
                      v.PostCode AppCode,
                      v.PostName AppName,
+                     35         AppOrder,
+                     35         AppType
+                from v_Post v
+               where v.EntGid = p_EntGid
+                 and v.deptGid = v_DeptGid
+                 and v.atype = 35
+                 and rownum = 1
+              union
+              select v.PostGid  AppGid,
+                     v.PostCode AppCode,
+                     v.PostName AppName,
                      40          AppOrder,
                      40         AppType
                 from v_Post v
@@ -118,7 +129,7 @@ begin
        and f.Apporder > 0
        and f.Appdate is null
        and not exists (select 1
-              from (select min(t.apporder) apporder,
+              from (select max(t.apporder) apporder,
                            t.EntGid,
                            t.FlowGid,
                            t.AppGid

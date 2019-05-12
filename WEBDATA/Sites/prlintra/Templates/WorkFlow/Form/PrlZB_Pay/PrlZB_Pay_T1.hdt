@@ -375,11 +375,11 @@
   <tr valign="top">
     <td class="DtlBarTitle">人民币[大写]:</td>
     <td class="listtd"><INPUT TYPE="text" NAME="BigRMB" maxlength="128" value="<HDPrint Value=#BigRMB# Replace=#DBField2Input#>" class="JQText" readonly style="border:0px;"></td>
-    <td class="DtlBarTitle">付款备注:<br><font color="gray">(1000字以内)</font></td>
-    <td class="listtd" colspan="3"><textarea rows="5" name="Memo" class="JQText" maxlength="1000"><HDPrint Value=#Memo# Replace=#DBField2InputField#></textarea></td>
+    <td class="DtlBarTitle">付款备注:<font color="red">*</font><br><font color="gray">(1000字以内)</font></td>
+    <td class="listtd" colspan="3"><textarea rows="5" name="Memo" class="JQText JQMust" maxlength="500"><HDPrint Value=#Memo# Replace=#DBField2InputField#></textarea></td>
   </tr>
   <tr valign="top">
-    <td class="DtlBarTitle">收款单位（Payee）:<font color="red">*</font></td>
+    <td class="DtlBarTitle">收款单位(Payee):<font color="red">*</font</td>
     <td class="listtd"><INPUT TYPE="text" NAME="Payee" maxlength="64" value="<HDPrint Value=#Payee# Replace=#DBField2Input#>" class="JQText JQMust"></td>
     <td class="DtlBarTitle">收款银行（Bank）:<font color="red">*</font></td>
     <td class="listtd"><INPUT TYPE="text" NAME="Bank" maxlength="64" value="<HDPrint Value=#Bank# Replace=#DBField2Input#>" class="JQText JQMust"></td>
@@ -607,5 +607,31 @@
   <INPUT TYPE="hidden" name="DataInterface_FieldTo" value="">
   <INPUT TYPE="hidden" name="DataInterface_FieldBy" value="1">
   <INPUT TYPE="hidden" name="DataInterface_CallBckFunc" value="CallFee">
+  <INPUT TYPE="hidden" name="DataInterface_Close" value="true">
+</FORM>
+
+<!--选择银行账户-->
+<FORM NAME="frmDataInterface_Bank" ACTION="">
+  <INPUT TYPE="hidden" name="DataInterface_Title" ID="t_Bank" value="银行账户列表">
+
+  <INPUT TYPE="hidden" name="DataInterface_Sql" ID="s_Bank" value="select distinct f.Payee, f.Account, f.Bank from wf_prlzb_pay f,wf_flow wf where f.entgid = wf.entgid and f.flowgid = wf.flowgid  and wf.stat < 4 and f.stat not in ('终止','30') and f.EntGid = '<HDPrint Value=#EntGid#>'  and f.Account is not null">
+  <INPUT TYPE="hidden" name="DataInterface_CountSql" ID="c_Bank" value="select count(distinct f.Payee|| f.Account|| f.Bank) from wf_prlzb_pay f,wf_flow wf where f.entgid = wf.entgid and f.flowgid = wf.flowgid  and wf.stat < 4 and f.stat not in ('终止','30') and f.EntGid = '<HDPrint Value=#EntGid#>'  and f.Account is not null">
+  <INPUT TYPE="hidden" name="DataInterface_OrderSql" value="order by Account">
+  <INPUT TYPE="hidden" name="DataInterface_UsrGid" value="<HDPrint Value=#UsrGid#>">
+  <INPUT TYPE="hidden" name="DataInterface_AppName" value="##HDNet_AppName##">
+
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="1^收款单位^left^50">
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="2^账户^left^50">
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="3^开户行^left^80">
+
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="Payee^收款单位^1">
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="Account^账户^1">
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="Bank^开户行^1">
+  <input TYPE="hidden" name="DataInterface_Search_Sql" value="">
+  <input TYPE="hidden" name="DataInterface_Search_Cols" value="">
+
+  <INPUT TYPE="hidden" name="DataInterface_FieldTo" value="Payee^Account^Bank">
+  <INPUT TYPE="hidden" name="DataInterface_FieldBy" value="1^2^3">
+  <INPUT TYPE="hidden" name="DataInterface_CallBckFunc" value="">
   <INPUT TYPE="hidden" name="DataInterface_Close" value="true">
 </FORM>

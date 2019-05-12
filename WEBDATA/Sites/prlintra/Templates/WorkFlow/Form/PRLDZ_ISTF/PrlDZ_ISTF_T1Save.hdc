@@ -22,7 +22,7 @@ SQLForCondition3=select 'µ¥ºÅ£º' || ##Num## ||'£»'|| ##TheMemo##  TheFlowMemo,'´
 [AddtionalSQL]
 ;²Ù×÷£¬Ã»ÓÐ·µ»ØµÄ½á¹û£¬ÊÇÔÚÊý¾Ý¿âÖÐÖ´ÐÐ£¬ÓÐInsert, Update, DeleteÃüÁî¡£´ÓSQL1¡«SQL20¹²Ö§³Ö20Ìõ
 ;²åÈë±¾Á÷³ÌÖ÷±í
-SQL1=insert into Wf_PRL_ISTF (EntGid,ModelGid,FlowGid,Num,LastUpdDate,Stat,FillUsrGid,FillUsrCode,FillUsrName,FillUsrDeptGid,FillUsrDeptCode,FillUsrDept,OldFlowGid,category,categorytext,Terminationdate,lessee,Tradingname,Remarks,DataASum,DataBSum,DataCSum,DataDSum,DataESum,NumA,NumB,NumC,NumD,NumE,NumF,NumG,NumSum)select __ENTGID__,##ModelGid##,##FlowGid##,##Num##,sysdate,##Stat##,__USRGID__,__USRCODE__,__USRNAME__,##FillDeptGid##,##FillDeptCode##,##FillDeptName##,##OldFlowGid##,##category##,##categorytext##,to_date(##Terminationdate##,'YYYY.MM.DD'),##lessee##,##Tradingname##,##Remarks##,##DataASum##,##DataBSum##,##DataCSum##,##DataDSum##,##DataESum##,##NumA##,##NumB##,##NumC##,##NumD##,##NumE##,##NumF##,##NumG##,##NumSum## from dual
+SQL1=insert into Wf_PRL_ISTF (EntGid,ModelGid,FlowGid,Num,LastUpdDate,Stat,FillUsrGid,FillUsrCode,FillUsrName,FillUsrDeptGid,FillUsrDeptCode,FillUsrDept,OldFlowGid,category,categorytext,Terminationdate,lessee,Tradingname,Remarks,DataASum,DataBSum,DataCSum,DataDSum,DataESum,NumA,NumB,NumC,NumD,NumE,NumF,NumG,NumSum,CFee,DFee,EFee)select __ENTGID__,##ModelGid##,##FlowGid##,##Num##,sysdate,##Stat##,__USRGID__,__USRCODE__,__USRNAME__,##FillDeptGid##,##FillDeptCode##,##FillDeptName##,##OldFlowGid##,##category##,##categorytext##,to_date(##Terminationdate##,'YYYY.MM.DD'),##lessee##,##Tradingname##,##Remarks##,##DataASum##,##DataBSum##,##DataCSum##,##DataDSum##,##DataESum##,##NumA##,##NumB##,##NumC##,##NumD##,##NumE##,##NumF##,##NumG##,##NumSum##,##CFee##,##DFee##,##EFee## from dual
 
 ;É¾³ý±¾Á÷³ÌÖÐÎ´ÉóÅúµÄÉóÅúÈË
 SQL2=delete from Wf_Prl_Isf_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppDate is null
@@ -33,14 +33,22 @@ SQL3=delete from WF_PRL_ISF_Attach where EntGid = __ENTGID__ and FlowGid = ##Flo
 ;É¾³ý±¾Á÷³ÌÈ«²¿Ã÷Ï¸
 SQL4=delete from Wf_PRL_ISTF_Dtl where EntGid = __ENTGID__ and FlowGid = ##FlowGid##
 
+;É¾³ý±¾Á÷³ÌÈ«²¿Ã÷Ï¸
+SQL5=delete from Wf_PRL_ISTF_Fee where EntGid = __ENTGID__ and FlowGid = ##FlowGid##
+
 ;²åÈë±¾Á÷³Ì·¢ÆðÈËÐÅÏ¢
-SQL5=insert into Wf_Prl_Isf_App (EntGid,FlowGid,dtlgid,AppGid,AppCode,AppName,AppType,AppOrder,AppAssign,AppMemo,AppDate) select __ENTGID__,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,0,0,##Stat##,##AppMemo##,sysdate from dual where ##Stat## = 'Ìá½»'
+SQL6=insert into Wf_Prl_Isf_App (EntGid,FlowGid,dtlgid,AppGid,AppCode,AppName,AppType,AppOrder,AppAssign,AppMemo,AppDate) select __ENTGID__,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,0,0,##Stat##,##AppMemo##,sysdate from dual where ##Stat## = 'Ìá½»'
 
 ;--¸üÐÂÉóÅúÈË
 SQL11=call P_^^ModelCode^^_doApp(__ENTGID__,##ModelGid##,##FlowGid##,##Stat##)
 
 ;²åÈë±¾Á÷³ÌÃ÷Ï¸ÐÅÏ¢
-LoopSql2=insert into Wf_PRL_ISTF_Dtl (EntGid,ModelGid,FlowGid,Gid,Line,DataName,DataA,DataB,DataC,DataD,DataE,Memo) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),##%Line%##,##%DataName%##,##%DataA%##,##%DataB%##,##%DataC%##,##%DataD%##,##%DataE%##,##%Memo%## from dual
+LoopSql1=insert into Wf_PRL_ISTF_Dtl (EntGid,ModelGid,FlowGid,Gid,Line,DataName,DataA,DataB,DataC,DataD,DataE,Memo) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),##%Line%##,##%DataName%##,##%DataA%##,##%DataB%##,##%DataC%##,##%DataD%##,##%DataE%##,##%Memo%## from dual
+
+;²åÈë±¾Á÷³ÌÃ÷Ï¸ÐÅÏ¢
+LoopSql2=insert into Wf_PRL_ISTF_Fee (EntGid,ModelGid,FlowGid,Gid,Line,aType,bDate,eDate,TBRD,PMFD,Apfixed,GTO,Rent,Memo) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),##%DLine%##,##%DaType%##,to_date(##%DbDate%##,'YYYY.MM.DD'),to_date(##%DeDate%##,'YYYY.MM.DD'),##%DTBRD%##,##%DPMFD%##,##%DApfixed%##,##%DGTO%##,##%DRent%##,##%DMemo%## from dual
+
+LoopSql3=insert into Wf_PRL_ISTF_Fee (EntGid,ModelGid,FlowGid,Gid,Line,aType,bDate,eDate,TBRD,PMFD,Apfixed,GTO,Rent,Memo) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),##%ELine%##,##%EaType%##,to_date(##%EbDate%##,'YYYY.MM.DD'),to_date(##%EeDate%##,'YYYY.MM.DD'),##%ETBRD%##,##%EPMFD%##,##%EApfixed%##,##%EGTO%##,##%ERent%##,##%EMemo%## from dual
 
 ;²åÈë±¾Á÷³Ì¸½¼þÐÅÏ¢
 AttachSqlAdd1=insert into WF_PRL_ISF_Attach (EntGid,ModelGid,FlowGid,Attach_Gid,Attach_Title,Attach_Url,Attach_Size) select __ENTGID__ ,##ModelGid##,##FlowGid##, @@AttachID@@, @@FileName@@, @@FilePath@@,@@FileSize@@ from dual
