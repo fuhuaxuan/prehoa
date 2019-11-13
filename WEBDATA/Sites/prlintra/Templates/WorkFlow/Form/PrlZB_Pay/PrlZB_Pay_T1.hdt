@@ -417,7 +417,7 @@
     </table>
     </td>
   </tr>
-  <tr>
+  <tr style="display:none">
     <td class="DtlBarTitle">发起人备注:<br><font color="gray">(500字内)</font></td>
     <td class="listtd" colspan="5"><textarea class="JQText JQNo" rows="5" id="AppMemo" name="AppMemo" maxlength="500"></textarea></td>
   </tr>

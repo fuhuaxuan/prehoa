@@ -7,7 +7,7 @@
   *函数功能：明细新增一行
   *参数说明：使用JQTr_Add() 函数新增行时，需写在 tbody 标记中
   */
-  function Add_Dtl(AcgGid,AcgCode,AcgName,ComGid,ComCode,ComName,A1Apper,A2Apper,A3Apper,A4Apper,A5Apper,A6Apper,A7Apper,A8Apper,A9Apper,A10Apper){
+  function Add_Dtl(AcgGid,AcgCode,AcgName,ComGid,ComCode,ComName,A1Apper,A2Apper,A3Apper,A4Apper,A5Apper,A55Apper,A6Apper,A7Apper,A8Apper,A9Apper,A10Apper){
     var sTbId = 'tb_Dtl';
     var sTrClass = 'listtd';
     var tdArr = new Array();
@@ -28,6 +28,9 @@
     }
     if (A5Apper == null){
       A5Apper = '';
+    }
+    if (A55Apper == null){
+      A55Apper = '';
     }
     if (A6Apper == null){
       A6Apper = '';
@@ -76,6 +79,10 @@
       +'<input type="hidden" name="A5Apper_1" value="'+A5Apper+'" JQChkName="chkA5Apper_1'+ iRow +'" JQChkTab=";">'
     +'</td>';
     tdArr[k++] = '<td align="center">'
+      +'<input type="checkbox" name="chkApper_1'+ iRow +'" id="chkA55Apper_1'+ iRow +'" value="1" class="JQCheckBox">'
+      +'<input type="hidden" name="A55Apper_1" value="'+A55Apper+'" JQChkName="chkA55Apper_1'+ iRow +'" JQChkTab=";">'
+    +'</td>';
+    tdArr[k++] = '<td align="center">'
       +'<input type="checkbox" name="chkApper_1'+ iRow +'" id="chkA6Apper_1'+ iRow +'" value="1" class="JQCheckBox">'
       +'<input type="hidden" name="A6Apper_1" value="'+A6Apper+'" JQChkName="chkA6Apper_1'+ iRow +'" JQChkTab=";">'
     +'</td>';
@@ -98,12 +105,13 @@
 
     //新增一行
     JQTr_Add(sTbId,sTrClass,tdArr);
-    var Apper = A1Apper+A2Apper+A3Apper+A4Apper+A5Apper+A6Apper+A7Apper+A8Apper+A9Apper+A10Apper;
+    var Apper = A1Apper+A2Apper+A3Apper+A4Apper+A5Apper+A55Apper+A6Apper+A7Apper+A8Apper+A9Apper+A10Apper;
     JQcheckBoxVal("chkAllApper_1"+iRow,";",Apper);
     JQcheckBoxVal("chkA2Apper_1"+iRow,";",A2Apper);
     JQcheckBoxVal("chkA3Apper_1"+iRow,";",A3Apper);
     JQcheckBoxVal("chkA4Apper_1"+iRow,";",A4Apper);
     JQcheckBoxVal("chkA5Apper_1"+iRow,";",A5Apper);
+    JQcheckBoxVal("chkA55Apper_1"+iRow,";",A55Apper);
     JQcheckBoxVal("chkA6Apper_1"+iRow,";",A6Apper);
     JQcheckBoxVal("chkA7Apper_1"+iRow,";",A7Apper);
     JQcheckBoxVal("chkA8Apper_1"+iRow,";",A8Apper);
@@ -197,7 +205,8 @@
 <table width="100%" class="ListBar" cellpadding="0"  cellspacing="1">
   <colgroup>
     <col style="padding-left:4px;width:10%">
-    <col style="padding-left:4px;width:90%">
+    <col style="padding-left:4px;width:80%">
+    <col style="padding-left:4px;width:10%">
   </colgroup>
   <tr>
     <td class="DtlBarTitle">公司:<font color ="red">*</font></td>
@@ -215,12 +224,17 @@
       });
       </script>
     </td>
+    <td class="listtd">
+      <INPUT TYPE="hidden" title="下载报表用到的控件" name="Rep_Download" value="">
+      <INPUT TYPE="button" name="btnDownload" class="NormalSbt" value="下载Excel" onclick="return DownLoad()">
+    </td>
   </tr>
 </table>
 <table width="100%" class="ListBar JQMust" cellpadding="0"  cellspacing="1" id="tb_Dtl" style="margin-top:10px">
   <colgroup>
      <col style="width:5%" align="center">
      <col style="width:15%">
+     <col style="width:7%">
      <col style="width:7%">
      <col style="width:7%">
      <col style="width:7%">
@@ -243,6 +257,7 @@
     <td>20<font color="red">*</font><br>人事</td>
     <td>25<font color="red">*</font><br>财务主任</td>
     <td>30<font color="red">*</font><br>财务经理</td>
+    <td>32<font color="red">*</font><br>副财务总监</td>
     <td>35<font color="red">*</font><br>财务总监</td>
     <td>40<font color="red">*</font><br>人事总监</td>
     <td>45<font color="red">*</font><br>区域总经理</td>
@@ -267,6 +282,7 @@
     '<HDPrint Value=#A3Apper# Replace=#DBField2Js#>',
     '<HDPrint Value=#A4Apper# Replace=#DBField2Js#>',
     '<HDPrint Value=#A5Apper# Replace=#DBField2Js#>',
+    '<HDPrint Value=#A55Apper# Replace=#DBField2Js#>',
     '<HDPrint Value=#A6Apper# Replace=#DBField2Js#>',
     '<HDPrint Value=#A7Apper# Replace=#DBField2Js#>',
     '<HDPrint Value=#A8Apper# Replace=#DBField2Js#>',
@@ -317,3 +333,26 @@
   <INPUT TYPE="hidden" name="DataInterface_CallBckFunc" value="callApp">
   <INPUT TYPE="hidden" name="DataInterface_Close" value="true">
 </FORM>
+
+<SCRIPT LANGUAGE="JavaScript">
+  //下载Excel
+  function DownLoad(){
+    document.all.Rep_Download.value = '1';
+    //获取当前表单对象
+    var JqObj = $("form[name=frmDo]");
+    //表单参数设定
+    JqObj.attr({
+      "action":'##HDNet_AppName##/__ExplainModule?Url=PrlZB_Acg_PostDown&UsrGid=<HDPrint Value=#UsrGid#>',
+      "target":'_blank'
+    });
+    //表单提交
+    JqObj.submit();
+    //表单参数还原
+    JqObj.attr({
+      "action":'',
+      "target":'_self'
+    });
+    document.all.Rep_Download.value = '';
+    return true;
+  }
+  </script>

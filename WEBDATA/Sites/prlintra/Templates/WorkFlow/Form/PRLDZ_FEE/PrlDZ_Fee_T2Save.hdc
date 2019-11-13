@@ -18,7 +18,7 @@ SqlForCondition1=select wm.code ModelCode,replace(upper(wm.code),'DZ','') ModelC
 SQLForCondition2=select ##CurUsrName##||':'||##AppAssign##||' - 申请金额：' || Askfee || '；申请目的：' || Target AppFlowMemo from wf_^^ModelCodeT^^ where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## 
 
 ;是否存在下一级审批人? 0 结束，到下一步
-SQLForCondition4=select count(*) NextApp from Wf_^^ModelCodeT^^_App a where a.EntGid = __ENTGID__ and a.FlowGid = ##FlowGid## and a.AppDate is null and a.AppOrder in (select min(t.AppOrder) from Wf_^^ModelCodeT^^_App t where t.EntGid = __ENTGID__ and t.FlowGid = ##FlowGid## and t.AppOrder > ##AppOrder## and t.appdate is null )
+SQLForCondition4=select count(*) NextApp from Wf_^^ModelCodeT^^_App a where a.EntGid = __ENTGID__ and a.FlowGid = ##FlowGid## and a.AppDate is null and a.AppOrder in (select min(t.AppOrder) from Wf_^^ModelCodeT^^_App t where t.EntGid = __ENTGID__ and t.FlowGid = ##FlowGid## and t.AppOrder > ##AppOrder## and t.appdate is null  and t.AppOrder <> 100)
 
 ;取出邮件内容
 SQL1=select f.* from Wf_^^ModelCodeT^^ f where f.EntGid = __ENTGID__ AND f.FlowGid = ##FlowGid##

@@ -1,0 +1,23 @@
+<script>
+if ('<HDPrint Value=#UploadInfo# Replace=#DBField2Js#>' == 'UploadInfo')
+{
+  alert('<HDPrint Value=#ModuleName# Replace=#DBField2Js#>预保存成功，请检查并确认数据是否正确！');
+  location.replace('##HDNet_AppName##/__ExplainModule?Url=Prl_FeeIn&UsrGid=<HDPrint Value=#UsrGid#>&IsShow=yes');
+}
+else 
+{
+  var JsFail = parseFloat('<HDPrint Value=#cTotal# Replace=#DBField2Js#>') - parseFloat('<HDPrint Value=#cYes# Replace=#DBField2Js#>');
+  alert('<HDPrint Value=#ModuleName# Replace=#DBField2Js#>完成！');
+  if (self.opener != null) 
+  {
+    try{
+      self.opener.location.reload();
+    }
+    catch(e){
+    }
+    window.opener = null;
+    window.open(' ', '_self', ' ');
+  }
+  window.close();
+}
+</script>

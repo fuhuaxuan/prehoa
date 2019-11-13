@@ -133,6 +133,9 @@
       今年：<HDPrint Value=#Askfee#>
       明年：<HDPrint Value=#NAskfee#>
       剩余预算：<HDPrint Value=#ControlFee#>
+      <HDIF Equal(<HDPrint Value=#chkRtID1#>, 1)>
+      <a id="lcfeedtl" target="_blank" href="##HDNet_AppName##/__ExplainModule?Url=prl_lcfeedtl&UsrGid=<HDPrint Value=#UsrGid#>&sel_Company=<HDPrint Value=#CompanyGid#>&txt_Acg=<HDPrint Value=#AcgTwoGid#>&txt_Year=<HDPrint Value=#txtYear#>"> [已使用预算查询]</a>
+      </HDIF>
     </td>
     <td class="DtlBarTitle">本次确认金额:</td>
     <td class="listtd">
@@ -151,5 +154,11 @@
     <td class="DtlBarTitle">附件信息:</td>
     <td class="listtd" colspan="3"><HDPrint Value=#AttachList# Replace=#None#></td>
   </tr>
+  <HDIF EqualNot(<HDPrint Value=#isCEO# Replace=#None#>, 0)>
+  <tr valign="top">
+    <td class="DtlBarTitle">潘总审批附件:</td>
+    <td class="listtd" colspan="3"><HDPrint Value=#AttachList2# Replace=#None#></td>
+  </tr>
+  </HDIF>
 </table>
 </form>

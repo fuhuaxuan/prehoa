@@ -1,0 +1,103 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<SCRIPT LANGUAGE="JavaScript">
+  //进入时，函数
+</script>
+
+<form name="frmDo" method="Post" action="">
+
+  <!-- 流程信息 -->
+  <INPUT type="text" style="display:none" name="ModelGid" value="<HDPrint Value=#ModelGid# Replace=#DBField2Input#>">
+  <INPUT type="text" style="display:none" name="FlowGid" value="<HDPrint Value=#FlowGid# Replace=#DBField2Input#>">
+  <INPUT type="text" style="display:none" name="CurUrl" value="<HDPrint Value=#Url# Replace=#DBField2Input#>">
+  <!--发起人UsrGid-->
+  <INPUT type="text" style="display:none" name="T1Gid" value="<HDPrint Value=#FillUsrGid# Replace=#DBField2Input#>">
+  <input type="text" style="display:none" name="FillUsrDeptGid" value="<HDPrint Value=#FillUsrDeptGid# Replace=#DBField2Input#>">
+  <input type="text" style="display:none" name="ParentDeptCode" value="<HDPrint Value=#ParentDeptCode# Replace=#DBField2Input#>">
+  <input type="text" style="display:none" name="OldFlowGid" value="<HDPrint Value=#OldFlowGid# Replace=#DBField2Input#>">
+<INPUT type="text" style="display:none" name="AppOrder" value="<HDPrint Value=#AppOrder# Replace=#DBField2Input#>">
+<INPUT type="text" style="display:none" name="AppType" value="<HDPrint Value=#AppType# Replace=#DBField2Input#>">
+
+<INPUT type="text" style="display:none" name="LastGid" value="<HDPrint Value=#LastGid# Replace=#DBField2Input#>">
+<INPUT type="text" style="display:none" name="LastCode" value="<HDPrint Value=#LastCode# Replace=#DBField2Input#>">
+<INPUT type="text" style="display:none" name="LastName" value="<HDPrint Value=#LastName# Replace=#DBField2Input#>">
+<INPUT type="text" style="display:none" name="LastType" value="<HDPrint Value=#LastType# Replace=#DBField2Input#>">
+<INPUT type="text" style="display:none" name="LastOrder" value="<HDPrint Value=#LastOrder# Replace=#DBField2Input#>">
+
+<INPUT type="text" style="display:none" name="NextGid" value="<HDPrint Value=#NextGid# Replace=#DBField2Input#>">
+<INPUT type="text" style="display:none" name="F1Gid" value="123">
+<select name="selApp_1" class="JQList" multiple style="display:none"><HDPrint Value=#AppList# Replace=#None#></select>
+<!--意见标志：同意；否决-->
+<input type="text" style="display:none" name="AppAssign" value="">
+
+<FieldSet style="Font-Family:Tahoma;Font-Size:9pt;display:<HDPrint Value=#isShow#>">
+<Legend><font color="red">审批提醒</font></Legend>
+<li>1、"否决"：不同意此事，直接返回发起人修改</li>
+<li>2、"返回核实"：请上一步审批人作出相应解释，并返回上一步审批人审批</li>
+</FieldSet>
+
+<iframe onload="JQAutoHeight(this)" id="iframeDtl" frameborder ='0' width="100%"  scrolling="no" style="width:100%;" src="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_Content&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid#>"></iframe>
+<br>
+
+<table cellpadding="0" cellspacing="0" width="100%" class="App_List" style="margin-top:10px">
+  <col style="width:30%" valign="top">
+  <col style="width:30%" valign="top">
+  <col style="width:40%" valign="top">
+  <TR><TD class="App_ListTr" colspan="3">审批意见</TD></TR>
+  <tr>
+    <td colspan="3"><textarea class="JQText JQNo" rows="5" id="AppMemo" name="AppMemo" maxlength="500"></textarea></td>
+  </tr>
+  <tr align="center">
+    <td>　</td><td> </td>
+  </tr>
+  <tr align="center">
+    <td><div class="App_No" onclick="javascript:CheckSubmit('否决');void(0)">否决<div></td>
+    <td><div class="App_Yes" onclick="javascript:CheckSubmit('同意');void(0)">同意<div></td>
+    <td><div class="App_Other" onclick="javascript:CheckSubmit('返回核实');void(0)">返回核实<div></td>
+  </tr>
+</table>
+</form>
+<script language="javascript">
+  //复制一个工具栏
+  var $ToolBar = $("div#JQ_ToolBar");
+  $("form[name=frmDo]").append($ToolBar.html());
+
+  //提交函数
+  function CheckSubmit(OpText){
+    //定义 必填验证的 值
+    var sCss = 'JQMust';
+    //定义 提交提示文字
+    var sConfirm = '您确定已经阅读完毕这份申请单，并作出 “' + OpText + '” 的审核意见吗？';
+    //否决时，判断必填
+    if(OpText == '否决' || OpText == '返回核实'){
+      sCss = 'JQNo'
+    }
+    //提交时，验证必填项
+    if (!JQcheck(sCss)){
+      return false;
+    }
+    //审批意见赋值
+    $("input[name=AppAssign]").val(OpText);
+
+    //提交时，提示文字
+    if (!confirm(sConfirm)){
+      return false;
+    }
+    //获取当前表单对象
+    var JqObj = $("form[name=frmDo]");
+    //表单参数设定
+    JqObj.attr({
+      "action":'##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#Url#>Save&UsrGid=<HDPrint Value=#UsrGid#>',
+      "target":'_self'
+    });
+    //表单提交
+    JqObj.submit();
+
+    //操作按钮变为不可用
+    $("a[name=btn_1]").prop("disabled",true);
+
+    //本函数失效
+    CheckSubmit = function() {return false;}
+  }
+</script>

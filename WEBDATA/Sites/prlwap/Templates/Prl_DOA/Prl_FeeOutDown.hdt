@@ -1,0 +1,46 @@
+[Rep_BeginLine]
+年份
+公司名称
+项目编号
+项目名称
+剩余预算[元]
+使用中预算[元]
+
+
+
+已使用费用[元]
+[Rep_EndLine]
+[Rep_BeginLine]
+
+
+
+
+
+费用单
+付款单
+个人报销单
+合计
+费用单
+付款单
+个人报销单
+合计
+[Rep_EndLine]
+<HDLoop>
+[Rep_BeginLine]
+#NoForm#<HDPrint Value=#Year# Replace=#DBField2Excel#>
+<HDPrint Value=#ComName# Replace=#None#>
+#NoForm#<HDPrint Value=#AcgCode# Replace=#DBField2Excel#>
+<HDPrint Value=#AcgName# Replace=#None#>
+#NoForm#<HDPrint Value=#LeftFee# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#FYesFee# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#PYesFee# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#BYesFee# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#YesFee# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#FAllFee# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#PAllFee# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#BAllFee# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#AllFee# Replace=#DBField2Excel#>
+[Rep_EndLine]
+</HDLoop>
+
+

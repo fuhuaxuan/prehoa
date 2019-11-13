@@ -34,6 +34,31 @@
 </TABLE>
 <iframe onload="JQAutoHeight(this)" id="iframeDtl" frameborder ='0' width="100%"  scrolling="no" style="width:100%" src="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_Content&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid#>"></iframe>
 <br>
+<h3 class="SubTitleBar"><FONT style="padding-left:10px">确认信息</FONT></h3>
+<table cellpadding="0" cellspacing="1" class="ListBar" width="100%">
+  <col style="padding-left:4px;width:10%" valign="top">
+  <col style="padding-left:4px;width:40%" valign="top">
+  <col style="padding-left:4px;width:10%" valign="top">
+  <col style="padding-left:4px;width:40%" valign="top">
+  <tr>
+    <td class="DtlBarTitle">确认人:</td>
+    <td class="listtd">[<HDPrint Value=#CurUsrCode#>]<HDPrint Value=#CurUsrName#></td>
+    <td class="DtlBarTitle">确认时间:</td>
+    <td class="listtd"><HDPrint Value=#CurDate#> <HDPrint Value=#CurTime#></td>
+  </tr>
+  <tr valign="top" style="display:<HDPrint Value=#isShow#>">
+    <td class="DtlBarTitle">潘总审批附件:<font color="red">*</font><br><font color="gray">(双击删除)</font></td>
+    <td class="listtd" colspan="3">
+      <SELECT NAME="selFileList_1" size="3" style="width:250;" multiple class="<HDPrint Value=#isMust#>"><HDPrint Value=#AttachList# Replace=#None#></SELECT><br>
+      <input type="hidden" name="HDTempPath" value="<HDPrint Value=#NewGid# Replace=#DBField2Input#>">
+      <iframe FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid# Replace=#DBField2Input#>&CallBackFun=AddAttach" height=28></iframe>
+    </td>
+  </tr>
+  <tr>
+    <td class="DtlBarTitle">确认备注:<br><font color="gray">(500字内)</font></td>
+    <td class="listtd" colspan="3"><textarea class="JQText" rows="5" name="AppMemo" maxlength="500"></textarea></td>
+  </tr>
+</table>
 <TABLE width="100%" class="ButtonBar" cellpadding="0" cellspacing="0">
   <col style="width:100%">
   <TR>
@@ -47,7 +72,24 @@
   </TR>
 </TABLE>
 </form>
-<script language="javascript">
+<script>
+  /*
+  *函数名称：新增附件添加到附件列表中
+  *参数：sFileName-附件名称
+  */
+  function AddAttach(JsFileName)
+  {
+    if (JsFileName == '')
+      return false;
+    //判断是否存在附件
+    if (!JQgetSingle("selFileList_1",JsFileName)){
+      alert('对不起，已经存在该附件！');
+      return false;
+    }
+    //添加到附件表中
+    var JsOption = '<option value="'+JsFileName+'">'+JsFileName+'</option>';
+    $("select[name=selFileList_1]").append(JsOption);
+  }
   //提交函数
   function CheckSubmit(OpText){
     //定义 必填验证的 值

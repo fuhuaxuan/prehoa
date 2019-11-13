@@ -1,0 +1,29 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<table cellpadding="0" cellspacing="0" width="100%" class="App_List" style="margin-top:10px">
+  <col style="padding-left:4px;">
+  <col style="width:30px;" align="center">
+  <TR>
+    <TD align="left" class="App_ListTr" style="padding-left:10px;width:auto"><b>审批信息</b></TD>
+    <TD onclick="JQExpand('tb_App');" style="cursor:hand" class="IconDown">　　</TD>
+  </TR>
+</table>
+<table width="100%" cellspacing="0" cellpadding="0" id="tb_App" class="App_List" style="display:none">
+  <HDLoop>
+  <tr valign="top">
+    <td class="App_ListTd" style="line-height:24px;border-bottom:1px solid #d9dbdf">
+      <HDPrint Value=#Apptypetext#> - <HDPrint Value=#AppName#> : <HDPrint Value=#AppDate#><br>
+      [<script>
+        if ('<HDPrint Value=#AppAssign# Replace=#DBField2Js#>' == '否决')
+          document.write('<font color="red"><b><HDPrint Value=#AppAssign#></b></font>');
+        else if ('<HDPrint Value=#AppAssign# Replace=#DBField2Js#>' == ''){
+          document.write('<font color="gray">待审批</font>');
+        }
+        else{
+          document.write('<b><HDPrint Value=#AppAssign#></b>');
+        }
+      </script>]
+      <HDPrint Value=#note#>
+    </td>
+  </tr>
+  </HDLoop>
+</table>

@@ -1,0 +1,42 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<script language="javascript">
+  //窗口改变，重计算iframe的高度
+  $(window).resize(function (){
+    JQChgHeight();
+  });
+</script>
+<HDPrint Value=#EmailPhone# Replace=#None#>
+<script language="javascript">
+//函数：ready
+  //功能：document 加载完成后调用
+  $(function(){
+
+    var FeeFlowGid = '<HDPrint Value=#FeeFlowGid# Replace=#DBField2Js#>';
+    $("[JQ$=_2]").hide();
+    if (FeeFlowGid != ''){
+      $("[JQ$=yes_2]").show();
+      $("[JQ=yes_3]").prop("disabled",true);
+    }
+    else{
+      $("[JQ$=no_2]").show();
+      var sCode = '<HDPrint Value=#AcgTwoName# Replace=#DBField2Js#>';
+      if(sCode.indexOf('9.01')>-1||sCode.indexOf('9.02')>-1){
+        $("[JQ1=ACG9]").hide();
+      }
+      else{
+        $("[JQ1=ACG9]").show();
+      }
+    }
+
+    //是否显示公司承担
+    var sCode = '<HDPrint Value=#AcgOneName# Replace=#DBField2Js#>';
+    sCode = sCode.substr(0,1);
+    var $span = $("span#acg_3");
+    $span.hide();
+    if (sCode == '3'){
+      $span.show();
+    }
+  });
+</script>

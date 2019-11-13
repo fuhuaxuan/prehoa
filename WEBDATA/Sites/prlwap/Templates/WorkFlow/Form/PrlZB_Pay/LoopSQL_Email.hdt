@@ -1,0 +1,41 @@
+<table cellpadding="0" cellspacing="0" width="100%" class="App_List" style="margin-top:10px">
+  <col style="width:100%" valign="top">
+  <TR><TD class="App_ListTr">基本信息</TD></TR>
+  <TR><TD class="App_ListTd">单号：<HDPrint Value=#Num#></TD></TR>
+  <TR><TD class="App_ListTd">发起人：<HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]</TD></TR>
+  <TR><TD class="App_ListTd">发起日期：<HDPrint Value=#CreateDate#></TD></TR>
+</table>
+<table cellpadding="0" cellspacing="0" width="100%" class="App_List" style="margin-top:10px">
+<col style="width:100%" valign="top">
+<TR><TD class="App_ListTr">单据信息</TD></TR>
+<HDIF EqualNot(<HDPrint Value=#feeflowgid# Replace=#DBField2Input#>1, 1)>
+<TR><TD class="App_ListTd">[费用单号] : <a id="a_Fee" href="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#FeeModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&ModelCode=<HDPrint Value=#FeeModelCode#>&FlowGid=<HDPrint Value=#FeeFlowGid#>" target="_blank"><HDPrint Value=#feeNum#></a>-<HDPrint Value=#partnum#>；</td></tr>
+<TR><TD class="App_ListTd">[是否尾款] : <HDPrint Value=#isendtext#>；</td></tr>
+</HDIF>
+<TR><TD class="App_ListTd">[公司名称] : <HDPrint Value=#companyname#>；</td></tr>
+<TR><TD class="App_ListTd">[项目名称] : <HDPrint Value=#acgonename#> - <HDPrint Value=#acgtwoname#>；</td></tr>
+<TR><TD class="App_ListTd">
+  [付款金额] : <HDPrint Value=#payfee#>；
+  <span id="acg_3" style="display:none">(公司承担：<HDPrint Value=#npayfee#>)</span>
+  <script language="javascript">
+  var sCode = '<HDPrint Value=#acgonename# Replace=#DBField2Js#>';
+    sCode = sCode.substr(0,1);
+    var $span = $("span#acg_3");
+    $span.hide();
+    if (sCode == '3'){
+      $span.show();
+    }
+  </script>
+</td></tr>
+<TR><TD class="App_ListTd">[付款备注] : <HDPrint Value=#Memo#>；</td></tr>
+<TR><TD class="App_ListTd">[收款单位] : <HDPrint Value=#payee#>；</td></tr>
+<HDIF EqualNot(<HDPrint Value=#feeflowgid# Replace=#DBField2Input#>1, 1)>
+<TR><TD class="App_ListTd">[（A）项目总额] : <HDPrint Value=#feeA#>；</td></tr>
+<TR><TD class="App_ListTd">[（B）已付款金额] : <HDPrint Value=#feeB#>；</td></tr>
+<TR><TD class="App_ListTd">[（C）本次付款] : <HDPrint Value=#payfee#>；</td></tr>
+<TR><TD class="App_ListTd">[尚欠余额=A-B-C] : <HDPrint Value=#feeleft#>；</td></tr>
+<TR><TD class="App_ListTd">[实际付款总额=B+C] : <HDPrint Value=#feeok#>；</td></tr>
+</HDIF>
+<TR><TD class="App_ListTd">[附件信息] : <HDPrint Value=#AttachList# Replace=#None#></td></tr>
+</table>
+<HDPrint Value=#AppEmail# Replace=#None#>

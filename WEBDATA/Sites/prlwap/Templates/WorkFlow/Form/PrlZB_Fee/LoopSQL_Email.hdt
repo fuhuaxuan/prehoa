@@ -1,0 +1,19 @@
+<table cellpadding="0" cellspacing="0" width="100%" class="App_List" style="margin-top:10px">
+  <col style="width:100%" valign="top">
+  <TR><TD class="App_ListTr">基本信息</TD></TR>
+  <TR><TD class="App_ListTd">单号：<HDPrint Value=#Num#></TD></TR>
+  <TR><TD class="App_ListTd">发起人：<HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]</TD></TR>
+  <TR><TD class="App_ListTd">发起日期：<HDPrint Value=#CreateDate#></TD></TR>
+</table>
+<table cellpadding="0" cellspacing="0" width="100%" class="App_List" style="margin-top:10px">
+<col style="width:100%" valign="top">
+<TR><TD class="App_ListTr">单据信息</TD></TR>
+<TR><TD class="App_ListTd">[公司名称] : <HDPrint Value=#companyname#>；</td></tr>
+<TR><TD class="App_ListTd">[项目名称] : <HDPrint Value=#acgonename#> - <HDPrint Value=#acgtwoname#>；</td></tr>
+<TR><TD class="App_ListTd">[申请目的] : <HDPrint Value=#target#>；</td></tr>
+<TR><TD class="App_ListTd">[申请项目内容] : <HDPrint Value=#Memo#>；</td></tr>
+<TR><TD class="App_ListTd">[推荐及理由] : <HDPrint Value=#reason#>；</td></tr>
+<TR><TD class="App_ListTd">[本次申请金额] : 今年：<font style="color:red"><HDPrint Value=#askfee#></font> 元；跨年：<font style="color:red"><HDPrint Value=#NaskfeeStr#></font> 元；</td></tr>
+<TR><TD class="App_ListTd">[附件信息] : <HDPrint Value=#AttachList# Replace=#None#></td></tr>
+</table>
+<HDPrint Value=#AppEmail# Replace=#None#>

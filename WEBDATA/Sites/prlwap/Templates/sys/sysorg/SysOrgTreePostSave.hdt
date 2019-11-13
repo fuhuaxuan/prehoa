@@ -1,0 +1,8 @@
+
+<script>
+ // alert('成功设置[<HDPrint Value=#OrgCode# Replace=#DBField2Js#>]<HDPrint Value=#orgName# Replace=#DBField2Js#>的职务!');
+
+  location.replace('##HDNet_AppName##/__ExplainModule?Url=SysOrgTreeDtl&UsrGid=<HDPrint Value=#UsrGid#>&OrgGid=<HDPrint Value=#OrgGid#>');
+  
+</script>
+

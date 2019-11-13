@@ -1,0 +1,128 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<style type="text/css">
+.PrintTdRT {
+  border-right:1 solid black;
+  border-top:1 solid black;
+}
+</style>
+<table style="width:645;margin-top:10px;" align="center" border="0" cellpadding="0" cellspacing="0">
+  <col style="width:30%">
+  <col style="width:40%">
+  <col style="width:30%">
+  <tr>
+    <td class="Title" align="center" colspan="3" style="font-size:18pt"><HDPrint Value=#ModelName#></td>
+  </tr>
+  <tr>
+    <td align="center" colspan="3">--状态：<HDPrint Value=#stattext#></td>
+  </tr>
+  <tr>
+    <td align="center"><B>单号</B>：<HDPrint Value=#Num#></td>
+    <td align="center"><B>申请人</B>：<HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillUsrDept#>]</td>
+    <td align="center"><B>申请时间</B>：<HDPrint Value=#CreateDate#></td>
+  </tr>
+</table>
+<table width="645" cellspacing="0" cellpadding="0" align="center" style="border-left:1 solid black;">
+<col style="width:10%">
+<col style="width:15%">
+<col style="width:10%">
+<col style="width:15%">
+<col style="width:10%">
+<col style="width:15%">
+<HDIF EqualNot(<HDPrint Value=#feeflowgid# Replace=#DBField2Input#>1, 1)>
+  <tr>
+    <td class="PrintTdRT">费用申请单</td>
+    <td class="PrintTdRT" id="feedtl" colspan="3"> <a href="##HDNet_AppName##/wfflowpage?url=PrlZB_fee&modelcode=PrlZB_fee&flowgid=<HDPrint Value=#feeFlowGid#>&usrgid=<HDPrint Value=#usrgid#>" target="_blank"><HDPrint Value=#feeNum#></a>-<HDPrint Value=#partnum#></td>
+    <td class="PrintTdRT">是否尾款</td>
+    <td class="PrintTdRT"><HDPrint Value=#isendtext#></td>
+  </td>
+  </tr>
+</HDIF>
+<tr>
+  <td class="PrintTdRT">公司名称：</td>
+  <td class="PrintTdRT" colspan="5"> <HDPrint Value=#companyname#></td>
+</tr>
+<tr>
+  <td class="PrintTdRT">项目名称：</td>
+  <td class="PrintTdRT" colspan="5"><HDPrint Value=#acgonename#> - <HDPrint Value=#acgtwoname#></td>
+</tr>
+<tr>
+  <td class="PrintTdRT">付款金额</td>
+  <td class="PrintTdRT">
+    <font color="blue"><HDPrint Value=#payfee#></font>
+    <span style="display:none">　公司承担：<HDPrint Value=#NPayFee#></span>
+  </td>
+  <td class="PrintTdRT">要求支付方式 </td>
+  <td class="PrintTdRT" colspan="3"><HDPrint Value=#payway#></td></tr>
+<tr>
+  <td class="PrintTdRT">人民币（大写）</td>
+  <td class="PrintTdRT" colspan="1"><HDPrint Value=#bigrmb#></td>
+  <td class="PrintTdRT">付款备注（Memo）</td>
+  <td class="PrintTdRT" colspan="3"><HDPrint Value=#Memo#></td>
+  </td>
+</tr>
+<tr>
+  <td class="PrintTdRT">收款单位（Payee）</td>
+  <td class="PrintTdRT"><HDPrint Value=#payee#></td>
+  <td class="PrintTdRT">收款银行（Bank）</td>
+  <td class="PrintTdRT"><HDPrint Value=#bank#></td>
+  <td class="PrintTdRT">银行帐号（Accounts）</td>
+  <td class="PrintTdRT"><HDPrint Value=#account#></td>
+</tr>
+<HDIF EqualNot(<HDPrint Value=#feeflowgid# Replace=#DBField2Input#>1, 1)>
+
+<tr>
+  <td colspan="6">
+  <table cellpadding="0" width="100%" cellspacing="1" >
+  <tr>
+    <td  class="PrintTdRT">（A）项目总额</td>
+    <td class="PrintTdRT" title="是出纳已付款 + 审批通过未付款 + 审批中的金额合计">
+        （B）已付款金额</td>
+    <td class="PrintTdRT">（C）本次付款 </td>
+    <td class="PrintTdRT">尚欠余额=A-B-C</td>
+    <td class="PrintTdRT">实际付款总额=B+C </td>
+  </tr>
+  <tr>
+    <td class="PrintTdRT"><HDPrint Value=#feeA#></td>
+    <td class="PrintTdRT"><HDPrint Value=#feeB#></td>
+    <td class="PrintTdRT"><HDPrint Value=#payfee#></td>
+    <td class="PrintTdRT"><HDPrint Value=#feeleft#></td>
+    <td class="PrintTdRT"><HDPrint Value=#feeok#></td>
+  </tr>
+  </table>
+  </td>
+</tr>
+</HDIF>
+<tr>
+  <td class="PrintTdRT">凭证类型：</td>
+  <td class="PrintTdRT"><HDPrint Value=#certtype#></td>
+  <td class="PrintTdRT">凭证编号：</td>
+  <td class="PrintTdRT"><HDPrint Value=#certnum#></td>
+  <td class="PrintTdRT">支付日期：</td>
+  <td class="PrintTdRT"><HDPrint Value=#paydate#></td>
+</tr>
+</table>
+<HDPrint Value=#AppList# Replace=#None#>
+<HDLoop>
+<table width="645" cellspacing="0" cellpadding="0" align="center" style="margin-top:5px">
+  <tr>
+    <td>打印次数：<HDPrint Value=#PrintTime#>次</td>
+  </tr>
+</table>
+</HDLoop>
+<script language="javascript">
+//函数：ready
+  //功能：document 加载完成后调用
+  $(function(){
+    //是否显示公司承担
+    var sCode = '<HDPrint Value=#AcgOneName# Replace=#DBField2Js#>';
+    sCode = sCode.substr(0,1);
+    var $span = $("span#acg_3");
+    $span.hide();
+    if (sCode == '3'){
+      $span.show();
+    }
+  });
+  window.print();
+</script>

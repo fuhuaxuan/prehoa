@@ -1,6 +1,13 @@
 <!--版本号：2014年3月份（此行不允许删除）-->
 <script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
 <script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+
+<script language="javascript">
+  //窗口改变，重计算iframe的高度
+  $(window).resize(function (){
+    JQChgHeight();
+  });
+</script>
 <script language="javascript">
   //自动获取高度
   function changeHeight()
@@ -92,7 +99,7 @@
       stepText = '区域总经理';
     }
     if (DataTotal>300000) {
-      stepText = 'CEO';
+      stepText = '集团CEO';
     }
     $("#stepText").text(stepText);
   }
@@ -202,15 +209,15 @@
     <td class="listtd" colspan="6">C、本年度已缴/预估租金费用明细</td>
   </tr>
   <tr valign="top">
-    <td class="DtlBarTitle">本年度预算[元/年]:</td>
-    <td class="listtd"><HDPrint Value=#CFee#></td>
+    <td class="DtlBarTitle" title="所选铺位在申请终止日当年的年度批准预算收入总额"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">本年度预算[元/年]:</td>
+    <td class="listtd" style="background:#E0E0E0"><HDPrint Value=#cFeeStr#></td>
     <td class="DtlBarTitle"></td>
     <td class="listtd"></td>
     <td class="DtlBarTitle"></td>
     <td class="listtd"></td>
   </tr>
 </table>
-&nbsp;&nbsp;D、退租品牌本年度已缴费用明细
+&nbsp;&nbsp;D、退租品牌本年度截止终止日应缴费用明细
 <table width="100%" class="ListBar JQMust" cellpadding="0"  cellspacing="1" id="tb_FeeD" style="margin-bottom:5px">
   <colgroup>
      <col style="width:15%">
@@ -223,11 +230,12 @@
   </colgroup>
   <thead>
   <tr class="DtlBarTitle" align="center">
-    <td>日期(退租品牌)<br></td>
+    <td title="日期选择为终止日当年1月1日至申请终止日期间的时间段。如在终止日当年没有
+应缴费用，则不填。"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">日期(退租品牌)<br></td>
     <td>固定租金<br>psm/day(㎡/天)</td>
     <td>物管费<br>psm/day(㎡/天)</td>
     <td>市场推广费<br>psm/mth(㎡/月)</td>
-    <td>提成租金(纯扣租户)<br>psm/day(㎡/天)</td>
+    <td title="纯扣租户或月固定租金租户可在此填写实际应缴总额"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">提成租金(纯扣租户)<br>合计/元</td>
     <td>总租金<br>元</td>
     <td>备注</td>
   </tr>
@@ -238,25 +246,30 @@
   <tfoot>
   <tr class="ListTdFocus">
     <td colspan="5">合计：</td>
-    <td><HDPrint Value=#DFee#></td>
+    <td><HDPrint Value=#DFeeStr#></td>
     <td align="center" colspan="2">&nbsp;</td>
   </tr>
   </tfoot>
 </table>
-&nbsp;&nbsp;E、替换品牌本年度已缴费用明细
+&nbsp;&nbsp;E、替换品牌本年度预计缴费明细
 <table width="100%" class="ListBar JQMust" cellpadding="0"  cellspacing="1" id="tb_FeeE" style="margin-bottom:5px">
   <colgroup>
+     <col style="width:10%">
+     <col style="width:10%">
      <col style="width:15%">
-     <col style="width:13%">
-     <col style="width:13%">
-     <col style="width:13%">
-     <col style="width:13%">
-     <col style="width:13%">
-     <col style="width:20%">
+     <col style="width:10%">
+     <col style="width:10%">
+     <col style="width:10%">
+     <col style="width:10%">
+     <col style="width:10%">
+     <col style="width:15%">
   </colgroup>
   <thead>
   <tr class="DtlBarTitle" align="center">
-    <td>日期(替换品牌)<br></td>
+    <td title="a如有分铺，分别选择分割后对应的铺位；b如无分铺，则选择实际终止铺位"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">铺位号</td>
+    <td>面积<br>平方米psm</td>
+    <td title="日期选择为申请终止日至当年12月31日期间的时间段。如在终止日当年不计租或无
+替换品牌，则不填"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">日期(替换品牌)<br></td>
     <td>固定租金<br>psm/day(㎡/天)</td>
     <td>物管费<br>psm/day(㎡/天)</td>
     <td>市场推广费<br>psm/mth(㎡/月)</td>
@@ -270,9 +283,11 @@
   </tbody>
   <tfoot>
   <tr class="ListTdFocus">
-    <td colspan="5">合计：</td>
-    <td><HDPrint Value=#EFee#></td>
-    <td align="center" colspan="2">&nbsp;</td>
+    <td>合计：</td>
+    <td id="AreaSum"></td>
+    <td colspan="5">&nbsp;</td>
+    <td><HDPrint Value=#EFeeStr#></td>
+    <td align="center">&nbsp;</td>
   </tr>
   </tfoot>
 </table>
@@ -290,10 +305,10 @@
   <thead>
   <tr class="DtlBarTitle" align="center">
     <td>结算费用项目</td>
-    <td>根据合同应缴金额<br>A</td>
-    <td>优惠租金<br>B</td>
+    <td title="整个租赁期内的应缴金额，即以完整的合同期来计算"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">根据合同应缴金额<br>A</td>
+    <td title="合同期内有减免的租金、物管、推广等费用,不包含免租期"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">优惠租金<br>B</td>
     <td>实际应缴金额<br>C=A-B</td>
-    <td>实际缴纳金额<br>D</td>
+    <td title="截至申请终止日,整个合同期所有的实际已缴款项"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">实际缴纳金额<br>D</td>
     <td>应退还(追缴)金额<br>E=D-C</td>
     <td>备注</td>
   </tr>
@@ -304,11 +319,11 @@
   <tfoot>
   <tr class="ListTdFocus">
     <td>合计：</td>
-    <td><HDPrint Value=#DataASum#></td>
-    <td><HDPrint Value=#DataBSum#></td>
-    <td><HDPrint Value=#DataCSum#></td>
-    <td><HDPrint Value=#DataDSum#></td>
-    <td><HDPrint Value=#DataESum#></td>
+    <td><HDPrint Value=#DataASumStr#></td>
+    <td><HDPrint Value=#DataBSumStr#></td>
+    <td><HDPrint Value=#DataCSumStr#></td>
+    <td><HDPrint Value=#DataDSumStr#></td>
+    <td><HDPrint Value=#DataESumStr#></td>
     <td align="center">&nbsp;</td>
   </tr>
   </tfoot>
@@ -322,26 +337,26 @@
   <col style="padding-left:4px;width:15%">
   <col style="padding-left:4px;width:18%">
   <tr>
-    <td class="DtlBarTitle">未完成租约期限的租金及费用：</td>
-    <td class="ListTd"><HDPrint Value=#NumA#></td>
-    <td class="DtlBarTitle">租金（含物业费）减免额：</td>
-    <td class="ListTd"><HDPrint Value=#NumB#></td>
-    <td class="DtlBarTitle">装修补贴：</td>
+    <td class="DtlBarTitle" title="结算费用明细项目中的“应退还（追缴）金额”之总和"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">未完成租约期限的租金及费用：</td>
+    <td class="ListTd" style="background:#E0E0E0"><HDPrint Value=#NumAStr#></td>
+    <td class="DtlBarTitle" title="合同期内有减免的租金、物管、推广等费用,不包含免租期"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">租金（含物业费）减免额：</td>
+    <td class="ListTd" style="background:#E0E0E0"><HDPrint Value=#NumBStr#></td>
+    <td class="DtlBarTitle" title="合同内约定由我司支付的装修补贴或工程改造费用，如无，则填0"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">装修补贴：</td>
     <td class="ListTd"><HDPrint Value=#NumC#></td>
   </tr>
   <tr>
-    <td class="DtlBarTitle">提前终止的补偿款（包括可没收的款项）：</td>
+    <td class="DtlBarTitle" title="包括租赁保证金，装修保证金，XX保证金等，是指可以用于抵扣赔偿的款项(为可没收的金额，无需扣除欠费等款项)。如有根据合同内规定的违约金（一般为6个月的费用总和，具体要看合同内的要求），如经协商租户会缴纳违约赔偿，则也属于上述提前终止的补偿款项；"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">提前终止的补偿款（包括可没收的款项）：</td>
     <td class="ListTd"><HDPrint Value=#NumD#></td>
-    <td class="DtlBarTitle">本会计年度的预计租金损失：</td>
-    <td class="ListTd"><HDPrint Value=#NumE#></td>
-    <td class="DtlBarTitle">冲减直线法租金收入的金额：</td>
+    <td class="DtlBarTitle" title="“本年度预算”-“退租品牌所占铺位截止终止日在当年应缴费用明细”-“替换品牌本年度预计缴费明细:”-“提前终止的补偿款（包括可没收的款项）”，因铺位终止造成该位置当年实际收入与预算收入的对比"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">本会计年度的预计租金损失/（收益）：</td>
+    <td class="ListTd" style="background:#E0E0E0"><HDPrint Value=#NumEStr#></td>
+    <td class="DtlBarTitle" title="因铺位调整造成的直线法调整额"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">冲减直线法租金收入的金额损失/（收益）：</td>
     <td class="ListTd"><HDPrint Value=#NumF#></td>
   </tr>
   <tr>
-    <td class="DtlBarTitle">欠租金额：</td>
+    <td class="DtlBarTitle" title="截止终止日的欠费总额 "><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">欠租金额：</td>
     <td class="ListTd"><HDPrint Value=#NumG#></td>
-    <td class="DtlBarTitle">合计：</td>
-    <td class="ListTd"><HDPrint Value=#NumSum#></td>
+    <td class="DtlBarTitle" title="“未完成租约期限的租金及费用+租金（含物业费）减免额+装修补贴-提前终止的补偿款（包括可没收的款项）”的总和，以此作为系统审批流转的依据；"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">未完成租约合计：</td>
+    <td class="ListTd" style="background:#E0E0E0"><HDPrint Value=#NumSumStr#></td>
     <td class="DtlBarTitle"></td>
     <td class="ListTd"></td>
   </tr>
@@ -350,9 +365,15 @@
     <td class="listtd" colspan="5"><HDPrint Value=#Remarks#></td>
   </tr>
   <tr valign="top">
-    <td class="DtlBarTitle">Attachment:<br>附件信息:</td>
+    <td class="DtlBarTitle" title=""><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">Attachment:<br>附件信息:</td>
     <td class="listtd" colspan="5"><HDPrint Value=#AttachList# Replace=#None#></td>
   </tr>
+  <HDIF EqualNot(<HDPrint Value=#isCEO# Replace=#None#>, 0)>
+  <tr valign="top">
+    <td class="DtlBarTitle">潘总审批附件:</td>
+    <td class="listtd" colspan="5"><HDPrint Value=#AttachList2# Replace=#None#></td>
+  </tr>
+  </HDIF>
   <HDIF EqualNot(<HDPrint Value=#EndMemo# Replace=#None#>, )>
   <tr valign="top">
     <td class="DtlBarTitle">The causes of termination:<br>终止原因:</td>

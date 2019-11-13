@@ -1,0 +1,15 @@
+[Rep_BeginLine]
+楼层
+总面积
+已租面积
+未租面积
+[Rep_EndLine]
+<HDLoop>
+[Rep_BeginLine]
+#NoForm#<HDPrint Value=#floorno# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#fArea# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#yArea# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#nArea# Replace=#DBField2Excel#>
+[Rep_EndLine]
+</HDLoop>
+

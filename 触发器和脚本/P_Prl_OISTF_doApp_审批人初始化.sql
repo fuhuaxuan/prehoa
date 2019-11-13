@@ -15,8 +15,7 @@ create or replace procedure P_Prl_OISTF_doApp(p_EntGid    varchar2, --企业Gid
 begin
   commit;
   v_Stage := '取出流程信息';
-  select nvl(numa, 0) + nvl(numb, 0) + nvl(numc, 0) + nvl(numd, 0) +
-         nvl(numg, 0),
+  select nvl(numsum, 0),
          f.FillUsrGid,
          f.filldeptgid,
          substr(f.filldeptcode, 0, 4)
@@ -113,6 +112,15 @@ begin
                  and replace(lower(o.Modelcode), lower(v_ModelCode), '') in
                      ('_tb2')
                  and rownum = 1
+              union
+              select o.AppGid, o.AppCode, o.AppName, 70 AppOrder, 70 AppType
+                from v_wf_model_usr_app o
+               where o.EntGid = p_EntGid
+                 and o.ModelGid = p_ModelGid
+                 and replace(lower(o.Modelcode), lower(v_ModelCode), '') in
+                     ('_tc0')
+                 and rownum = 1
+                 and v_AppFee > 80000
               union
               select o.AppGid, o.AppCode, o.AppName, 80 AppOrder, 80 AppType
                 from v_wf_model_usr_app o

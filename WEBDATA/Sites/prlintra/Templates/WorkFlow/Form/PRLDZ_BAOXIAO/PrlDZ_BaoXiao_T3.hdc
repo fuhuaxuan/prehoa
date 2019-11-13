@@ -17,6 +17,8 @@ SqlForCondition1=select wm.Code ModelCode, wm.Name ModelName,d.Name StepName,rep
 ;取出本流程主表信息
 Sql1=select * from WF_^^ModelCodeT^^ where EntGid = __ENTGID__ and  FlowGid = ##FlowGid##
 
+SQL2=select decode(count(*),0,'none','') isShow,decode(count(*),0,'','JQMust') isMust from Wf_^^ModelCodeT^^_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppOrder = 100
+
 ;取出抄送人(除当前审批外的所有审批人+部门助理+资产经理） 用于同意并结束流程，或否决抄送
 LoopSQL1=select distinct AppGid ItemGid,AppName ItemName from WF_^^ModelCodeT^^_App where EntGid = __ENTGID__ and  FlowGid = ##FlowGid## and AppGid <> __USRGID__ and AppType = 10
 LoopHDT1=Templates\WorkFlow\Form\^^ModelCode^^\LoopSql_Option.hdt

@@ -1,0 +1,14 @@
+<!--版本号：2013年3月份;此行不允许删除-->
+<hdloop>
+  <tr class="listtd"  onmouseover="this.className='listtdfocus';" onmouseout="this.className='listtd'">
+    <td align="center"><HDPrint Value=#Fatype#></td>
+    <td><HDPrint Value=#Code#></td>
+    <td><HDPrint Value=#Name#></td>
+    <td align="center"><HDPrint Value=#E#></td>
+    <td align="center"><HDPrint Value=#D#></td>
+    <td align="center"><HDPrint Value=#C#></td>
+    <td align="center"><HDPrint Value=#B#></td>
+    <td align="center"><HDPrint Value=#A#></td>
+    <td align="center"><HDPrint Value=#TEnd#></td>
+  </tr>
+</hdloop>

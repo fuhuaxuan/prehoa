@@ -141,6 +141,15 @@ begin
                  and rownum = 1
                  and v_Step > 40
               union
+              select o.AppGid, o.AppCode, o.AppName, 70 AppOrder, 70 AppType
+                from v_wf_model_usr_app o
+               where o.EntGid = p_EntGid
+                 and o.ModelGid = p_ModelGid
+                 and replace(lower(o.Modelcode), lower(v_ModelCode), '') in
+                     ('_tc0')
+                 and rownum = 1
+                 and v_Step > 60
+              union
               select o.AppGid, o.AppCode, o.AppName, 80 AppOrder, 80 AppType
                 from v_wf_model_usr_app o
                where o.EntGid = p_EntGid

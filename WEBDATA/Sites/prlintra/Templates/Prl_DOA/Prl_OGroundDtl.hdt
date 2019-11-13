@@ -1,0 +1,228 @@
+<!--Js引入-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/DateControl.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(Scripts/highcharts/highcharts.js)##"></script>
+<form name="frmDo" method="Post" action="">
+<h3 class="TitleBar" ><HDPrint Value=#ModeleAtype#>-><HDPrint Value=#ModeleName#></h3>
+<TABLE width="100%" class="ButtonBar" cellpadding=0 cellspacing=0>
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+     |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+      <A HREF="##HDNet_AppName##/MainPage?URL=&UsrGid=<HDPrint Value=#UsrGid#>"><FONT class="IconBack">　&nbsp;</FONT> 返回首页</A>
+    </TD>
+  </TR>
+</TABLE>
+<!--排序点击标题即可排序-用到的控件-->
+<INPUT TYPE="hidden" title="点击标题排序-记录上一次排序order by的值" name="selOrderBy" value="<HDPrint Value=#selOrderBy# Replace=#DBField2Input#>">
+<INPUT TYPE="hidden" title="点击标题排序-记录上一次排序是正序还是倒序" name="selOrderAsc" value="<HDPrint Value=#selOrderAsc# Replace=#DBField2Input#>">
+<INPUT TYPE="hidden" title="点击标题排序-记录上一次排序的字段" name="selOrderColumn" value="<HDPrint Value=#selOrderColumn# Replace=#DBField2Input#>">
+<INPUT TYPE="hidden" title="下载报表用到的控件" name="Rep_Download" value="">
+<input type="hidden" name="NotFirst" value="1">
+
+<table class="ListBar" width="100%" cellspacing="1">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:15%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:15%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:15%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:15%">
+  <tr class="listtr">
+    <td class="DtlBarTitle">年度 </td>
+    <td class="listtd"><HDPrint value=#CurYear#></td>
+    <td class="DtlBarTitle">楼号 </td>
+    <td class="listtd"><HDPrint value=#sel_Type#>号楼</td>
+    <td class="DtlBarTitle">楼层 </td>
+    <td class="listtd"><HDPrint value=#txt_floorno#></td>
+    <td class="listtd" colspan="4">
+    </td>
+  </tr><tr class="listtr">
+    <td class="DtlBarTitle">总面积 </td>
+    <td class="listtd"><HDPrint value=#fAreaSum#></td>
+    <td class="DtlBarTitle">已租面积 </td>
+    <td class="listtd" style="color:blue"><HDPrint value=#yAreaSum#></td>
+    <td class="DtlBarTitle">未租面积 </td>
+    <td class="listtd" style="color:red"><HDPrint value=#nAreaSum#></td>
+    <td class="listtd" colspan="4" align="right">
+      <INPUT TYPE="hidden" name="NotFirst" value="1">
+      <INPUT TYPE="button" name="btnDownload" class="NormalSbt" value="下载Excel" onclick="return DownLoad()">
+    </td>
+  </tr>
+</table>
+<BR>
+<div id="show1" style=" height: 500px"></div>
+<table class=ListBar width="100%" cellspacing="1" id="datatable" style="display:none;">
+  <colgroup>
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  </colgroup>
+  <thead>
+  <tr class="listtr">
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.fno">位置</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.yArea">已租</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="t.nArea">未租</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.fArea">合计</td>
+  </tr>
+  </thead>
+  <tbody>
+  <HDLoop>
+  <tr class="listtd" onmouseover="this.className='listtdfocus';" onmouseout="this.className='listtd'">
+    <td nowrap><HDPrint value=#fno#></td>
+    <td nowrap><HDPrint value=#yArea#></td>
+    <td nowrap><HDPrint value=#nArea#></td>
+    <td nowrap><HDPrint value=#fArea#></td>
+  </tr>
+  </HDLoop>
+  </tbody>
+</table>
+
+<SCRIPT LANGUAGE="JavaScript">
+  //下载Excel
+  function DownLoad(){
+    document.all.Rep_Download.value = '1';
+    //获取当前表单对象
+    var JqObj = $("form[name=frmDo]");
+    //表单参数设定
+    JqObj.attr({
+      "action":'##HDNet_AppName##/__ExplainModule?Url=<HDPrint Value=#Url#>Down&UsrGid=<HDPrint Value=#UsrGid#>&sel_Type=<HDPrint Value=#sel_Type#>&txt_floorno=<HDPrint Value=#txt_floorno#>',
+      "target":'_blank'
+    });
+    //表单提交
+    JqObj.submit();
+    //表单参数还原
+    JqObj.attr({
+      "action":'',
+      "target":'_self'
+    });
+    document.all.Rep_Download.value = '';
+    return true;
+  }
+  //函数：ready
+  //功能：document 加载完成后调用
+  $(function(){
+    //Td点击排序时事件
+    $("td[JQColumn]").click(function(){
+      //取出点击Td的参数
+
+      //JQColumn 字段名
+      var sJQColumn = $(this).attr("JQColumn");
+      //JQAsc 可不写，为空 或 desc
+      var sJQAsc = '';
+      if ($(this).attr("JQAsc") != null){
+        sJQAsc = $(this).attr("JQAsc");
+      }
+
+      //取出排序控件，并赋值
+      $("input[name=selOrderBy]").val(sJQColumn + ' ' + sJQAsc);
+
+      //保留本次点击参数
+      $("input[name=selOrderAsc]").val(sJQAsc);
+      $("input[name=selOrderColumn]").val(sJQColumn);
+
+      //获取当前表单对象
+      var JqObj = $("form[name=frmDo]");
+      //表单参数设定
+      JqObj.attr({
+        "action":'',
+        "target":''
+      });
+      //表单提交
+      JqObj.submit();
+    });
+    //数据提交后，对数据提交前点击的排序Td列重新赋值
+    $("td[JQColumn]").each(function(){
+      var sJQColumn = $(this).attr("JQColumn");
+      var selOrderColumn = '<HDPrint Value=#selOrderColumn# Replace=#DBField2Js#>';
+      var selOrderAsc = '<HDPrint Value=#selOrderAsc# Replace=#DBField2Js#>';
+      if (sJQColumn == selOrderColumn){
+        //取出本Td的文本值，并重新赋值
+        var sText = $(this).text();
+        if (selOrderAsc == ''){
+          $(this).text(sText+"↑");
+          $(this).attr("JQAsc","desc");
+        }
+        else{
+          $(this).text(sText+"↓");
+          $(this).attr("JQAsc","");
+        }
+      }
+    });
+  });
+  </script>
+</form>
+<script type="text/javascript">
+$(function () {
+  // 当文档准备就绪，可以调用table中的数据
+  $(document).ready(function() {
+    var options = {
+      chart: {
+        type: 'column'
+      },
+      title: {
+        text: ''
+      },
+      xAxis: {
+        categories: []
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: '合计'
+        },
+        stackLabels: {
+          enabled: true,
+          style: {
+            fontWeight: 'bold',
+            color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+          }
+        }
+      },
+      legend: {
+        backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+        borderColor: '#CCC',
+        borderWidth: 1,
+        shadow: false
+      },
+      tooltip: {
+        headerFormat: '<b>{point.x}</b><br/>',
+        pointFormat: '{series.name}: {point.y}<br/>合计: {point.stackTotal}'
+      },
+      plotOptions: {
+        column: {
+          stacking: 'normal',
+          dataLabels: {
+            enabled: true,
+            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+          }
+        }
+      },
+      series: [{
+        color:'red',
+        name: '未租',
+        data: []
+      }, {
+        color:'blue',
+        name: '已租',
+        data: []
+      }]
+    };
+
+     $("table#datatable>tbody>tr").each(function(){
+       var $tr = $(this).children();
+       options.xAxis.categories.push($tr.eq(0).text());
+       options.series[0].data.push(parseFloat($tr.eq(2).text()));
+       options.series[1].data.push(parseFloat($tr.eq(1).text()));
+     });
+     console.log(JSON.stringify(options))
+     Highcharts.chart('show1', options);
+  });
+});
+
+</script>

@@ -17,6 +17,10 @@
 <INPUT type="text" style="display:none" name="AppType" value="<HDPrint Value=#AppType# Replace=#DBField2Input#>">
 <INPUT type="text" style="display:none" name="T2Gid" value="<HDPrint Value=#T2Gid# Replace=#DBField2Input#>">
 
+<INPUT type="text" style="display:none" name="FillDeptGid" value="<HDPrint Value=#FillDeptGid# Replace=#DBField2Input#>">
+<INPUT type="text" style="display:none" name="ComGid" value="<HDPrint Value=#ComGid# Replace=#DBField2Input#>">
+<INPUT type="text" style="display:none" name="StampType" value="<HDPrint Value=#StampType# Replace=#DBField2Input#>">
+
 <INPUT type="text" style="display:none" name="LastGid" value="<HDPrint Value=#LastGid# Replace=#DBField2Input#>">
 <INPUT type="text" style="display:none" name="LastCode" value="<HDPrint Value=#LastCode# Replace=#DBField2Input#>">
 <INPUT type="text" style="display:none" name="LastName" value="<HDPrint Value=#LastName# Replace=#DBField2Input#>">
@@ -27,7 +31,6 @@
 <INPUT type="text" style="display:none" name="F1Gid" value="123">
   <!--意见标志：同意；否决-->
   <input type="text" style="display:none" name="AppAssign" value="">
-
 <h3 class="TitleBar">
   <a href="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid#>" target="_blank"><HDPrint Value=#ModelName#></a>->
   <HDPrint Value=#StepName#>

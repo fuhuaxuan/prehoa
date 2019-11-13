@@ -1,0 +1,125 @@
+<script language="JavaScript" src="##GetWebRootPath(/Scripts/Ajax/json.js)##"></Script>
+<form name="frmSysUsrInfoPsdMod" method="post" action="">
+
+<INPUT TYPE="hidden" NAME="UsrAuthMode" value="<HDPrint Value=#UsrAuthMode# Replace=#DBField2Input#>">
+<INPUT TYPE="hidden" NAME="DoInterface" value="null">
+<INPUT TYPE="hidden" NAME="DoLog" value="Log">
+<table cellpadding="0" cellspacing="0" width="100%" class="App_List" style="margin-top:10px">
+  <col style="width:100%" valign="top">
+  <tr valign="center"><td class="App_Bar" style="color:#EEAD0E">密码设置</td></tr>
+</table>
+<table width="100%" align="center" cellpadding="0" cellspacing="1"  style="margin-top:10px">
+<tr>
+  <td width="100" style="font-size:13pt;padding-left:10px">&nbsp;原始密码<font color="red">*</font></td>
+  <td class="ListTd"><input type="password" name="psdOld" class="JQText" maxlength="32" onblur="CheckIsRight(this)" style="height:36px;width:80%"></td>
+</tr>
+<tr>
+  <td WIDTH="100" style="font-size:13pt;padding-left:10px">&nbsp;新密码<font color="red">*</font></td>
+  <td class="ListTd"><input type="password" name="psdNew" class="JQText" maxlength="32"  style="height:36px;width:80%"></td>
+</tr>
+<tr>
+  <td width="100" style="font-size:13pt;padding-left:10px">&nbsp;确认密码<font color="red">*</font></td>
+  <td class="ListTd"><input type="password" name="psdConfirm" class="JQText" maxlength="32" onblur="CheckIsSame()"  style="height:36px;width:80%"> </td>
+</tr>
+  <tr align="center">
+    <td colspan="2"><div style="margin-top:30px" class="App_Yes" onclick="CheckSubmit('同意');void(0)">保存<div></td>
+  </tr>
+</table>
+</form>
+
+
+<script language="JavaScript">
+if ('<HDPrint value=#UrlFrom# Replace=#DBField2Js#>' != 'login')
+{
+  //document.getElementById('sbtInMain').style.display = 'none';
+}
+
+  function CheckIsRight(obj)
+  {
+    //如果用户是HDIA4统一认证用户，则本地不检查密码正确性
+    if ('<HDPrint Value=#UsrAuthMode# Replace=#DBField2Js#>' == '40') {
+      document.all.DoInterface.value = 'Interface';
+      document.all.DoLog.value = 'null';
+      return true;
+    }
+
+    var sTemp = obj.value;
+    var sResponse;
+    if (sTemp != '')
+    {
+      http.open('Get', '##HDNet_AppName##/__ExplainAjax?Url=SysUsrSelfPswMod&UsrGid=<HDPrint Value=#UsrGid#>&CurUsrAlias=<HDPrint Value=#CurUsrAliasCode#>&OpAtype=0');
+      http.onreadystatechange = function ()
+      {
+        if (http.readyState == 4)
+        {
+          if (http.status == 200)
+          {
+            sResponse = JSON.parse(http.responseText);
+            if (sResponse.PASSWORD != sTemp)
+            {
+              alert('你输入的原始密码不正确，请重新输入！');
+              document.all.psdOld.value = '';
+              document.all.psdOld.focus();
+            }
+          }
+        }
+      };
+      http.send(null);
+    }
+  }
+
+  function CheckIsSame()
+  {
+    if (document.all.psdNew.value != '')
+    {
+      if (document.all.psdNew.value != document.all.psdConfirm.value)
+      {
+        alert('新密码与确认密码不符，请重新填写！');
+        document.all.psdConfirm.value = '';
+      //  document.all.psdConfirm.focus();
+      //  return false;
+      }
+    }
+  }
+
+  function CheckSubmit()
+  {
+    if (document.all.psdOld.value == '')
+    {
+      alert('请填写原始密码！');
+      document.all.psdOld.focus();
+      return false;
+    }
+    if (document.all.psdNew.value == '')
+    {
+      alert('请填写新密码！');
+      document.all.psdNew.focus();
+      return false;
+    }
+    if (document.all.psdConfirm.value == '')
+    {
+      alert('请填写确认密码！');
+      document.all.psdConfirm.focus();
+      return false;
+    }
+    if (document.all.psdNew.value.length < 6)
+    {
+      alert('密码最少6位，请重新调整！');
+      document.all.psdNew.select();
+      document.all.psdNew.focus();
+      return false;
+    }
+    if (document.all.psdNew.value != document.all.psdConfirm.value)
+    {
+      alert('新密码与确认密码不符，请重新填写！');
+      document.all.psdConfirm.value = '';
+      document.all.psdConfirm.focus();
+      return false;
+    }
+      document.all.DoLog.value = 'Log';
+
+    frmSysUsrInfoPsdMod.action = '##HDNet_AppName##/__ExplainModule?Url=SysUsrSelfPswModSave&UsrGid=<HDPrint Value=#UsrGid#>';
+    frmSysUsrInfoPsdMod.target = '_self';
+    frmSysUsrInfoPsdMod.submit();
+  }
+</script>

@@ -32,7 +32,7 @@ LoopSQL2=select distinct v.PostGid ItemGid,v.PostName ItemName from v_Post v whe
 LoopHDT2=Templates\WorkFlow\Form\^^ModelCode^^\LoopSql_Option.hdt
 LoopVAR2=T2List
 
-LoopSQL3=select d.TBRD,d.PMFD,d.Apfixed,decode(lower(d.TBID),'tb_dtl10',to_char(freerentdate1,'YYYY.MM.DD'),decode(yeartype,1,to_char(add_months(to_date('^^contractDate1^^','YYYY.MM.DD'),nvl('^^freeRentM^^',0)+(nvl('^^freeRentD^^',0)/30)),'YYYY.MM.DD'),to_char(add_months(to_date('^^contractDate1^^','YYYY.MM.DD'), ((yeartype) - 1) * 12), 'YYYY.MM.DD'))) sDate,decode(lower(d.TBID),'tb_dtl10',to_char(freerentdate2,'YYYY.MM.DD'),decode(yeartype,'^^maxyeartype^^','^^contractdate2^^',to_char(add_months(to_date('^^contractDate1^^','YYYY.MM.DD'), (yeartype) * 12) - 1, 'YYYY.MM.DD'))) eDate from wf_PRL_ISF_Dtl d where EntGid = __ENTGID__ and FlowGid = ##OldFlowGid## and lower(d.TBID) in ('tb_dtl10','tb_dtl30') order by TbID,YearType,FreeRentDate1
+LoopSQL3=select d.TBRD,d.PMFD,d.Apfixed,decode(lower(d.TBID),'tb_dtl10',to_char(freerentdate1,'YYYY.MM.DD'),decode(yeartype,1,to_char(add_months(to_date('^^contractDate1^^','YYYY.MM.DD'),nvl('^^freeRentM^^',0))+nvl('^^freeRentD^^',0),'YYYY.MM.DD'),to_char(add_months(to_date('^^contractDate1^^','YYYY.MM.DD'), ((yeartype) - 1) * 12), 'YYYY.MM.DD'))) sDate,decode(lower(d.TBID),'tb_dtl10',to_char(freerentdate2,'YYYY.MM.DD'),decode(yeartype,'^^maxyeartype^^','^^contractdate2^^',to_char(add_months(to_date('^^contractDate1^^','YYYY.MM.DD'), (yeartype) * 12) - 1, 'YYYY.MM.DD'))) eDate from wf_PRL_ISF_Dtl d where EntGid = __ENTGID__ and FlowGid = ##OldFlowGid## and lower(d.TBID) in ('tb_dtl10','tb_dtl30') order by TbID,YearType,FreeRentDate1
 LoopHDT3=Templates\WorkFlow\Form\PRLDZ_ISTF\Loopsql_ISFDtl.hdt
 LoopVAR3=ISFDtlList
 

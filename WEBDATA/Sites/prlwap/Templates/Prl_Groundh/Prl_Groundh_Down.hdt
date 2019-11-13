@@ -1,0 +1,30 @@
+[Rep_BeginLine]
+项目代码
+项目名称
+编号
+楼层
+面积
+建筑面积
+预算
+年度总预算
+租赁状态
+最近操作类型
+最近操作人
+最近操作时间
+[Rep_EndLine]
+<HDLoop>
+[Rep_BeginLine]
+<HDPrint Value=#deptsource# Replace=#None#>
+#NoForm#<HDPrint Value=#DeptName# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#fno# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#floorno# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#farea# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#Jarea# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#fmr# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#fmrY# Replace=#DBField2Excel#>
+<HDPrint Value=#fstat# Replace=#None#>
+<HDPrint Value=#OpType# Replace=#None#>
+<HDPrint Value=#OpName# Replace=#None#>
+#NoForm#<HDPrint Value=#OpDate# Replace=#DBField2Excel#>
+[Rep_EndLine]
+</HDLoop>

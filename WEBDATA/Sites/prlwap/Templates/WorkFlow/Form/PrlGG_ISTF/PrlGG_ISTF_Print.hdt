@@ -1,0 +1,168 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<style type="text/css">
+.PrintTdRT {
+  border-right:1 solid black;
+  border-top:1 solid black;
+}
+</style>
+<table style="width:645;margin-top:10px;" align="center" border="0" cellpadding="0" cellspacing="0">
+  <col style="width:30%">
+  <col style="width:40%">
+  <col style="width:30%">
+  <tr>
+    <td class="Title" align="center" colspan="3" style="font-size:18pt"><HDPrint Value=#ModelName#></td>
+  </tr>
+  <tr>
+    <td align="center" colspan="3">（OA流程已审批完）</td>
+  </tr>
+  <tr>
+    <td align="center"><B>单号</B>：<HDPrint Value=#Num#></td>
+    <td align="center"><B>申请人</B>：<HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]</td>
+    <td align="center"><B>申请时间</B>：<HDPrint Value=#CreateDate#></td>
+  </tr>
+</table>
+<table width="645" cellspacing="0" cellpadding="0" align="center" style="border-left:1 solid black;">
+  <col style="padding-left:4px;width:16%">
+  <col style="padding-left:4px;width:17%">
+  <col style="padding-left:4px;width:14%">
+  <col style="padding-left:4px;width:19%">
+  <col style="padding-left:4px;width:16%">
+  <col style="padding-left:4px;width:17%">
+  <tr valign="top">
+    <td class="PrintTdRT">上一版本ISF/ISCF:</a></td>
+    <td class="PrintTdRT" colspan="5"><a href="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ISFModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ISFModelGid#>&FlowGid=<HDPrint Value=#ISFFlowGid#>" target="_blank"><HDPrint Value=#ISFNum#></a></td>
+  </tr>
+  <tr valign="top">
+    <td class="PrintTdRT">类别:</td>
+    <td class="PrintTdRT"><HDPrint Value=#categoryText1#></td>
+    <td class="PrintTdRT">单位:</td>
+    <td class="PrintTdRT" JQ="JQUnit"></td>
+    <td class="PrintTdRT">位置</td>
+    <td class="PrintTdRT" JQ="JQFloor"></td>
+  </tr>
+<HDPrint Value=#unitList# Replace=#None#>
+  <tr valign="top">
+    <td class="PrintTdRT" colspan="6">A、租户信息</td>
+  </tr>
+  <tr valign="top">
+    <td class="PrintTdRT">租户:</td>
+    <td class="PrintTdRT"><HDPrint Value=#Lessee#></td>
+    <td class="PrintTdRT">商店营业名称:</td>
+    <td class="PrintTdRT"><HDPrint Value=#Tradingname#></td>
+    <td class="PrintTdRT">联系人:</td>
+    <td class="PrintTdRT"><HDPrint Value=#Contactor#></td>
+  </tr>
+  <tr valign="top">
+    <td class="PrintTdRT">地址:</td>
+    <td class="PrintTdRT" colspan="3"><HDPrint Value=#Address#></td>
+    <td class="PrintTdRT">电话号码:</td>
+    <td class="PrintTdRT"><HDPrint Value=#Phone#></td>
+  </tr>
+  <tr valign="top">
+    <td class="PrintTdRT">电子邮件:</td>
+    <td class="PrintTdRT"><HDPrint Value=#Email#></td>
+    <td class="PrintTdRT">传真号码:</td>
+    <td class="PrintTdRT"><HDPrint Value=#Fax#></td>
+    <td class="PrintTdRT"></td>
+    <td class="PrintTdRT"></td>
+  </tr>
+  <tr valign="top">
+    <td class="PrintTdRT" colspan="6">B、合同信息</td>
+  </tr>
+  <tr valign="top">
+    <td class="PrintTdRT">租赁期限:</td>
+    <td class="PrintTdRT"><HDPrint Value=#LeaseTermY#>年/<HDPrint Value=#LeaseTermM#>月/<HDPrint Value=#LeaseTermD#>日</td>
+    <td class="PrintTdRT">交付日期:</td>
+    <td class="PrintTdRT"><HDPrint Value=#HandoverDate#></td>
+    <td class="PrintTdRT">免租期:</td>
+    <td class="PrintTdRT"><HDPrint Value=#FreeRentM#>月/<HDPrint Value=#FreeRentD#>日</td>
+  </tr>
+  <tr valign="top">
+    <td class="PrintTdRT">合同起始日期:</td>
+    <td class="PrintTdRT"><HDPrint Value=#ContractDate1#>~<HDPrint Value=#ContractDate2#></td>
+    <td class="PrintTdRT">租金方式:</td>
+    <td class="PrintTdRT"><HDPrint Value=#Rate#></td>
+    <td class="PrintTdRT">预付租金+费用:</td>
+    <td class="PrintTdRT"><HDPrint Value=#AGR#></td>
+  </tr>
+  <tr valign="top">
+    <td class="PrintTdRT">申请终止日期:</td>
+    <td class="PrintTdRT"><HDPrint Value=#Terminationdate#></td>
+    <td class="PrintTdRT">保证金:</td>
+    <td class="PrintTdRT"><HDPrint Value=#Security#></td>
+    <td class="PrintTdRT">方式</td>
+    <td class="PrintTdRT"><HDPrint Value=#Incash#></td>
+  </tr>
+</table>
+<table width="645" cellspacing="0" cellpadding="0" align="center" style="border-left:1 solid black;">
+  <colgroup>
+     <col style="width:10%">
+     <col style="width:14%">
+     <col style="width:14%">
+     <col style="width:14%">
+     <col style="width:14%">
+     <col style="width:14%">
+     <col style="width:20%">
+  </colgroup>
+  <thead>
+  <tr align="center">
+    <td class="PrintTdRT">结算费用项目</td>
+    <td class="PrintTdRT">根据合同应缴金额(A)</td>
+    <td class="PrintTdRT">优惠租金(B)</td>
+    <td class="PrintTdRT">实际应缴金额(C=A-B)</td>
+    <td class="PrintTdRT">实际缴纳金额(D)</td>
+    <td class="PrintTdRT">应退还(追缴)金额(E=D-C)</td>
+    <td class="PrintTdRT">备注</td>
+  </tr>
+  </thead>
+  <tbody>
+  <HDPrint Value=#DtlList# Replace=#None#>
+  </tbody>
+  <tfoot>
+  <tr>
+    <td class="PrintTdRT">合计：</td>
+    <td class="PrintTdRT" align="center"><HDPrint Value=#DataASum#></td>
+    <td class="PrintTdRT" align="center"><HDPrint Value=#DataBSum#></td>
+    <td class="PrintTdRT" align="center"><HDPrint Value=#DataCSum#></td>
+    <td class="PrintTdRT" align="center"><HDPrint Value=#DataDSum#></td>
+    <td class="PrintTdRT" align="center"><HDPrint Value=#DataESum#></td>
+    <td class="PrintTdRT" align="center">&nbsp;</td>
+  </tr>
+  </tfoot>
+</table>
+<table width="645" cellspacing="0" cellpadding="0" align="center" style="border-left:1 solid black;">
+  <col style="padding-left:4px;width:20%">
+  <col style="padding-left:4px;width:80%">
+  <tr>
+    <td class="PrintTdRT">未完成租约期限的租金及费用：</td>
+    <td class="PrintTdRT"><HDPrint Value=#NumA#></td>
+  </tr>
+  <tr>
+    <td class="PrintTdRT">提前终止的补偿款（包括可没收的款项）：</td>
+    <td class="PrintTdRT"><HDPrint Value=#NumD#></td>
+  </tr>
+  <tr>
+    <td class="PrintTdRT">欠租金额：</td>
+    <td class="PrintTdRT"><HDPrint Value=#NumG#></td>
+  </tr>
+  <tr>
+    <td class="PrintTdRT">合计：</td>
+    <td class="PrintTdRT"><HDPrint Value=#NumSum#></td>
+  </tr>
+  <tr valign="top">
+    <td class="PrintTdRT">退场原因:</td>
+    <td class="PrintTdRT"><HDPrint Value=#Remarks#></td>
+  </tr>
+  <HDIF EqualNot(<HDPrint Value=#EndMemo# Replace=#None#>, )>
+  <tr valign="top">
+    <td class="PrintTdRT">终止原因:</td>
+    <td class="PrintTdRT"><HDPrint Value=#EndMemo#></td>
+  </tr>
+  </HDIF>
+</table>
+<HDPrint Value=#AppList# Replace=#None#>
+<script language="javascript">
+  window.print();
+</script>

@@ -1,0 +1,18 @@
+;;*************************设定左右两栏的宽度*****************************************
+[COL_WIDTH]
+COL1=50%
+COL2=50%
+
+[RemindWFFlow]
+Title=<a href="##HDNet_AppName##/__ExplainModule?Url=wftodotasklist&usrgid={##usrgid##}">工作流程待执行任务提醒</a>
+Active=True
+AutoHide=False
+RT=wftodotasklist
+Row=30
+Height=200
+Position=left
+Function=
+sql=select a.FlowGid, a.ModelGid, a.Code, a.Name, b.Name, decode(a.memo, null, '', '：' || a.memo) from WF_task a, WF_Model b,wf_flow c where a.EntGid = '{##entgid##}' and b.EntGid = '{##entgid##}' and c.EntGid = '{##entgid##}' and a.ExecGid = '{##usrgid##}' and a.Stat in (1, 2) and nvl(a.DeadLine,SYSDATE) >= sysdate and a.ModelGid = b.ModelGid and a.flowgid = c.flowgid and c.stat < 4 and a.BTime <= sysdate order by a.BTime Desc
+
+Remind=<a href="##HDNet_AppName##/WFFlowPage?UsrGid={##usrgid##}&Url=##param3##&ModelGid=##param2##&FlowGid=##param1##" target="_blank">【##param5##】##param4####param6##</a>
+RemindDefault=(空)

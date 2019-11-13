@@ -1,0 +1,76 @@
+[Permission]
+SQL1=
+Remind1=
+
+[Master]
+SQL=
+Count=
+
+[Detail]
+SQL=select ModelGid from WF_Model where lower(Code) = lower('^^ModelCode^^') and EntGid = ##EntGid##
+
+
+SQLForCondition1=
+
+;循环显示：LoopSql:查询语句；LoopHDT:调用的页面模板；LoopVar:保存的变量
+LoopSQL1=
+LoopHDT1=
+LoopVAR1=
+
+[Where]
+1= 
+2= 
+3= 
+4= 
+5= 
+6= 
+7= 
+
+[DefaultWhere]
+DefaultWhere= 
+
+[OrderBy]
+1=
+
+[DefaultOrderBy]
+DefaultOrderBy=
+
+[GroupBy]
+
+[AddtionalSQL]
+;在WF_Flow表中增加一条实例
+SQL1=insert into WF_Flow(EntGid, ModelGid, FlowGid, Stat, CreaterGid, CreaterCode, CreaterName, FlowNote) values(##EntGid##, ##ModelGid##, ##NewFlowGid##, 2, ##CreateGid##, ##CreateCode##, ##CreateName##, ##FlowDescription##)
+
+SQL2=update WF_Flow f set (FillDeptGid,FillDeptCode,FillDeptName) = (select d.Gid,d.Code2,d.Name from hr_emp hr,dept d where hr.entgid = ##EntGid## and hr.entgid = d.entgid and hr.deptgid = d.gid and hr.usrgid = f.CreaterGid) where f.entgid = ##EntGid## and f.flowgid = ##NewFlowGid##
+
+;创建第一个任务，执行人为当前用户
+SQL3=insert into WF_Task(EntGid, ModelGid, FlowGid, TaskDefGid, TaskGid, Code, Name, Note, Stat, ExecGid, ExecCode, ExecName, OrderValue, IsMCF) select ##EntGid##, ##ModelGid##, ##NewFlowGid##, TaskDefGid, sys_guid(), Code, Name, Note, 1, ##CreateGid##, ##CreateCode##, ##CreateName##, OrderValue, IsMCF from WF_Task_Define where EntGid=##EntGid## and ModelGid=##ModelGid## and IsStart=1
+
+;找到当前用户在任务定义中拥有的权值，更新第一个任务的OwnerValue
+SQL4=update WF_Task set OwnerValue = (select nvl(Max(b.OwnerValue), 1) from WF_Task_Define a, WF_Task_Define_Exec b, V_Org_Usr c where a.EntGid=##EntGid## and b.EntGid=##EntGid## and c.EntGid=##EntGid## and a.ModelGid=##ModelGid## and b.ModelGid=##ModelGid## and a.TaskDefGid=b.TaskDefGid and a.IsStart=1 and b.ExecGidEx=c.OrgGid and c.UsrGid=##CreateGid##) where EntGid=##EntGid## and ModelGid=##ModelGid## and FlowGid=##NewFlowGid##
+
+;WF_Model.Ap2 + 1
+SQL5=update WF_Model set Ap2 = Ap2 + 1 where EntGid=##EntGid## and ModelGid=##ModelGid##
+
+[Title]
+Text1=
+Text2=
+Text3=
+Text4=
+Text5=
+Log=WFFlowCreate: 模型编号：##ModelGid##；实例编号：##NewFlowGid##；
+ChangePage=0
+Log=
+PageKind=0
+
+[Link]
+URL1=
+URL2=
+URL3=
+URL4=
+URL5=
+URL6=
+URL7=
+URL8=
+URL9=
+URL10=

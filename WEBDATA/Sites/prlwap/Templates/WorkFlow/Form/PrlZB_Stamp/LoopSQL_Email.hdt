@@ -1,0 +1,48 @@
+<table cellpadding="0" cellspacing="0" width="100%" class="App_List" style="margin-top:10px">
+  <col style="width:100%" valign="top">
+  <TR><TD class="App_ListTr">基本信息</TD></TR>
+  <TR><TD class="App_ListTd">单号：<HDPrint Value=#Num#></TD></TR>
+  <TR><TD class="App_ListTd">发起人：<HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]</TD></TR>
+  <TR><TD class="App_ListTd">发起日期：<HDPrint Value=#CreateDate#></TD></TR>
+</table>
+<table cellpadding="0" cellspacing="0" width="100%" class="App_List" style="margin-top:10px">
+<col style="width:100%" valign="top">
+<TR><TD class="App_ListTr">单据信息</TD></TR>
+<HDIF Equal(<HDPrint Value=#ApplyType# Replace=#None#>, 非合同类文件用印)>
+<TR><TD class="App_ListTd">[文件名称] : <HDPrint Value=#FileName#>；</td></tr>
+<TR><TD class="App_ListTd">[文件目的] : <HDPrint Value=#FileAim#>；</td></tr>
+<TR><TD class="App_ListTd">[申请人声明及保证] : 我保证我所提交的用于盖章的非合同类文件与本申请所注载内容一致；</td></tr>
+</HDIF>
+<HDIF Equal(<HDPrint Value=#ApplyType# Replace=#None#>, 合同签署用印)>
+<TR><TD class="App_ListTd">[合同名称] : <HDPrint Value=#ContractName#>；</td></tr>
+<TR><TD class="App_ListTd">[合同份数] : <HDPrint Value=#ContractCount#>；</td></tr>
+<TR><TD class="App_ListTd">[合同金额] : <HDPrint Value=#ContractFee#>；</td></tr>
+<TR><TD class="App_ListTd">[合作公司] : <HDPrint Value=#ContactName#>；</td></tr>
+<TR><TD class="App_ListTd">[合同期限] : <HDPrint Value=#ContractDate1#>~<HDPrint Value=#ContractDate2#>；</td></tr>
+<TR><TD class="App_ListTd">[合同概要] : <HDPrint Value=#ComtractMemo#>；</td></tr>
+</HDIF>
+<TR><TD class="App_ListTd">[备注] : <HDPrint Value=#Memo#></td></tr>
+<TR><TD class="App_ListTd">[附件信息] : <HDPrint Value=#AttachList# Replace=#None#> ；</td></tr>
+<TR><TD class="App_ListTd">[已盖章文件] : <HDPrint Value=#AttachList2# Replace=#None#> ；</td></tr>
+</table>
+
+<table cellpadding="0" cellspacing="0" width="100%" class="App_List" style="margin-top:10px">
+  <col style="padding-left:4px;">
+  <col style="width:30px;" align="center">
+  <TR>
+    <TD align="left" class="App_ListTr" style="padding-left:10px;width:auto"><b>其他信息</b></TD>
+    <TD onclick="JQExpand('tb_Other');" style="cursor:hand" class="IconDown">　　</TD>
+  </TR>
+</table>
+<table cellpadding="0" cellspacing="0" width="100%" id="tb_Other" class="App_List" style="display:none">
+<col style="width:100%" valign="top">
+<TR><TD class="App_ListTd">[是否关联流程] : <HDPrint Value=#mIsFlow#>（单号：<a id="a_flow" href="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#mModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&ModelCode=<HDPrint Value=#mModelCode#>&FlowGid=<HDPrint Value=#mFlowGid#>" target="_blank"><HDPrint Value=#mNum#></a>）；</td></tr>
+<TR><TD class="App_ListTd">[申请类型] : <HDPrint Value=#ApplyType#>；</td></tr>
+<TR><TD class="App_ListTd">[申请印章种类] : <HDPrint Value=#StampType#>；</td></tr>
+<TR><TD class="App_ListTd">[公司名称] : <HDPrint Value=#ComName#>；</td></tr>
+<HDIF Equal(<HDPrint Value=#ApplyType# Replace=#None#>, 非合同类文件用印)>
+<TR><TD class="App_ListTd">[文件接收方名称] : <HDPrint Value=#FilerName#>；</td></tr>
+<TR><TD class="App_ListTd">[文件份数] : <HDPrint Value=#FileCount#>；</td></tr>
+</HDIF>
+</table>
+<HDPrint Value=#AppEmail# Replace=#None#>

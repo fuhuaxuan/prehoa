@@ -199,7 +199,7 @@
     <td class="DtlBarTitle">备注:<br><font color="gray">(1000字以内)</font></td>
     <td class="listtd" colspan="5"><textarea rows="6" id ="Memo" name="Memo" class="JQText" maxlength="1000"><HDPrint Value=#Memo# Replace=#DBField2InputField#></textarea></td>
   </tr>
-  <tr>
+  <tr style="display:none">
     <td class="DtlBarTitle">发起人备注:<br><font color="gray">(500字内)</font></td>
     <td class="listtd" colspan="5"><textarea class="JQText JQNo" rows="5" id="AppMemo" name="AppMemo" maxlength="500"></textarea></td>
   </tr>

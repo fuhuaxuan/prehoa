@@ -108,6 +108,7 @@
   <col style="padding-left:4px;" valign="top">
   <col style="padding-left:4px;width:55" valign="top">
   <col style="padding-left:4px;width:120" align="center" valign="top">
+  <col style="padding-left:4px;width:150" valign="top">
   <col style="padding-left:4px;width:280" valign="top">
   <col style="padding-left:4px;width:30" align="center" valign="top">
 
@@ -116,6 +117,7 @@
     <td id="tdOrder" style="cursor:hand;" JQAsc="" JQColumn="a.memo">任务信息</td>
     <td id="tdOrder" style="cursor:hand;" JQAsc="" JQColumn="c.createrCode">发起人</td>
     <td id="tdOrder" style="cursor:hand;" JQAsc="" JQColumn="a.btime">您任务开始时间</td>
+    <td id="tdOrder" style="cursor:hand;" JQAsc="" JQColumn="b.payman">收款人</td>
     <td id="tdOrder" style="cursor:hand;" JQAsc="" JQColumn="c.flowNote">实例备注</td>
     <td>操作</td>
   </tr>
@@ -128,6 +130,7 @@
     </td>
     <td><HDPrint Value=#creatername#></td>
     <td title="流程发起时间:<HDPrint Value=#Cdate#>"><HDPrint Value=#BTime#></td>
+    <td><HDPrint Value=#PayMan#><br><HDPrint Value=#PayBank#></td>
     <td><HDPrint Value=#FlowNote#></td>
     <td>
       <A HREF="##HDNet_AppName##/WFFlowPage?UsrGid=<HDPrint Value=#UsrGid#>&Url=<HDPrint Value=#ModelCode#>&ModelGid=<HDPrint Value=#ModelGid#>&FlowGid=<HDPrint Value=#FlowGid#>" target="_blank">明细</A>

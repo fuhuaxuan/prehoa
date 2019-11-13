@@ -1,0 +1,62 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script>
+
+  function AddEmialUnit(aType,Line,Gid,fNo,floorNo,fArea,jArea,fmr,fmrY,fmrM){
+    var sTbId = 'tb_Email'+aType;
+    var sTrClass = 'listtd';
+    var tdArr = new Array();
+    var iRow = Math.floor(Math.random() * 100000 + 1);
+    var i = $("table#"+sTbId+">tbody>tr").length + 1;
+    var k = 0;
+    if (Gid == null){
+      Gid = '';
+      fNo = '';
+      floorNo = '';
+      fArea = '';
+      jArea = '';
+      fmr = '';
+      fmrY = '';
+      fmrM = '';
+    }
+
+    var table = '';
+    table+='<table width="100%" cellpadding="0"  cellspacing="0">'
+    table+='  <colgroup>'
+    table+='     <col style="width:50%">'
+    table+='     <col style="width:50%">'
+    table+='  </colgroup>'
+    table+='  <tr>'
+    table+='    <td class="App_ListTd" style="padding:0px">单位：'+fNo+'</td>'
+    table+='    <td class="App_ListTd" style="padding:0px">楼层：'+floorNo+'</td>'
+    table+='  </tr>'
+    table+='  <tr>'
+    table+='    <td class="App_ListTd" style="padding:0px">面积：'+fArea+'</td>'
+    table+='    <td class="App_ListTd" style="padding:0px">建筑面积：'+jArea+'</td>'
+    table+='  </tr>'
+    table+='  <tr>'
+    table+='    <td class="App_ListTd" style="padding:0px" colspan="2">预算单价(租金+物管+推广)：'+fmr+'</td>'
+    table+='  </tr>'
+    table+='  <tr>'
+    table+='    <td class="App_ListTd" style="padding:0px">年度总预算：'+fmrY+'</td>'
+    table+='    <td class="App_ListTd" style="padding:0px">月总租金：'+fmrM+'</td>'
+    table+='  </tr>'
+    table+='</table>'
+
+    tdArr[k++] = '<td>'+table+'</td>';
+    //新增一行
+    JQTr_Add(sTbId,sTrClass,tdArr);
+  }
+
+  <hdloop>
+    AddEmialUnit('<HDPrint Value=#aType# Replace=#DBField2Js#>',
+      '<HDPrint Value=#Line# Replace=#DBField2Js#>',
+      '<HDPrint Value=#Gid# Replace=#DBField2Js#>',
+      '<HDPrint Value=#fNo# Replace=#DBField2Js#>',
+      '<HDPrint Value=#floorNo# Replace=#DBField2Js#>',
+      '<HDPrint Value=#fArea# Replace=#DBField2Js#>',
+      '<HDPrint Value=#jArea# Replace=#DBField2Js#>',
+      '<HDPrint Value=#fmr# Replace=#DBField2Js#>',
+      '<HDPrint Value=#fmrY# Replace=#DBField2Js#>',
+      '<HDPrint Value=#fmrM# Replace=#DBField2Js#>')
+  </hdloop>
+</script>

@@ -1,0 +1,6 @@
+<SCRIPT LANGUAGE="JavaScript">
+  alert('批量付款成功');
+
+  location.replace('##HDNet_AppName##/WFFlowPage?Url=PrlDZ_BaoXiao_Pay&UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Js#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>');
+
+</SCRIPT>

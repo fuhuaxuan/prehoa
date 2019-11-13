@@ -1,0 +1,11 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<script language="javascript">
+  //窗口改变，重计算iframe的高度
+  $(window).resize(function (){
+    JQChgHeight();
+  });
+
+</script>
+<HDPrint Value=#EmailPhone# Replace=#None#>

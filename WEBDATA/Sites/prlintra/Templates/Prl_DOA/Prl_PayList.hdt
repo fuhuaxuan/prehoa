@@ -166,7 +166,7 @@
     <td style="cursor:hand;" JQAsc="" JQColumn="a.AcgName">项目</td>
     <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.FeeA">A<br>项目总额</td>
     <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.FeeB">B<br>已付款金额</td>
-    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.payfee">C<br>本次付款</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.payfee1">C<br>本次付款</td>
     <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.FeeLeft">A-B-C<br>尚欠余额</td>
     <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.FeeOk">B+C<br>实际付款总额</td>
     <td style="cursor:hand;" JQAsc="" JQColumn="f.payee">付款单位</td>
@@ -183,7 +183,7 @@
     <td nowrap><HDPrint Value=#AcgCode#>-<HDPrint Value=#AcgName#></td>
     <td nowrap><HDPrint Value=#FeeA#></td>
     <td nowrap><HDPrint Value=#FeeB#></td>
-    <td nowrap><HDPrint Value=#payfee#></td>
+    <td nowrap><HDPrint Value=#payfee1#></td>
     <td nowrap><HDPrint Value=#FeeLeft#></td>
     <td nowrap><HDPrint Value=#FeeOk#></td>
     <td nowrap><HDPrint Value=#payee#></td>

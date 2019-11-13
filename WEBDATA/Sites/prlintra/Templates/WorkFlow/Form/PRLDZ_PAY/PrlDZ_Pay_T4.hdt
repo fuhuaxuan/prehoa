@@ -51,6 +51,14 @@
     <td class="DtlBarTitle">确认时间:</td>
     <td class="listtd"><HDPrint Value=#CurDate#> <HDPrint Value=#CurTime#></td>
   </tr>
+  <tr valign="top" style="display:<HDPrint Value=#isShow#>">
+    <td class="DtlBarTitle">潘总审批附件:<font color="red">*</font><br><font color="gray">(双击删除)</font></td>
+    <td class="listtd" colspan="3">
+      <SELECT NAME="selFileList_1" size="3" style="width:250;" multiple class="<HDPrint Value=#isMust#>"><HDPrint Value=#AttachList# Replace=#None#></SELECT><br>
+      <input type="hidden" name="HDTempPath" value="<HDPrint Value=#NewGid# Replace=#DBField2Input#>">
+      <iframe FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid# Replace=#DBField2Input#>&CallBackFun=AddAttach" height=28></iframe>
+    </td>
+  </tr>
   <tr>
     <td class="DtlBarTitle">确认内容:<br><font color="gray">(500字内)</font></td>
     <td class="listtd" colspan="3"><textarea class="JQText" rows="5" name="note" maxlength="500"></textarea></td>
@@ -59,6 +67,23 @@
 </form>
 
 <script language="javascript">
+  /*
+  *函数名称：新增附件添加到附件列表中
+  *参数：sFileName-附件名称
+  */
+  function AddAttach(JsFileName)
+  {
+    if (JsFileName == '')
+      return false;
+    //判断是否存在附件
+    if (!JQgetSingle("selFileList_1",JsFileName)){
+      alert('对不起，已经存在该附件！');
+      return false;
+    }
+    //添加到附件表中
+    var JsOption = '<option value="'+JsFileName+'">'+JsFileName+'</option>';
+    $("select[name=selFileList_1]").append(JsOption);
+  }
   //复制一个工具栏
   var $ToolBar = $("div#JQ_ToolBar");
   $("form[name=frmDo]").append($ToolBar.html());

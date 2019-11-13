@@ -1,0 +1,128 @@
+<!--Js引入-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<!-- Ajax函数引入 -->
+<script language="JavaScript" src="##GetWebRootPath(/Scripts/Ajax/json.js)##"></Script>
+<script>
+  /*
+  *函数功能：Ajax 唯一性判断
+  *若在报表(RepDisplay)中使用，则标记Rep=1
+  *若在流程(WFFlowPage)中使用，则标记Flow=1
+  *参数：代码控件对象
+  */
+  function checkFno() {
+    var JsGid = $("input[name=fGid]").val();
+    var Jsfno = $("input[name=fno]").val();
+    if (Jsfno == ''){
+      return false;
+    }
+    //存放将要发送到服务器的内容
+    var sParams = '&fGid='+JsGid+'&sfno='+Jsfno;
+    http.open('POST', '##HDNet_AppName##/__ExplainAjax?Url=PrlYY_Groundh_Add&UsrGid=<HDPrint
+    Value=#UsrGid#>&OpAtype=0');
+
+    http.onreadystatechange = function () {
+      if (http.readyState == 4) {
+        if(http.status == 200) {
+          try {
+            if (http.responseText.indexOf('"1":"1"') > 0) {
+              alert('该员项目中编号已经存在，请重新输入!');
+              $("input[name=fno]").val('');
+              frmDo.fno.focus();
+              return false;
+            }
+          }
+          catch (e) {
+            //当发生异常时，显示该异常信息
+            alert(http.responseText);
+            return(e);
+          }
+        }
+      }
+    };
+    //发送
+    http.send(sParams);
+  }
+</script>
+<form name="frmDo" method="post" action="">
+<!--模块使用到一些隐藏的控件-->
+<input type="text" style="display:none" name="Gid" value="<HDPrint Value=#NewGid# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="fGid" value="">
+
+<h3 class="TitleBar" ><HDPrint Value=#ModeleAtype#>-<HDPrint Value=#ModeleName#></h3>
+<TABLE width="100%" class="ButtonBar" cellpadding="0" cellspacing="0">
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A Href="javascript:CheckSubmit('保存');void(0);" name="btn_1"><FONT class="IconSave">　&nbsp;</FONT> 保存
+      </A>
+     |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+      <a HREF="##HDNet_AppName##/__ExplainModule?URL=PrlYY_Groundh_List&UsrGid=<HDPrint Value=#UsrGid#>"><FONT
+      class="IconBack">　&nbsp;</FONT> 返回列表</A>
+    </TD>
+  </TR>
+</TABLE>
+
+<table width="100%" class="ListBar" cellpadding="0"  cellspacing="1">
+  <colgroup>
+    <col style="padding-left:4px;width:10%">
+    <col style="padding-left:4px;width:15%">
+    <col style="padding-left:4px;width:10%">
+    <col style="padding-left:4px;width:15%">
+    <col style="padding-left:4px;width:10%">
+    <col style="padding-left:4px;width:15%">
+    <col style="padding-left:4px;width:10%">
+    <col style="padding-left:4px;width:15%">
+  </colgroup>
+  <tr>
+    <td class="DtlBarTitle">编号:<font color ="red">*</font></td>
+    <td class="listtd"><input type="text" NAME="fno" maxlength="64" class="JQText JQMust" value="<HDPrint
+    Value=#fno# Replace=#DBField2Input#>" onchange="checkFno();"></td>
+    <td class="DtlBarTitle">面积:<font color ="red">*</font></td>
+    <td class="listtd"><input type="text" NAME="farea" maxlength="16" class="JQFloat JQMust" JQBit="2" value="<HDPrint
+    Value=#farea# Replace=#DBField2Input#>"></td>
+  </tr>
+</table>
+</form>
+
+<FieldSet style="Font-Family:Tahoma;Font-Size:9pt;">
+<Legend><font color="red">特别提醒</font></Legend>
+<li>项目与编号不能与现在的地理位置中的项目与编号重复</li>
+<li>面积，建筑面积，预算 均为数字类型</li>
+</FieldSet>
+
+<script>
+  var JsFGid = Math.floor(Math.random() * (1 + 100000 - 1) + 1);
+  $("input[name=fGid]").val(JsFGid);
+  //提交函数
+  function CheckSubmit(){
+    //定义 提交提示文字
+    var sConfirm = '您确定已经填写完成，并保存吗？';
+    //提交时，验证必填项
+    if (!JQcheck("JQMust")){
+      return false;
+    }
+    //提交时，提示
+    if (!(confirm(sConfirm)))
+      return false;
+
+    //获取当前表单对象
+    var JqObj = $("form[name=frmDo]");
+    //表单参数设定
+    JqObj.attr({
+      "action":'##HDNet_AppName##/__ExplainModule?Url=<HDPrint Value=#Url#>Save&UsrGid=<HDPrint Value=#UsrGid#>',
+      "target":'_self'
+    });
+    //表单提交
+    JqObj.submit();
+
+    //操作按钮变为不可用
+    $("a[name=btn_1]").each(function(){
+      $(this).prop("disabled",true);
+    });
+    //本函数失效
+    CheckSubmit = function() {return false;}
+  }
+</script>

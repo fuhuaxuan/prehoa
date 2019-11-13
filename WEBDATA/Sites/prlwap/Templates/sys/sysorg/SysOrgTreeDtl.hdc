@@ -1,0 +1,58 @@
+[Permission]
+SQL1=select 1 from Org where EntGid = __ENTGID__ and Gid = '^^OrgGid^^'
+Remind1=您所指定的组织信息不存在！<script language="JavaScript">alert('您所指定的组织信息不存在！'); history.back();</script>
+
+[Master]
+;将组织权限关系为包含的所有上级组织找到(为删除组织时用)
+SQL=select Gid UpperGid, LayerCode UpperLayerCode from Org where EntGid = __ENTGID__ and length(LayerCode) < length(##LayerCode##) and ##LayerCode## like LayerCode || '%'
+Count=select 1 from dual
+
+[Detail]
+SQLForCondition1=Select Gid OrgGid, Name, Code, Sortid, IsDel, decode(IsUsr, 10, '是', 20, '否') IsUsr, LayerCode, Atype, CHILDCOUNT, PARENTGID, CreateDate, LastUpdDate from Org where EntGid = __ENTGID__ and Gid = ##OrgGid##
+
+SQL2=select Name SortName from ORG_SORT where ID = ##Sortid##
+
+SQL3=select decode(DeptType, 10, '部门', 20, '门店', 30, '地区', 40, '督区', 50, '公司') DeptType, Address, Phone, Faxno, Contactor from ORG_DEPT where EntGid = __ENTGID__ and Gid = ##OrgGid## and SortId = ##Sortid## and ##Sortid## = '2001'
+SQL4=select Memo from ORG_COMMON where EntGid = __ENTGID__ and Gid = ##OrgGid## and SortId = ##Sortid## and ##Sortid## <> '2001'
+
+LoopSQL1=select b.name || '[' || b.code || '] - ' || b.position empnameex,atype  from hr_deptpost a, hr_emp b where a.EntGid = __ENTGID__ and a.deptGid = ##OrgGid## and b.gid = a.empgidex order by b.code
+LoopHDT1=Templates\sys\sysorg\LoopSql_EmpList.hdt
+LoopVAR1=emplist
+
+
+LoopSQL11=select atype, name,  min(aorder) from rt where ID in (select rtid from ent_rt where EntGid = __ENTGID__) and alevel > '10' group by name, atype order by min(aorder)
+LoopHDT11=Templates\Sys\SysOrg\SysOrgInfo\OrgRtID.hdt
+LoopVAR11=OrgRtID
+
+LoopSQL12=select distinct Atype RTAtype, Name RTName, min(aorder) from rt where id in (select RTID from org_rt where EntGid = __ENTGID__ and OrgGid = ##OrgGid## and Atype = '10') and alevel > '10' group by name, atype order by min(aorder)
+LoopHDT12=Templates\Sys\SysOrg\SysOrgInfo\OrgSelectedRt.hdt
+LoopVAR12=OrgSelectedRt
+
+[Where]
+1=
+
+[DefaultWhere]
+DefaultWhere= 
+
+[OrderBy]
+1=
+
+[DefaultOrderBy]
+DefaultOrderBy=
+
+[GroupBy]
+
+[Title]
+Text1=系统-组织信息明细
+
+PageKind=2
+ChangePage=0
+
+[Link]
+URL1=sysorgtreeadd
+URL2=sysorgtreemod
+URL3=sysorgtreedel
+URL4=sysorgrtmod
+URL5=sysorgusrmod
+URL6=sysorgrtset
+URL7=sysorgpost

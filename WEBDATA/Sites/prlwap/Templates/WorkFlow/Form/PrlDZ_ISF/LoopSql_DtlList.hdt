@@ -1,0 +1,16 @@
+<script language="javascript">
+<hdloop>
+  var item = {
+    NodeDate: "<HDPrint Value=#yeartype# Replace=#DBField2Js#>",
+    RentPSMDay: "<HDPrint Value=#TBRD# Replace=#DBField2Js#>",
+    RentTotalMonth: "<HDPrint Value=#TBRM# Replace=#DBField2Js#>",
+    FixedPSMDay: "<HDPrint Value=#pmfd# Replace=#DBField2Js#>",
+    FixedTotalMonth: "<HDPrint Value=#PMFM# Replace=#DBField2Js#>",
+    APPSMDay: "<HDPrint Value=#Apfixed# Replace=#DBField2Js#>",
+    APPSMPercent: "<HDPrint Value=#AP# Replace=#DBField2Js#>",
+    RentRate: "<HDPrint Value=#GTO# Replace=#DBField2Js#>",
+    PreTotalMonth: "<HDPrint Value=#ProGTOM# Replace=#DBField2Js#>"
+  };
+  datainfo.DetailList.push(item);
+</hdloop>
+</script>

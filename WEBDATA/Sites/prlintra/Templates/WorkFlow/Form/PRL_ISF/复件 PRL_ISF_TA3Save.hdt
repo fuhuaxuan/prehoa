@@ -11,7 +11,7 @@
     [待审批单号] : <HDPrint Value=#Num#>；
     [Category  类别] : <HDPrint Value=#atype#>
     [Unit No.  单位] : <HDPrint Value=#unit#>
-    [Tenant/Licensee 租户] : <HDPrint Value=#lessee#>;  
+    [Tenant/Licensee 租户] : <HDPrint Value=#lessee#>;
     [Lease Term 租赁期限] : <HDPrint Value=#leasetermy# Replace=#DBField2Input#>年/<HDPrint Value=#leasetermm# Replace=#DBField2Input#> 月/<HDPrint Value=#leasetermd# Replace=#DBField2Input#>日;
     [Handover Date 交付日期] : <HDPrint Value=#handoverdate#>
     [Contract start Date 合同起始日期] : <HDPrint Value=#contractdate1#>
@@ -26,7 +26,7 @@
     [批准预算] : <HDPrint Value=#brcbudget# Replace=#DBField2Input#> 每平方米/天;
     [修改批准预算] : <HDPrint Value=#newbrcbudget#>
     [Special Terms and Conditions/Remarks :特别条件/评语] :  <HDPrint Value=#Memo# Replace=#DBField2InputField#>
-        
+
 
 [待审批内容展示完毕]
 
@@ -51,10 +51,10 @@ SystemInfo::EntGid=<HDPrint Value=#EntGid#>;Flowgid=<HDPrint Value=#Flowgid#>;Mo
 //应该是 > 0 .20121205测试所用
   if ('<HDPrint Value=#sparam1# Replace=#DBField2Js#>' - 0 > 0)
   frmMail.submit();
-  
+
   else{
-  
-    alert('审批完毕，审批人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>，审批意见：<HDPrint Value=#AppAssign# Replace=#DBField2Js#>');
+
+    //alert('审批完毕，审批人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>，审批意见：<HDPrint Value=#AppAssign# Replace=#DBField2Js#>');
 
     //如有打开页面，刷新打开页面
     if (self.opener != null) {
@@ -71,5 +71,5 @@ SystemInfo::EntGid=<HDPrint Value=#EntGid#>;Flowgid=<HDPrint Value=#Flowgid#>;Mo
     window.close();
   }
 
-  
+
 </SCRIPT>

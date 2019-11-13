@@ -127,8 +127,7 @@
     +'</td>';
 
     tdArr[k++] = '<td>'
-      +'<INPUT TYPE="text" NAME="TypeName_1" ID="TypeName_1'+ iRow +'" maxlength="32" class="JQText JQMust" value = "'+TypeName+'" readonly onclick="chooceType(\''+ iRow +'\')">'
-      +'<INPUT TYPE="hidden" NAME="TypeGid_1" ID="TypeGid_1'+ iRow +'" maxlength="32" class="JQText" value = "'+TypeGid+'">'
+      +'<select name="TypeGid_1" ID="TypeGid_1'+ iRow +'" class="JQSelect JQMust"><option value="">--请选择--</option>'+JsOption+'</select>'
     +'</td>';
 
     tdArr[k++] = '<td><INPUT TYPE="text" NAME="FeeDate_1" ID="FeeDate_1'+ iRow +'" maxlength="10" class="JQDate JQMust" value = "'+FeeDate+'" onblur="callDate(this,\''+ iRow +'\');"></td>';
@@ -139,13 +138,14 @@
       +'<INPUT TYPE="hidden" NAME="AcgFee_1" ID="AcgFee_1'+ iRow +'"  maxlength="16" class="JQFloat" value = "'+AcgFee+'">'
     +'</td>';
     tdArr[k++] = '<td>'
-      +'<INPUT TYPE="text" NAME="Memo_1" ID="Memo_1'+ iRow +'" maxlength="32" class="JQText JQMust" value = "'+Memo+'">'
+      +'<INPUT TYPE="text" NAME="Memo_1" ID="Memo_1'+ iRow +'" maxlength="200" class="JQText JQMust" value = "'+Memo+'">'
     +'</td>';
 
     tdArr[k++] ='<td align="center"><a href="javascript:void(0)" onclick="javascript:JQTr_Del();JqReCal()">删除</a></td>';
 
     //新增一行
     JQTr_Add(sTbId,sTrClass,tdArr);
+    $("select[id=TypeGid_1"+iRow+"] option[value="+TypeGid+"]").prop("selected",true);
   }
 
   //判断日期大小
@@ -231,7 +231,7 @@
     });
   }
 </script>
-
+<HDPrint Value=#TypeList# Replace=#None#>
 <form name="frmDo" method="post" action="">
 <!--流程用到一些控件-->
 <input type="text" style="display:none" name="ModelGid" value="<HDPrint Value=#ModelGid# Replace=#DBField2Input#>">

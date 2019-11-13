@@ -19,7 +19,7 @@
 </HDIF>
 <HDIF Equal(<HDPrint Value=#feeflowgid# Replace=#DBField2Input#>1, 1)>
 <tr><td>[公司名称] : <HDPrint Value=#companyname#>
-<tr><td>[项目名称] : <HDPrint Value=#acgonename#> - <HDPrint Value=#acgtwoname#> 
+<tr><td>[项目名称] : <HDPrint Value=#acgonename#> - <HDPrint Value=#acgtwoname#>
 <tr><td>[细节勾选] : <HDPrint Value=#acgothertext#>
 </HDIF>
 <tr><td>[付款金额] : <HDPrint Value=#payfee#>
@@ -50,7 +50,7 @@
 </textarea>
   </form>
 <SCRIPT LANGUAGE="JavaScript">
-    alert('审批完毕，审批人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>，审批意见：<HDPrint Value=#AppAssign# Replace=#DBField2Js#>');
+    //alert('审批完毕，审批人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>，审批意见：<HDPrint Value=#AppAssign# Replace=#DBField2Js#>');
 
 
     //如有打开页面，刷新打开页面
@@ -69,10 +69,10 @@
     }
     frmMail.submit();
   }
-  
+
   else{
     window.close();
   }
 
-  
+
 </SCRIPT>

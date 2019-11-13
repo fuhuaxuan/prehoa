@@ -1,0 +1,9 @@
+<hdloop>
+<tr valign="top" style="background-color: white">
+  <td class="App_ListTd" style="padding:0px">
+    报销科目：[<HDPrint Value=#AcgCode#>]<HDPrint Value=#AcgName#><br>项目地址：<HDPrint Value=#TypeName#>
+    <br>费用日期：<HDPrint Value=#FeeDate#>-<HDPrint Value=#FeeEDate#>
+    <br>费用：<HDPrint Value=#ApplyFee#>元
+    <br>备注：<HDPrint Value=#Memo#></td>
+</tr>
+</hdloop>

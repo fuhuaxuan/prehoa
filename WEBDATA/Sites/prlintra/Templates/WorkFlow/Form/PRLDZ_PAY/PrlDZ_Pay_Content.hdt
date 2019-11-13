@@ -144,6 +144,12 @@
     <td class="DtlBarTitle">附件信息:</td>
     <td class="listtd" colspan="5"><HDPrint Value=#AttachList# Replace=#None#></td>
   </tr>
+  <HDIF EqualNot(<HDPrint Value=#isCEO# Replace=#None#>, 0)>
+  <tr valign="top">
+    <td class="DtlBarTitle">潘总审批附件:</td>
+    <td class="listtd" colspan="5"><HDPrint Value=#AttachList2# Replace=#None#></td>
+  </tr>
+  </HDIF>
 </table>
 </form>
 <script language="javascript">

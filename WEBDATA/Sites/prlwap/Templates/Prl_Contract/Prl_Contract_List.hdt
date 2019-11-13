@@ -1,0 +1,215 @@
+<!--Js引入-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/DateControl.js)##"></script>
+<form name="frmDo" method="Post" action="">
+<h3 class="TitleBar" ><HDPrint Value=#ModeleAtype#>-<HDPrint Value=#ModeleName#></h3>
+<TABLE width="100%" class="ButtonBar" cellpadding=0 cellspacing=0>
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <HDIF Equal(<HDPrint Value=#chkRtID1#>, 1)>
+        <A HREF="##HDNet_AppName##/__ExplainModule?Url=Prl_Contract_Add&UsrGid=<HDPrint Value=#UsrGid#>"><FONT class="IconAdd">　&nbsp;</FONT> 新增</A>
+      </HDIF>
+      <!--<HDIF Equal(<HDPrint Value=#chkRtID2#>, 1)>
+        <A HREF="##HDNet_AppName##/__ExplainModule?Url=Prl_Contract_Set&UsrGid=<HDPrint Value=#UsrGid#>"><FONT class="IconDefault">　&nbsp;</FONT> 批量设置</A>
+      </HDIF>-->
+     |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+      <A HREF="##HDNet_AppName##/MainPage?URL=&UsrGid=<HDPrint Value=#UsrGid#>"><FONT class="IconBack">　&nbsp;</FONT> 返回首页</A>
+    </TD>
+  </TR>
+</TABLE>
+<!--排序点击标题即可排序-用到的控件-->
+<INPUT TYPE="hidden" title="排序点击标题即可排序-用到的控件" name="selOrderBy" value="<HDPrint Value=#selOrderBy# Replace=#DBField2Input#>">
+<INPUT TYPE="hidden" title="排序点击标题即可排序-用到的控件" name="selOrderAsc" value="<HDPrint Value=#selOrderAsc# Replace=#DBField2Input#>">
+<INPUT TYPE="hidden" title="排序点击标题即可排序-用到的控件" name="selOrderColumn" value="<HDPrint Value=#selOrderColumn# Replace=#DBField2Input#>">
+<INPUT TYPE="hidden" title="下载报表用到的控件" name="Rep_Download" value="">
+<input type="hidden" name="NotFirst" value="1">
+
+<table class="SearchBar" width="100%" cellspacing="0">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:15%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:15%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:15%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:15%">
+  <tr class="SearchTr" >
+    <td colspan="8"><b>搜索条件</b></td>
+  </tr>
+  <tr>
+    <td nowrap>收银方式 ≈ </td>
+    <td>
+      <select name="selCashWay" class="JQSelect">
+        <option value="">--全部--</option>
+        <option value="中央收银">中央收银</option>
+        <option value="独立收银">独立收银</option>
+      </select>
+    </td>
+    <td nowrap>条款类别 ≈ </td>
+    <td><input type="Text" name="txt_CType" class="JQText"></td>
+    <td nowrap>条款编号 ≈ </td>
+    <td><input type="Text" name="txt_CNum" class="JQText"></td>
+    <td nowrap>审批级别 ≈ </td>
+    <td>
+      <select name="selOpApp" class="JQSelect">
+        <option value="">--全部--</option>
+        <option value="1">A</option>
+        <option value="2">B</option>
+        <option value="3">C</option>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td nowrap>条款原文 ≈ </td>
+    <td colspan="3"><input type="Text" name="txt_Content" class="JQText"></td>
+    <td nowrap>条款可选项 ≈ </td>
+    <td colspan="3"><input type="Text" name="txt_OpMod" class="JQText"></td>
+  </tr>
+  <tr >
+    <td colspan="4">（请进行相应的查询，找到您需要的信息）</td>
+    <td colspan="4" align="right">
+      <INPUT TYPE="hidden" name="NotFirst" value="1">
+      <INPUT TYPE="submit" name="btnSearch" class="NormalSbt" value=" 查询 " >
+      <INPUT TYPE="reset" name="btnReset" class="NormalSbt" value=" 默认 ">
+      <!--<INPUT TYPE="button" name="btnDownload" class="NormalSbt" value="下载Excel" onclick="return DownLoad()">-->
+    </td>
+  </tr>
+</table>
+<script language="javascript">
+  //数据提交后，对页面查询条件重新赋值
+  document.all.selCashWay.value = '<HDPrint value=#selCashWay# Replace=#DBField2Js#>';
+  document.all.txt_CType.value = '<HDPrint value=#txt_CType# Replace=#DBField2Js#>';
+  document.all.txt_CNum.value = '<HDPrint value=#txt_CNum# Replace=#DBField2Js#>';
+  document.all.selOpApp.value = '<HDPrint value=#selOpApp# Replace=#DBField2Js#>';
+  document.all.txt_Content.value = '<HDPrint value=#txt_Content# Replace=#DBField2Js#>';
+  document.all.txt_OpMod.value = '<HDPrint value=#txt_OpMod# Replace=#DBField2Js#>';
+</script>
+<BR>
+<HDPageBar>
+<table class=ListBar width="100%" cellspacing="1">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:15%">
+  <col style="padding-left:4px;width:8%">
+  <col style="padding-left:4px;width:25%">
+  <col style="padding-left:4px;width:35%">
+  <col style="padding-left:4px;width:7%">
+  <tr class="listtr">
+    <td style="cursor:hand;" JQAsc="" JQColumn="c.CashWay">收银方式</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="c.CType">条款类别</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="c.Line">条款编号</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="c.Content">条款原文</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="c.OpApp1,c.OpApp2,c.OpApp3,c.OpApp4||c.OpMod4,c.OpApp5||c.OpMod5,c.OpApp6||c.OpMod6">审批级别/可选项目</td>
+    <td >操作</td>
+  </tr>
+  <HDLoop>
+  <tr class="listtd" onmouseover="this.className='listtdfocus';" onmouseout="this.className='listtd'" valign="top">
+    <td><HDPrint Value=#CashWay#></td>
+    <td><HDPrint Value=#CType#></td>
+    <td align="center"><a href="##HDNet_AppName##/__ExplainModule?Url=Prl_Contract_Dtl&UsrGid=<HDPrint Value=#UsrGid#>&Gid=<HDPrint Value=#Gid#>" target="_self"><HDPrint Value=#CNum#></a></td>
+    <td><HDPrint Value=#Content#></td>
+    <td>
+      <script language="javascript">
+       if ('<HDPrint Value=#OpApp2Text# Replace=#DBField2Js#>' != '空'){
+         document.write('（<HDPrint Value=#OpApp2Text# Replace=#None#>）<HDPrint Value=#OpMod2#><br>');
+       }
+       if ('<HDPrint Value=#OpApp3Text# Replace=#DBField2Js#>' != '空'){
+         document.write('（<HDPrint Value=#OpApp3Text# Replace=#None#>）<HDPrint Value=#OpMod3#><br>');
+       }
+        if ('<HDPrint Value=#OpMod4# Replace=#DBField2Js#>' != '' && '<HDPrint Value=#OpApp4# Replace=#DBField2Js#>' != ''){
+          document.write('（<HDPrint Value=#OpApp4Text# Replace=#None#>）<HDPrint Value=#OpMod4# Replace=#DBField2Js#><br>');
+        }
+        if ('<HDPrint Value=#OpMod5# Replace=#DBField2Js#>' != '' && '<HDPrint Value=#OpApp5# Replace=#DBField2Js#>' != ''){
+          document.write('（<HDPrint Value=#OpApp5Text# Replace=#None#>）<HDPrint Value=#OpMod5# Replace=#DBField2Js#><br>');
+        }
+        if ('<HDPrint Value=#OpMod6# Replace=#DBField2Js#>' != '' && '<HDPrint Value=#OpApp6# Replace=#DBField2Js#>' != ''){
+          document.write('（<HDPrint Value=#OpApp6Text# Replace=#None#>）<HDPrint Value=#OpMod6# Replace=#DBField2Js#><br>');
+        }
+      </script>
+    </td>
+    <td>
+    <script language="javascript">
+      if ('<HDPrint Value=#chkRtID3# Replace=#DBField2Js#>' == '1'){
+        document.write('<A HREF="##HDNet_AppName##/__ExplainModule?Url=Prl_Contract_Mod&UsrGid=<HDPrint Value=#UsrGid#>&Gid=<HDPrint Value=#Gid#>"><FONT class="IconMod">　&nbsp;</FONT> 修改</A><br>');
+      }
+      if ('<HDPrint Value=#chkRtID4# Replace=#DBField2Js#>' == '1'){
+        document.write('<a href="##HDNet_AppName##/__ExplainModule?Url=Prl_Contract_Del&UsrGid=<HDPrint Value=#UsrGid#>&Gid=<HDPrint Value=#Gid#>" onclick="javascript:if (!(confirm(\'你确定要删除该信息吗？\\n删除操作是不能还原的！\'))) return false;"><FONT class="IconDel">　&nbsp;</FONT> 删除</A>');
+      }
+    </script>
+    </td>
+  </tr>
+  </HDLoop>
+</table>
+
+<SCRIPT LANGUAGE="JavaScript">
+  //下载Excel
+  function DownLoad(){
+    document.all.Rep_Download.value = '1';
+    //获取当前表单对象 
+    var JqObj = $("form[name=frmDo]");
+    //表单参数设定
+    JqObj.attr({
+      "action":'##HDNet_AppName##/__ExplainModule?Url=Prl_Contract_Down&UsrGid=<HDPrint Value=#UsrGid#>',
+      "target":'_s_blankelf'
+    });
+    //表单提交
+    JqObj.submit();
+    document.all.Rep_Download.value = '';
+    return true;
+  }
+  //函数：ready
+  //功能：document 加载完成后调用
+  $(function(){
+    //Td点击排序时事件
+    $("td[JQColumn]").click(function(){
+      //取出点击Td的参数
+
+      //JQColumn 字段名
+      var sJQColumn = $(this).attr("JQColumn");
+      //JQAsc 可不写，为空 或 desc
+      var sJQAsc = '';
+      if ($(this).attr("JQAsc") != null){
+        sJQAsc = $(this).attr("JQAsc");
+      }
+
+      //取出排序控件，并赋值
+      $("input[name=selOrderBy]").val(sJQColumn + ' ' + sJQAsc);
+
+      //保留本次点击参数
+      $("input[name=selOrderAsc]").val(sJQAsc);
+      $("input[name=selOrderColumn]").val(sJQColumn);
+
+      //获取当前表单对象 
+      var JqObj = $("form[name=frmDo]");
+      //表单参数设定
+      JqObj.attr({
+        "action":'',
+        "target":''
+      });
+      //表单提交
+      JqObj.submit();
+    });
+    //数据提交后，对数据提交前点击的排序Td列重新赋值
+    $("td[JQColumn]").each(function(){
+      var sJQColumn = $(this).attr("JQColumn");
+      var selOrderColumn = '<HDPrint Value=#selOrderColumn# Replace=#DBField2Js#>';
+      var selOrderAsc = '<HDPrint Value=#selOrderAsc# Replace=#DBField2Js#>';
+      if (sJQColumn == selOrderColumn){
+        //取出本Td的文本值，并重新赋值
+        var sText = $(this).text();
+        if (selOrderAsc == ''){
+          $(this).text(sText+"↑");
+          $(this).attr("JQAsc","desc");
+        }
+        else{
+          $(this).text(sText+"↓");
+          $(this).attr("JQAsc","");
+        }
+      }
+    });
+  });
+  </script>
+</form>

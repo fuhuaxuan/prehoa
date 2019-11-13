@@ -1,0 +1,51 @@
+<table cellpadding="0" cellspacing="0" width="100%" class="App_List" style="margin-top:10px">
+  <col style="width:100%" valign="top">
+  <TR><TD class="App_ListTr">基本信息</TD></TR>
+  <TR><TD class="App_ListTd">单号：<HDPrint Value=#Num#></TD></TR>
+  <TR><TD class="App_ListTd">发起人：<HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]</TD></TR>
+  <TR><TD class="App_ListTd">发起日期：<HDPrint Value=#CreateDate#></TD></TR>
+</table>
+<table cellpadding="0" cellspacing="0" width="100%" class="App_List" style="margin-top:10px">
+<col style="width:100%" valign="top">
+<TR><TD class="App_ListTr">单据信息</TD></TR>
+<HDIF EqualNot(<HDPrint Value=#ISFNum# Replace=#None#>, )>
+<TR><TD class="App_ListTd">[上一版本ISF/ISCF] : <a href="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ISFModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ISFModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#ISFFlowGid#>" target="_blank"><HDPrint Value=#ISFNum#></a>；</td></tr>
+</HDIF>
+<HDIF EqualNot(<HDPrint Value=#ISCFNum# Replace=#None#>, )>
+<TR><TD class="App_ListTd">[下一版本ISF/ISCF] : <a href="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ISCFModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ISCFModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#ISCFFlowGid#>" target="_blank"><HDPrint Value=#ISCFNum#></a>；</td></tr>
+</HDIF>
+<TR><TD class="App_ListTd">[类别] : <HDPrint Value=#atype#> <HDPrint Value=#Category#>；</td></tr>
+<TR><TD class="App_ListTd">[单位] : <font JQ="JQUnit"></font></td></tr>
+<TR><TD class="App_ListTd">[位置] : <font JQ="JQFloor"></font></td></tr>
+<HDPrint Value=#unitList# Replace=#None#>
+<TR><TD class="App_ListTd">[租户] : <HDPrint Value=#lessee#>；</td></tr>
+<TR><TD class="App_ListTd">[商店营业名称] : <HDPrint Value=#Tradingname#>；</td></tr>
+<TR><TD class="App_ListTd">[特别条件/评语] : <HDPrint Value=#Memo# Replace=#DBField2InputField#>；</td></tr>
+<TR><TD class="App_ListTd">[附件信息] : <HDPrint Value=#AttachList# Replace=#None#></td></tr>
+</table>
+<table cellpadding="0" cellspacing="0" width="100%" class="App_List" style="margin-top:10px">
+  <col style="padding-left:4px;">
+  <col style="width:30px;" align="center">
+  <TR>
+    <TD align="left" class="App_ListTr" style="padding-left:10px;width:auto"><b>租赁信息</b></TD>
+    <TD onclick="JQExpand('tb_lease');" style="cursor:hand" class="IconDown">　　</TD>
+  </TR>
+</table>
+<table cellpadding="0" cellspacing="0" width="100%" id="tb_lease" class="App_List" style="display:none">
+<col style="width:100%" valign="top">
+<TR><TD class="App_ListTd">[租赁期限] : <HDPrint Value=#leasetermy#> 年/ <HDPrint Value=#leasetermm#> 月/ <HDPrint Value=#leasetermd#> 日；</td></tr>
+<TR><TD class="App_ListTd">[交付日期] : <HDPrint Value=#handoverdate#>；</td></tr>
+<TR><TD class="App_ListTd">[合同起始日期] : <HDPrint Value=#contractdate1#>~<HDPrint Value=#contractdate2#></td></tr>
+<TR><TD class="App_ListTd">[免租期] : <HDPrint Value=#freerentm#> 月/ <HDPrint Value=#freerentd#>天；</td></tr>
+<TR><TD class="App_ListTd">[租金方式] : <HDPrint Value=#Rate#>；</td></tr>
+<TR><TD class="App_ListTd">[预付租金+费用] : <HDPrint Value=#AGR#>；</td></tr>
+<TR><TD class="App_ListTd">[保证金] : <HDPrint Value=#Security#>；</td></tr>
+<TR><TD class="App_ListTd">[方式] : <HDPrint Value=#Incash#>；</td></tr>
+<TR><TD class="App_ListTd">[C、租赁条件]</td></tr>
+<TR><TD><HDPrint Value=#EmailDtl# Replace=#None#></td></tr>
+<TR><TD class="App_ListTd">[新] : <HDPrint Value=#brcnew#>；</td></tr>
+<TR><TD class="App_ListTd">[目前] : <HDPrint Value=#brcexist#>；</td></tr>
+<TR><TD class="App_ListTd">[批准预算] : <HDPrint Value=#brcbudget#>；</td></tr>
+<TR><TD class="App_ListTd">[合同期内总收入] : <HDPrint Value=#TotalFee#>；</td></tr>
+</table>
+<HDPrint Value=#AppEmail# Replace=#None#>

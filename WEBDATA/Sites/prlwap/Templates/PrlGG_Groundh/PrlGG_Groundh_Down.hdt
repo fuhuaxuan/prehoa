@@ -1,0 +1,22 @@
+[Rep_BeginLine]
+项目代码
+项目名称
+编号
+位置
+预算
+最近操作类型
+最近操作人
+最近操作时间
+[Rep_EndLine]
+<HDLoop>
+[Rep_BeginLine]
+<HDPrint Value=#deptsource# Replace=#None#>
+#NoForm#<HDPrint Value=#DeptName# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#fno# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#floorno# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#fmr# Replace=#DBField2Excel#>
+<HDPrint Value=#OpType# Replace=#None#>
+<HDPrint Value=#OpName# Replace=#None#>
+#NoForm#<HDPrint Value=#OpDate# Replace=#DBField2Excel#>
+[Rep_EndLine]
+</HDLoop>

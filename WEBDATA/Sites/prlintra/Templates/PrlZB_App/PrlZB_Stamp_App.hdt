@@ -29,9 +29,11 @@
 <table width="100%" class="ListBar" cellpadding="0"  cellspacing="1">
   <colgroup>
     <col style="padding-left:4px;width:10%">
-    <col style="padding-left:4px;width:40%">
+    <col style="padding-left:4px;width:23%">
     <col style="padding-left:4px;width:10%">
-    <col style="padding-left:4px;width:40%">
+    <col style="padding-left:4px;width:23%">
+    <col style="padding-left:4px;width:10%">
+    <col style="padding-left:4px;width:23%">
   </colgroup>
   <tr>
     <td class="DtlBarTitle">项目:<font color ="red">*</font></td>
@@ -58,6 +60,12 @@
       $("select[name=StampType] option[value=<HDPrint Value=#sStampType# Replace=#DBField2Js#>]").prop("selected",true);
     </script>
     </td>
+    <td class="DtlBarTitle">印章管理人:<A HREF="javascript:DataInterface(frmDataInterface_Usr);">[选择]</A><font color ="red">*</font></td>
+    <td class="listtd">
+      <INPUT TYPE="text" NAME="AppName" maxlength="32" class="JQText" value = "<HDPrint Value=#AppName# Replace=#DBField2Input#>" style="border:0px" readonly>
+      <INPUT TYPE="hidden" NAME="AppGid" maxlength="32" class="JQText " value = "<HDPrint Value=#AppGid# Replace=#DBField2Input#>">
+      <INPUT TYPE="hidden" NAME="AppCode" maxlength="32" class="JQText" value = "<HDPrint Value=#AppCode# Replace=#DBField2Input#>">
+    </td>
   </tr>
 </table>
 <h3 class="SubTitleBar" >
@@ -70,7 +78,7 @@
   </TR>
 </TABLE>
 </h3>
-<table width="100%" class="ListBar JQMust" cellpadding="0"  cellspacing="1" id="tb_Dtl">
+<table width="100%" class="ListBar" cellpadding="0"  cellspacing="1" id="tb_Dtl">
   <colgroup>
      <col style="width:5%" align="center">
      <col style="width:40%">
@@ -215,4 +223,29 @@
   <INPUT TYPE="hidden" name="DataInterface_Close" value="false">
 </FORM>
 
+<!--选择审批人调用-->
+<FORM NAME="frmDataInterface_Usr" ACTION="">
+  <INPUT TYPE="hidden" name="DataInterface_Title" ID="t_Usr" value="审批人列表">
+
+  <INPUT TYPE="hidden" name="DataInterface_Sql" ID="s_Usr" value="select u.gid, u.code, u.name, t.gid, t.code2, t.name from v_usr u, (select hr.entgid, hr.usrgid, d.Gid, d.Code2, d.Name from hr_emp hr, Dept d where hr.entgid = d.entgid and hr.Deptgid = d.gid) t where u.EntGid = '<HDPrint Value=#EntGid#>' and u.entgid = t.entgid(+) and u.gid = t.usrgid(+)">
+  <INPUT TYPE="hidden" name="DataInterface_CountSql" ID="c_App" value="select count(*) from v_usr u, (select hr.entgid, hr.usrgid, d.Gid, d.Code2, d.Name from hr_emp hr, Dept d where hr.entgid = d.entgid and hr.Deptgid = d.gid) t where u.EntGid = '<HDPrint Value=#EntGid#>' and u.entgid = t.entgid(+) and u.gid = t.usrgid(+)">
+  <INPUT TYPE="hidden" name="DataInterface_OrderSql" value="order by u.code">
+  <INPUT TYPE="hidden" name="DataInterface_UsrGid" value="<HDPrint Value=#UsrGid#>">
+  <INPUT TYPE="hidden" name="DataInterface_AppName" value="##HDNet_AppName##">
+
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="2^代码^left^100">
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="3^姓名^left^100">
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="6^部门^left^100">
+
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="u.code^用户代码^1">
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="u.name^用户姓名^1">
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="t.Name^部门^1">
+  <input TYPE="hidden" name="DataInterface_Search_Sql" value="">
+  <input TYPE="hidden" name="DataInterface_Search_Cols" value="">
+
+  <INPUT TYPE="hidden" name="DataInterface_FieldTo" value="AppGid^AppCode^AppName">
+  <INPUT TYPE="hidden" name="DataInterface_FieldBy" value="1^2^3">
+  <INPUT TYPE="hidden" name="DataInterface_CallBckFunc" value="">
+  <INPUT TYPE="hidden" name="DataInterface_Close" value="false">
+</FORM>
 <HDPrint Value=#AppList# Replace=#None#>

@@ -2,7 +2,7 @@
 <script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
 <script language="javascript">
   function PostPush() {
-    var url = 'http://61.129.70.178/MallAppService/PushService.asmx/PushInfo';
+    var url = 'http://116.62.206.211/MallAppService/PushService.asmx/PushInfo';
     var platform = '<HDPrint Value=#platform# Replace=#DBField2Js#>';
     if (platform != '') {
       platform = parseInt(platform,10);
@@ -47,10 +47,10 @@
     }
   }
   if ('<HDPrint Value=#registrationid# Replace=#DBField2Js#>' != '') {
-    PostPush();
     setTimeout(function () {
       toNext();
     }, 2000);
+    PostPush();
   }else{
     toNext();
   }

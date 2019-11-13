@@ -1,0 +1,10 @@
+<hdloop>
+<tr valign="top" style="background-color: white">
+  <td class="App_ListTd" style="padding:0px">
+    项目：[<HDPrint Value=#AcgCode#>]<HDPrint Value=#AcgName#>
+    <br>年度预算：<HDPrint Value=#AcgFee#> 元
+    <br>剩余预算：<HDPrint Value=#LeftFee#> 元
+    <br>本次申请：<HDPrint Value=#ApplyFee#> 元
+  </td>
+</tr>
+</hdloop>

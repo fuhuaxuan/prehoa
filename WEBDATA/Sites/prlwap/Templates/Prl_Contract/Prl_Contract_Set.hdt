@@ -1,0 +1,220 @@
+<!--Js引入-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JSCalendar.js)##"></script>
+<script>
+  //检查是否重复
+  function checkExists(JsObj,JsRow)
+  {
+    if (JsObj.value == '')
+      return false;
+    var flag = 0;
+    //取值对值相同的控件，循环判断是否重复
+    $("input[name=CNum_1]").each(function() {
+      if ($(this).val() == JsObj.value && $(this).val() != '' && $(this).attr('id') != 'CNum_1'+JsRow) {
+        flag = 1;
+        //这里指结束循环的意思，不是返回值
+        return false;
+      }
+    });
+    if (flag == 1) {
+      alert('对不起，您输入的条款编号已经存在');
+      JsObj.value = '';
+      JsObj.focus();
+      return false;
+    }
+  }
+  /*
+  *函数功能：明细新增一行
+  *参数说明：使用JQTr_Add() 函数新增行时，需写在 tbody 标记中
+  */
+  function Add_Dtl(Gid,CashWay,CType,CNum,Content,OpMod1,OpApp1,OpMod2,OpApp2,OpMod3,OpApp3,OpMod4,OpApp4,OpMod5,OpApp5,OpMod6,OpApp6)
+  {
+    var sTbId = 'tb_Dtl';
+    var sTrClass = 'listtd';
+    var tdArr = new Array();
+    var iRow = Math.floor(Math.random() * (1 + 100000 - 1) + 1);
+    var i = $("table#"+sTbId+">tbody>tr").length + 1;
+    var k = 0;
+    if (Gid == null){
+      Gid = '';
+      CashWay = '';
+      CType = '';
+      CNum = '';
+      Content = '';
+      OpMod1 = '无改动';
+      OpApp1 = '';
+      OpMod2 = '其他';
+      OpApp2 = '';
+      OpMod3 = '删除';
+      OpApp3 = '';
+      OpMod4 = '';
+      OpApp4 = '';
+      OpMod5 = '';
+      OpApp5 = '';
+      OpMod6 = '';
+      OpApp6 = '';
+    }
+
+    tdArr[k++] = '<td><select name="CashWay_1" ID="CashWay_1'+ iRow +'" class="JQSelect JQMust"><option value="">--请选择--</option><option value="中央收银">中央收银</option><option value="独立收银">独立收银</option><option value="租用我司POS">租用我司POS</option></select></td>';
+
+    tdArr[k++] = '<td><INPUT TYPE="text" NAME="CType_1" ID="CType_1'+ iRow +'" maxlength="32" class="JQText JQMust" value = "'+CType+'"></td>';
+
+    tdArr[k++] = '<td><INPUT TYPE="text" NAME="CNum_1" ID="CNum_1'+ iRow +'" maxlength="16" class="JQText JQMust" onkeypress="return JQPFloatKeyPress(event);" value = "'+CNum+'" onchange="checkExists(this,\''+ iRow +'\')"></td>';
+
+    tdArr[k++] = '<td><textarea rows="7" name="Content_1" id ="Content_1'+ iRow +'" class="JQText JQMust" maxlength="2000">'+Content+'</textarea></td>';
+
+    tdArr[k++] = '<td>'
+      +'<select name="OpApp1_1" ID="OpApp1_1'+ iRow +'" style="width:40px"><option value="1">A</option><option value="2">B</option><option value="3">C</option></select>&nbsp;'+OpMod1+''
+      +'<INPUT TYPE="hidden" NAME="OpMod1_1" ID="OpMod1_1'+ iRow +'" maxlength="16" class="JQText" value = "'+OpMod1+'"><br>'
+      +'<select name="OpApp2_1" ID="OpApp2_1'+ iRow +'" style="width:40px"><option value="1">A</option><option value="2">B</option><option value="3">C</option></select>&nbsp;'+OpMod2+''
+      +'<INPUT TYPE="hidden" NAME="OpMod2_1" ID="OpMod2_1'+ iRow +'" maxlength="16" class="JQText" value = "'+OpMod2+'"><br>'
+      +'<select name="OpApp3_1" ID="OpApp3_1'+ iRow +'" style="width:40px"><option value="1">A</option><option value="2">B</option><option value="3">C</option></select>&nbsp;'+OpMod3+''
+      +'<INPUT TYPE="hidden" NAME="OpMod3_1" ID="OpMod3_1'+ iRow +'" maxlength="16" class="JQText" value = "'+OpMod3+'">'
+    +'</td>';
+
+    tdArr[k++] = '<td><select name="OpApp4_1" ID="OpApp4_1'+ iRow +'" style="width:50px"><option value="1">A</option><option value="2">B</option><option value="3">C</option></select><textarea rows="5" name="OpMod4_1" id ="OpMod4_1'+ iRow +'" class="JQText" maxlength="2000">'+OpMod4+'</textarea></td>';
+
+    tdArr[k++] = '<td><select name="OpApp5_1" ID="OpApp5_1'+ iRow +'" style="width:50px"><option value="1">A</option><option value="2">B</option><option value="3">C</option></select><textarea rows="5" name="OpMod5_1" id ="OpMod5_1'+ iRow +'" class="JQText" maxlength="2000">'+OpMod5+'</textarea></td>';
+
+    tdArr[k++] = '<td><select name="OpApp6_1" ID="OpApp6_1'+ iRow +'" style="width:50px"><option value="1">A</option><option value="2">B</option><option value="3">C</option></select><textarea rows="5" name="OpMod6_1" id ="OpMod6_1'+ iRow +'" class="JQText" maxlength="2000">'+OpMod6+'</textarea></td>';
+
+    tdArr[k++] ='<td><a href="javascript:void(0)" onclick="javascript:JQTr_Del()">删除</a></td>';
+
+    //新增一行
+    JQTr_Add(sTbId,sTrClass,tdArr);
+    $("select[id=CashWay_1"+iRow+"] option[value='"+CashWay+"']").prop("selected",true);
+    $("select[id=OpApp1_1"+iRow+"] option[value='"+OpApp1+"']").prop("selected",true);
+    $("select[id=OpApp2_1"+iRow+"] option[value='"+OpApp2+"']").prop("selected",true);
+    $("select[id=OpApp3_1"+iRow+"] option[value='"+OpApp3+"']").prop("selected",true);
+    $("select[id=OpApp4_1"+iRow+"] option[value='"+OpApp4+"']").prop("selected",true);
+    $("select[id=OpApp5_1"+iRow+"] option[value='"+OpApp5+"']").prop("selected",true);
+    $("select[id=OpApp6_1"+iRow+"] option[value='"+OpApp6+"']").prop("selected",true);
+  }
+
+</script>
+<form name="frmDo" method="post" action="">
+<!--模块使用到一些隐藏的控件-->
+<input type="text" style="display:none" name="Gid" value="<HDPrint Value=#NewGid# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="FillDeptGid" value="<HDPrint Value=#FillDeptGid# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="FillDeptCode" value="<HDPrint Value=#FillDeptCode# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="FillDeptName" value="<HDPrint Value=#FillDeptName# Replace=#DBField2Input#>">
+
+<h3 class="TitleBar" ><HDPrint Value=#ModeleAtype#>-<HDPrint Value=#ModeleName#></h3>
+<TABLE width="100%" class="ButtonBar" cellpadding="0" cellspacing="0">
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A Href="javascript:Add_Dtl();void(0);" name="btn_1"><FONT class="IconAdd">　&nbsp;</FONT> 新增一行 </A>
+      <A Href="javascript:CheckSubmit('保存');void(0);" name="btn_1"><FONT class="IconSave">　&nbsp;</FONT> 保存 </A>
+     |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+      <a HREF="##HDNet_AppName##/__ExplainModule?URL=Prl_Contract_List&UsrGid=<HDPrint Value=#UsrGid#>"><FONT class="IconBack">　&nbsp;</FONT> 返回列表</A>
+    </TD>
+  </TR>
+</TABLE>
+
+<table width="100%" class="ListBar JQMust" cellpadding="0"  cellspacing="1" id="tb_Dtl">
+  <colgroup>
+     <col style="width:7%">
+     <col style="width:15%">
+     <col style="width:5%">
+     <col style="width:15%">
+     <col style="width:8%">
+     <col style="width:15%">
+     <col style="width:15%">
+     <col style="width:15%">
+     <col style="width:5%" align="center">
+  </colgroup>
+  <!--使用新增行 JQTr_Add 时，需在表格中加上 thead,tbody-->
+  <thead>
+  <tr class="listtr">
+    <td>收银方式<font color="red">*</font></td>
+    <td>条款类别<font color="red">*</font></td>
+    <td>条款编号<font color="red">*</font></td>
+    <td>条款原文<font color="red">*</font><font color="gray">(2000字内)</font></td>
+    <td>默认可选项</td>
+    <td>其它可选项1<font color="gray">(2000字内)</font></td>
+    <td>其它可选项2<font color="gray">(2000字内)</font></td>
+    <td>其它可选项3<font color="gray">(2000字内)</font></td>
+    <td>操作</td>
+  </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+<script language="javascript">
+  <HDloop>
+  Add_Dtl('<HDPrint Value=#Gid# Replace=#DBField2Js#>',
+    '<HDPrint Value=#CashWay# Replace=#DBField2Js#>',
+    '<HDPrint Value=#CType# Replace=#DBField2Js#>',
+    '<HDPrint Value=#CNum# Replace=#DBField2Js#>',
+    '<HDPrint Value=#Content# Replace=#DBField2Js#>',
+    '<HDPrint Value=#OpMod1# Replace=#DBField2Js#>',
+    '<HDPrint Value=#OpApp1# Replace=#DBField2Js#>',
+    '<HDPrint Value=#OpMod2# Replace=#DBField2Js#>',
+    '<HDPrint Value=#OpApp2# Replace=#DBField2Js#>',
+    '<HDPrint Value=#OpMod3# Replace=#DBField2Js#>',
+    '<HDPrint Value=#OpApp3# Replace=#DBField2Js#>',
+    '<HDPrint Value=#OpMod4# Replace=#DBField2Js#>',
+    '<HDPrint Value=#OpApp4# Replace=#DBField2Js#>',
+    '<HDPrint Value=#OpMod5# Replace=#DBField2Js#>',
+    '<HDPrint Value=#OpApp5# Replace=#DBField2Js#>',
+    '<HDPrint Value=#OpMod6# Replace=#DBField2Js#>',
+    '<HDPrint Value=#OpApp6# Replace=#DBField2Js#>');
+  </hdloop>
+</script>
+<TABLE width="100%" class="ButtonBar" cellpadding="0" cellspacing="0">
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A Href="javascript:Add_Dtl();void(0);" name="btn_1"><FONT class="IconAdd">　&nbsp;</FONT> 新增一行 </A>
+      <A Href="javascript:CheckSubmit('保存');void(0);" name="btn_1"><FONT class="IconSave">　&nbsp;</FONT> 保存 </A>
+     |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+      
+      <a HREF="##HDNet_AppName##/__ExplainModule?URL=Prl_Contract_List&UsrGid=<HDPrint Value=#UsrGid#>"><FONT class="IconBack">　&nbsp;</FONT> 返回列表</A>
+    </TD>
+  </TR>
+</TABLE>
+</form>
+
+<FieldSet style="Font-Family:Tahoma;Font-Size:9pt;">
+<Legend><font color="red">特别提醒</font></Legend>
+<li>条款编号：例1.1,1.1.1，最多三级，不可重复</li>
+<li>审批级别：A-商场总经理，B-租赁部总监，C-高级副总裁COO</li>
+</FieldSet>
+
+<script>
+  //提交函数
+  function CheckSubmit(){
+    //定义 提交提示文字
+    var sConfirm = '您确定已经填写完成，并保存吗？';
+    //提交时，验证必填项
+    if (!JQcheck("JQMust")){
+      return false;
+    }
+    //提交时，提示
+    if (!(confirm(sConfirm)))
+      return false;
+    
+    //获取当前表单对象 
+    var JqObj = $("form[name=frmDo]");
+    //表单参数设定
+    JqObj.attr({
+      "action":'##HDNet_AppName##/__ExplainModule?Url=<HDPrint Value=#Url#>Save&UsrGid=<HDPrint Value=#UsrGid#>',
+      "target":'_self'
+    });
+    //表单提交
+    JqObj.submit();
+
+    //操作按钮变为不可用
+    $("a[name=btn_1]").each(function(){
+      $(this).prop("disabled",true);
+    });
+    //本函数失效
+    CheckSubmit = function() {return false;}
+  }
+</script>

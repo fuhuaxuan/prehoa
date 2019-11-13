@@ -125,8 +125,12 @@
     <td class="listtd"><HDPrint Value=#ContactName#></td>
     <td class="DtlBarTitle">合同期限:</td>
     <td class="listtd"><HDPrint Value=#ContractDate1#>~<HDPrint Value=#ContractDate2#></td>
+    <td class="DtlBarTitle"></td>
+    <td class="listtd"></td>
+  </tr>
+  <tr valign="top" JQ="Type_2">
     <td class="DtlBarTitle">合同概要:</td>
-    <td class="listtd"><HDPrint Value=#ComtractMemo#></td>
+    <td class="listtd" colspan="5"><HDPrint Value=#ComtractMemo#></td>
   </tr>
   <tr valign="top">
     <td class="DtlBarTitle">备注:</td>
@@ -135,6 +139,10 @@
   <tr valign="top">
     <td class="DtlBarTitle">附件信息:</td>
     <td class="listtd" colspan="5"><HDPrint Value=#AttachList# Replace=#None#></td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">已盖章文件:</td>
+    <td class="listtd" colspan="5"><HDPrint Value=#AttachList2# Replace=#None#></td>
   </tr>
   <HDIF EqualNot(<HDPrint Value=#EndMemo# Replace=#None#>, )>
   <tr valign="top">

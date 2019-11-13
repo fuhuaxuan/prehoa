@@ -18,7 +18,7 @@ SqlForCondition1=select wm.code ModelCode, wm.Name ModelName,d.Name StepName fro
 SQLForCondition2=select ##CurUsrName##||':'||##AppAssign##||' - 公司：' || ComName ||'；增加预算总计：'|| TotalFee ||'元' AppFlowMemo,TotalFee,Num from WF_^^ModelCode^^ f where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## 
 
 ;是否存在下一级审批人? 0 结束，到下一步
-SQLForCondition4=select count(*) NextApp from Wf_^^ModelCode^^_App a where a.EntGid = __ENTGID__ and a.FlowGid = ##FlowGid## and a.AppDate is null and a.AppOrder in (select min(t.AppOrder) from Wf_^^ModelCode^^_App t where t.EntGid = __ENTGID__ and t.FlowGid = ##FlowGid## and t.AppOrder > ##AppOrder## and t.appdate is null )
+SQLForCondition4=select count(*) NextApp from Wf_^^ModelCode^^_App a where a.EntGid = __ENTGID__ and a.FlowGid = ##FlowGid## and a.AppDate is null and a.AppOrder in (select min(t.AppOrder) from Wf_^^ModelCode^^_App t where t.EntGid = __ENTGID__ and t.FlowGid = ##FlowGid## and t.AppOrder > ##AppOrder## and t.appdate is null  and t.AppOrder <> 90)
 
 ;取出邮件内容
 SQL1=select f.* from WF_^^ModelCode^^ f where f.EntGid = __ENTGID__ AND f.FlowGid = ##FlowGid##
@@ -106,6 +106,8 @@ WF3=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T1 | T1Gid | and ##AppAssign## = '否决
 ;返回核实，返回上一步
 WF4=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_T2 | LastGid | and ##AppAssign## = '返回核实'| ^^AppFlowMemo^^)
 
+;同意，没有下一步，发起人确认
+WF5=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T3 | null | and ##AppAssign## = '同意' and ##NextApp## = '0'|^^AppFlowMemo^^)
 
 ;同意，没有下一步，结束
-WF5=WFFlowFinish( ^^CurUrl^^ | and ##AppAssign## = '同意' and ##NextApp## = '0')
+;WF5=WFFlowFinish( ^^CurUrl^^ | and ##AppAssign## = '同意' and ##NextApp## = '0')

@@ -1,0 +1,37 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<h3 class="SubTitleBar" >
+<TABLE cellspacing="1" cellpadding="0" width="100%">
+  <col style="padding-left:4px;">
+  <col style="width:20px;" align="center">
+  <TR>
+    <TD align="left" style="padding-left:10px;"><b>付款过程信息</b></TD>
+    <TD onclick="JQExpandEx('tb_AppList');" style="cursor:hand" class="IconUp">　&nbsp;</TD>
+  </TR>
+</TABLE>
+</h3>
+<table width="100%" class="ListBar" cellspacing="1" cellpadding="0" id="tb_AppList">
+  <col style="padding-left:4px;width:15%" valign="top">
+  <col style="padding-left:4px;width:10%" valign="top">
+  <col style="padding-left:4px;width:10%" valign="top">
+  <col style="padding-left:4px;width:5%" valign="top">
+  <col style="padding-left:4px;width:60%" valign="top">
+  <tr class="listtr">
+    <td><B>付款单号</B></td>
+    <td><B>状态</B></td>
+    <td><B>付款金额</B></td>
+    <td><B>是否尾款</B></td>
+    <td><B>项目</B></td>
+  </tr>
+  <HDLoop>
+  <tr valign="top">
+    <td class="listtd" align="center"><a id="a_Fee" href="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#PModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&ModelCode=<HDPrint Value=#PModelCode#>&FlowGid=<HDPrint Value=#PFlowGid#>" target="_blank"><HDPrint Value=#PNum#></a>-<HDPrint Value=#PartNum#></td>
+    <td class="listtd" align="center"><HDPrint Value=#Stat#></td>
+    <td class="listtd" align="center"><HDPrint Value=#PayFee#></td>
+    <td class="listtd" align="center"><HDPrint Value=#isEnd#></td>
+    <td class="listtd">
+      <HDPrint Value=#AcgOneName#> - <HDPrint Value=#AcgTwoName#>
+      DOA信息：<HDPrint Value=#DOACode#> - <HDPrint Value=#DOAName#>
+    </td>
+  </tr>
+  </HDLoop>
+</table>

@@ -1,0 +1,7 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script language="javascript">
+var JsOption = '';
+<HDLoop>
+JsOption +='<option value="<HDPrint Value=#ItemGid# Replace=#DBField2Input#>"><HDPrint Value=#ItemName#></option>';
+</HDLoop>
+</script>

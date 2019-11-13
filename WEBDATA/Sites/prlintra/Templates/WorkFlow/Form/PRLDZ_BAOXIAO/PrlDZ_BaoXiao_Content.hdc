@@ -23,31 +23,39 @@ SQL1=select wf.* from wf_^^ModelCodeT^^ wf where EntGid = __ENTGID__ and  FlowGi
 ;取出本流程已审批的审批人的个数，用于判断是否显示审批人
 SQL2=select count(*) IsShow from wf_^^ModelCodeT^^_App where EntGid = __ENTGID__ and  FlowGid = ##FlowGid## 
 
+SQL3=select decode(count(*),0,'none','') isCEO from Wf_^^ModelCodeT^^_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppOrder = 100
+
 ;显示本流程附件信息
 LoopSQL1=select replace(Attach_Url,' ','%20') Attach_Url,Attach_Title Attach_Title from wf_^^ModelCodeT^^_Attach where EntGid = __ENTGID__ and  FlowGid = ##FlowGid## order by attach_title
 LoopHDT1=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AttachList.hdt
 LoopVAR1=AttachList
 
 ;显示本流程已审批审批人信息
-LoopSQL2=select a.*,decode(a.apptype,0,'发起人',3,'行政',10,'部门经理',20,'部门总经理',30,'财务经理',35,'总经理',40,'项目总经理',50,'资产经理',60,'部门总监',80,'财务总监',85,'资产经理',90,'区域总经理',95,'Deputy CEO',100,'CEO',110,'发起人通知出纳',120,'出纳付款',130,'发起人修改支付信息') apptypetext  from wf_^^ModelCodeT^^_App a where FlowGid = ##FlowGid## order by AppDate,AppType
+LoopSQL2=select a.*,decode(a.apptype,0,'发起人',3,'行政',10,'部门经理',20,'部门总经理',30,'财务经理',35,'总经理',40,'项目总经理',50,'资产经理',60,'部门总监',70,'副财务总监',80,'财务总监',85,'资产经理',90,'区域总经理',95,'中国区CEO',100,'集团CEO',110,'发起人通知出纳',120,'出纳付款',130,'发起人修改支付信息') apptypetext  from wf_^^ModelCodeT^^_App a where FlowGid = ##FlowGid## order by AppDate,AppType
 LoopHDT2=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AppList.hdt
 LoopVAR2=AppList
 
 
 ;显示本流程已审批审批人信息
-LoopSQL5=select a.*,decode(a.apptype,0,'发起人',3,'行政',10,'部门经理',20,'部门总经理',30,'财务经理',35,'总经理',40,'项目总经理',50,'资产经理',60,'部门总监',80,'财务总监',85,'资产经理',90,'区域总经理',95,'Deputy CEO',100,'CEO',110,'发起人通知出纳',120,'出纳付款',130,'发起人修改支付信息') apptypetext  from wf_^^ModelCodeT^^_App a where FlowGid = ##FlowGid## order by AppDate,AppOrder
+LoopSQL5=select a.*,decode(a.apptype,0,'发起人',3,'行政',10,'部门经理',20,'部门总经理',30,'财务经理',35,'总经理',40,'项目总经理',50,'资产经理',60,'部门总监',70,'副财务总监',80,'财务总监',85,'资产经理',90,'区域总经理',95,'中国区CEO',100,'集团CEO',110,'发起人通知出纳',120,'出纳付款',130,'发起人修改支付信息') apptypetext  from wf_^^ModelCodeT^^_App a where FlowGid = ##FlowGid## order by AppDate,AppOrder
 LoopHDT5=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AppEmail.hdt
 LoopVAR5=AppEmail
 
 ;显示本流程明细信息
-LoopSQL3=select * from WF_^^ModelCodeT^^_Dtl where EntGid = __ENTGID__ and FlowGid = ##FlowGid## order by AcgCode
+LoopSQL3=select * from WF_^^ModelCodeT^^_Dtl where EntGid = __ENTGID__ and FlowGid = ##FlowGid## order by Line
 LoopHDT3=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_DtlList.hdt
 LoopVAR3=DtlList
 
 ;取出邮件
-LoopSQL4=select * from WF_^^ModelCodeT^^_Dtl where EntGid = __ENTGID__ and FlowGid = ##FlowGid## order by AcgCode
+LoopSQL4=select * from WF_^^ModelCodeT^^_Dtl where EntGid = __ENTGID__ and FlowGid = ##FlowGid## order by Line
 LoopHDT4=Templates\WorkFlow\Form\^^ModelCode^^\LoopSql_EmailDtl.hdt
 LoopVAR4=EmailDtl
+
+
+;显示集团CEO附件
+LoopSQL10=select replace(Attach_Url,' ','%20') Attach_Url,Attach_Title Attach_Title from WF_Prl_Flow_Attach where EntGid = __ENTGID__ and  FlowGid = ##FlowGid## order by attach_title
+LoopHDT10=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AttachList.hdt
+LoopVAR10=AttachList2
 
 ;显示邮件
 LoopSQL19=select 1 from dual

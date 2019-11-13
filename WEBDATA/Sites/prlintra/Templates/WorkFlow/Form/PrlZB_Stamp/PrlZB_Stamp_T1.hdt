@@ -274,8 +274,12 @@
       <INPUT TYPE="text" NAME="ContractDate1" maxlength="10" value="<HDPrint Value=#ContractDate1# Replace=#DBField2Input#>" class="JQDate JQMust2" onblur="callDate(this)" style="width:100px">~
       <INPUT TYPE="text" NAME="ContractDate2" maxlength="10" value="<HDPrint Value=#ContractDate2# Replace=#DBField2Input#>" class="JQDate JQMust2" onblur="callDate(this)" style="width:100px">
     </td>
+    <td class="DtlBarTitle"></td>
+    <td class="listtd"></td>
+  </tr>
+  <tr valign="top" JQ="Type_2">
     <td class="DtlBarTitle">∫œÕ¨∏≈“™:<font color="red">*</font></td>
-    <td class="listtd">
+    <td class="listtd" colspan="5">
       <textarea rows="5" name="ComtractMemo" class="JQText JQMust2" maxlength="1000"><HDPrint Value=#ComtractMemo# Replace=#DBField2InputField#></textarea>
     </td>
   </tr>
@@ -376,8 +380,8 @@
 <FORM NAME="frmDataInterface_Flow" ACTION="">
   <INPUT TYPE="hidden" name="DataInterface_Title" ID="t_App" value="¡˜≥Ã—°‘Ò">
 
-  <INPUT TYPE="hidden" name="DataInterface_Sql" ID="s_App" value="select f.flowgid, f.fillusrname, f.num, f.Fmemo, wm.code, wm.name from v_PrlZB_Flow f, wf_flow wf, wf_model wm where f.entgid = '<HDPrint Value=#entgid#>' and f.entgid = wm.entgid and f.entgid = wf.entgid and f.flowgid = wf.flowgid  and f.modelgid = wm.modelgid and f.stat not in ('÷’÷π') and wf.stat = 3 and (f.fillusrgid = '<HDPrint Value=#UsrGid#>' or exists (select 1 from PRL_FeeRT r where r.entgid = f.entgid and r.ausrgid = '<HDPrint Value=#UsrGid#>' and r.busrgid = f.fillusrgid)) and not exists (select 1 from wf_PrlZB_stamp t,wf_flow tf where t.entgid = f.entgid and t.entgid = tf.entgid and t.flowgid = tf.flowgid and t.stat not in ('÷’÷π') and tf.stat < 4 and t.flowgid <> nvl('<HDPrint Value=#FlowGid# Replace=#DBField2Js#>',1) and t.mFlowGid = f.flowgid)">
-  <INPUT TYPE="hidden" name="DataInterface_CountSql" ID="c_App" value="select count(*) from v_PrlZB_Flow f, wf_flow wf, wf_model wm where f.entgid = '<HDPrint Value=#entgid#>' and f.entgid = wm.entgid and f.entgid = wf.entgid and f.flowgid = wf.flowgid  and f.modelgid = wm.modelgid and f.stat not in ('÷’÷π') and wf.stat = 3 and (f.fillusrgid = '<HDPrint Value=#UsrGid#>' or exists (select 1 from PRL_FeeRT r where r.entgid = f.entgid and r.ausrgid = '<HDPrint Value=#UsrGid#>' and r.busrgid = f.fillusrgid)) and not exists (select 1 from wf_PrlZB_stamp t,wf_flow tf where t.entgid = f.entgid and t.entgid = tf.entgid and t.flowgid = tf.flowgid and t.stat not in ('÷’÷π') and tf.stat < 4 and t.flowgid <> nvl('<HDPrint Value=#FlowGid# Replace=#DBField2Js#>',1) and t.mFlowGid = f.flowgid)">
+  <INPUT TYPE="hidden" name="DataInterface_Sql" ID="s_App" value="select f.flowgid, f.fillusrname, f.num, f.Fmemo, wm.code, wm.name from v_PrlZB_Flow f, wf_flow wf, wf_model wm where f.entgid = '<HDPrint Value=#entgid#>' and f.entgid = wm.entgid and f.entgid = wf.entgid and f.flowgid = wf.flowgid  and f.modelgid = wm.modelgid and f.stat not in ('÷’÷π') and wf.stat = 3 and (f.fillusrgid = '<HDPrint Value=#UsrGid#>' or exists (select 1 from PRL_FeeRT r where r.entgid = f.entgid and r.ausrgid = '<HDPrint Value=#UsrGid#>' and r.busrgid = f.fillusrgid)) and not exists (select 1 from wf_PrlZB_stamp t,wf_flow tf where t.entgid = f.entgid and t.entgid = tf.entgid and t.flowgid = tf.flowgid and t.stat not in ('÷’÷π') and tf.stat < 4 and t.flowgid <> nvl('<HDPrint Value=#FlowGid# Replace=#DBField2Js#>',1) and t.fillusrgid = '<HDPrint Value=#UsrGid#>' and t.mFlowGid = f.flowgid)">
+  <INPUT TYPE="hidden" name="DataInterface_CountSql" ID="c_App" value="select count(*) from v_PrlZB_Flow f, wf_flow wf, wf_model wm where f.entgid = '<HDPrint Value=#entgid#>' and f.entgid = wm.entgid and f.entgid = wf.entgid and f.flowgid = wf.flowgid  and f.modelgid = wm.modelgid and f.stat not in ('÷’÷π') and wf.stat = 3 and (f.fillusrgid = '<HDPrint Value=#UsrGid#>' or exists (select 1 from PRL_FeeRT r where r.entgid = f.entgid and r.ausrgid = '<HDPrint Value=#UsrGid#>' and r.busrgid = f.fillusrgid)) and not exists (select 1 from wf_PrlZB_stamp t,wf_flow tf where t.entgid = f.entgid and t.entgid = tf.entgid and t.flowgid = tf.flowgid and t.stat not in ('÷’÷π') and tf.stat < 4 and t.flowgid <> nvl('<HDPrint Value=#FlowGid# Replace=#DBField2Js#>',1) and t.fillusrgid = '<HDPrint Value=#UsrGid#>' and t.mFlowGid = f.flowgid)">
   <INPUT TYPE="hidden" name="DataInterface_OrderSql" value="order by f.num desc">
   <INPUT TYPE="hidden" name="DataInterface_UsrGid" value="<HDPrint Value=#UsrGid#>">
   <INPUT TYPE="hidden" name="DataInterface_AppName" value="##HDNet_AppName##">

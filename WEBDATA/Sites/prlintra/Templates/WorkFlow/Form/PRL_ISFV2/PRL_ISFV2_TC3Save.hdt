@@ -7,7 +7,7 @@
     $font.html('（此为阅读邮件，请阅读）');
   }
 
-  alert('审批完毕，审批人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>，审批意见：<HDPrint Value=#AppAssign# Replace=#DBField2Js#>');
+  //alert('审批完毕，审批人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>，审批意见：<HDPrint Value=#AppAssign# Replace=#DBField2Js#>');
 
   if (self.opener != null) {
     try{

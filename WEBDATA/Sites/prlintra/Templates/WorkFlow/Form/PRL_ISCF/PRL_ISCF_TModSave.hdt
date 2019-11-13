@@ -14,7 +14,7 @@
 <tr><td>[Category  类别] : <HDPrint Value=#atype#>
 <tr><td>[Unit No.  单位] : <HDPrint Value=#unit#>
 <tr><td>[Area 面积] : <HDIF Equal(<HDPrint Value=#modarea# Replace=#None#>, 是)><HDPrint Value=#newarea#></HDIF><HDIF EqualNot(<HDPrint Value=#modarea# Replace=#None#>, 是)><HDPrint Value=#area#></HDIF>
-<tr><td>[Tenant/Licensee 租户] : <HDPrint Value=#lessee#>;  
+<tr><td>[Tenant/Licensee 租户] : <HDPrint Value=#lessee#>;
 <tr><td>[Trading Name  商店营业名称] : <HDPrint Value=#tradingname#>
 <tr><td>[Lease Term 租赁期限] : <HDPrint Value=#leasetermy# Replace=#DBField2InputField#>年/<HDPrint Value=#leasetermm# Replace=#DBField2InputField#> 月/<HDPrint Value=#leasetermd# Replace=#DBField2InputField#>日;
 <tr><td>[Handover Date 交付日期] : <HDPrint Value=#handoverdate#>
@@ -36,10 +36,10 @@
   </form>
 
 <script language="JavaScript">
-  
+
  if ('<HDPrint Value=#wf_Stat# Replace=#DBField2Js#>' == '10')
   {
-    alert('提交成功，发起人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>！');
+    //alert('提交成功，发起人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>！');
     frmMail.submit();
     //如有打开页面，刷新打开页面
     if (self.opener != null) {
@@ -53,13 +53,13 @@
       }
     }
     //window.close();
-  } 
+  }
   else if ('<HDPrint Value=#wf_Stat# Replace=#DBField2Js#>' == '100')
   {
-    alert('作废成功，发起人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>！');
+    //alert('作废成功，发起人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>！');
     //如有打开页面，刷新打开页面
-    
-    if (self.opener != null) 
+
+    if (self.opener != null)
     {
       try
       {

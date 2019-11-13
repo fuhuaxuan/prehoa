@@ -1,0 +1,60 @@
+<table cellpadding="0" cellspacing="0" width="100%" class="App_List" style="margin-top:10px">
+  <col style="width:100%" valign="top">
+  <TR><TD class="App_ListTr">基本信息</TD></TR>
+  <TR><TD class="App_ListTd">单号：<HDPrint Value=#Num#></TD></TR>
+  <TR><TD class="App_ListTd">发起人：<HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]</TD></TR>
+  <TR><TD class="App_ListTd">发起日期：<HDPrint Value=#CreateDate#></TD></TR>
+</table>
+<table cellpadding="0" cellspacing="0" width="100%" class="App_List" style="margin-top:10px">
+<col style="width:100%" valign="top">
+<TR><TD class="App_ListTr">单据信息</TD></TR>
+<TR><TD class="App_ListTd">[Category  类别] : <HDPrint Value=#categoryText1#>；</td></tr>
+<TR><TD class="App_ListTd">[Unit No.  单位] : <font color="BLUE"><HDPrint Value=#unit#></font>；</td></tr>
+<TR><TD class="App_ListTd">[Area 面积] : <HDPrint Value=#area#>；</td></tr>
+<TR><TD class="App_ListTd">[Tenant/Licensee 租户] : <HDPrint Value=#lessee#>；</td></tr>
+<TR><TD class="App_ListTd">[Trading Name 商店营业名称] : <HDPrint Value=#tradingname#>；</td></tr>
+<TR><TD class="App_ListTd">[Remarks 退场原因] : <HDPrint Value=#Remarks#>；</td></tr>
+<TR><TD class="App_ListTd">[附件信息] : <HDPrint Value=#AttachList# Replace=#None#></td></tr>
+<HDIF EqualNot(<HDPrint Value=#isCEO# Replace=#None#>, 0)>
+<TR><TD class="App_ListTd">[潘总审批附件:] : <HDPrint Value=#AttachList2# Replace=#None#></td></tr>
+</HDIF>
+</table>
+<table cellpadding="0" cellspacing="0" width="100%" class="App_List" style="margin-top:10px">
+  <col style="padding-left:4px;">
+  <col style="width:30px;" align="center">
+  <TR>
+    <TD align="left" class="App_ListTr" style="padding-left:10px;width:auto"><b>租赁信息</b></TD>
+    <TD onclick="JQExpand('tb_lease');" style="cursor:hand" class="IconDown">　　</TD>
+  </TR>
+</table>
+<table cellpadding="0" cellspacing="0" width="100%" id="tb_lease" class="App_List" style="display:none">
+<col style="width:100%" valign="top">
+<TR><TD class="App_ListTd">[Lease Term 租赁期限] : <HDPrint Value=#leasetermy#>年/<HDPrint Value=#leasetermm#> 月/<HDPrint Value=#leasetermd#>日；</td></tr>
+<TR><TD class="App_ListTd">[Handover Date 交付日期] : <HDPrint Value=#handoverdate#>；</td></tr>
+<TR><TD class="App_ListTd">[Contract start Date 合同起始日期] : <HDPrint Value=#contractdate1#>；</td></tr>
+<TR><TD class="App_ListTd">[Expiry Date 截止日期] : <HDPrint Value=#contractdate2#>；</td></tr>
+<TR><TD class="App_ListTd">[Free of rent Period 免租期] : <HDPrint Value=#freerentm#> 月/<HDPrint Value=#freerentd# Replace=#None#> 天；</td></tr>
+<TR><TD class="App_ListTd">[Fit-Out Period 装修期] : <HDPrint Value=#fitoutm#> 月/<HDPrint Value=#fitoutd#> 天（ <HDPrint Value=#fitoutdate1#> ~ <HDPrint Value=#fitoutdate2#>）；</td></tr>
+</table>
+<table cellpadding="0" cellspacing="0" width="100%" class="App_List" style="margin-top:10px">
+  <col style="padding-left:4px;">
+  <col style="width:30px;" align="center">
+  <TR>
+    <TD align="left" class="App_ListTr" style="padding-left:10px;width:auto"><b>结算信息</b></TD>
+    <TD onclick="JQExpand('tb_fee');" style="cursor:hand" class="IconDown">　　</TD>
+  </TR>
+</table>
+<table cellpadding="0" cellspacing="0" width="100%" id="tb_fee" class="App_List" style="display:none">
+<col style="width:100%" valign="top">
+<TR><TD class="App_ListTd"><HDPrint Value=#Rate1#> ( <HDPrint Value=#Rate#>)</td></tr>
+<TR><TD class="App_ListTd">[Termination Date 申请终止日期] : <font color="BLUE"><HDPrint Value=#Terminationdate#></font>；</td></tr>
+<TR><TD class="App_ListTd">结算费用项目合计:</td></tr>
+<TR><TD class="App_ListTd">[实际应缴金额C=A-B]:<HDPrint Value=#DataCSum#>；</td></tr>
+<TR><TD class="App_ListTd">[实际缴纳金额D]:<HDPrint Value=#DataDSum#>；</td></tr>
+<TR><TD class="App_ListTd">[应退还(追缴)金额E=D-C]:<HDPrint Value=#DataESum#>；</td></tr>
+<TR><TD class="App_ListTd">[未完成租约期限的租金及费用] : <font color="blue"><HDPrint Value=#NumA#></font>；</td></tr>
+<TR><TD class="App_ListTd">[租金（含物业费）减免额] : <font color="blue"><HDPrint Value=#NumB#></font>；</td></tr>
+<TR><TD class="App_ListTd">[装修补贴] : <font color="blue"><HDPrint Value=#NumC#></font>；</td></tr>
+<TR><TD class="App_ListTd">[提前终止的补偿款（包括可没收的款项）] : <font color="blue"><HDPrint Value=#NumD#></font>；</td></tr>
+</table>
+<HDPrint Value=#AppEmail# Replace=#None#>

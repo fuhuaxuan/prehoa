@@ -48,6 +48,12 @@
   <td><HDPrint Value=#VendorFee5#></td>
 </tr>
 </HDIF>
+<HDIF EqualNot(<HDPrint Value=#VendorName6# Replace=#DBField2Input#>1, 1)>
+<tr style="background-color: white">
+  <td><HDPrint Value=#VendorName6#></td>
+  <td><HDPrint Value=#VendorFee6#></td>
+</tr>
+</HDIF>
 </table>
 </td></tr>
 <tr><td>[推荐及理由] : <HDPrint Value=#reason#>；</td></tr>

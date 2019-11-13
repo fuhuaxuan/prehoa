@@ -115,13 +115,29 @@ begin
              o.AppGid,
              o.AppCode,
              o.AppName,
+             70 AppOrder,
+             70 AppType
+        from v_wf_model_usr_app o
+       where o.EntGid = p_EntGid
+         and o.ModelGid = p_ModelGid
+         and replace(lower(o.Modelcode), lower(v_ModelCode), '') in
+             ('_tc0')
+         and rownum = 1
+         and v_AppFee > 80000
+      union
+      select p_EntGid,
+             p_FlowGid,
+             sys_guid(),
+             o.AppGid,
+             o.AppCode,
+             o.AppName,
              80 AppOrder,
              80 AppType
         from v_wf_model_usr_app o
        where o.EntGid = p_EntGid
          and o.ModelGid = p_ModelGid
          and replace(lower(o.Modelcode), lower(v_ModelCode), '') in
-             ('_th8')
+             ('_tc1')
          and rownum = 1
          and v_AppFee > 80000
       union
@@ -146,13 +162,29 @@ begin
              o.AppGid,
              o.AppCode,
              o.AppName,
+             95 AppOrder,
+             95 AppType
+        from v_wf_model_usr_app o
+       where o.EntGid = p_EntGid
+         and o.ModelGid = p_ModelGid
+         and replace(lower(o.Modelcode), lower(v_ModelCode), '') in
+             ('_td1')
+         and rownum = 1
+         and v_AppFee > 300000
+      union
+      select p_EntGid,
+             p_FlowGid,
+             sys_guid(),
+             o.AppGid,
+             o.AppCode,
+             o.AppName,
              99 AppOrder,
              99 AppType
         from v_wf_model_usr_app o
        where o.EntGid = p_EntGid
          and o.ModelGid = p_ModelGid
          and replace(lower(o.Modelcode), lower(v_ModelCode), '') in
-             ('_th10')
+             ('_td2')
          and rownum = 1
          and v_AppFee > 300000;
   

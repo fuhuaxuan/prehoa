@@ -1,0 +1,49 @@
+[Permission]
+SQL1=select 1 from Org where EntGid = __ENTGID__ and Gid = '^^OrgGid^^'
+Remind1=您所指定的组织信息不存在！<script language="JavaScript">alert('您所指定的组织信息不存在！'); history.back();</script>
+
+default1=selChkUsr
+defaultvalue1=a.Gid in (select UsrGid from Org_Usr where EntGid = __ENTGID__ and OrgGid = ##OrgGid##)
+
+default2=selStoped
+defaultvalue2=20
+
+[Master]
+SQL=select a.Gid UsrGid, a.Code UsrCode, a.Name||' '||h.position UsrName, a.Stat, a.Stoped, decode(a.Alevel, 10, '系统管理员', 20, '企业管理员', 30, '企业用户') Alevel from usr a,hr_emp h where a.EntGid = __ENTGID__ and a.Stat <> '20' and a.gid = h.usrgid(+) and h.entgid(+)= __ENTGID__
+
+Count=select Count(1) from usr a,hr_emp h where a.EntGid = __ENTGID__ and a.Stat <> '20' and a.gid = h.usrgid(+) and h.entgid(+)= __ENTGID__
+
+[Detail]
+
+;LoopSQL1=select UsrGid from Org_Usr where EntGid = __ENTGID__ and OrgGid = ##OrgGid##
+;LoopHDT1=Templates\Sys\SysOrg\SysOrgInfo\OrgUsr.hdt
+;LoopVAR1=OrgUsr
+
+
+[Where]
+1=and a.Code like '%' || ##txtCode## || '%'
+2=and (a.Name like '%' || ##txtName## || '%' or lower(h.position) like lower('%' || ##txtName## || '%'))
+3=and ^^selChkUsr^^
+4=and a.Stoped = ##selStoped##
+
+
+
+[DefaultWhere]
+DefaultWhere=
+
+[OrderBy]
+1=
+
+
+
+[DefaultOrderBy]
+DefaultOrderBy=a.Stoped desc, a.Code
+
+[GroupBy]
+
+[Title]
+Text1=系统-组织用户设置
+
+ChangePageRow=10
+PageKind=2
+ChangePage=1

@@ -1,0 +1,80 @@
+<!--Js引入-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+
+<form name="frmDo" method="post" action="">
+<h3 class="TitleBar" ><HDPrint Value=#ModeleAtype#>-><HDPrint Value=#ModeleName#>->[条款编号：<HDPrint Value=#CNum#>]</h3>
+  <TABLE width="100%" class="ButtonBar" cellpadding=0 cellspacing=0>
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <HDIF Equal(<HDPrint Value=#chkRtID1#>, 1)>
+        <A HREF="##HDNet_AppName##/__ExplainModule?Url=Prl_Contract_Mod&UsrGid=<HDPrint Value=#UsrGid#>&Gid=<HDPrint Value=#Gid#>"><FONT class="IconMod">　&nbsp;</FONT> 修改</A>
+      </HDIF>
+      <HDIF Equal(<HDPrint Value=#chkRtID2#>, 1)>
+      <a href="##HDNet_AppName##/__ExplainModule?Url=Prl_Contract_Del&UsrGid=<HDPrint Value=#UsrGid#>&Gid=<HDPrint Value=#Gid#>" onclick="javascript:if (!(confirm('你确定要删除该信息吗？\n删除操作是不能还原的！'))) return false;"><FONT class="IconDel">　&nbsp;</FONT> 删除</A>
+      </HDIF>
+     |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+      
+      <a HREF="##HDNet_AppName##/__ExplainModule?URL=Prl_Contract_List&UsrGid=<HDPrint Value=#UsrGid#>"><FONT class="IconBack">　&nbsp;</FONT> 返回列表</A>
+    </TD>
+  </TR>
+</TABLE>
+<table width="100%" class="ListBar" cellpadding="0"  cellspacing="1">
+  <colgroup>
+    <col style="padding-left:4px;width:10%">
+    <col style="padding-left:4px;width:23%">
+    <col style="padding-left:4px;width:10%">
+    <col style="padding-left:4px;width:23%">
+    <col style="padding-left:4px;width:10%">
+    <col style="padding-left:4px;width:23%">
+  </colgroup>
+  <tr>
+    <td class="DtlBarTitle">收银方式:</td>
+    <td class="listtd"><HDPrint Value=#CashWay#></td>
+    <td class="DtlBarTitle">条款类别:</td>
+    <td class="listtd"><HDPrint Value=#CType#></td>
+    <td class="DtlBarTitle">条款编号:</td>
+    <td class="listtd"><HDPrint Value=#CNum#></td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">条款原文:</td>
+    <td class="listtd" colspan="5"><HDPrint Value=#Content#></td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">默认可选项1:</td>
+    <td class="listtd" colspan="5">（<HDPrint Value=#OpApp2Text# Replace=#None#>）&nbsp;<HDPrint Value=#OpMod2#></td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">默认可选项2:</td>
+    <td class="listtd" colspan="5">（<HDPrint Value=#OpApp3Text# Replace=#None#>）&nbsp;<HDPrint Value=#OpMod3#></td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">可选项1:</td>
+    <td class="listtd" colspan="5">（<HDPrint Value=#OpApp4Text# Replace=#None#>）&nbsp;<HDPrint Value=#OpMod4#></td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">可选项2:</td>
+    <td class="listtd" colspan="5">（<HDPrint Value=#OpApp5Text# Replace=#None#>）&nbsp;<HDPrint Value=#OpMod5#></td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">可选项3:</td>
+    <td class="listtd" colspan="5">（<HDPrint Value=#OpApp6Text# Replace=#None#>）&nbsp;<HDPrint Value=#OpMod6#></td>
+  </tr>
+</table>
+</form>
+
+<FieldSet style="Font-Family:Tahoma;Font-Size:9pt;">
+<Legend><font color="red">特别提醒</font></Legend>
+<li>条款编号：例1.1,1.1.1，最多三级，不可重复</li>
+<li>审批级别全为空，代表当前条款不可选</li>
+<li>审批级别为空，该可选条款不显示</li>
+<li>审批级别A：发起人->法务->招商经理->商场总经理</li>
+<li>审批级别B：发起人->法务->招商经理-><b>财务经理</b>->商场总经理</li>
+<li>审批级别C：发起人->法务->招商经理->商场总经理->租赁部总监</li>
+<li>审批级别D：发起人->法务->招商经理-><b>财务经理</b>->商场总经理->租赁部总监</li>
+<li>审批级别E：发起人->法务->招商经理->商场总经理->租赁部总监->高级副总裁COO</li>
+<li>审批级别F：发起人->法务->招商经理-><b>财务经理</b>->商场总经理->租赁部总监->高级副总裁COO</li>
+</FieldSet>

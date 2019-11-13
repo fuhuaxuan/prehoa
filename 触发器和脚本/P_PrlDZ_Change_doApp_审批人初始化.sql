@@ -70,7 +70,7 @@ begin
                 from v_Post v
                where v.EntGid = p_EntGid
                  and v.deptCode like v_PreDeptCode || '%'
-                 and v.deptName like '%行政%'
+                 and v.deptName like '%行政人事%'
                  and v.atype = 10
                  and rownum = 1
               union

@@ -1,0 +1,22 @@
+[Rep_BeginLine]
+ISF类别
+ISF单号
+ISF发起人
+ISF发起日期
+ISCF单号
+ISCF发起人
+ISTF单号
+ISTF发起人
+[Rep_EndLine]
+<HDLoop>
+[Rep_BeginLine]
+<HDPrint Value=#ISFFlowType# Replace=#None#>
+<HDPrint Value=#ISFNum# Replace=#None#>
+<HDPrint Value=#ISFFillUsrName# Replace=#None#>
+<HDPrint Value=#ISFCreateDate# Replace=#None#>
+<HDPrint Value=#ISCFNum# Replace=#None#>
+<HDPrint Value=#ISCFFillUsrName# Replace=#None#>
+<HDPrint Value=#ISTFNum# Replace=#None#>
+<HDPrint Value=#ISTFFillUsrName# Replace=#None#>
+[Rep_EndLine]
+</HDLoop>

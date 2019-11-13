@@ -16,7 +16,7 @@
     window.opener = null;
     window.open(' ', '_self', ' ');
   }
-  alert('审批完毕，审批人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>，审批意见：<HDPrint Value=#AppAssign# Replace=#DBField2Js#>');
+  //alert('审批完毕，审批人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>，审批意见：<HDPrint Value=#AppAssign# Replace=#DBField2Js#>');
 
   if ('<HDPrint Value=#AppAssign# Replace=#DBField2Js#>' == '同意' || '<HDPrint Value=#AppAssign# Replace=#DBField2Js#>' == '转让授权'){
     frmMail.submit();

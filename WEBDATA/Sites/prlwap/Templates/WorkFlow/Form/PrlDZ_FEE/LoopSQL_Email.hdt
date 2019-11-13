@@ -1,0 +1,81 @@
+<table cellpadding="0" cellspacing="0" width="100%" class="App_List" style="margin-top:10px">
+  <col style="width:100%" valign="top">
+  <TR><TD class="App_ListTr">基本信息</TD></TR>
+  <TR><TD class="App_ListTd">单号：<HDPrint Value=#Num#></TD></TR>
+  <TR><TD class="App_ListTd">发起人：<HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]</TD></TR>
+  <TR><TD class="App_ListTd">发起日期：<HDPrint Value=#CreateDate#></TD></TR>
+</table>
+<table cellpadding="0" cellspacing="0" width="100%" class="App_List" style="margin-top:10px">
+<col style="width:100%" valign="top">
+<TR><TD class="App_ListTr">单据信息</TD></TR>
+<TR><TD class="App_ListTd">[公司名称] : <HDPrint Value=#companyname#></TD></TR>
+  <tr><td class="App_ListTd">[供应商报价] :</td></tr>
+<TR><TD>
+<table cellpadding="0" cellspacing="1" class="App_List" width="100%" style="background-color: #d9dbdf;">
+  <col style="padding-left:4px;width:70%">
+  <col style="padding-left:4px;width:30%">
+  <tr style="background-color: #ecedef;" align="center">
+    <td class="App_ListTd">供应商</td>
+    <td class="App_ListTd">报价</td>
+  </tr>
+<HDIF EqualNot(<HDPrint Value=#VendorName1# Replace=#DBField2Input#>1, 1)>
+<tr style="background-color: white">
+  <td class="App_ListTd"><HDPrint Value=#VendorName1#></td>
+  <td class="App_ListTd"><HDPrint Value=#VendorFee1#></td>
+</tr>
+</HDIF>
+<HDIF EqualNot(<HDPrint Value=#VendorName2# Replace=#DBField2Input#>1, 1)>
+<tr style="background-color: white">
+  <td class="App_ListTd"><HDPrint Value=#VendorName2#></td>
+  <td class="App_ListTd"><HDPrint Value=#VendorFee2#></td>
+</tr>
+</HDIF>
+<HDIF EqualNot(<HDPrint Value=#VendorName3# Replace=#DBField2Input#>1, 1)>
+<tr style="background-color: white">
+  <td class="App_ListTd"><HDPrint Value=#VendorName3#></td>
+  <td class="App_ListTd"><HDPrint Value=#VendorFee3#></td>
+</tr>
+</HDIF>
+<HDIF EqualNot(<HDPrint Value=#VendorName4# Replace=#DBField2Input#>1, 1)>
+<tr style="background-color: white">
+  <td class="App_ListTd"><HDPrint Value=#VendorName4#></td>
+  <td class="App_ListTd"><HDPrint Value=#VendorFee4#></td>
+</tr>
+</HDIF>
+<HDIF EqualNot(<HDPrint Value=#VendorName5# Replace=#DBField2Input#>1, 1)>
+<tr style="background-color: white">
+  <td class="App_ListTd"><HDPrint Value=#VendorName5#></td>
+  <td class="App_ListTd"><HDPrint Value=#VendorFee5#></td>
+</tr>
+</HDIF>
+<HDIF EqualNot(<HDPrint Value=#VendorName6# Replace=#DBField2Input#>1, 1)>
+<tr style="background-color: white">
+  <td class="App_ListTd"><HDPrint Value=#VendorName6#></td>
+  <td class="App_ListTd"><HDPrint Value=#VendorFee6#></td>
+</tr>
+</HDIF>
+</table>
+</td></tr>
+<tr><td class="App_ListTd">[推荐及理由] : <HDPrint Value=#reason#>；</td></tr>
+<tr><td class="App_ListTd">[剩余预算金额] : <HDPrint Value=#controlfee#> 元；</td></tr>
+<tr><td class="App_ListTd">[本次申请金额] : 今年：<font style="color:red"><HDPrint Value=#askfee#></font> 元；跨年：<font style="color:red"><HDPrint Value=#NaskfeeStr#></font> 元；</td></tr>
+<tr><td class="App_ListTd">[附件信息] : <HDPrint Value=#AttachList# Replace=#None#></td></tr>
+<HDIF EqualNot(<HDPrint Value=#isCEO# Replace=#None#>, 0)>
+<TR><TD class="App_ListTd">[潘总审批附件:] : <HDPrint Value=#AttachList2# Replace=#None#></td></tr>
+</HDIF>
+</table>
+<table cellpadding="0" cellspacing="0" width="100%" class="App_List" style="margin-top:10px;">
+  <col style="padding-left:4px;">
+  <col style="width:30px;" align="center">
+  <TR>
+    <TD align="left" class="App_ListTr" style="padding-left:10px;width:auto"><b>其他信息</b></TD>
+    <TD onclick="JQExpand('tb_Other');" style="cursor:hand" class="IconDown">　　</TD>
+  </TR>
+</table>
+<table cellpadding="0" cellspacing="0" width="100%" id="tb_Other" class="App_List" style="display:none">
+<col style="width:100%" valign="top">
+  <tr><td class="App_ListTd">[项目名称] : <HDPrint Value=#acgonename#> - <HDPrint Value=#acgtwoname#>；</td></tr>
+  <tr><td class="App_ListTd">[申请目的] : <HDPrint Value=#target#>；</td></tr>
+  <tr><td class="App_ListTd">[申请项目内容] : <HDPrint Value=#Memo#>；</td></tr>
+</table>
+<HDPrint Value=#AppEmail# Replace=#None#>

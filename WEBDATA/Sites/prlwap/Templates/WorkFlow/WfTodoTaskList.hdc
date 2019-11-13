@@ -1,0 +1,59 @@
+[Permission]
+
+
+[Master]
+;寻找待完成的任务——执行人为当前用户、“待执行”或“执行中”状态，任务开始时间<=当前系统时间
+SQL=select A.Code Code,a.ModelGid,a.FlowGid,A.Memo,a.Name Name,to_char(a.BTime,'yyyy.mm.dd hh24:mi') BTime, b.Code ModelCode, b.Name ModelName ,c.creatername,c.creatercode,c.flownote,to_char(c.createdate,'yyyy.mm.dd hh24:mi') Cdate from WF_task a, WF_Model b ,wf_flow c where a.EntGid = __ENTGID__ and b.EntGid = __ENTGID__ and c.EntGid = __ENTGID__ and a.ModelGid = b.ModelGid and b.ModelGid = c.ModelGid and a.flowgid = c.flowgid and BTime <= sysdate and nvl(DeadLine,SYSDATE) >= sysdate and a.ExecGid = __USRGID__ and a.Stat in (1, 2) and replace(lower(a.code),lower(b.code),'') not in ('_t1','_tmod') 
+
+Count=select count(1) from WF_task a, WF_Model b ,wf_flow c where a.EntGid = __ENTGID__ and b.EntGid = __ENTGID__ and c.EntGid = __ENTGID__ and a.ModelGid = b.ModelGid and b.ModelGid = c.ModelGid and a.flowgid = c.flowgid and BTime <= sysdate and nvl(DeadLine,SYSDATE) >= sysdate and a.ExecGid = __USRGID__ and a.Stat in (1, 2) and replace(lower(a.code),lower(b.code),'') not in ('_t1','_tmod') 
+
+
+[Detail]
+;工作流程模型名称列表
+LoopSql1=select classify || '-' || name name, modelgid, stat, decode(stat, 0, '(未)', 2, '(停)', 5, '(废)') stattext from wf_model w where w.entgid = __ENTGID__ and w.modelgid in (select modelgid from wf_task where entgid = __ENTGID__ and execgid = __USRGID__ union select modelgid from wf_task_history where entgid = __ENTGID__ and execgid = __USRGID__ ) order by classify, name 
+LoopHDT1=Templates\WorkFlow\WF_Model_Option.hdt
+LoopVAR1=WF_Model_Option
+
+
+;工作流程分类名称列表
+LoopSql2=select distinct classify name, classify modelgid from WF_Model where entgid=__ENTGID__ order by length(name)
+LoopHDT2=Templates\WorkFlow\WF_Model_Option.hdt
+LoopVAR2=WF_Model_Type
+
+[Where]
+110= and (c.CreaterCode like '%' || ##txtFlowNote## || '%' or c.CreaterName like '%' || ##txtFlowNote## || '%' or c.FlowNote like '%' || ##txtFlowNote## || '%' or b.Name like '%' || ##txtFlowNote## || '%' or lower(a.Name) like lower('%' || ##txtFlowNote## || '%'))
+
+
+
+[DefaultWhere]
+DefaultWhere= 
+
+[OrderBy]
+1=##SelOrderBy##
+
+
+[DefaultOrderBy]
+DefaultOrderBy= a.BTime Desc 
+
+[GroupBy]
+
+[AddtionalSQL]
+
+
+[Title]
+Text1=工作流程-当前待执行任务
+Text2=
+Text3=
+Text4=
+Text5=
+log=
+ChangePage=1
+PageKind=2
+showsql=
+
+[Link]
+;URL1=
+;URL2=
+;URL3=
+URL4=
+URL5=

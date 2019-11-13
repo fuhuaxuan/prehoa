@@ -1,0 +1,8 @@
+<hdloop>
+  <tr class="listtd">
+    <td align="center"><HDPrint Value=#OpType#></td>
+    <td align="center"><HDPrint Value=#OpName#></td>
+    <td align="center"><HDPrint Value=#OpDate#></td>
+    <td><HDPrint Value=#OpMemo#></td>
+  </tr>
+</hdloop>

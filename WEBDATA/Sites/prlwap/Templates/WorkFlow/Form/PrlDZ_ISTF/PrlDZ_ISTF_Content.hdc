@@ -1,0 +1,149 @@
+;版本号：2014年3月份（此行不允许删除）
+[Permission]
+;判断FlowGid 是否为空
+LIMIT1=FlowGid
+LIMITDesc1=StringSize[,0]
+LIMITRemind1=对不起，您未指定流程信息！请从正确的路径进入
+
+;判断传入FlowGid 是否存在
+SQL1=select 1 from wf_Flow where EntGid = __ENTGID__ and FlowGid = ##FlowGid##
+Remind1=对不起，您指定的流程申请单没有找到<script>alert('对不起，您指定的流程申请单没有找到');window.close()</script>
+
+[Detail]
+;显示，单条数据的查询，可以用于HDT显示，有select命令。从SQL1～SQL20共支持20条
+;取出本流程模型信息
+SqlForCondition1=select wm.Code ModelCode, wm.Name ModelName from wf_Model wm where wm.EntGid = __ENTGID__ and wm.ModelGid = ##ModelGid##
+
+;取出发起人的部门代码
+SqlForCondition2=select substr(f.FillUsrDeptCode,0,4) ProCode from Wf_PRL_ISTF f where f.EntGid = __ENTGID__ and f.FlowGid = ##FlowGid##
+
+;取出旧的ISF/ISCF的信息
+SQL1=select f.num OldNum,f.modelgid OldModelGid,m.code OldModelCode,f.FlowGid OldFlowGid,f.DEPT,f.unit,f.area,f.BuildArea,f.tradename,f.trade,f.lessee,f.tradingname,f.address,f.contactor,f.phone,f.email,f.fax,f.leaseTermY,f.leaseTermM,f.leaseTermD,to_char(f.HandoverDate,'YYYY.MM.DD') HandoverDate,f.Related,f.Detail,f.Rate1,f.Rate,to_char(f.contractDate1,'YYYY.MM.DD') contractDate1,to_char(f.contractdate2,'YYYY.MM.DD') contractdate2,f.freeRentM,f.freeRentD,f.fitoutM,f.fitoutD,to_char(f.fitoutdate1,'YYYY.MM.DD') fitoutdate1,to_char(f.fitoutdate2,'YYYY.MM.DD') fitoutdate2,f.collection,nvl(numsum,0) DataTotal from WF_PRL_ISF f,wf_model m,Wf_PRL_ISTF o where f.FlowGid = o.OldFlowGid and f.EntGid=__ENTGID__ and f.EntGid = m.EntGid and f.modelgid = m.modelgid and o.FlowGid = ##FlowGid##
+
+Sql2=select f.*,FillUsrDept FillDeptName,decode(f.mallstat,0,'已发送至Mall，处理失败',10,'已发送至Mall,未接收',100,'已发送至Mall，成功') mallstattext,decode(f.category,10,'Early Termination 提前终止',20,'Termination 到期终止',30,'Others 其他:'||f.categorytext) categoryText1,decode(wf.stat,'0', '未执行','1', '待执行','2', '执行中','3', '<FONT COLOR="blue">已完成</FONT>','4', '<font color="gray">已停止</font>','5', '<FONT COLOR="red">已作废</FONT>','6', '<FONT COLOR="red">已超时</FONT>') Flowstat,decode(f.stat,'0','未开始','1','填写中','10','已提交，审批中','12','已同意','13','已否决','30','已完成','40','已终止合同','100','发起人结束流程',f.Stat) StatText,to_char(f.cFee,'FM999,999,999,990.90') cFeeStr,to_char(f.NumA,'FM999,999,999,990.90') NumAStr,to_char(f.NumB,'FM999,999,999,990.90') NumBStr,to_char(f.NumE,'FM999,999,999,990.90') NumEStr,to_char(f.NumSum,'FM999,999,999,990.90') NumSumStr,to_char(f.DataASum,'FM999,999,999,990.90') DataASumStr,to_char(f.DataBSum,'FM999,999,999,990.90') DataBSumStr,to_char(f.DataCSum,'FM999,999,999,990.90') DataCSumStr,to_char(f.DataDSum,'FM999,999,999,990.90') DataDSumStr,to_char(f.DataESum,'FM999,999,999,990.90') DataESumStr,to_char(f.EFee,'FM999,999,999,990.90') EFeeStr ,to_char(f.DFee,'FM999,999,999,990.90') DFeeStr  from Wf_PRL_ISTF f,wf_flow wf where f.EntGid = __ENTGID__ and f.EntGid = wf.EntGid and f.FlowGid = wf.FlowGid and f.FlowGid = ##FlowGid##
+
+;取出本流程已审批的审批人的个数，用于判断是否显示审批人
+SQL3=select count(*) IsShow from Wf_Prl_Isf_App where EntGid = __ENTGID__ and  FlowGid = ##FlowGid##
+
+;管理员可查看 P1-P8
+SQL6=select count(*) IsRt from v_usr u,v_org_usr v where v.EntGid = __ENTGID__ and v.EntGid = u.EntGid and v.OrgGid = u.Gid and v.usrGid = __USRGID__ and lower(u.code) = 'admin_grp'
+
+;是否有集团CEO
+SQL10=select decode(count(*),0,'none','') isCEO from Wf_PRL_ISF_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppOrder = 100
+
+;显示本流程附件信息
+LoopSQL1=select replace(Attach_Url,' ','%20') Attach_Url,Attach_Title Attach_Title from WF_PRL_ISF_Attach where EntGid = __ENTGID__ and  FlowGid = ##FlowGid## order by attach_title
+LoopHDT1=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AttachList.hdt
+LoopVAR1=AttachList
+
+;显示本流程已审批审批人信息
+LoopSQL2=select a.*,decode(a.apptype,0,'发起人',10,'部门经理',32,'部门总经理',30,'财务经理',35,'总经理',40,'项目总经理',50,'资产经理',60,'租赁部总监',70,'副财务总监',80,'财务总监',85,'资产经理',90,'区域总经理',95,'中国区CEO',100,'集团CEO',110,'发起人确认') apptypetext  from Wf_Prl_Isf_App a where FlowGid = ##FlowGid## order by AppDate,AppType
+LoopHDT2=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AppList.hdt
+LoopVAR2=AppList
+
+
+;显示本流程明细信息
+LoopSQL3=select d.*,to_char(d.DataA,'FM999,999,999,990.90') DataAStr,to_char(d.DataB,'FM999,999,999,990.90') DataBStr,to_char(d.DataC,'FM999,999,999,990.90') DataCStr,to_char(d.DataD,'FM999,999,999,990.90') DataDStr,to_char(d.DataE,'FM999,999,999,990.90') DataEStr from Wf_PRL_ISTF_Dtl d where EntGid = __ENTGID__ and FlowGid = ##FlowGid## order by Line
+LoopHDT3=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_DtlList.hdt
+LoopVAR3=DtlList
+
+;显示单位信息
+LoopSQL4=select g.* from wf_PRL_ISF_ground g,Wf_PRL_ISTF f where f.EntGid = __ENTGID__ and f.FlowGid = ##FlowGid## and g.FlowGid = f.OldFlowGid order by g.fNo
+LoopHDT4=Templates\WorkFlow\Form\^^ModelCode^^\LoopSql_UnitDtl.hdt
+LoopVAR4=UnitList
+
+;显示本流程明细信息
+LoopSQL5=select f.*,'none' fE,to_char(f.Rent,'FM999,999,999,990.90') RentStr from Wf_PRL_ISTF_Fee f where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and aType = 'D' order by Line
+LoopHDT5=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_FeeList.hdt
+LoopVAR5=DFeeList
+
+;显示本流程明细信息
+LoopSQL6=select f.*,to_char(f.Rent,'FM999,999,999,990.90') RentStr from Wf_PRL_ISTF_Fee f where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and aType = 'E' order by Line
+LoopHDT6=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_FeeList.hdt
+LoopVAR6=EFeeList
+
+;显示本流程已审批审批人信息
+LoopSQL7=select a.*,decode(a.apptype,0,'发起人',10,'部门经理',32,'部门总经理',30,'财务经理',35,'总经理',40,'项目总经理',50,'资产经理',60,'租赁部总监',70,'副财务总监',80,'财务总监',85,'资产经理',90,'区域总经理',95,'中国区CEO',100,'集团CEO',110,'发起人确认') apptypetext  from Wf_Prl_Isf_App a where FlowGid = ##FlowGid## order by AppDate,AppOrder
+LoopHDT7=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AppEmail.hdt
+LoopVAR7=AppEmail
+
+;显示集团CEO附件
+LoopSQL10=select replace(Attach_Url,' ','%20') Attach_Url,Attach_Title Attach_Title from WF_Prl_Flow_Attach where EntGid = __ENTGID__ and  FlowGid = ##FlowGid## order by attach_title
+LoopHDT10=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AttachList.hdt
+LoopVAR10=AttachList2
+
+;显示邮件
+LoopSQL19=select 1 from dual
+LoopHDT19=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_Email.hdt
+LoopVAR19=EmailList
+
+LoopSQL20=select 1 from dual
+LoopHDT20=Templates\WorkFlow\Form\PrlDZ_Email\Loopsql_Phone.hdt
+LoopVAR20=EmailPhone
+[AddtionalSQL]
+;操作，没有返回的结果，是在数据库中执行，有Insert, Update, Delete命令。从SQL1～SQL20共支持20条
+SQL1=
+
+[AddtionalSQLUseWhere]
+;显示，单条数据的查询，可以用于HDT显示，有select命令。从SQL1～SQL20共支持20条，同时会使用上面的[where]中的sql语句
+;示例
+Sql1=
+
+[Master]
+;显示，多条记录的查询，可在HDT页面中直接使用<HDLoop>显示，并能够提供翻页。
+SQL=
+Count=
+
+[DefaultWhere]
+;多条记录的查询的默认条件
+DefaultWhere=
+
+[Where]
+;多条记录的查询的条件，可以根据页面传入的变量组合成
+1=
+
+[GroupBy]
+;多条记录的查询的分组
+GroupBy=
+
+[DefaultOrderBy]
+;多条记录的查询的默认排序
+DefaultOrderBy=
+
+[OrderBy]
+;多条记录的查询的排序,支持多重排序排序的先后顺序由序号决定
+1=
+
+
+[Title]
+;页面的标题，从Text1～Text30共支持30条
+
+Text1=^^ModelName^^-明细
+
+;是否翻页：1是，0否
+ChangePage=0
+
+;翻页时的每页记录数，如果没有的话，则取HDNet默认值20
+ChangePageRow=
+
+;写入数据库日志
+Log=
+
+;页面显示: 0:BodyPage;1:DetailPage;2:BlankPage
+PageKind=2
+
+
+;以下内容是为了让ExplainAjax引擎来读的。对ExplainModule引擎来说，忽略此部分内容。
+[Ajax]
+;此Section“[Ajax]”,表明以下内容是为了Ajax应用而配置的文件。
+;需要显示一条的内容，可以支持21条, Detail, Detail1～Detail20
+Detail=
+
+;需要循环显示的内容,可以支持11条，Master, Master1～Master10
+Master=
+
+;实现对数据库进行的操作，可以支持20条, AddtionalSQL1～AddtionalSQL20
+AddtionalSQL1=
+
+;实现对数据库进行的循环操作，可以支持20条, LoopSQL1～LoopSQL20
+LoopSQL1=

@@ -17,7 +17,7 @@
 <tr><td>[Category  类别] : <HDPrint Value=#atype#>
 <tr><td>[Unit No.  单位] : <HDPrint Value=#unit#>
 <tr><td>[Area 面积] : <HDIF Equal(<HDPrint Value=#modarea# Replace=#None#>, 是)><HDPrint Value=#newarea#></HDIF><HDIF EqualNot(<HDPrint Value=#modarea# Replace=#None#>, 是)><HDPrint Value=#area#></HDIF>
-<tr><td>[Tenant/Licensee 租户] : <HDPrint Value=#lessee#>;  
+<tr><td>[Tenant/Licensee 租户] : <HDPrint Value=#lessee#>;
 <tr><td>[Trading Name  商店营业名称] : <HDPrint Value=#tradingname#>
 <tr><td>[Lease Term 租赁期限] : <HDPrint Value=#leasetermy# Replace=#DBField2InputField#>年/<HDPrint Value=#leasetermm# Replace=#DBField2InputField#> 月/<HDPrint Value=#leasetermd# Replace=#DBField2InputField#>日;
 <tr><td>[Handover Date 交付日期] : <HDPrint Value=#handoverdate#>
@@ -39,7 +39,7 @@
 </textarea>
 <HDPrint Value=#Emaillist# Replace=#None#>
   </form>
-<!-- 
+<!--
 -----------回复规范说明，整行无空格及其他特殊字符-----------
 [Y
 回复内容]
@@ -52,11 +52,11 @@ SystemInfo::EntGid=<HDPrint Value=#EntGid#>;Flowgid=<HDPrint Value=#Flowgid#>;Mo
  -->
 
 <SCRIPT LANGUAGE="JavaScript">
-    alert('审批完毕，审批人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>，审批意见：<HDPrint Value=#AppAssign# Replace=#DBField2Js#>');
+    //alert('审批完毕，审批人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>，审批意见：<HDPrint Value=#AppAssign# Replace=#DBField2Js#>');
 
 //应该是 > 0 .20121205测试所用
   if (('<HDPrint Value=#AppAssign# Replace=#DBField2Js#>' == '同意') || ('<HDPrint Value=#AppAssign# Replace=#DBField2Js#>' == '转让授权')){
-  
+
     frmMail.submit();
     //如有打开页面，刷新打开页面
     if (self.opener != null) {
@@ -89,11 +89,11 @@ SystemInfo::EntGid=<HDPrint Value=#EntGid#>;Flowgid=<HDPrint Value=#Flowgid#>;Mo
     }
   }
   else{
-  
+
 
     //如有打开页面，刷新打开页面
-    
-    if (self.opener != null) 
+
+    if (self.opener != null)
     {
       try
       {
@@ -107,5 +107,5 @@ SystemInfo::EntGid=<HDPrint Value=#EntGid#>;Flowgid=<HDPrint Value=#Flowgid#>;Mo
     window.close();
   }
 
-  
+
 </SCRIPT>

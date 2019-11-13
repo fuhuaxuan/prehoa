@@ -5,6 +5,7 @@ select t.*,
        a3.Apper  A3Apper,
        a4.Apper  A4Apper,
        a5.Apper  A5Apper,
+       a55.Apper  A55Apper,
        a6.Apper  A6Apper,
        a7.Apper  A7Apper,
        a8.Apper  A8Apper,
@@ -25,6 +26,7 @@ select t.*,
        PrlZB_Acg_Post a3,
        PrlZB_Acg_Post a4,
        PrlZB_Acg_Post a5,
+       PrlZB_Acg_Post a55,
        PrlZB_Acg_Post a6,
        PrlZB_Acg_Post a7,
        PrlZB_Acg_Post a8,
@@ -35,6 +37,7 @@ select t.*,
    and t.EntGid = a3.EntGid(+)
    and t.EntGid = a4.EntGid(+)
    and t.EntGid = a5.EntGid(+)
+   and t.EntGid = a55.EntGid(+)
    and t.EntGid = a6.EntGid(+)
    and t.EntGid = a7.EntGid(+)
    and t.EntGid = a8.EntGid(+)
@@ -45,6 +48,7 @@ select t.*,
    and t.AcgGid = a3.AcgGid(+)
    and t.AcgGid = a4.AcgGid(+)
    and t.AcgGid = a5.AcgGid(+)
+   and t.AcgGid = a55.AcgGid(+)
    and t.AcgGid = a6.AcgGid(+)
    and t.AcgGid = a7.AcgGid(+)
    and t.AcgGid = a8.AcgGid(+)
@@ -55,6 +59,7 @@ select t.*,
    and t.ComGid = a3.ComGid(+)
    and t.ComGid = a4.ComGid(+)
    and t.ComGid = a5.ComGid(+)
+   and t.ComGid = a55.ComGid(+)
    and t.ComGid = a6.ComGid(+)
    and t.ComGid = a7.ComGid(+)
    and t.ComGid = a8.ComGid(+)
@@ -65,6 +70,7 @@ select t.*,
    and lower(a3.postcode(+)) = '20'
    and lower(a4.postcode(+)) = '25'
    and lower(a5.postcode(+)) = '30'
+   and lower(a55.postcode(+)) = '32'
    and lower(a6.postcode(+)) = '35'
    and lower(a7.postcode(+)) = '40'
    and lower(a8.postcode(+)) = '45'

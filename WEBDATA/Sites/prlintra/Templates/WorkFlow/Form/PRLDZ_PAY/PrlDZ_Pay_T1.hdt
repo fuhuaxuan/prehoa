@@ -67,6 +67,7 @@
   //选择费用单时计算
   function calc(){
     var PayFee = $("input[name=PayFee]").val();
+    var NPayFee = $("input[name=NPayFee]").val();
     var FeeA = $("input[name=FeeA]").val();
     var FeeB = $("input[name=FeeB]").val();
     var FeeNotPay = $("input[name=FeeNotPay]").val();
@@ -77,6 +78,9 @@
     var $FeeOk = $("input[name=FeeOk]");
     if (PayFee == ''){
       PayFee = 0;
+    }
+    if (NPayFee == ''){
+      NPayFee = 0;
     }
 
     if (FeeA == ''){
@@ -514,7 +518,7 @@
     </table>
     </td>
   </tr>
-  <tr>
+  <tr style="display:none">
     <td class="DtlBarTitle">发起人备注:<br><font color="gray">(500字内)</font></td>
     <td class="listtd" colspan="5"><textarea class="JQText JQNo" rows="5" id="AppMemo" name="AppMemo" maxlength="500"></textarea></td>
   </tr>
@@ -644,7 +648,7 @@
           alert('公司承担不能超过剩余预算金额，请调整!');
           $("input[name=NPayFee]").val(LeftFee);
           return false;
-        } else if (parseFloat(PayFee) > parseFloat(LeftFee)){
+        } else if (parseFloat(NPayFee) <= 0 && parseFloat(PayFee) > parseFloat(LeftFee)){
           alert('本次付款金额不能超过剩余预算金额，请调整!');
           $("input[name=PayFee]").val(LeftFee);
           return false;

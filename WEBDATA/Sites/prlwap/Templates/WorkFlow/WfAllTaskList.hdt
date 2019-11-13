@@ -1,0 +1,58 @@
+<!--  脚本加载  -->
+<script language="javascript" src="##GetWebRootPath(/Scripts/JSCalendar.js)##"></script>
+<script language="JavaScript" src="##GetWebRootPath(/Scripts/Common.js)##"></Script>
+<form name="frmDo" method="Post" action="">
+<table cellpadding="0" cellspacing="0" width="100%" class="App_List">
+  <col style="width:100%" valign="top">
+  <tr valign="center"><td class="App_Bar">已审批</td></tr>
+</table>
+
+
+<table cellpadding="0" cellspacing="0" width="100%" class="App_List">
+  <col style="width:80%">
+  <col style="width:20%">
+  <tr>
+    <td style="padding-left:10px;padding-right:10px"><input name="txtFlowNote" maxlength=100 class="JQText App_Search" placeholder="发起人|流程名|备注关键字查询"></td>
+    <td align="center">
+      <INPUT TYPE="hidden" name="NotFirst" value="1">
+      <INPUT TYPE="submit" name="btnSearch" class="NormalSbt" value=" 查询 " style="height:40px">
+      <INPUT TYPE="hidden" name="Rep_Download" value="">
+    </td>
+  </tr>
+</table>
+<BR>
+<SCRIPT LANGUAGE="JavaScript">
+  //保留查询条件
+  document.all.txtFlowNote.value = '<HDPrint Value=#txtFlowNote# Replace=#DBField2Js#>';
+
+</SCRIPT>
+<HDPageBar>
+<table width="100%" class="ListBar" cellpadding="0" cellspacing="0" style="background:#F7F8FC;">
+  <col style="width:100%" valign="top">
+  <HDLoop>
+  <tr valign=top>
+    <td>
+      <A HREF="##HDNet_AppName##/WFFlowPage?UsrGid=<HDPrint Value=#UsrGid#>&Url=<HDPrint Value=#ModelCode#>&ModelGid=<HDPrint Value=#ModelGid#>&FlowGid=<HDPrint Value=#FlowGid#>" target="_blank" title="查看流程明细">
+      <table width="100%" border="0" style="margin-top:10px;background:white">
+        <col style="width:50%">
+        <col style="width:50%">
+        <tr valign="center">
+          <td class="App_Title" colspan="2" valign="middle" style="height:40px">
+            <HDPrint Value=#ModelName#>
+            <font class="App_App" style="float:right;"><HDPrint Value=#Flowstat# Replace=#None#><font>
+          </td>
+        </tr>
+        <tr>
+          <td class="App_Info">发起人：<HDPrint Value=#creatername#></td>
+          <td class="App_Info"><HDPrint Value=#FlowCreateDate#></td>
+        </tr>
+        <tr>
+          <td class="App_Info" colspan="2">备注：<HDPrint Value=#FlowNote#></td>
+        </tr>
+      </table>
+      </A>
+    </td>
+  </tr>
+  </HDLoop>
+</table>
+</form>

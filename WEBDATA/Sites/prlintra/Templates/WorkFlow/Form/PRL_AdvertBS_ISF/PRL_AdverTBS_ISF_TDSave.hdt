@@ -44,7 +44,7 @@
   <HDPrint Value=#Emaillist# Replace=#None#>
 </form>
 <SCRIPT LANGUAGE="JavaScript">
-  alert('审批完毕，审批人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>，审批意见：<HDPrint Value=#AppAssign# Replace=#DBField2Js#>');
+  //alert('审批完毕，审批人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>，审批意见：<HDPrint Value=#AppAssign# Replace=#DBField2Js#>');
 
 if ( '<HDPrint Value=#AppAssign# Replace=#DBField2Js#>' == '同意')
   {
@@ -65,8 +65,8 @@ if ( '<HDPrint Value=#AppAssign# Replace=#DBField2Js#>' == '同意')
   else
   {
     //如有打开页面，刷新打开页面
-    
-    if (self.opener != null) 
+
+    if (self.opener != null)
     {
       try
       {
@@ -80,5 +80,5 @@ if ( '<HDPrint Value=#AppAssign# Replace=#DBField2Js#>' == '同意')
     window.close();
   }
 
-  
+
 </SCRIPT>

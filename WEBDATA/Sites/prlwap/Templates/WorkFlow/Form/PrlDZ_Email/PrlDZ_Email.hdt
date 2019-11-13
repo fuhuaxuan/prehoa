@@ -1,0 +1,42 @@
+<script language="javascript" src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<script language="javascript">
+  function PostPush() {
+    var url = 'http://116.62.206.211/MallAppService/PushService.asmx/PushInfo';
+    var platform = '<HDPrint Value=#platform# Replace=#DBField2Js#>';
+    if (platform != '') {
+      platform = parseInt(platform,10);
+    }else{
+      platform = 0
+    }
+    var body = {Title:"鹏瑞利OA",Content:"您有新的待执行任务",Platform:platform,RegIDs:"<HDPrint Value=#registrationid# Replace=#DBField2Js#>"}
+    //参数
+    var data = {
+      data : JSON.stringify(body)
+    };
+    //回调函数
+    var cb = {
+      //成功，处理函数
+      success : function (ret){
+        return true;
+      },
+      //失败，处理函数
+      failed : function (ret){
+        return false;
+      }
+    };
+    //调用Ajax函数
+    JQAjax(url,data,cb);
+  }
+  function toNext(){
+    location.replace('##HDNet_AppName##/__ExplainModule?Url=wftodotasklist&UsrGid=<HDPrint Value=#CurUsrGid# Replace=#DBField2Js#>');
+  }
+  if ('<HDPrint Value=#registrationid# Replace=#DBField2Js#>' != '') {
+    setTimeout(function () {
+      toNext();
+    }, 2000);
+    PostPush();
+  }else{
+    toNext();
+  }
+</script>

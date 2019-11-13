@@ -74,20 +74,8 @@ begin
                      23         AppType
                 from v_Post v
                where v.EntGid = p_EntGid
-                 and v.deptGid = v_ComGid
+                 and v.deptGid = v_DeptGid
                  and v.atype = 23
-                 and rownum = 1
-                 and v_ApplyType = '合同签署用印'
-              union
-              select v.PostGid  AppGid,
-                     v.PostCode AppCode,
-                     v.PostName AppName,
-                     3          AppOrder,
-                     25         AppType
-                from v_Post v
-               where v.EntGid = p_EntGid
-                 and v.deptGid = v_ComGid
-                 and v.atype = 30
                  and rownum = 1
                  and v_ApplyType = '合同签署用印'
               union
@@ -98,7 +86,7 @@ begin
                      30         AppType
                 from v_Post v
                where v.EntGid = p_EntGid
-                 and v.deptGid = v_ComGid
+                 and v.deptGid = v_DeptGid
                  and v.atype = 35
                  and rownum = 1
               union
@@ -109,8 +97,19 @@ begin
                      35         AppType
                 from v_Post v
                where v.EntGid = p_EntGid
-                 and v.deptGid = v_ComGid
+                 and v.deptGid = v_DeptGid
                  and v.atype = 40
+                 and rownum = 1
+              union
+              select v.PostGid  AppGid,
+                     v.PostCode AppCode,
+                     v.PostName AppName,
+                     6          AppOrder,
+                     37         AppType
+                from v_Post v
+               where v.EntGid = p_EntGid
+                 and v.deptGid = v_DeptGid
+                 and v.atype = 80
                  and rownum = 1) t;
   
     for R in (select AppGid, AppCode, AppName, Line, StampType
@@ -127,7 +126,7 @@ begin
                                70,
                                '公司股东章',
                                80,
-                               '合同用章',
+                               '合同章',
                                90),
                         Line) loop
       select max(AppOrder)
@@ -163,7 +162,7 @@ begin
                       70,
                       '公司股东章',
                       80,
-                      '合同用章',
+                      '合同章',
                       90)
           from dual;
       commit;

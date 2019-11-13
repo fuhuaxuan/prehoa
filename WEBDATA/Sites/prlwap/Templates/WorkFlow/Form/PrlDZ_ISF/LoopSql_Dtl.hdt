@@ -1,0 +1,40 @@
+<hdloop>
+  <script language="javascript">
+    var sTrClass = 'listtd';
+    var tdArr = new Array();
+    var JsTbId = '<HDPrint Value=#TbId# Replace=#DBField2Js#>';
+    var k = 0;
+    if (JsTbId == 'tb_Dtl10'){
+      tdArr[k++] = '<td>免:<HDPrint Value=#FreeRentDate1Text# Replace=#None#>~<HDPrint Value=#FreeRentDate2Text# Replace=#None#></td>';
+    }
+    if (JsTbId == 'tb_Dtl20'){
+      tdArr[k++] = '<td><HDPrint Value=#FreeRentDate1Text# Replace=#None#>~<HDPrint Value=#FreeRentDate2Text# Replace=#None#></td>';
+    }
+    if (JsTbId == 'tb_Dtl30'){
+      tdArr[k++] = '<td align="center">Yr <HDPrint Value=#YearType#> 第<HDPrint Value=#YearType#>年</td>';
+    }
+    tdArr[k++] = '<td align="right"><HDPrint Value=#TBRDText# Replace=#None#></td>';
+    tdArr[k++] = '<td align="right"><HDPrint Value=#BuildTBRDText# Replace=#None#></td>';
+    tdArr[k++] = '<td align="right"><HDPrint Value=#TBRMText# Replace=#None#></td>';
+    tdArr[k++] = '<td align="right"><HDPrint Value=#PMFDText# Replace=#None#></td>';
+    tdArr[k++] = '<td align="right"><HDPrint Value=#BuildPMFDText# Replace=#None#></td>';
+    tdArr[k++] = '<td align="right"><HDPrint Value=#PMFMText# Replace=#None#></td>';
+    var Ap = '';
+    if ('<HDPrint Value=#Apfixed# Replace=#DBField2Js#>' != ''){
+      Ap = '<HDPrint Value=#ApfixedText# Replace=#None#>元';
+    }
+    else{
+      Ap = '<HDPrint Value=#APText# Replace=#None#>%';
+    }
+    tdArr[k++] = '<td align="right">'+Ap+'</td>';
+    
+    tdArr[k++] = '<td align="right"><HDPrint Value=#BuildAPText# Replace=#None#></td>';
+  
+    tdArr[k++] = '<td align="right"><HDPrint Value=#GTOText# Replace=#None#></td>';
+    tdArr[k++] = '<td align="right"><HDPrint Value=#ProGTODText# Replace=#None#></td>';
+    tdArr[k++] = '<td align="right"><HDPrint Value=#ProGTOMText# Replace=#None#></td>';
+    tdArr[k++] = '<td align="right"><HDPrint Value=#ProGTOrentText# Replace=#None#></td>';
+    //新增一行
+    JQTr_Add(JsTbId,sTrClass,tdArr);
+  </script>
+</hdloop>

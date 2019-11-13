@@ -1,0 +1,4 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<SCRIPT LANGUAGE="JavaScript">
+  location.replace('##HDNet_AppName##/WFFlowPage?Url=PrlDZ_Email&UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid# Replace=#DBField2Js#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>');
+</SCRIPT>

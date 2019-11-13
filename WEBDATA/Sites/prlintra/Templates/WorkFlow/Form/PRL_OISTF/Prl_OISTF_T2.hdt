@@ -23,6 +23,7 @@
 <INPUT type="text" style="display:none" name="LastName" value="<HDPrint Value=#LastName# Replace=#DBField2Input#>">
 <INPUT type="text" style="display:none" name="LastType" value="<HDPrint Value=#LastType# Replace=#DBField2Input#>">
 <INPUT type="text" style="display:none" name="LastOrder" value="<HDPrint Value=#LastOrder# Replace=#DBField2Input#>">
+  <input type="text" style="display:none" name="OldFlowGid" value="<HDPrint Value=#OldFlowGid# Replace=#DBField2Input#>">
 
 <INPUT type="text" style="display:none" name="NextGid" value="<HDPrint Value=#NextGid# Replace=#DBField2Input#>">
 <INPUT type="text" style="display:none" name="F1Gid" value="123">

@@ -1,0 +1,63 @@
+<table cellpadding="0" cellspacing="1" class="ListBar" width="100%" style="background-color: #d9dbdf;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <tr style="background-color: #ecedef;" align="center">
+    <td class="App_ListTd">Yr年</td>
+    <td class="App_ListTd">类别</td>
+    <td class="App_ListTd" nowrap>㎡/天</td>
+    <td class="App_ListTd" nowrap>[建筑]</td>
+    <td class="App_ListTd" nowrap>㎡/月</td>
+  </tr>
+  <hdloop>
+  <tr style="background-color: white" align="center">
+    <td class="App_ListTd" style="padding:0px" nowrap rowspan="5">&nbsp;
+    <script language="javascript">
+      if ('<HDPrint Value=#TBID# Replace=#DBField2Js#>'.toLowerCase() == 'tb_dtl10') {
+        document.write('免:<HDPrint Value=#FreeRentDate1# Replace=#DBField2Js#><br>~<HDPrint Value=#FreeRentDate2# Replace=#DBField2Js#>');
+      }
+      else{
+        document.write('Yr<HDPrint Value=#yeartype#>');
+      }
+    </script>
+    &nbsp;</td>
+    <td class="App_ListTd" style="padding:0px" nowrap>固定租金</td>
+    <td class="App_ListTd" style="padding:0px" nowrap>&nbsp;<HDPrint Value=#tbrd#>&nbsp;</td>
+    <td class="App_ListTd" style="padding:0px" nowrap>&nbsp;<HDPrint Value=#JTBRD#>&nbsp;</td>
+    <td class="App_ListTd" style="padding:0px" nowrap>&nbsp;<HDPrint Value=#tbrm#>&nbsp;</td>
+  </tr>
+
+  <tr valign="top" style="background-color: white" align="center">
+    <td class="App_ListTd" style="padding:0px" nowrap>物管费</td>
+    <td class="App_ListTd" style="padding:0px" nowrap>&nbsp;<HDPrint Value=#pmfdb#>&nbsp;</td>
+    <td class="App_ListTd" style="padding:0px" nowrap>&nbsp;<HDPrint Value=#JPMFD#>&nbsp;</td>
+    <td class="App_ListTd" style="padding:0px" nowrap>&nbsp;<HDPrint Value=#pmfmb#>&nbsp;</td>
+  </tr>
+  <tr valign="top" style="background-color: white" align="center">
+    <td class="App_ListTd" style="padding:0px" nowrap>市场推广费</td>
+    <td class="App_ListTd" style="padding:0px" nowrap>&nbsp;<HDPrint Value=#Apfixed#>&nbsp;</td>
+    <td class="App_ListTd" style="padding:0px" nowrap>&nbsp;<HDPrint Value=#jApfixed#>&nbsp;</td>
+    <td class="App_ListTd" style="padding:0px" nowrap>&nbsp;</td>
+  </tr>
+  <tr valign="top" style="background-color: white" align="center">
+    <td class="App_ListTd" style="padding:0px" nowrap>预估营业额</td>
+    <td class="App_ListTd" style="padding:0px" nowrap>&nbsp;<HDPrint Value=#progtod#>&nbsp;</td>
+    <td class="App_ListTd" style="padding:0px" nowrap>&nbsp;</td>
+    <td class="App_ListTd" style="padding:0px" nowrap>&nbsp;<HDPrint Value=#progtom#>&nbsp;</td>
+  </tr>
+  <tr valign="top" style="background-color: white" align="center">
+    <td class="App_ListTd" style="padding:0px" nowrap>预估提成租金</td>
+    <td class="App_ListTd" style="padding:0px" nowrap><HDPrint Value=#ProGTOrent#></td>
+    <td class="App_ListTd" style="padding:0px" nowrap>GTO 提成</td>
+    <td class="App_ListTd" style="padding:0px" nowrap><HDPrint Value=#gto#>%</td>
+  </tr>
+
+  </hdloop>
+</table>

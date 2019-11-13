@@ -18,7 +18,10 @@ SqlForCondition1=select wm.code ModelCode, wm.Name ModelName,d.Name StepName fro
 SQLForCondition2=select ##CurUsrName##||':'||##AppAssign##||' - [' || Atype || '];申请人：' || FillUsrName||';租户：'|| Lessee||';商店营业名称：'|| Tradingname AppFlowMemo from wf_PRL_OISF where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## 
 
 ;是否存在下一级审批人? 0 结束，到下一步
-SQLForCondition4=select count(*) NextApp from Wf_Prl_OISF_App a where a.EntGid = __ENTGID__ and a.FlowGid = ##FlowGid## and a.AppDate is null and a.AppOrder in (select min(t.AppOrder) from Wf_Prl_OISF_App t where t.EntGid = __ENTGID__ and t.FlowGid = ##FlowGid## and t.AppOrder > ##AppOrder## and t.appdate is null )
+SQLForCondition4=select count(*) NextApp from Wf_Prl_OISF_App a where a.EntGid = __ENTGID__ and a.FlowGid = ##FlowGid## and a.AppDate is null and a.AppOrder in (select min(t.AppOrder) from Wf_Prl_OISF_App t where t.EntGid = __ENTGID__ and t.FlowGid = ##FlowGid## and t.AppOrder > ##AppOrder## and t.appdate is null  and t.AppOrder <> 100)
+
+;是否有集团CEO审批
+SQLForCondition5=select decode(count(*),0,'none','') isCEO,decode(count(*),0,'','JQMust') isMust from Wf_Prl_OISF_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppOrder = 100
 
 ;取出邮件内容
 SQL1=select f.* from wf_Prl_OISF f where f.EntGid = __ENTGID__ AND f.FlowGid = ##FlowGid##
@@ -26,7 +29,7 @@ SQL1=select f.* from wf_Prl_OISF f where f.EntGid = __ENTGID__ AND f.FlowGid = #
 [AddtionalSQL]
 ;操作，没有返回的结果，是在数据库中执行，有Insert, Update, Delete命令。从SQL1～SQL20共支持20条
 ;更新本流程中主表信息
-Sql1=update wf_Prl_OISF set (LastUpdDate,Stat) = (select sysdate,decode(##AppAssign##||##NextApp##,'同意0','已完成',##AppAssign##) from dual) where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## 
+Sql1=update wf_Prl_OISF set (LastUpdDate,Stat) = (select sysdate,##AppAssign## from dual) where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## 
 
 Sql2=delete from Wf_Prl_OISF_App where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## and AppDate is null and AppOrder = ##AppOrder##
 
@@ -103,5 +106,8 @@ WF3=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_Tcc | selTcc_1 | and ##AppAssign## = '
 ;返回核实，返回上一步
 WF4=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_T2 | LastGid | and ##AppAssign## = '返回核实'| ^^AppFlowMemo^^)
 
+;同意，没有下一步，发起人确认
+WF5=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T3 | null | and ##AppAssign## = '同意' and ##NextApp## = '0'|^^AppFlowMemo^^)
+
 ;同意，没有下一步，结束
-WF5=WFFlowFinish( ^^CurUrl^^ | and ##AppAssign## = '同意' and ##NextApp## = '0')
+;WF5=WFFlowFinish( ^^CurUrl^^ | and ##AppAssign## = '同意' and ##NextApp## = '0')

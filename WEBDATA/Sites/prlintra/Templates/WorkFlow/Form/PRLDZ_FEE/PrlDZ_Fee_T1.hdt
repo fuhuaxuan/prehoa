@@ -185,6 +185,20 @@
     //调用Ajax函数
     JQAjax(url,data,cb);
   }
+  function getComAcg(){
+    var AcgGid = $("select[name=AcgTwoGid]").val();
+    var CompanyGid = $("select[name=CompanyGid]").val();
+    if (AcgGid == ''){
+      alert('请选择项目')
+      return false;
+    }
+    if (CompanyGid == ''){
+      alert('请选择公司')
+      return false;
+    }
+    $("a#lcfeedtl").attr("href","##HDNet_AppName##/__ExplainModule?Url=prl_lcfeedtl&UsrGid=<HDPrint Value=#UsrGid#>&sel_Company="+CompanyGid+"&txt_Acg="+AcgGid+"&txt_Year=<HDPrint Value=#txtYear#>");
+    return true
+  }
 </script>
 
 <form name="frmDo" method="post" action="">
@@ -393,9 +407,12 @@
       今年：<INPUT TYPE="text" NAME="Askfee" maxlength="20" value="<HDPrint Value=#Askfee# Replace=#DBField2Input#>" class="JQFloat JQMust" style="width:100px;">
       明年：<INPUT TYPE="text" NAME="NAskfee" maxlength="20" value="<HDPrint Value=#NAskfee# Replace=#DBField2Input#>" class="JQFloat" style="width:100px;">
       剩余预算：<INPUT TYPE="text" NAME="ControlFee" maxlength="20" value="<HDPrint Value=#ControlFee# Replace=#DBField2Input#>" class="JQFloat" style="width:100px;border:0px;" readonly>
+      <HDIF Equal(<HDPrint Value=#chkRtID1#>, 1)>
+      <a id="lcfeedtl" target="_blank" href="##HDNet_AppName##/__ExplainModule?Url=prl_lcfeedtl&UsrGid=<HDPrint Value=#UsrGid#>&sel_Company=<HDPrint Value=#CompanyGid#>&txt_Acg=<HDPrint Value=#AcgTwoGid#>&txt_Year=<HDPrint Value=#txtYear#>" onclick="javascript:return getComAcg()"> [已使用预算查询]</a>
+      </HDIF>
     </td>
   </tr>
-  <tr>
+  <tr style="display:none">
     <td class="DtlBarTitle">发起人备注:<br><font color="gray">(500字内)</font></td>
     <td class="listtd" colspan="3"><textarea class="JQText JQNo" rows="5" id="AppMemo" name="AppMemo" maxlength="500"></textarea></td>
   </tr>

@@ -19,7 +19,7 @@
 </HDIF>
 <HDIF Equal(<HDPrint Value=#feeflowgid# Replace=#DBField2Input#>1, 1)>
 <tr><td>[公司名称] : <HDPrint Value=#companyname#>
-<tr><td>[项目名称] : <HDPrint Value=#acgonename#> - <HDPrint Value=#acgtwoname#> 
+<tr><td>[项目名称] : <HDPrint Value=#acgonename#> - <HDPrint Value=#acgtwoname#>
 <tr><td>[细节勾选] : <HDPrint Value=#acgothertext#>
 </HDIF>
 <tr><td>[付款金额] : <HDPrint Value=#payfee#>
@@ -64,12 +64,12 @@
     }
     if ('<HDPrint Value=#AppAssign# Replace=#DBField2Js#>' == 'Deny')
     {
-      alert('已通知发起人');
+      //alert('已通知发起人');
       frmMail.submit();
     }
     else{
       window.close();
     }
 
-  
+
 </SCRIPT>

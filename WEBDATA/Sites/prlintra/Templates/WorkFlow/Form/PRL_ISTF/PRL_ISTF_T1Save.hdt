@@ -14,7 +14,7 @@
   }
   if ('<HDPrint Value=#Stat# Replace=#DBField2Js#>' == '提交')
   {
-    alert('提交成功，发起人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>！');
+    //alert('提交成功，发起人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>！');
     frmMail.Email.value = JsEmail;
     frmMail.submit();
   }

@@ -1,0 +1,11 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script language="javascript">
+<HDLoop>
+  var item = {
+    id : '<HDPrint Value=#ItemGid# Replace=#DBField2Input#>',
+    name : '<HDPrint Value=#ItemName# Replace=#DBField2Input#>',
+  }
+  arrComList.push(item);
+</HDLoop>
+</script>
+

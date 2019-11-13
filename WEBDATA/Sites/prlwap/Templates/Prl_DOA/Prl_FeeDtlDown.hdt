@@ -1,0 +1,49 @@
+[Rep_BeginLine]
+公司名称
+项目编号
+项目名称
+单号
+发起人
+状态
+金额
+剩余预算
+供应商1
+报价1
+供应商2
+报价1
+供应商3
+报价1
+供应商4
+报价1
+供应商5
+报价1
+推荐及理由
+备注
+申请目的
+[Rep_EndLine]
+<HDLoop>
+[Rep_BeginLine]
+#NoForm#<HDPrint Value=#ComName# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#AcgCode# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#AcgName# Replace=#DBField2Excel#>
+<HDPrint Value=#Num# Replace=#None#>
+<HDPrint Value=#FillUsrName# Replace=#None#>
+#NoForm#<HDPrint Value=#FStat# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#ApplyFee# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#ControlFee# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#VendorName1# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#VendorFee1# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#VendorName2# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#VendorFee2# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#VendorName3# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#VendorFee3# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#VendorName4# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#VendorFee4# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#VendorName5# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#VendorFee5# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#Reason# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#Memo# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#Target# Replace=#DBField2Excel#>
+[Rep_EndLine]
+</HDLoop>
+

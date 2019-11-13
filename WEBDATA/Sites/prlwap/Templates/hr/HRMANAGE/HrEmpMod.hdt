@@ -1,0 +1,737 @@
+<style>
+  .hrObjSize
+  {
+    width:370;
+  }
+</style>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JSCalendar.js)##"></script>
+<script language="JavaScript" src="##GetWebRootPath(/Scripts/Common.js)##"></Script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/DataInterface.js)##"></script>
+<SCRIPT LANGUAGE="JavaScript" src="##GetWebRootPath(/Scripts/CheckEmail.js)##"></script>
+<SCRIPT LANGUAGE="JavaScript" src="##GetWebRootPath(/Scripts/HR/HRFunctions.js)##"></script>
+
+<form name="frmDataInterface_1">
+  <input type="hidden" name="DataInterface_Title" value="部门导入列表">
+  <!--在实际应用中sql语句应该加密-->
+  <input type="hidden" name="DataInterface_Sql" value="select a.code2, a.name, a.gid from dept a where a.entgid='<HDPrint Value=#EntGid#>'">
+  <input type="hidden" name="DataInterface_CountSql" value="select count(*) from dept a where a.entgid='<HDPrint Value=#EntGid#>'">
+  <input type="hidden" name="DataInterface_OrderSql" value="order by a.code1 ,code2">
+  <input type="hidden" name="DataInterface_UsrGid" value="<HDPrint Value=#UsrGid#>">
+  <input type="hidden" name="DataInterface_AppName" value="##HDNet_AppName##">
+  <!--在实际应用中sql语句应该加密-->
+  <input type="hidden" name="DataInterface_Cols" value="1^组织代码^left^200">
+  <input type="hidden" name="DataInterface_Cols" value="2^组织名称^left^200">
+  <input type="hidden" name="DataInterface_FieldTo" value="NewDEPTGID^DEPTNAME">
+  <input type="hidden" name="DataInterface_FieldBy" value="3^2">
+  <input type="hidden" name="DataInterface_CallBckFunc" value="">
+  <input type="hidden" name="DataInterface_Close" value="true">
+  <!-查询条件-->
+  <input type="hidden" name="DataInterface_Search" value="a.code2^组织代码^1">
+  <INPUT TYPE="hidden" name="DataInterface_Search" value="a.name^组织名称^1">
+  <input type="hidden" name="DataInterface_Search_Sql" value="">
+  <input type="hidden" name="DataInterface_Search_Cols" value="">
+</form>
+
+<form method="post" name="frmEmp" action="##HDNet_AppName##/__ExplainModule?url=HrEmpModSave&UsrGid=<HDPrint Value=#UsrGid#>">
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <col width="50%">
+  <col width="50%">
+  <tr align="center">
+    <td id="Menu1" style="background:#D8E4F2"><a href="##HDNet_AppName##/__ExplainModule?url=HrEmpMod&UsrGid=<HDPrint Value=#UsrGid#>&GID=<HDPrint Value=#GID#>&DEPTGID=<HDPrint Value=#DEPTGID#>"><B>基本资料修改</B></a></td>
+    <td id="Menu2" style="background:#76A7DF"><a href="##HDNet_AppName##/__ExplainModule?url=HrEmpOthersMod&UsrGid=<HDPrint Value=#UsrGid#>&GID=<HDPrint Value=#GID#>&DEPTGID=<HDPrint Value=#DEPTGID#>"><B>扩展资料修改</B></a></td>
+  </tr>
+</table>
+<br>
+<table class="newtb" cellpadding="0" cellspacing="1" id="part1">
+  <col style="width:100" valign="top">
+  <col style="width:400" valign="top">
+  <col style="width:100" valign="top">
+  <col style="width:400" valign="top">
+  <tr><td Class="newtr2" align="center" colspan = "4">员工基本信息</a></td>
+  </tr>
+  <tr>
+    <td class="newtd2">工号</td>
+    <td class="newtd3">
+      <HDPrint Value=#code# Replace=#DBField2Input#>
+      <input name="usrgid2" type=hidden value="<HDPrint Value=#usrgid2#>">
+      <input TYPE="hidden" name="GID" value="<HDPrint Value=#GID# Replace=#DBField2Input#>">
+    </td>
+    <td class="newtd2" rowspan="7">照片 <br><a href="javascript:void(0)" onclick="if (document.all.Photo.value == '') {document.all.Pt.value = '无照片'} else {document.all.Photo.value = '';document.all.Pt.value = '照片已清除，请点击保存按钮，保存您的操作';}">[清除照片]</a></td>
+    <td class="newtd3" rowspan="7">
+      <img src="<HDPrint Value=#Photo# Replace=#DBField2Js#>?UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Js#>" id="empimg" width="90" height="120" onerror="this.src = '##GetWebRootPath(/images/default.gif)##?UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Js#>'">
+      <input type="hidden" name="HDTempPath" value="<HDPrint Value=#NewGid# Replace=#DBField2Input#>">
+      <input type="hidden" name="Photo" value="<HDPrint Value=#Photo# Replace=#DBField2Input#>" readonly>
+      <br>
+      <INPUT TYPE="text" NAME="Pt" style="border-style:none;width:100%" disabled>
+      <iframe style="width:100%;"id="ifrmPhoto" FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid#>&CallBackFun=AddAttach" height=30></iframe>
+
+    </td>
+  </tr>
+  <tr>
+    <td class="newtd2">姓名<font color=red>*</font></td>
+    <td class="newtd3"><input name="NAME" maxlength="32" style="width:100" value="<HDPrint Value=#NAME# Replace=#DBField2Input#>"></td>
+  </tr>
+  <tr>
+    <td class="newtd2">性别</td>
+    <td class="newtd3">
+      <select style="width:100" name="SEX">
+        <option value="">--请选择--</option>
+        <option value="男">男</option>
+        <option value="女">女</option>
+      </select>
+    <SCRIPT LANGUAGE="JavaScript">
+      if ('<HDPrint Value=#SEX# Replace=#DBField2Js#>' != '')
+         document.all.SEX.value = '<HDPrint Value=#sex# Replace=#DBField2Js#>';
+    </SCRIPT>
+    </td>
+  </tr>
+  <tr>
+    <td class="newtd2">状态<font color=red>*</font></td>
+    <td class="newtd3"><HDPrint Value=#StatDisplay#></td>
+  </tr>
+  <tr>
+    <td class="newtd2">手机号码</td>
+    <td class="newtd3"><input name="MOBILEPHONE" maxlength="16" style="width:100%" value="<HDPrint Value=#MOBILEPHONE# Replace=#DBField2Input#>"></td>
+  </tr>
+  <tr>
+    <td class="newtd2">公司电话</td>
+    <td class="newtd3"><input name="PHONE" maxlength="16" style="width:100%" value="<HDPrint Value=#PHONE# Replace=#DBField2Input#>"></td>
+  </tr>
+   <!--   <tr>
+    <td class="newtd2">传呼机号码</td>
+    <td class="newtd3"></td>
+  </tr>
+   --><input name="BP" type="hidden" maxlength="16" style="width:100%" value="<HDPrint Value=#BP# Replace=#DBField2Input#>">
+   <tr>
+    <td class="newtd2">电子邮件</td>
+    <td class="newtd3"><input name="EMAIL" maxlength="128" style="width:100%" value="<HDPrint Value=#EMAIL# Replace=#DBField2Input#>"></td>
+  </tr>
+  <tr>
+    <td colspan=2>
+    <table style="width:100%" cellpadding="0" cellspacing="1" >
+      <col style="width:300" valign="top">
+      <col style="width:280" valign="top">
+      <col style="width:320" valign="top">
+      <col style="width:280" valign="top">
+
+        <tr><td Class="newtr2" align="center" colspan = "4">员工职位信息</a></td>
+        </tr>
+        <tr>
+          <td class="newtd2">所属部门</td>
+          <td class="newtd3"><HDPrint Value=#DEPTNAME#>
+            <INPUT TYPE="hidden" name="DEPTGID" value="<HDPrint Value=#DEPTGID#>"><!-- 从部门结构树传过来的部门GID -->
+          </td>
+          <INPUT TYPE="hidden" name="OldDeptGid" value="<HDPrint Value=#OldDeptGid#>">
+          </td>
+          <td class="newtd2">工作地点</td>
+          <td class="newtd3"><input name="WORKADDRESS" maxlength="64" style="width:100%" value="<HDPrint Value=#WORKADDRESS# Replace=#DBField2Input#>"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">转正时间</td>
+          <td class="newtd3"><input name="ZHUANZHENGDATE" maxlength="10" style="width:100%" value="<HDPrint Value=#ZHUANZHENGDATE# Replace=#DBField2Input#>" onclick="showCalender(this,this)" onblur = "showEr_IsDate(this,'转正时间')"></td>
+          <td class="newtd2">班值</td>
+          <td class="newtd3">
+            <select style="width:100%" name="SHIFT">
+              <option value="">--请选择--</option>
+              <option value="0">早班</option>
+              <option value="1">中班</option>
+              <option value="2">晚班</option>
+            </select>
+            <SCRIPT LANGUAGE="JavaScript">
+            if ('<HDPrint Value=#SHIFT# Replace=#DBField2Js#>' != '')
+              document.all.SHIFT.value = '<HDPrint Value=#SHIFT# Replace=#DBField2Js#>';
+            </SCRIPT>
+          </td>
+        </tr>
+        <tr>
+          <td class="newtd2">职务</td>
+          <td class="newtd3"><input name="POSITION" maxlength="16" style="width:100%" value="<HDPrint Value=#POSITION# Replace=#DBField2Input#>"></td>
+          <td class="newtd2">职级</td>
+          <td class="newtd3">
+            <select style="width:100%" name="POSITIONLEVEL">
+              <option value="">--请选择--</option>
+              <option value="T2">T2</option>
+              <option value="T1">T1</option>
+              <option value="MS3">MS3</option>
+              <option value="MS2">MS2</option>
+              <option value="MS1">MS1</option>
+              <option value="M3">M3</option>
+              <option value="M2">M2</option>
+              <option value="M1">M1</option>
+              <option value="SJ3">SJ3</option>
+              <option value="SJ2">SJ2</option>
+              <option value="SJ1">SJ1</option>
+              <option value="O3">O3</option>
+              <option value="O2">O2</option>
+              <option value="O1">O1</option>
+              <option value="W3">W3</option>
+              <option value="W2">W2</option>
+              <option value="W1">W1</option>
+              <option value="WT">WT</option>
+            </select>
+            <SCRIPT LANGUAGE="JavaScript">
+              if ('<HDPrint Value=#POSITIONLEVEL# Replace=#DBField2Js#>' != '')
+                  document.all.POSITIONLEVEL.value ='<HDPrint Value=#POSITIONLEVEL# Replace=#DBField2Js#>';
+            </SCRIPT>
+          </td>
+        </tr>
+        <tr><td Class="newtr2" align="center" colspan = "4">员工入职信息</a></td>
+        </tr>
+        <tr>
+          <td class="newtd2">用工性质</td>
+          <td class="newtd3">
+            <select style="width:100%" name="WORKRELATION">
+              <option value="">--请选择--</option>
+              <option value="合同制">合同制</option>
+              <option value="劳务输入人员">劳务输入人员</option>
+              <option value="下岗">下岗</option>
+              <option value="失业人员">失业人员</option>
+              <option value="协保人员">协保人员</option>
+              <option value="退休(养)返聘">退休(养)返聘</option>
+              <option value="小时工">小时工</option>
+            </select>
+            <SCRIPT LANGUAGE="JavaScript">
+            if ('<HDPrint Value=#WORKRELATION# Replace=#DBField2Js#>' != '')
+                document.all.WORKRELATION.value = '<HDPrint Value=#WORKRELATION# Replace=#DBField2Js#>';
+            </SCRIPT>
+          </td>
+          <td class="newtd2">档案号</td>
+          <td class="newtd3"><input name="FILECODE" maxlength="32" style="width:100%" value="<HDPrint Value=#FILECODE# Replace=#DBField2Input#>"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">档案所在地</td>
+          <td class="newtd3" colspan=3><input name="DOCADDRESS" maxlength="64" style="width:100%" value="<HDPrint Value=#DOCADDRESS# Replace=#DBField2Input#>"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">挂靠时间</td>
+          <td class="newtd3"><input name="DOCTIME" maxlength="10" style="width:100%" value="<HDPrint Value=#DOCTIME# Replace=#DBField2Input#>" onclick="showCalender(this,this)" onblur = "showEr_IsDate(this,'挂靠时间')"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">原合同主体名称</td>
+          <td class="newtd3" colspan=3><input name="OLDORG" maxlength="128" style="width:100%" value="<HDPrint Value=#OLDORG# Replace=#DBField2Input#>"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">原合同主体地址</td>
+          <td class="newtd3" colspan=3><input name="OLDORGADDRESS" maxlength="128" style="width:100%" value="<HDPrint Value=#OLDORGADDRESS# Replace=#DBField2Input#>"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">原合同主体联系电话</td>
+          <td class="newtd3"><input name="OLDORGTEL" maxlength="32" style="width:100%" value="<HDPrint Value=#OLDORGTEL# Replace=#DBField2Input#>"></td>
+          <td class="newtd2">何时同原单位脱离人事关系</td>
+          <td class="newtd3"><input name="OLDORGDATE" maxlength="10" style="width:100%" value="<HDPrint Value=#OLDORGDATE# Replace=#DBField2Input#>" onclick="showCalender(this,this)" onblur = "showEr_IsDate(this,'何时同原单位脱离人事关系')"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">最早工作日期</td>
+          <td class="newtd3"><input name="WORKSTARTDATE" maxlength="10" style="width:100%" value="<HDPrint Value=#WORKSTARTDATE# Replace=#DBField2Input#>" onclick="showCalender(this,this)" onblur = "showEr_IsDate(this,'最早工作日期')"></td>
+          <td class="newtd2">进入本公司时间</td>
+          <td class="newtd3"><input name="JOINDATE" maxlength="10" style="width:100%" value="<HDPrint Value=#JOINDATE# Replace=#DBField2Input#>" onclick="showCalender(this,this)" onblur = "showEr_IsDate(this,'进入本公司的时间')"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">试用期限</td>
+          <td class="newtd3">
+            <select style="width:100%" name="PROBATION">
+              <option value="">--请选择--</option>
+              <option value="0">3个月</option>
+              <option value="1">6个月</option>
+              <option value="2">无</option>
+            </select>
+            <SCRIPT LANGUAGE="JavaScript">
+            if ('<HDPrint Value=#PROBATION# Replace=#DBField2Js#>' != '')
+              document.all.PROBATION.value = '<HDPrint Value=#PROBATION# Replace=#DBField2Js#>';
+            </SCRIPT>
+          </td>
+          <td class="newtd2">进公司方式</td>
+          <td class="newtd3"><input name="JOINMETHOD" maxlength="8" style="width:100%" value="<HDPrint Value=#JOINMETHOD# Replace=#DBField2Input#>"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">离职日期</td>
+          <td class="newtd3"><input name="LEAVEDATE" maxlength="10" style="width:100%" value="<HDPrint Value=#LEAVEDATE# Replace=#DBField2Input#>" onclick="showCalender(this,this)" onblur = "showEr_IsDate(this,'离职日期')"></td>
+          <td class="newtd2">离职原因</td>
+          <td class="newtd3"><input name="LEAVEREASON" maxlength="64" style="width:100%" value="<HDPrint Value=#LEAVEREASON# Replace=#DBField2Input#>"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">推荐人姓名</td>
+          <td class="newtd3"><input name="RCMNAME" maxlength="8" style="width:100%" value="<HDPrint Value=#RCMNAME# Replace=#DBField2Input#>"></td>
+          <td class="newtd2">与推荐人关系</td>
+          <td class="newtd3"><input name="RCMRLT" maxlength="16" style="width:100%" value="<HDPrint Value=#RCMRLT# Replace=#DBField2Input#>"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">推荐人联系方式</td>
+          <td class="newtd3" colspan=3><input name="RCMTEL" maxlength="128" style="width:100%" value="<HDPrint Value=#RCMTEL# Replace=#DBField2Input#>"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">紧急联系人及其电话/手机</td>
+          <td class="newtd3" colspan=3><input name="URGENCY" maxlength="128" style="width:100%" value="<HDPrint Value=#URGENCY# Replace=#DBField2Input#>"></td>
+        </tr>
+        <tr><td Class="newtr2" align="center" colspan = "4">员工福利信息</a></td>
+        </tr>
+        <tr>
+          <td class="newtd2">当前工资</td>
+          <td class="newtd3"><input name="SALARY" maxlength="16" style="width:100%" value="<HDPrint Value=#SALARY# Replace=#DBField2Input#>"></td>
+          <td class="newtd2">工资帐号</td>
+          <td class="newtd3"><input name="SALARYCARD" maxlength="32" style="width:100%" value="<HDPrint Value=#SALARYCARD# Replace=#DBField2Input#>" onblur = "showEr_IsNumber(this,'当前工资')"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">支薪类别</td>
+          <td class="newtd3">
+            <select style="width:100%" name="PAYTYPE">
+              <option value="">--请选择--</option>
+              <option value="0">年薪</option>
+              <option value="1">月薪</option>
+              <option value="2">周薪</option>
+              <option value="3">小时薪</option>
+            </select>
+            <SCRIPT LANGUAGE="JavaScript">
+            if ('<HDPrint Value=#PAYTYPE# Replace=#DBField2Js#>' != '')
+                document.all.PAYTYPE.value = '<HDPrint Value=#PAYTYPE#  Replace=#DBField2Js#>';
+            </SCRIPT>
+          </td>
+          <td class="newtd2">币种</td>
+          <td class="newtd3"><input name="CURRENCY" maxlength="8" style="width:100%" value="<HDPrint Value=#CURRENCY# Replace=#DBField2Input#>"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">社会保障卡卡号</td>
+          <td class="newtd3"><input name="HEALTHCARD" maxlength="64" style="width:100%" value="<HDPrint Value=#HEALTHCARD# Replace=#DBField2Input#>"></td>
+          <td class="newtd2">养老金帐号</td>
+          <td class="newtd3"><input name="OLDAGECARD" maxlength="16" style="width:100%" value="<HDPrint Value=#OLDAGECARD# Replace=#DBField2Input#>"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">公积金帐号</td>
+          <td class="newtd3"><input name="PUBLICCARD" maxlength="16" style="width:100%" value="<HDPrint Value=#PUBLICCARD# Replace=#DBField2Input#>"></td>
+          <td class="newtd2">会计帐号</td>
+          <td class="newtd3"><input name="ACCOUNTCARD" maxlength="64" style="width:100%" value="<HDPrint Value=#ACCOUNTCARD# Replace=#DBField2Input#>"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">完税证字号</td>
+          <td class="newtd3"><input name="TAX" maxlength="64" style="width:100%" value="<HDPrint Value=#TAX# Replace=#DBField2Input#>"></td>
+          <td class="newtd2">休假政策</td>
+          <td class="newtd3"><input name="VACATION" maxlength="16" style="width:100%" value="<HDPrint Value=#VACATION# Replace=#DBField2Input#>"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">福利类型</td>
+          <td class="newtd3"><input name="FULI" maxlength="64" style="width:100%" value="<HDPrint Value=#FULI# Replace=#DBField2Input#>"></td>
+          <td class="newtd2">参保日期</td>
+          <td class="newtd3"><input name="FULI_STARTDATE" maxlength="10" style="width:100%" value="<HDPrint Value=#FULI_STARTDATE# Replace=#DBField2Input#>" onclick="showCalender(this,this)" onblur = "showEr_IsDate(this,'参保日期')"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">所属单位</td>
+          <td class="newtd3"><input name="COMPANY_NAME" maxlength="32" style="width:100%" value="<HDPrint Value=#COMPANY_NAME# Replace=#DBField2Input#>"></td>
+          <td class="newtd2">单位社保编码</td>
+          <td class="newtd3"><input name="COMPANY_SHEBAO" maxlength="32" style="width:100%" value="<HDPrint Value=#COMPANY_SHEBAO# Replace=#DBField2Input#>"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">单位农保编码</td>
+          <td class="newtd3"><input name="COMPANY_NONGBAO" maxlength="32" style="width:100%" value="<HDPrint Value=#COMPANY_NONGBAO# Replace=#DBField2Input#>"></td>
+          <td class="newtd2">单位序号</td>
+          <td class="newtd3"><input name="COMPANY_XUHAO" maxlength="32" style="width:100%" value="<HDPrint Value=#COMPANY_XUHAO# Replace=#DBField2Input#>"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">退保日期</td>
+          <td class="newtd3"><input name="FULI_ENDDATE" maxlength="10" style="width:100%" value="<HDPrint Value=#FULI_ENDDATE# Replace=#DBField2Input#>" onclick="showCalender(this,this)" onblur = "showEr_IsDate(this,'退保日期')"></td>
+          <td class="newtd2">备注</td>
+          <td class="newtd3"><input name="MEMO" maxlength="128" style="width:100%" value="<HDPrint Value=#MEMO# Replace=#DBField2Input#>"></td>
+        </tr>
+
+      </table>
+    </td>
+    <td colspan=2>
+    <table style="width:100%" cellpadding="0" cellspacing="1" >
+      <col style="width:280" valign="top">
+      <col style="width:290" valign="top">
+      <col style="width:200" valign="top">
+      <col style="width:290" valign="top">
+        <tr><td Class="newtr2" align="center" colspan = "4">员工个人资料</a></td></tr>
+        <tr>
+          <td class="newtd2">英文名字</td>
+          <td class="newtd3"><input name="ENAME" maxlength="32" style="width:100%" value="<HDPrint Value=#ENAME# Replace=#DBField2Input#>"></td>
+          <td class="newtd2">曾用名</td>
+          <td class="newtd3"><input name="OLDNAME" maxlength="16" style="width:100%" value="<HDPrint Value=#OLDNAME# Replace=#DBField2Input#>"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">身高（厘米）</td>
+          <td class="newtd3"><input style="width:100%" name="STATURE" value="<HDPrint Value=#STATURE# Replace=#DBField2Input#>" maxlength="4" onblur = "showEr_IsNumber(this,'身高')"></td>
+          <td class="newtd2">健康状况</td>
+          <td class="newtd3">
+            <select style="width:100%" name="HEALTH">
+              <option value="">--请选择--</option>
+              <option value="优秀">优秀</option>
+              <option value="良好">良好</option>
+              <option value="一般">一般</option>
+              <option value="差">差</option>
+            </select>
+            <SCRIPT LANGUAGE="JavaScript">
+            if ('<HDPrint Value=#HEALTH# Replace=#DBField2Js#>' != '')
+                document.all.HEALTH.value = '<HDPrint Value=#HEALTH# Replace=#DBField2Js#>';
+            </SCRIPT>
+          </td>
+        </tr>
+        <tr>
+          <td class="newtd2">籍贯</td>
+          <td class="newtd3" colspan=3><input name="HOMETOWN" maxlength="32" style="width:100%" value="<HDPrint Value=#HOMETOWN# Replace=#DBField2Input#>"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">户籍地址</td>
+          <td class="newtd3"colspan=3><input name="DOMICILE" maxlength="64" style="width:100%" value="<HDPrint Value=#DOMICILE# Replace=#DBField2Input#>"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">出生地</td>
+          <td class="newtd3"><input name="HOMEPLACE" maxlength="32" style="width:100%" value="<HDPrint Value=#HOMEPLACE# Replace=#DBField2Input#>"></td>
+          <td class="newtd2">出生年月日</td>
+          <td class="newtd3"><input name="BIRTHDAY" maxlength="10" style="width:100%" value="<HDPrint Value=#BIRTHDAY# Replace=#DBField2Input#>" onclick="showCalender(this,this)" onblur = "showEr_IsDate(this,'出生年月日')"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">现户口所在地及电话</td>
+          <td class="newtd3" colspan=3><input name="CURHK" maxlength="128" style="width:100%" value="<HDPrint Value=#CURHK# Replace=#DBField2Input#>"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">现户口所在地邮编</td>
+          <td class="newtd3"><input name="CURHKZIPCODE" maxlength="6" style="width:100%" value="<HDPrint Value=#CURHKZIPCODE# Replace=#DBField2Input#>" onblur = "showEr_IsNumber(this,'现户口所在地邮编')"></td>
+          <td class="newtd2">居住地邮编</td>
+          <td class="newtd3"><input name="ZIPCODE" maxlength="6" style="width:100%" value="<HDPrint Value=#ZIPCODE# Replace=#DBField2Input#>" onblur = "showEr_IsNumber(this,'居住地邮编')"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">居住地址</td>
+          <td class="newtd3" colspan=3><input name="LIVEADDRESS" maxlength="64" style="width:100%" value="<HDPrint Value=#LIVEADDRESS# Replace=#DBField2Input#>"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">居住地联系电话/个人手机</td>
+          <td class="newtd3" colspan=3><input name="PERSONALTEL" maxlength="16" style="width:100%" value="<HDPrint Value=#PERSONALTEL# Replace=#DBField2Input#>"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">身份证号</td>
+          <td class="newtd3" colspan=3><input name="IDCARD" maxlength="20" style="width:100%" value="<HDPrint Value=#IDCARD# Replace=#DBField2Input#>"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">驾驶证号</td>
+          <td class="newtd3"><input name="DRIVECARD" maxlength="32" style="width:100%" value="<HDPrint Value=#DRIVECARD# Replace=#DBField2Input#>"></td>
+          <td class="newtd2">护照号码</td>
+          <td class="newtd3"><input name="PASSPORT" maxlength="32" style="width:100%" value="<HDPrint Value=#PASSPORT# Replace=#DBField2Input#>"></td>
+        </tr>
+        <tr>
+         <td class="newtd2">民族</td>
+          <td class="newtd3">
+            <select style="width:100%" name="NATION">
+              <option value="">--请选择--</option>
+              <option value="汉族">汉族</option>
+              <option value="蒙古族">蒙古族</option>
+              <option value="回族">回族</option>
+              <option value="藏族">藏族</option>
+              <option value="维吾尔族">维吾尔族</option>
+              <option value="苗族">苗族</option>
+              <option value="彝族">彝族</option>
+              <option value="壮族">壮族</option>
+              <option value="布依族">布依族</option>
+              <option value="朝鲜族">朝鲜族</option>
+              <option value="满族">满族</option>
+              <option value="侗族">侗族</option>
+              <option value="瑶族">瑶族</option>
+              <option value="白族">白族</option>
+              <option value="土家族">土家族</option>
+              <option value="哈尼族">哈尼族</option>
+              <option value="哈萨克族">哈萨克族</option>
+              <option value="傣族">傣族</option>
+              <option value="黎族">黎族</option>
+              <option value="傈僳族">傈僳族</option>
+              <option value="佤族">佤族</option>
+              <option value="畲族">畲族</option>
+              <option value="高山族">高山族</option>
+              <option value="拉祜族">拉祜族</option>
+              <option value="水族">水族</option>
+              <option value="东乡族">东乡族</option>
+              <option value="纳西族">纳西族</option>
+              <option value="景颇族">景颇族</option>
+              <option value="柯尔克孜族">柯尔克孜族</option>
+              <option value="土族">土族</option>
+              <option value="达斡尔族">达斡尔族</option>
+              <option value="仫佬族">仫佬族</option>
+              <option value="羌族">羌族</option>
+              <option value="布朗族">布朗族</option>
+              <option value="撒拉族">撒拉族</option>
+              <option value="毛南族">毛南族</option>
+              <option value="仡佬族">仡佬族</option>
+              <option value="锡伯族">锡伯族</option>
+              <option value="阿昌族">阿昌族</option>
+              <option value="普米族">普米族</option>
+              <option value="塔吉克族">塔吉克族</option>
+              <option value="怒族">怒族</option>
+              <option value="乌孜别克族">乌孜别克族</option>
+              <option value="俄罗斯族">俄罗斯族</option>
+              <option value="鄂温克族">鄂温克族</option>
+              <option value="德昂族">德昂族</option>
+              <option value="保安族">保安族</option>
+              <option value="裕固族">裕固族</option>
+              <option value="京族">京族</option>
+              <option value="塔塔尔族">塔塔尔族</option>
+              <option value="独龙族">独龙族</option>
+              <option value="鄂伦春族">鄂伦春族</option>
+              <option value="赫哲族">赫哲族</option>
+              <option value="门巴族">门巴族</option>
+              <option value="珞巴族">珞巴族</option>
+              <option value="基诺族">基诺族</option>
+              <option value="其他">其他</option>
+            </select>
+            <SCRIPT LANGUAGE="JavaScript">
+                document.all.NATION.value = '<HDPrint Value=#NATION# Replace=#DBField2Js#>';
+
+          </SCRIPT>
+          </td>
+          <td class="newtd2">政治面貌</td>
+          <td class="newtd3">
+            <select style="width:100%" name="POLITICAL">
+              <option value="">--请选择--</option>
+              <option value="党员">党员</option>
+              <option value="团员">团员</option>
+              <option value="民主党派">民主党派</option>
+              <option value="群众">群众</option>
+              <option value="其它">其它</option>
+            </select>
+            <SCRIPT LANGUAGE="JavaScript">
+            if ('<HDPrint Value=#POLITICAL# Replace=#DBField2Js#>' != '')
+                document.all.POLITICAL.value = '<HDPrint Value=#POLITICAL# Replace=#DBField2Js#>';
+            </SCRIPT>
+          </td>
+        </tr>
+        <tr>
+          <td class="newtd2">入团时间</td>
+          <td class="newtd3"><input name="RTDAY" maxlength="10" style="width:100%" value="<HDPrint Value=#RTDAY# Replace=#DBField2Input#>" onclick="showCalender(this,this)" onblur = "showEr_IsDate(this,'入团时间')"></td>
+          <td class="newtd2">入党时间</td>
+          <td class="newtd3"><input name="RDDAY" maxlength="10" style="width:100%" value="<HDPrint Value=#RDDAY# Replace=#DBField2Input#>" onclick="showCalender(this,this)" onblur = "showEr_IsDate(this,'入党时间')"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">婚姻状况</td>
+          <td class="newtd3">
+            <select style="width:100%" name="ISMARRIED">
+              <option value="">--请选择--</option>
+              <option value="0">未婚</option>
+              <option value="1">已婚</option>
+              <option value="2">离异</option>
+              <option value="3">丧偶</option>
+            </select>
+            <SCRIPT LANGUAGE="JavaScript">
+              if ('<HDPrint Value=#ISMARRIED# Replace=#DBField2Js#>' != '')
+                  document.all.ISMARRIED.value = '<HDPrint Value=#ISMARRIED# Replace=#DBField2Js#>';
+            </SCRIPT>
+          </td>
+          <td class="newtd2">结婚纪念日</td>
+          <td class="newtd3"><input style="width:100%" name="MARRIEDDATE" value="<HDPrint Value=#MARRIEDDATE# Replace=#DBField2Input#>" maxlength="10" onclick="showCalender(this,this)" onblur = "showEr_IsDate(this,'结婚纪念日')"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">个人爱好、技能、特长</td>
+          <td class="newtd3" colspan=3><input name="HOBBY" maxlength="1024" style="width:100%" value="<HDPrint Value=#HOBBY# Replace=#DBField2Input#>"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">最高学历</td>
+          <td class="newtd3">
+            <select style="width:100%" name="EDUCATION">
+              <option value="">--请选择--</option>
+              <option value="5">博士</option>
+              <option value="4">硕士</option>
+              <option value="3">本科</option>
+              <option value="2">大专</option>
+              <option value="1">高中/中专</option>
+              <option value="0">初中及初中以下</option>
+            </select>
+            <SCRIPT LANGUAGE="JavaScript">
+              if ('<HDPrint Value=#EDUCATION# Replace=#DBField2Js#>' != '')
+                  document.all.EDUCATION.value = '<HDPrint Value=#EDUCATION# Replace=#DBField2Js#>';
+            </SCRIPT>
+          </td>
+          <td class="newtd2">毕业院校</td>
+          <td class="newtd3"><input name="SCHOOL" maxlength="32" style="width:100%" value="<HDPrint Value=#SCHOOL# Replace=#DBField2Input#>"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">毕业专业</td>
+          <td class="newtd3"><input name="MAJOR" maxlength="32" style="width:100%" value="<HDPrint Value=#MAJOR# Replace=#DBField2Input#>"></td>
+          <td class="newtd2">毕业时间</td>
+          <td class="newtd3"><input name="GRDATE" maxlength="10" style="width:100%" value="<HDPrint Value=#GRDATE# Replace=#DBField2Input#>" onclick="showCalender(this,this)" onblur = "showEr_IsDate(this,'毕业时间')"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">外语</td>
+          <td class="newtd3"><input name="LANGUAGE" maxlength="32" style="width:100%" value=<HDPrint Value=#LANGUAGE# Replace=#DBField2Input#>></td>
+          <td class="newtd2">熟练程度</td>
+          <td class="newtd3">
+            <select style="width:100%" name="HOWINLANGUAGE">
+              <option value="">--请选择--</option>
+              <option value="0">一般</option>
+              <option value="1">熟练</option>
+              <option value="2">精通</option>
+            </select>
+            <SCRIPT LANGUAGE="JavaScript">
+              if ('<HDPrint Value=#HOWINLANGUAGE# Replace=#DBField2Js#>' != '')
+                  document.all.HOWINLANGUAGE.value = '<HDPrint Value=#HOWINLANGUAGE# Replace=#DBField2Js#>';
+            </SCRIPT>
+          </td>
+        </tr>
+        <tr>
+          <td class="newtd2">计算机熟练程度</td>
+          <td class="newtd3"><input name="COMPUTER" maxlength="32" style="width:100%" value="<HDPrint Value=#COMPUTER# Replace=#DBField2Input#>"></td>
+          <td class="newtd2">技术职称</td>
+          <td class="newtd3"><input name="ZHICHENG" maxlength="16" style="width:100%" value="<HDPrint Value=#ZHICHENG# Replace=#DBField2Input#>"></td>
+        </tr>
+        <tr>
+          <td class="newtd2">职业生涯自我评估<br>（2000字以内）</td>
+          <td class="newtd3"><textarea name="EVALUATE" rows=11 style="width:100%" onpropertychange="if(value.length>2000) value=value.substr(0,2000)"><HDPrint Value=#EVALUATE# Replace=#DBField2InputField#></textarea></td>
+          <td class="newtd2">个人职业期望<br>（2000字以内）</td>
+          <td class="newtd3"><textarea name="EXPECT" rows=11 style="width:100%" onpropertychange="if(value.length>2000) value=value.substr(0,2000)"><HDPrint Value=#EXPECT# Replace=#DBField2InputField#></textarea></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+
+</table>
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr class="ListTr1">
+    <td align=center colspan=4>
+        <!-- 存储员工信息修改前的状态 -->
+      <INPUT TYPE="hidden" name="EmpOldStat" value="<HDPrint Value=#STAT# Replace=#DBField2Input#>">
+      <INPUT TYPE="button" class="NormalSbt" value=" 保存 " onClick="return CheckSubmit()">
+      <input type="reset" class="NormalSbt" value=" 重置 ">
+      <INPUT class="NormalSbt" type="button" <HDIF Equal(<HDPrint value = #isClose#>,1)>value=" 关闭 " onclick="window .close();"</HDIF><HDIF Equal(<HDPrint value = #isClose#>,0)>value=" 返回 " onclick="history.back();"</HDIF>>
+    </td>
+  </tr>
+</table>
+</form>
+<SCRIPT LANGUAGE="JavaScript">
+
+function filename(str)
+{
+  if (str.lastIndexOf('/') < 0)
+    return str;
+  s1 = str.substr(str.lastIndexOf('/') + 1, str.length - str.lastIndexOf('/'));
+  return s1;
+}
+
+document.all.Photo.value = filename('<HDPrint Value=#Photo# Replace=#DBField2Input#>');
+
+document.all.ifrmPhoto.src = '/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid#>&CallBackFun=AddAttach';
+
+//上传照片
+function AddAttach(sFileName)
+{
+  if (sFileName == '') return false;
+  document.all.Photo.value = sFileName;
+  document.all.Pt.value='照片已上传';
+}
+
+
+//用于定位页面填写中错误的位置的一组函数
+//提示的错误可分为几类：不可为空提示（IsNull），无效字符提示（IsCode），必须为数字（IsNumber），邮件地址填写正确（IsMail）,日期值有效（IsDate）,等等，建议根据实际应用情况增加
+//错误的提示有：弹出错误提示框，再显示颜色，再将焦点放置在该控件上
+//参数：obj为要检查的控件，str为提示框中要显示的关键字，一般是该控件的名称
+
+//不可为空
+function showEr_IsNull(obj,str)
+{
+  obj.style.backgroundColor = '';//先使之前用于出错提示的背景色恢复正常
+  if (obj.value == '')
+  {
+    alert(str+'不可为空');
+    obj.style.backgroundColor = '#FFCCCC';
+    obj.focus();
+    return false;
+  }
+  return true;
+}
+
+//不可为无效字符
+function showEr_IsCode(obj,str)
+{
+  obj.style.backgroundColor = '';
+  if (!isCode(obj,str))
+  {
+    obj.style.backgroundColor = '#FFCCCC';
+    obj.value = '';
+    obj.focus();
+    return false;
+  }
+  return true;
+}
+
+//输入应当为数字
+function showEr_IsNumber(obj,str)
+{
+  obj.style.backgroundColor = '';
+  if (!isNumber(obj.value))
+  {
+    alert(str+'必须为数字');
+    obj.style.backgroundColor = '#FFCCCC';
+    obj.value = '';
+    obj.focus();
+    return false;
+  }
+  return true;
+}
+
+  //检查邮箱名是否有效
+function showEr_IsMail(obj,str)
+{
+  obj.style.backgroundColor = '';
+  if (!CheckEMail(obj))
+  {
+    alert('输入的邮箱名无效！');
+    obj.style.backgroundColor = '#FFCCCC';
+    obj.value = '';
+    obj.focus();
+    return false;
+  }
+  return true;
+}
+
+//输入日期有效（空也算有效）
+function showEr_IsDate(obj,str)
+{
+  obj.style.backgroundColor = '';
+  if (!isValidDate(obj.value))
+  {
+    alert('请正确填写'+str+':yyyy.mm.dd！');
+    obj.style.backgroundColor = '#FFCCCC';
+    obj.value = '';
+    obj.focus();
+    return false;
+  }
+  return true;
+}
+
+//点击提交后进行保存前的检查
+function CheckSubmit()
+{
+  if(!showEr_IsNull(frmEmp.NAME,'员工姓名')) return false;
+
+  if(!showEr_IsMail(frmEmp.EMAIL,'邮件地址')) return false;
+
+  if(!showEr_IsNumber(frmEmp.STATURE,'员工身高')) return false;
+
+  if(!showEr_IsDate(frmEmp.BIRTHDAY,'出生年月日')) return false;
+
+  if(!showEr_IsDate(frmEmp.RTDAY,'入团时间')) return false;
+
+  if(!showEr_IsDate(frmEmp.RDDAY,'入党时间')) return false;
+
+  if(!showEr_IsDate(frmEmp.MARRIEDDATE,'结婚纪念日')) return false;
+
+  if(!showEr_IsDate(frmEmp.GRDATE,'毕业时间')) return false;
+
+  if(!showEr_IsDate(frmEmp.ZHUANZHENGDATE,'转正时间')) return false;
+
+  if(!showEr_IsDate(frmEmp.DOCTIME,'挂靠时间')) return false;
+
+  if(!showEr_IsDate(frmEmp.OLDORGDATE,'何时同原单位脱离人事关系')) return false;
+
+  if(!showEr_IsDate(frmEmp.WORKSTARTDATE,'最早工作日期')) return false;
+
+  if(!showEr_IsDate(frmEmp.JOINDATE,'进入本公司时间')) return false;
+
+  if(!showEr_IsDate(frmEmp.LEAVEDATE,'离职日期')) return false;
+
+  if(!showEr_IsNumber(frmEmp.SALARY,'当前工资')) return false;
+
+  if(!showEr_IsDate(frmEmp.FULI_STARTDATE,'参保日期')) return false;
+
+  if(!showEr_IsDate(frmEmp.FULI_ENDDATE,'退保日期')) return false;
+
+  frmEmp.submit();
+  return true;
+}
+</script>

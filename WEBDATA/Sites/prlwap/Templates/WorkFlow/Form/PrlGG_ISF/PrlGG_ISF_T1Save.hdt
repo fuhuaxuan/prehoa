@@ -1,0 +1,26 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<SCRIPT LANGUAGE="JavaScript">
+  //alert('<HDPrint Value=#Stat#>成功，填单人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>');
+
+  if('<HDPrint Value=#Stat# Replace=#DBField2Js#>' == '保存'){
+    location.replace('##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#Modelcode#>_T1&UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid# Replace=#DBField2Js#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>');
+  }
+  else{
+    var browser = JQGetBrowser();
+    if (browser.mobile){
+      location.replace('##HDNet_AppName##/WFFlowPage?Url=PrlDZ_Email&UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid# Replace=#DBField2Js#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>');
+    }
+    else{
+      if (self.opener != null) {
+        try{
+          self.opener.location.reload();
+        }
+        catch(e){
+        }
+        window.opener = null;
+        window.open(' ', '_self', ' ');
+      }
+      location.replace('##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#Modelcode#>_Email&UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid# Replace=#DBField2Js#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>');
+    }
+  }
+</SCRIPT>

@@ -1,0 +1,50 @@
+<table cellpadding="0" cellspacing="1" class="App_List" width="100%" style="background-color: #d9dbdf;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <tr style="background-color: #ecedef;" align="center">
+    <td class="App_ListTd" style="padding:0px">Yr年</td>
+    <td class="App_ListTd" style="padding:0px">类别</td>
+    <td class="App_ListTd" style="padding:0px">固定租金</td>
+    <td class="App_ListTd" style="padding:0px">物管费</td>
+  </tr>
+  <hdloop>
+  <tr style="background-color: white" align="center">
+    <td class="App_ListTd" style="padding:0px" nowrap rowspan="4">&nbsp;
+    <script language="javascript">
+      if ('<HDPrint Value=#TBID# Replace=#DBField2Js#>'.toLowerCase() == 'tb_dtl10') {
+        document.write('免:<HDPrint Value=#FreeRentDate1# Replace=#DBField2Js#><br>~<HDPrint Value=#FreeRentDate2# Replace=#DBField2Js#>');
+      }
+      else{
+        document.write('Yr<HDPrint Value=#yeartype#>');
+      }
+    </script>
+    &nbsp;</td>
+    <td class="App_ListTd" style="padding:0px" nowrap>㎡/天</td>
+    <td class="App_ListTd" style="padding:0px" nowrap>&nbsp;<HDPrint Value=#tbrd#>&nbsp;</td>
+    <td class="App_ListTd" style="padding:0px" nowrap>&nbsp;<HDPrint Value=#pmfd#>&nbsp;</td>
+  </tr>
+  <tr valign="top" style="background-color: white" align="center">
+    <td class="App_ListTd" style="padding:0px" nowrap>总数/月</td>
+    <td class="App_ListTd" style="padding:0px" nowrap>&nbsp;<HDPrint Value=#tbrm#>&nbsp;</td>
+    <td class="App_ListTd" style="padding:0px" nowrap>&nbsp;<HDPrint Value=#pmfm#>&nbsp;</td>
+  </tr>
+  <tr valign="top" style="background-color: white" align="center">
+    <td class="App_ListTd" style="padding:0px" nowrap>(含免)㎡/天</td>
+    <td class="App_ListTd" style="padding:0px" nowrap>&nbsp;<HDPrint Value=#ftbrd#>&nbsp;</td>
+    <td class="App_ListTd" style="padding:0px" nowrap>&nbsp;<HDPrint Value=#fpmfd#>&nbsp;</td>
+  </tr>
+  <tr valign="top" style="background-color: white" align="center">
+    <td class="App_ListTd" style="padding:0px" nowrap>(含免)㎡/月</td>
+    <td class="App_ListTd" style="padding:0px" nowrap>&nbsp;<HDPrint Value=#ftbrm#>&nbsp;</td>
+    <td class="App_ListTd" style="padding:0px" nowrap>&nbsp;<HDPrint Value=#fpmfm#>&nbsp;</td>
+  </tr>
+  </hdloop>
+</table>

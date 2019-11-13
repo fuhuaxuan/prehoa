@@ -1,0 +1,129 @@
+<!--Js引入-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JSCalendar.js)##"></script>
+<form name="frmDo" method="post" action="">
+<!--模块使用到一些隐藏的控件-->
+<input type="text" style="display:none" name="ModelGid" value="<HDPrint Value=#ModelGid# Replace=#DBField2Input#>">
+<h3 class="TitleBar">出纳批量付款</h3>
+<div id="JQ_ToolBar">
+<TABLE width="100%" class="ButtonBar" cellpadding="0" cellspacing="0">
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A Href="javascript:CheckSubmit('确认付款');void(0);" name="btn_1"><FONT class="IconSave">　&nbsp;</FONT> 确认付款 </A>
+     |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+    </TD>
+  </TR>
+</TABLE>
+</div>
+<table width="100%" class="ListBar JQMust" cellpadding="0"  cellspacing="1" id="tb_Dtl">
+  <colgroup>
+     <col style="width:3%" align="center">
+     <col style="width:10%">
+     <col style="width:5%">
+     <col style="width:13%">
+     <col style="width:4%">
+     <col style="width:25%">
+     <col style="width:10%">
+     <col style="width:10%">
+     <col style="width:10%">
+  </colgroup>
+  <!--使用新增行 JQTr_Add 时，需在表格中加上 thead,tbody-->
+  <thead>
+  <tr class="DtlBarTitle" align="center">
+    <td></td>
+    <td>流程</td>
+    <td>发起人</td>
+    <td>收款人,账户</td>
+    <td>付款金额</td>
+    <td>流程备注</td>
+    <td>付款时间<font color="red">*</font></td>
+    <td>凭证类型<font color="red">*</font></td>
+    <td>凭证编号<font color="red">*</font></td>
+  </tr>
+  </thead>
+  <tbody>
+  <HDLOOP>
+  <tr class="ListTd">
+    <td align="center"><input type="checkbox" name="chk_1<HDPrint Value=#flowgid# Replace=#DBField2Input#>" value="<HDPrint Value=#flowgid# Replace=#DBField2Input#>" class="JQCheckBox">
+    <input type="hidden" name="FlowGid_1" JQChkName="chk_1<HDPrint Value=#flowgid# Replace=#DBField2Input#>" JQChkTab=";">
+    </td>
+    <td align="center">
+      <A HREF="##HDNet_AppName##/WFFlowPage?UsrGid=<HDPrint Value=#UsrGid#>&Url=<HDPrint Value=#ModelCode#>&ModelGid=<HDPrint Value=#ModelGid#>&FlowGid=<HDPrint Value=#FlowGid#>" target="<HDPrint Value=#FlowGid#>" title="点击后，进入执行页面"><HDPrint Value=#ModelName#></a>
+      <INPUT TYPE="hidden" NAME="ModelGid_1" maxlength="32" class="JQText" value="<HDPrint Value=#ModelGid# Replace=#DBField2Input#>">
+      <INPUT TYPE="hidden" NAME="ModelCode_1" maxlength="32" class="JQText" value="<HDPrint Value=#ModelCode# Replace=#DBField2Input#>">
+    </td>
+    <td align="center"><HDPrint Value=#creatername#></td>
+    <td><HDPrint Value=#PayMan#>:<HDPrint Value=#PayAccount#><br><HDPrint Value=#PayBank#></td>
+    <td align="center"><HDPrint Value=#applyfee#></td>
+    <td><HDPrint Value=#flownote#></td>
+    <td><INPUT TYPE="text" NAME="PayDate_1" maxlength="10" value="<HDPrint Value=#CurDate# Replace=#DBField2Input#>" class="JQDate"></td>
+    <td><INPUT TYPE="text" NAME="Certtype_1" maxlength="32" class="JQText"></td>
+    <td><INPUT TYPE="text" NAME="Certnum_1" maxlength="32" class="JQText"></td>
+  </tr>
+  </HDLOOP>
+  </tbody>
+</table>
+</form>
+
+<FieldSet style="Font-Family:Tahoma;Font-Size:9pt;">
+<Legend><font color="red">特别提醒</font></Legend>
+<li>相关说明文字；</li>
+</FieldSet>
+<script>
+  //提交函数
+  function CheckSubmit(){
+    $("input[name^=chk_1]").each(function(i){
+      var $PayDate = $("input[name=PayDate_1]:eq("+i+")");
+      var $Certtype = $("input[name=Certtype_1]:eq("+i+")");
+      var $Certnum = $("input[name=Certnum_1]:eq("+i+")");
+      if($(this).prop("checked") == true){
+        $PayDate.addClass("JQMust");
+        $Certtype.addClass("JQMust");
+        $Certnum.addClass("JQMust");
+      }else{
+        $PayDate.removeClass("JQMust");
+        $PayDate.css("border", "1px solid #C0C0C0");
+        $Certtype.removeClass("JQMust");
+        $Certtype.css("border", "1px solid #C0C0C0");
+        $Certnum.removeClass("JQMust");
+        $Certnum.css("border", "1px solid #C0C0C0");
+      }
+    });
+    //定义 提交提示文字
+    var sConfirm = '您确定已经填写完成，并保存吗？';
+    //提交时，验证必填项
+    if (!JQcheck("JQMust")){
+      return false;
+    }
+    //提交时，提示
+    if (!(confirm(sConfirm)))
+      return false;
+
+    //获取当前表单对象
+    var JqObj = $("form[name=frmDo]");
+    //表单参数设定
+    JqObj.attr({
+      "action":'##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#Url#>Save&UsrGid=<HDPrint Value=#UsrGid#>',
+      "target":'_self'
+    });
+    //表单提交
+    JqObj.submit();
+
+    //操作按钮变为不可用
+    $("a[name=btn_1]").prop("disabled",true);
+
+    //本函数失效
+    CheckSubmit = function() {return false;}
+  }
+  //函数：ready
+  //功能：document 加载完成后调用
+  $(document).ready(function(){
+    //复制一个工具栏
+    var $ToolBar = $("div#JQ_ToolBar");
+    //$("form[name=frmDo]").append($ToolBar.html());
+  });
+</script>

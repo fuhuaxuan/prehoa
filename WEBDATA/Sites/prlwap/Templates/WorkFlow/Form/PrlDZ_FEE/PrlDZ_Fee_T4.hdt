@@ -1,0 +1,139 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<SCRIPT LANGUAGE="JavaScript">
+
+</script>
+
+<form name="frmDo" method="Post" action="">
+
+  <!-- 流程信息 -->
+  <INPUT type="text" style="display:none" name="ModelGid" value="<HDPrint Value=#ModelGid# Replace=#DBField2Input#>">
+  <INPUT type="text" style="display:none" name="FlowGid" value="<HDPrint Value=#FlowGid# Replace=#DBField2Input#>">
+  <INPUT type="text" style="display:none" name="CurUrl" value="<HDPrint Value=#Url# Replace=#DBField2Input#>">
+  <!--发起人UsrGid-->
+  <INPUT type="text" style="display:none" name="T1Gid" value="<HDPrint Value=#FillUsrGid# Replace=#DBField2Input#>">
+  <input type="text" style="display:none" name="FillUsrDeptGid" value="<HDPrint Value=#FillUsrDeptGid# Replace=#DBField2Input#>">
+  <input type="text" style="display:none" name="Num" value="<HDPrint Value=#Num# Replace=#DBField2Input#>">
+  <!--意见标志：同意；否决-->
+  <input type="text" style="display:none" name="AppAssign" value="">
+
+<iframe onload="JQAutoHeight(this)" id="iframeDtl" frameborder ='0' width="100%"  scrolling="no" style="width:100%" src="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_Content&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid#>"></iframe>
+<br>
+
+<table cellpadding="0" cellspacing="0" width="100%" class="App_List" style="margin-top:10px">
+  <col style="width:40%" valign="top">
+  <col style="width:60%" valign="top">
+  <TR>
+    <td class="App_ListTr">本次确认金额:<font color="red">*</font></td>
+  </tr>
+  <TR>
+    <td class="App_ListTd">
+      今年：<INPUT TYPE="text" NAME="Confirmfee" maxlength="20" value="<HDPrint Value=#Confirmfee# Replace=#DBField2Input#>" class="JQFloat JQMust" style="width:100px;">
+      跨年：<INPUT TYPE="text" NAME="NConfirmfee" maxlength="20" value="<HDPrint Value=#NConfirmfee# Replace=#DBField2Input#>" class="JQFloat" style="width:100px;">
+    </td>
+  </tr>
+  <TR style="display:<HDPrint Value=#isShow#>"><TD class="App_ListTr">潘总审批附件:<font color="red">*</font><font color="gray">(双击删除)</font></TD></TR>
+  <tr valign="top" style="display:<HDPrint Value=#isShow#>">
+    <td class="listtd">
+      <SELECT NAME="selFileList_1" size="5" style="width:100%;" multiple class="<HDPrint Value=#isMust#>"><HDPrint Value=#AttachList# Replace=#None#></SELECT><br>
+      <input type="hidden" name="HDTempPath" value="<HDPrint Value=#NewGid# Replace=#DBField2Input#>">
+      <iframe FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid# Replace=#DBField2Input#>&CallBackFun=AddAttach" height=28></iframe>
+    </td>
+  </tr>
+  <TR><TD class="App_ListTr" colspan="2">备注</TD></TR>
+  <tr>
+    <td colspan="2"><textarea class="JQText JQNo" rows="5" id="AppMemo" name="AppMemo" maxlength="500"></textarea></td>
+  </tr>
+  <tr align="center">
+    <td>　</td><td> </td>
+  </tr>
+  <tr align="center" colspan="2">
+    <td><div class="App_Yes" onclick="javascript:CheckSubmit('确认');void(0)">确认<div></td>
+  </tr>
+</table>
+</form>
+
+<script language="javascript">
+  /*
+  *函数名称：新增附件添加到附件列表中
+  *参数：sFileName-附件名称
+  */
+  function AddAttach(JsFileName)
+  {
+    if (JsFileName == '')
+      return false;
+    //判断是否存在附件
+    if (!JQgetSingle("selFileList_1",JsFileName)){
+      alert('对不起，已经存在该附件！');
+      return false;
+    }
+    //添加到附件表中
+    var JsOption = '<option value="'+JsFileName+'">'+JsFileName+'</option>';
+    $("select[name=selFileList_1]").append(JsOption);
+  }
+  //复制一个工具栏
+  var $ToolBar = $("div#JQ_ToolBar");
+  $("form[name=frmDo]").append($ToolBar.html());
+
+  function CheckSubmit(OpText){
+    //定义 必填验证的 值
+    var sCss = 'JQMust';
+    //定义 提交提示文字
+    var sConfirm = '您确定已经阅读完毕这份申请单，并作出 “' + OpText + '” 的审核意见吗？';
+    //提交时，验证必填项
+    if (!JQcheck(sCss)){
+      return false;
+    }
+    //审批意见赋值
+    $("input[name=AppAssign]").val(OpText);
+
+    var AskFee = '<HDPrint Value=#Askfee# Replace=#DBField2Js#>';
+    var NAskFee = '<HDPrint Value=#NAskFee# Replace=#DBField2Js#>';
+
+    var Confirmfee = $("input[name=Confirmfee]").val();
+    var NConfirmfee = $("input[name=NConfirmfee]").val();
+    if (AskFee == ''){
+      AskFee = 0;
+    }
+    if (NAskFee == ''){
+      NAskFee = 0;
+    }
+    if (Confirmfee == ''){
+      Confirmfee = 0;
+    }
+    if (NConfirmfee == ''){
+      NConfirmfee = 0;
+    }
+    if (parseFloat(Confirmfee) > parseFloat(AskFee)){
+      alert('本次确认金额不能超过本次申请金额，请调整!');
+      $("input[name=Confirmfee]").val(AskFee);
+      return false;
+    }
+    if ((parseFloat(Confirmfee) + parseFloat(NConfirmfee)) > (parseFloat(AskFee) + parseFloat(NAskFee))){
+      alert('本次确认总金额不能超过本次申请总金额，请调整!');
+      $("input[name=NConfirmfee]").val(NAskFee);
+      return false;
+    }
+    //提交时，提示文字
+    if (!confirm(sConfirm)){
+      return false;
+    }
+
+    //获取当前表单对象
+    var JqObj = $("form[name=frmDo]");
+    //表单参数设定
+    JqObj.attr({
+      "action":'##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#Url#>Save&UsrGid=<HDPrint Value=#UsrGid#>',
+      "target":'_self'
+    });
+    //表单提交
+    JqObj.submit();
+
+    //操作按钮变为不可用
+    $("a[name=btn_1]").prop("disabled",true);
+
+    //本函数失效
+    CheckSubmit = function() {return false;}
+  }
+</script>

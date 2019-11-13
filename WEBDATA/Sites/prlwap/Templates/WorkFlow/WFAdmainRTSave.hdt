@@ -1,0 +1,17 @@
+<SCRIPT LANGUAGE="JavaScript">
+  alert('<HDPrint Value=#ModuleName# Replace=#DBField2Js#>成功!');
+  //如有打开页面，刷新打开页面
+  if (self.opener != null)
+  {
+    try{
+      self.opener.location.reload();
+    }
+    catch(e){
+    }
+    window.opener = null;
+    window.open(' ', '_self', ' ');
+  }
+  //转到明细页面
+  location.replace('##HDNet_AppName##/__ExplainModule?Url=WFAdmainRT&UsrGid=<HDPrint Value=#UsrGid#>&modelgid=<HDPrint Value=#modelgid#>');
+
+</SCRIPT>

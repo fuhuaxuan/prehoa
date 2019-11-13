@@ -1,0 +1,13 @@
+
+;**************App½Ó¿Ú**********
+[Prl_UsrDtl]
+hdc=Templates\Prl_App\Prl_UsrDtl.hdc
+
+[Prl_GROUNDH]
+hdc=Templates\Prl_App\Prl_GROUNDH.hdc
+
+[Prl_AppCount]
+hdc=Templates\Prl_App\Prl_AppCount.hdc
+
+[Prl_RegPush]
+hdc=Templates\Prl_App\Prl_RegPush.hdc

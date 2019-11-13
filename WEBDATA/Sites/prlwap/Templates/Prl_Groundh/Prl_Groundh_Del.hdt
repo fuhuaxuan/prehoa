@@ -1,0 +1,15 @@
+<script>
+  alert('<HDPrint Value=#ModeleName# Replace=#DBField2Js#>成功，地理位置编号：<HDPrint value=#fno# Replace=#DBField2Js#>');
+  //如有打开页面，刷新打开页面
+  if (self.opener != null) 
+  {
+    try{
+      self.opener.location.reload();
+    }
+    catch(e){
+    }
+    window.opener = null;
+    window.open(' ', '_self', ' ');
+  }
+  location.replace('##HDNet_AppName##/__ExplainModule?URL=Prl_Groundh_List&UsrGid=<HDPrint Value=#UsrGid#>');
+</script>

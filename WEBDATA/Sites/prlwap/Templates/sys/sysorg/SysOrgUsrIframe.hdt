@@ -1,0 +1,134 @@
+<script language="JavaScript">
+  function SetValue()
+  {
+    for(var i=0; i<frmSysOrgUsrIframe.length; i++)
+    {
+      if((frmSysOrgUsrIframe[i].type == "checkbox")&&(frmSysOrgUsrIframe[i].name == 'UsrGid_1'))
+      {
+        if(parent.frames.sT.indexOf(frmSysOrgUsrIframe[i].value) != -1)
+          frmSysOrgUsrIframe[i].checked = true;
+        if(parent.frames.document.all.sDel.value.indexOf(frmSysOrgUsrIframe[i].value) != -1)
+          frmSysOrgUsrIframe[i].checked = false;
+      }
+    }
+  }
+
+  //将一段字符串中包含的子串去掉
+  function DelValue(a,obj)
+  {
+    var num1,num2,tmp;
+    num1 = obj.indexOf(a);
+    num2 = a.length;
+    tmp = obj.substring(num1 + num2 + 1, obj.length);
+    obj = obj.substring(0, num1 - 2);
+    obj = obj + tmp;
+  }
+
+  //实现将新增的用户放入sAdd中，已存在被删除的用户，放入sDel中。
+  function ChkValue()
+  {
+    if (window.event.srcElement.checked == true)
+    {
+      parent.frames.sT = parent.frames.sT + ',' + "'" + window.event.srcElement.value + "'";
+      parent.frames.document.all.sAdd.value = parent.frames.document.all.sAdd.value + ',' + "'" + window.event.srcElement.value + "'";
+      DelValue(window.event.srcElement.value, parent.frames.document.all.sDel.value);
+    }
+    else
+    {
+      DelValue(window.event.srcElement.value, parent.frames.sT);
+      DelValue(window.event.srcElement.value, parent.frames.document.all.sAdd.value);
+      parent.frames.document.all.sDel.value = parent.frames.document.all.sDel.value + ',' + "'" + window.event.srcElement.value + "'";
+    }
+  }
+
+</script>
+
+<form name="frmSysOrgUsrIframe" method="post" action="">
+  <table class="SearchTb" cellpadding="0" cellspacing="0" width="100%">
+    <col style="padding-left:4px" width="8%">
+    <col style="padding-left:4px" width="15%">
+    <col style="padding-left:4px" width="8%">
+    <col style="padding-left:4px" width="15%">
+    <col style="padding-left:4px" width="8%">
+    <col style="padding-left:4px" width="15%">
+    <col style="padding-left:4px" width="15%">
+    <col style="padding-left:4px" width="15%">
+    <tr class="Searchtr2">
+      <td>代码</td>
+      <td><input name="txtCode" size="12" maxlength="32"></td>
+      <td>名称</td>
+      <td><input name="txtName" size="12" maxlength="32"></td>
+      <td>状态</td>
+      <td>
+        <select name="selStoped" style="width:95">
+          <option value="">全部</option>
+          <option value="20">使用</option>
+          <option value="10" style="color:gray">停用中</option>
+        </select>
+      </td>
+      <td align="center">
+        <select name="selChkUsr" style="width:95">
+          <option value="1=1">全部用户</option>
+          <option value="a.Gid in (select UsrGid from Org_Usr where EntGid = '<HDPrint Value=#EntGid#>' and OrgGid = '<HDPrint Value=#OrgGid#>')">该组织用户</option>
+          <option value="a.Gid not in (select UsrGid from Org_Usr where EntGid = '<HDPrint Value=#EntGid#>' and OrgGid = '<HDPrint Value=#OrgGid#>')">非该组织用户</option>
+        </select>
+      </td>
+      <td align="center">
+        <input type="submit" value=" 查询 " class="NormalSbt">
+      </td>
+    </tr>
+  </table>
+
+  <script language="JavaScript">
+    document.all.txtCode.value = '<HDPrint Value=#txtCode# Replace=#DBField2Js#>';
+    document.all.txtName.value = '<HDPrint Value=#txtName# Replace=#DBField2Js#>';
+    if('<HDPrint Value=#selChkUsr# Replace=#DBField2Js#>' != '')
+    {
+      document.all.selChkUsr.value = '<HDPrint Value=#selChkUsr# Replace=#DBField2Js#>';
+    }
+    if('<HDPrint Value=#selStoped# Replace=#DBField2Js#>' != '')
+    {
+      document.all.selStoped.value = '<HDPrint Value=#selStoped# Replace=#DBField2Js#>';
+    }
+    else document.all.selStoped.value = '20';
+
+  </script>
+
+  <HDPageBar>
+  <table class="listtb" cellpadding="0" cellspacing="1" width="100%">
+    <col width="2%">
+    <col style="padding-left:4px" width="25%">
+    <col style="padding-left:4px" width="45%">
+    <col style="padding-left:4px" width="10%">
+    <col style="padding-left:4px" width="10%">
+    <tr class="Listtr1">
+      <td>&nbsp;</td>
+      <td>用户代码</td>
+      <td>用户名称</td>
+      <td>用户状态</td>
+      <td>用户级别</td>
+    </tr>
+    <HDLoop>
+    <tr class="ListTr3">
+      <HDIF Equal(<HDPrint Value=#Stoped#>, 20)>
+        <td><input type="checkbox" name="UsrGid_1" value="<HDPrint Value=#UsrGid#>" onclick="ChkValue()" ></td>
+        <td><HDPrint Value=#UsrCode#></td>
+        <td><HDPrint Value=#UsrName#></td>
+        <td align=center>使用</td>
+        <td>企业用户</td>
+      </HDIF>
+      <HDIF Equal(<HDPrint Value=#Stoped#>, 10)>
+        <td><font color="gray"><input type="checkbox" name="UsrGid_1" value="<HDPrint Value=#UsrGid#>" onclick="ChkValue()"></font></td>
+        <td><font color="gray"><HDPrint Value=#UsrCode#></font></td>
+        <td><font color="gray"><HDPrint Value=#UsrName#></font></td>
+        <td align=center><font color="gray">［停用中］</font></td>
+        <td><font color="gray">企业用户</font></td>
+      </HDIF>
+    </tr>
+    </HDLoop>
+  </table>
+</form>
+
+<script language="JavaScript">
+SetValue();
+</script>

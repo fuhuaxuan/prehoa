@@ -2,6 +2,12 @@
 <script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
 <script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
 <script language="javascript">
+  //窗口改变，重计算iframe的高度
+  $(window).resize(function (){
+    JQChgHeight();
+  });
+</script>
+<script language="javascript">
   //自动获取高度
   function changeHeight()
   {
@@ -93,6 +99,12 @@
     <td class="DtlBarTitle">附件信息:</td>
     <td class="listtd" colspan="5"><HDPrint Value=#AttachList# Replace=#None#></td>
   </tr>
+  <HDIF EqualNot(<HDPrint Value=#isCEO# Replace=#None#>, 0)>
+  <tr valign="top">
+    <td class="DtlBarTitle">潘总审批附件:</td>
+    <td class="listtd" colspan="5"><HDPrint Value=#AttachList2# Replace=#None#></td>
+  </tr>
+  </HDIF>
   <HDIF EqualNot(<HDPrint Value=#EndMemo# Replace=#None#>, )>
   <tr valign="top">
     <td class="DtlBarTitle">终止原因:</td>

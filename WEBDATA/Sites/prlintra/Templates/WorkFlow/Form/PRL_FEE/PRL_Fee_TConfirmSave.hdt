@@ -1,5 +1,5 @@
 <SCRIPT LANGUAGE="JavaScript">
-  alert('已完成实际金额的确认，可以填写付款单，确认人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>！');
+  //alert('已完成实际金额的确认，可以填写付款单，确认人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>！');
 
     //如有打开页面，刷新打开页面
     if (self.opener != null) {
@@ -13,5 +13,5 @@
     }
     window.close();
 
-  
+
 </SCRIPT>

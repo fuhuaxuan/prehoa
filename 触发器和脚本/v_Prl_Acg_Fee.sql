@@ -105,7 +105,7 @@ select c.EntGid,
                to_char(f.createdate, 'YYYY') Year,
                f.acgtwogid acggid,
                f.companygid comgid,
-               sum(nvl(payfee, 0)) applyFee,
+               sum(nvl(nvl(nPayFee,payfee), 0)) applyFee,
                '¸¶¿îµ¥' atype
           from WF_PRL_PAY f, wf_flow wf
          where f.entgid = wf.entgid

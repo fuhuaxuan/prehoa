@@ -1,0 +1,93 @@
+[Permission]
+
+
+[Master]
+SQL=
+Count=
+
+[Detail]
+
+
+[Where]
+1=
+
+
+[DefaultWhere]
+DefaultWhere= 
+
+[OrderBy]
+1=
+
+[DefaultOrderBy]
+DefaultOrderBy=
+
+[AddtionalSQL]
+sql1=delete from hr_deptpost where entgid = __ENTGID__ and deptgid = ##OrgGid##
+sql2=delete from hr_deptpost where entgid = __ENTGID__ and deptgid in (select gid from org where layercode like ##layercode##||'0%') and atype in (3,5,10,20,23,25,30,31,35,40,50,71) and ##flag## = '2'
+
+Loopsql1=insert into  hr_deptpost (ENTGID,deptgid,empgidex,empcodeex,empnameex,Atype) select __ENTGID__,##OrgGid##,gid ,code,name ,3 from hr_emp where entgid = __ENTGID__  and gid = ##%emp3%## and stat not in (2,3,4,5)
+
+Loopsql2=insert into  hr_deptpost (ENTGID,deptgid,empgidex,empcodeex,empnameex,Atype) select __ENTGID__,##OrgGid##,gid ,code,name ,5 from hr_emp where entgid = __ENTGID__  and gid = ##%emp5%## and stat not in (2,3,4,5)
+
+Loopsql3=insert into  hr_deptpost (ENTGID,deptgid,empgidex,empcodeex,empnameex,Atype) select __ENTGID__,##OrgGid##,gid ,code,name ,10 from hr_emp where entgid = __ENTGID__  and gid = ##%emp10%## and stat not in (2,3,4,5)
+
+Loopsql4=insert into  hr_deptpost (ENTGID,deptgid,empgidex,empcodeex,empnameex,Atype) select __ENTGID__,##OrgGid##,gid ,code,name ,15 from hr_emp where entgid = __ENTGID__  and gid = ##%emp15%## and stat not in (2,3,4,5)
+
+Loopsql5=insert into  hr_deptpost (ENTGID,deptgid,empgidex,empcodeex,empnameex,Atype) select __ENTGID__,##OrgGid##,gid ,code,name ,20 from hr_emp where entgid = __ENTGID__  and gid = ##%emp20%## and stat not in (2,3,4,5)
+
+Loopsql6=insert into  hr_deptpost (ENTGID,deptgid,empgidex,empcodeex,empnameex,Atype) select __ENTGID__,##OrgGid##,gid ,code,name ,23 from hr_emp where entgid = __ENTGID__  and gid = ##%emp23%## and stat not in (2,3,4,5)
+
+Loopsql7=insert into  hr_deptpost (ENTGID,deptgid,empgidex,empcodeex,empnameex,Atype) select __ENTGID__,##OrgGid##,gid ,code,name ,25 from hr_emp where entgid = __ENTGID__  and gid = ##%emp25%## and stat not in (2,3,4,5)
+
+Loopsql8=insert into  hr_deptpost (ENTGID,deptgid,empgidex,empcodeex,empnameex,Atype) select __ENTGID__,##OrgGid##,gid ,code,name ,30 from hr_emp where entgid = __ENTGID__  and gid = ##%emp30%## and stat not in (2,3,4,5)
+
+Loopsql9=insert into  hr_deptpost (ENTGID,deptgid,empgidex,empcodeex,empnameex,Atype) select __ENTGID__,##OrgGid##,gid ,code,name ,31 from hr_emp where entgid = __ENTGID__  and gid = ##%emp31%## and stat not in (2,3,4,5)
+
+Loopsql10=insert into  hr_deptpost (ENTGID,deptgid,empgidex,empcodeex,empnameex,Atype) select __ENTGID__,##OrgGid##,gid ,code,name ,35 from hr_emp where entgid = __ENTGID__  and gid = ##%emp35%## and stat not in (2,3,4,5)
+
+Loopsql11=insert into  hr_deptpost (ENTGID,deptgid,empgidex,empcodeex,empnameex,Atype) select __ENTGID__,##OrgGid##,gid ,code,name ,40 from hr_emp where entgid = __ENTGID__  and gid = ##%emp40%## and stat not in (2,3,4,5)
+
+Loopsql12=insert into  hr_deptpost (ENTGID,deptgid,empgidex,empcodeex,empnameex,Atype) select __ENTGID__,##OrgGid##,gid ,code,name ,50 from hr_emp where entgid = __ENTGID__  and gid = ##%emp50%## and stat not in (2,3,4,5)
+
+Loopsql13=insert into  hr_deptpost (ENTGID,deptgid,empgidex,empcodeex,empnameex,Atype) select __ENTGID__,##OrgGid##,gid ,code,name ,71 from hr_emp where entgid = __ENTGID__  and gid = ##%emp71%## and stat not in (2,3,4,5)
+
+Loopsql14=insert into  hr_deptpost (ENTGID,deptgid,empgidex,empcodeex,empnameex,Atype) select __ENTGID__,##OrgGid##,gid ,code,name ,80 from hr_emp where entgid = __ENTGID__  and gid = ##%emp80%## and stat not in (2,3,4,5)
+
+
+;批量设置下及部门的所有此职位
+Loopsql20=insert into  hr_deptpost (ENTGID,deptgid,empgidex,empcodeex,empnameex,Atype) select __ENTGID__,b.gid,a.gid ,a.code,a.name ,3 from hr_emp a,org b where a.entgid = __ENTGID__ and b.entgid = __ENTGID__ and b.layercode like ##layercode##||'0%' and a.gid = ##%emp3%## and a.stat not in (2,3,4,5) and ##flag## = '2'
+
+Loopsql21=insert into  hr_deptpost (ENTGID,deptgid,empgidex,empcodeex,empnameex,Atype) select __ENTGID__,b.gid,a.gid ,a.code,a.name ,5 from hr_emp a,org b where a.entgid = __ENTGID__ and b.entgid = __ENTGID__ and b.layercode like ##layercode##||'0%' and a.gid = ##%emp5%## and a.stat not in (2,3,4,5) and ##flag## = '2'
+
+Loopsql22=insert into  hr_deptpost (ENTGID,deptgid,empgidex,empcodeex,empnameex,Atype) select __ENTGID__,b.gid,a.gid ,a.code,a.name ,10 from hr_emp a,org b where a.entgid = __ENTGID__ and b.entgid = __ENTGID__ and b.layercode like ##layercode##||'0%' and a.gid = ##%emp10%## and a.stat not in (2,3,4,5) and ##flag## = '2'
+
+Loopsql23=insert into  hr_deptpost (ENTGID,deptgid,empgidex,empcodeex,empnameex,Atype) select __ENTGID__,b.gid,a.gid ,a.code,a.name ,15 from hr_emp a,org b where a.entgid = __ENTGID__ and b.entgid = __ENTGID__ and b.layercode like ##layercode##||'0%' and a.gid = ##%emp15%## and a.stat not in (2,3,4,5) and ##flag## = '2'
+
+Loopsql24=insert into  hr_deptpost (ENTGID,deptgid,empgidex,empcodeex,empnameex,Atype) select __ENTGID__,b.gid,a.gid ,a.code,a.name ,20 from hr_emp a,org b where a.entgid = __ENTGID__ and b.entgid = __ENTGID__ and b.layercode like ##layercode##||'0%' and a.gid = ##%emp20%## and a.stat not in (2,3,4,5) and ##flag## = '2'
+
+Loopsql25=insert into  hr_deptpost (ENTGID,deptgid,empgidex,empcodeex,empnameex,Atype) select __ENTGID__,b.gid,a.gid ,a.code,a.name ,23 from hr_emp a,org b where a.entgid = __ENTGID__ and b.entgid = __ENTGID__ and b.layercode like ##layercode##||'0%' and a.gid = ##%emp23%## and a.stat not in (2,3,4,5) and ##flag## = '2'
+
+Loopsql26=insert into  hr_deptpost (ENTGID,deptgid,empgidex,empcodeex,empnameex,Atype) select __ENTGID__,b.gid,a.gid ,a.code,a.name ,25 from hr_emp a,org b where a.entgid = __ENTGID__ and b.entgid = __ENTGID__ and b.layercode like ##layercode##||'0%' and a.gid = ##%emp25%## and a.stat not in (2,3,4,5) and ##flag## = '2'
+
+Loopsql27=insert into  hr_deptpost (ENTGID,deptgid,empgidex,empcodeex,empnameex,Atype) select __ENTGID__,b.gid,a.gid ,a.code,a.name ,30 from hr_emp a,org b where a.entgid = __ENTGID__ and b.entgid = __ENTGID__ and b.layercode like ##layercode##||'0%' and a.gid = ##%emp30%## and a.stat not in (2,3,4,5) and ##flag## = '2'
+
+Loopsql28=insert into  hr_deptpost (ENTGID,deptgid,empgidex,empcodeex,empnameex,Atype) select __ENTGID__,b.gid,a.gid ,a.code,a.name ,31 from hr_emp a,org b where a.entgid = __ENTGID__ and b.entgid = __ENTGID__ and b.layercode like ##layercode##||'0%' and a.gid = ##%emp31%## and a.stat not in (2,3,4,5) and ##flag## = '2'
+
+Loopsql29=insert into  hr_deptpost (ENTGID,deptgid,empgidex,empcodeex,empnameex,Atype) select __ENTGID__,b.gid,a.gid ,a.code,a.name ,35 from hr_emp a,org b where a.entgid = __ENTGID__ and b.entgid = __ENTGID__ and b.layercode like ##layercode##||'0%' and a.gid = ##%emp35%## and a.stat not in (2,3,4,5) and ##flag## = '2'
+
+Loopsql30=insert into  hr_deptpost (ENTGID,deptgid,empgidex,empcodeex,empnameex,Atype) select __ENTGID__,b.gid,a.gid ,a.code,a.name ,40 from hr_emp a,org b where a.entgid = __ENTGID__ and b.entgid = __ENTGID__ and b.layercode like ##layercode##||'0%' and a.gid = ##%emp40%## and a.stat not in (2,3,4,5) and ##flag## = '2'
+
+Loopsql31=insert into  hr_deptpost (ENTGID,deptgid,empgidex,empcodeex,empnameex,Atype) select __ENTGID__,b.gid,a.gid ,a.code,a.name ,50 from hr_emp a,org b where a.entgid = __ENTGID__ and b.entgid = __ENTGID__ and b.layercode like ##layercode##||'0%' and a.gid = ##%emp50%## and a.stat not in (2,3,4,5) and ##flag## = '2'
+
+Loopsql32=insert into  hr_deptpost (ENTGID,deptgid,empgidex,empcodeex,empnameex,Atype) select __ENTGID__,b.gid,a.gid ,a.code,a.name ,71 from hr_emp a,org b where a.entgid = __ENTGID__ and b.entgid = __ENTGID__ and b.layercode like ##layercode##||'0%' and a.gid = ##%emp71%## and a.stat not in (2,3,4,5) and ##flag## = '2'
+
+Loopsql33=insert into  hr_deptpost (ENTGID,deptgid,empgidex,empcodeex,empnameex,Atype) select __ENTGID__,b.gid,a.gid ,a.code,a.name ,80 from hr_emp a,org b where a.entgid = __ENTGID__ and b.entgid = __ENTGID__ and b.layercode like ##layercode##||'0%' and a.gid = ##%emp80%## and a.stat not in (2,3,4,5) and ##flag## = '2'
+
+[Title]
+Text1=部门组织职务设置保存
+PageKind=2
+
+Log=成功设置部门组织职务[^^orgcode^^]^^OrgName^^!
+
+
+

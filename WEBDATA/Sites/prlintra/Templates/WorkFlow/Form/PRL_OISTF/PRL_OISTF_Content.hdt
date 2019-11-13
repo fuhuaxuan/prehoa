@@ -2,6 +2,12 @@
 <script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
 <script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
 <script language="javascript">
+  //窗口改变，重计算iframe的高度
+  $(window).resize(function (){
+    JQChgHeight();
+  });
+</script>
+<script language="javascript">
   //自动获取高度
   function changeHeight()
   {
@@ -135,7 +141,7 @@
     <td class="listtd"><HDPrint Value=#Detail#></td>
   </tr>
   <tr valign="top">
-    <td class="DtlBarTitle">Termination Date:<br>申请终止日期:</td>
+    <td class="DtlBarTitle" title="申请终止日期应为大于提交日当天的日期"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">Termination Date:<br>申请终止日期:</td>
     <td class="listtd"><HDPrint Value=#Terminationdate#></td>
     <td class="DtlBarTitle">Contract Date:<br>合同起始日期:</td>
     <td class="listtd"><HDPrint Value=#ContractDate1#>~<HDPrint Value=#ContractDate2#></td>
@@ -155,10 +161,10 @@
   <thead>
   <tr class="DtlBarTitle" align="center">
     <td>结算费用项目</td>
-    <td>根据合同应缴金额<br>A</td>
-    <td>优惠租金<br>B</td>
+    <td title="整个租赁期内的应缴金额，即以完整的合同期来计算"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">根据合同应缴金额<br>A</td>
+    <td title="合同期内有减免的租金、物管、推广等费用,不包含免租期免除费用"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">优惠租金<br>B</td>
     <td>实际应缴金额<br>C=A-B</td>
-    <td>实际缴纳金额<br>D</td>
+    <td title="截至申请终止日,整个合同期所有的实际已缴费用"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">实际缴纳金额<br>D</td>
     <td>应退还(追缴)金额<br>E=D-C</td>
     <td>备注</td>
   </tr>
@@ -186,25 +192,25 @@
   <col style="padding-left:4px;width:15%">
   <col style="padding-left:4px;width:17%">
   <tr>
-    <td class="DtlBarTitle">未完成租约期限的租金及费用：</td>
+    <td class="DtlBarTitle" title="结算费用明细项目中的“应退还（追缴）金额”之总和"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">未完成租约期限的租金及费用：</td>
     <td class="ListTd"><HDPrint Value=#NumA#></td>
-    <td class="DtlBarTitle">租金（含物业费）减免额：</td>
+    <td class="DtlBarTitle" title="合同期内有减免的租金、物管、推广等费用,不包含免租期"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">租金（含物业费）减免额：</td>
     <td class="ListTd"><HDPrint Value=#NumB#></td>
-    <td class="DtlBarTitle">装修补贴：</td>
+    <td class="DtlBarTitle" title="合同内约定由我司支付的装修补贴或工程改造费用，如无，则填0"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">装修补贴：</td>
     <td class="ListTd"><HDPrint Value=#NumC#></td>
   </tr>
   <tr>
-    <td class="DtlBarTitle">提前终止的补偿款（包括可没收的款项）：</td>
+    <td class="DtlBarTitle" title="包括租赁保证金，装修保证金，XX保证金等，是指可以用于抵扣赔偿的款项(为可没收的金额，无需扣除欠费等款项)。如有根据合同内规定的违约金（一般为6个月的费用总和，具体要看合同内的要求），如经协商租户会缴纳违约赔偿，则也属于上述提前终止的补偿款项；"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">提前终止的补偿款（包括可没收的款项）：</td>
     <td class="ListTd"><HDPrint Value=#NumD#></td>
-    <td class="DtlBarTitle">本会计年度的预计租金损失：</td>
+    <td class="DtlBarTitle" title="因铺位终止造成该位置当年实际收入与预算收入的对比(收益填负数，损失填正数)"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">本会计年度的预计租金损失：</td>
     <td class="ListTd"><HDPrint Value=#NumE#></td>
-    <td class="DtlBarTitle">冲减直线法租金收入的金额：</td>
+    <td class="DtlBarTitle" title="因铺位调整造成的直线法调整额(收益填负数，损失填正数)"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">冲减直线法租金收入的金额：</td>
     <td class="ListTd"><HDPrint Value=#NumF#></td>
   </tr>
   <tr>
-    <td class="DtlBarTitle">欠租金额：</td>
+    <td class="DtlBarTitle" title="截止终止日的欠费总额"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">欠租金额：</td>
     <td class="ListTd"><HDPrint Value=#NumG#></td>
-    <td class="DtlBarTitle">合计：</td>
+    <td class="DtlBarTitle" title="“未完成租约期限的租金及费用+租金（含物业费）减免额+装修补贴-提前终止的补偿款（包括可没收的款项）”的总和，以此作为系统审批流转的依据；"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">合计：</td>
     <td class="ListTd"><HDPrint Value=#NumSum#></td>
     <td class="DtlBarTitle"></td>
     <td class="ListTd"></td>
@@ -214,9 +220,15 @@
     <td class="listtd" colspan="5"><HDPrint Value=#Remarks#></td>
   </tr>
   <tr valign="top">
-    <td class="DtlBarTitle">Attachment:<br>附件信息:</td>
+    <td class="DtlBarTitle" title="附件应包含“实际缴纳费用明细表、欠费明细表、直线法明细表”，请合并一个文件以pdf或jpg格式上传。"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">Attachment:<br>附件信息:</td>
     <td class="listtd" colspan="5"><HDPrint Value=#AttachList# Replace=#None#></td>
   </tr>
+  <HDIF EqualNot(<HDPrint Value=#isCEO# Replace=#None#>, 0)>
+  <tr valign="top">
+    <td class="DtlBarTitle">潘总审批附件:</td>
+    <td class="listtd" colspan="5"><HDPrint Value=#AttachList2# Replace=#None#></td>
+  </tr>
+  </HDIF>
   <HDIF EqualNot(<HDPrint Value=#EndMemo# Replace=#None#>, )>
   <tr valign="top">
     <td class="DtlBarTitle">The causes of termination:<br>终止原因:</td>

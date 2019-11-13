@@ -1,0 +1,64 @@
+[Permission]
+DEFAULT1=SelOrderBy
+DEFAULTValue1=a.CreateDate Desc
+
+DEFAULT2=txtCreateDate1
+DEFAULTValue2=[date],-60
+ 
+[Master]
+SQL=select a.flowgid,a.modelgid,a.CreateDate,a.Stat,a.FinishDate,a.CreaterCode,a.CreaterName,trim(a.flownote) || decode(wf.mallstat, 0, '<font color="red">已发送至Mall，失败</font>', 10, '<font color="red">已发送至Mall，未接收</font>', 100, '<font color="blue">已发送至Mall，成功</font>') flownote ,to_char(a.createdate,'yyyy.mm.dd hh24:mi:ss') FlowCreateDate,to_char(a.FinishDate,'yyyy.mm.dd hh24:mi:ss') FlowFinishDate, b.Code ModelCode, b.Name ModelName,decode(a.stat,'0', '未执行','1', '待执行','2', '执行中','3', '<FONT COLOR="blue">已完成</FONT>','4', '<font color="gray">已停止</font>','5', '<FONT COLOR="red">已作废</FONT>','6', '<FONT COLOR="red">已超时</FONT>') Flowstat from WF_Flow a, WF_Model b,(select f.flowgid, f.EntGid, f.mallstat from WF_PRL_ISF f union select f.flowgid, f.EntGid, f.mallstat from WF_PRL_ISTF f union select f.flowgid, f.EntGid, f.mallstat from WF_Prl_AdvertBS_ISF f union select f.flowgid, f.EntGid, f.mallstat from WF_Prl_AdvertBS_ISCF f ) wf where a.EntGid = __ENTGID__ and b.EntGid = __ENTGID__ and a.ModelGid = b.ModelGid and exists (select 1 from v_WF_Task t,v_PRL_FeeRT r where t.EntGid = __ENTGID__ and r.entgid = t.entgid  and r.ausrgid = __USRGID__ and r.busrgid = t.ExecGid and t.Stat in (0, 1, 2, 3, 4, 5) and t.FlowGid = a.FlowGid) and a.EntGid = wf.EntGid(+) and a.FlowGid = wf.FlowGid(+)
+;and '^^NotFirst^^' = '1' 
+
+Count=select count(*) from WF_Flow a, WF_Model b,(select f.flowgid, f.EntGid, f.mallstat from WF_PRL_ISF f union select f.flowgid, f.EntGid, f.mallstat from WF_PRL_ISTF f union select f.flowgid, f.EntGid, f.mallstat from WF_Prl_AdvertBS_ISF f union select f.flowgid, f.EntGid, f.mallstat from WF_Prl_AdvertBS_ISCF f ) wf where a.EntGid = __ENTGID__ and b.EntGid = __ENTGID__ and a.ModelGid = b.ModelGid and exists (select 1 from v_WF_Task t,v_PRL_FeeRT r where t.EntGid = __ENTGID__ and r.entgid = t.entgid  and r.ausrgid = __USRGID__ and r.busrgid = t.ExecGid and t.Stat in (0, 1, 2, 3, 4, 5) and t.FlowGid = a.FlowGid) and a.EntGid = wf.EntGid(+) and a.FlowGid = wf.FlowGid(+)
+;and '^^NotFirst^^' = '1' 
+
+
+[Detail]
+;工作流程模型名称列表
+LoopSQL1=select  Name,ModelGid,stat,  decode(stat,0,'(未)',2,'(停)',5,'(废)') stattext from WF_Model where entgid=__ENTGID__ and ModelGid in (select distinct ModelGid from v_WF_Task where EntGid = __ENTGID__ and ExecGid = __USRGID__ and Stat in (0, 1, 2, 3, 4, 5) union select '' from dual) order by Name, Code
+LoopHDT1=Templates\WorkFlow\WF_Model_Option.hdt
+LoopVAR1=WF_Model_Option
+
+
+;工作流程分类名称列表
+LoopSQL2=select classify Name,classify ModelGid from  (select distinct classify from WF_Model where entgid=__ENTGID__ ) x order by length(x.classify) 
+LoopHDT2=Templates\WorkFlow\WF_Model_Option.hdt
+LoopVAR2=WF_Model_Type
+
+[Where]
+500= and a.CreateDate >= to_date(##txtCreateDate1##, 'yyyy.mm.dd hh24:mi')
+
+2= and (a.CreaterCode like '%' || ##txtFlowNote## || '%' or  a.CreaterName like '%' || ##txtFlowNote## || '%' or b.Name like '%' || ##txtFlowNote## || '%' or lower(a.FlowNote)  like '%' || lower(##txtFlowNote##) || '%')
+
+[DefaultWhere]
+DefaultWhere= 
+
+[OrderBy]
+1=##SelOrderBy##
+
+
+[DefaultOrderBy]
+DefaultOrderBy= a.CreateDate desc
+
+[GroupBy]
+
+[AddtionalSQL]
+
+
+[Title]
+Text1=工作流程-您的所有流程
+Text2=
+Text3=
+Text4=
+Text5=
+log=
+ChangePage=1
+PageKind=2
+
+
+[Link]
+;URL1=
+;URL2=
+;URL3=
+URL4=
+URL5=

@@ -1,0 +1,133 @@
+<!--Js引入-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JSCalendar.js)##"></script>
+<script language="javascript">
+  /*
+  *函数功能：明细新增一行
+  *参数说明：使用JQTr_Add() 函数新增行时，需写在 tbody 标记中
+  */
+  function Add_Dtl(Gid,Code,Name){
+    var sTbId = 'tb_Dtl';
+    var sTrClass = 'listtd';
+    var tdArr = new Array();
+    var iRow = Math.floor(Math.random() * 100000 + 1);
+    var i = $("table#"+sTbId+">tbody>tr").length + 1;
+    var k = 0;
+    if (Gid == null){
+      Gid = '';
+      Name = '';
+    }
+
+    tdArr[k++] = '<td align="center"><INPUT TYPE="text" NAME="Line_1" value="'+ i +'" style="border:0px;text-align:center" readonly class="JQText"></td>';
+
+    tdArr[k++] = '<td>'
+      +'<INPUT TYPE="text" NAME="Name_1" ID="Name_1'+ iRow +'" maxlength="32" class="JQText JQMust" value = "'+Name+'">'
+      +'<INPUT TYPE="hidden" NAME="Gid_1" ID="Gid_1'+ iRow +'" maxlength="32" class="JQText" value = "'+Gid+'">'
+    +'</td>';
+
+    tdArr[k++] ='<td align="center"><a href="javascript:void(0)" onclick="javascript:JQTr_Del();JqReCal()">删除</a></td>';
+
+    //新增一行
+    JQTr_Add(sTbId,sTrClass,tdArr);
+  }
+
+  /*
+  *函数功能：删除行，重新计算
+  */
+  function JqReCal(){
+    //重新计算行号
+    $("input[name=Line_1]").each(function(i){
+      $(this).val(i+1);
+    });
+    //重新计算合计
+    $("input[JQRowSum]").each(function(){
+      JQSum($(this),'JQRow');
+    });
+  }
+
+  //提交函数
+  function CheckSubmit(){
+    //定义 提交提示文字
+    var sConfirm = '您确定已经填写完成，并保存吗？';
+    //提交时，验证必填项
+    if (!JQcheck("JQMust")){
+      return false;
+    }
+    //提交时，提示
+    if (!(confirm(sConfirm)))
+      return false;
+
+    //获取当前表单对象
+    var JqObj = $("form[name=frmDo]");
+    //表单参数设定
+    JqObj.attr({
+      "action":'##HDNet_AppName##/__ExplainModule?Url=<HDPrint Value=#Url#>Save&UsrGid=<HDPrint Value=#UsrGid#>',
+      "target":'_self'
+    });
+    //表单提交
+    JqObj.submit();
+
+    //操作按钮变为不可用
+    $("a[name=btn_1]").prop("disabled",true);
+
+    //本函数失效
+    CheckSubmit = function() {return false;}
+  }
+  //函数：ready
+  //功能：document 加载完成后调用
+  $(document).ready(function(){
+    //复制一个工具栏
+    var $ToolBar = $("div#JQ_ToolBar");
+    //$("form[name=frmDo]").append($ToolBar.html());
+  });
+</script>
+<form name="frmDo" method="post" action="">
+<!--模块使用到一些隐藏的控件-->
+<input type="text" style="display:none" name="Gid" value="<HDPrint Value=#Gid# Replace=#DBField2Input#>">
+<h3 class="TitleBar"><HDPrint Value=#ModuleAtype#>-><HDPrint Value=#ModuleName#></h3>
+<div id="JQ_ToolBar">
+<TABLE width="100%" class="ButtonBar" cellpadding="0" cellspacing="0">
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A name="btn_1" HREF="javascript:Add_Dtl();void(0)"><FONT class="IconAdd">　&nbsp;</FONT> 新增 </A>
+      <A name="btn_1" HREF="javascript:CheckSubmit();void(0)"><FONT class="IconSave">　&nbsp;</FONT> 保存 </A>
+     |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+    </TD>
+  </TR>
+</TABLE>
+</div>
+<table width="100%" class="ListBar JQMust" cellpadding="0"  cellspacing="1" id="tb_Dtl">
+  <colgroup>
+     <col style="width:5%" align="center">
+     <col style="width:90%">
+     <col style="width:5%" align="center">
+  </colgroup>
+  <!--使用新增行 JQTr_Add 时，需在表格中加上 thead,tbody-->
+  <thead>
+  <tr class="DtlBarTitle" align="center">
+    <td>行号</td>
+    <td>名称<font color="red">*</font></td>
+    <td>操作</td>
+  </tr>
+  </thead>
+  <tbody>
+
+  </tbody>
+</table>
+<script>
+  <hdloop>
+    Add_Dtl('<HDPrint Value=#Gid# Replace=#DBField2Js#>',
+    '<HDPrint Value=#Code# Replace=#DBField2Js#>',
+    '<HDPrint Value=#Name# Replace=#DBField2Js#>');
+  </hdloop>
+</script>
+</form>
+
+<FieldSet style="Font-Family:Tahoma;Font-Size:9pt;">
+<Legend><font color="red">特别提醒</font></Legend>
+<li>相关说明文字；</li>
+</FieldSet>

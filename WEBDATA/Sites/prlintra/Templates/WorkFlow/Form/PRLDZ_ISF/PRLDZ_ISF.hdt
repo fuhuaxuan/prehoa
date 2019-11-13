@@ -48,7 +48,9 @@
   *参数：代码控件对象
   */
   function PostMall2() {
-    Run_Div_Show();
+    if (!browser.mobile){
+      Run_Div_Show();
+    }
     var PreDeptCode = '<HDPrint Value=#ParentDeptCode# Replace=#DBField2Js#>';
 
     //佛山
@@ -57,7 +59,7 @@
       datainfo.OrganizationID = '06C36E50-AFB4-44AF-A75E-0D1623DCD551';
     }//青羊
     else if (PreDeptCode == '0003') {
-      url = 'http://171.221.248.15/MallOAService/MallService.asmx/InsertContract';
+      url = 'http://171.221.248.15:8090/MallOAService/MallService.asmx/InsertContract';
       datainfo.OrganizationID = '245B59A6-D452-4473-8F10-4AB9DB9FCB65';
     }
     //东站
@@ -77,14 +79,18 @@
           PostMall1('2');
         }
         else{
-          Run_Div_hide();
+          if (!browser.mobile){
+            Run_Div_hide();
+          }
           alert(ret.errorMsg);
         }
         return true;
       },
       //失败，处理函数
       failed : function (ret){
-        Run_Div_hide();
+          if (!browser.mobile){
+            Run_Div_hide();
+          }
         alert('发送失败');
         return false;
       }

@@ -1,0 +1,7 @@
+<script language="javascript">
+var JsOption = '';
+<hdloop>
+JsOption = '<option value="<HDPrint Value=#empgidex# Replace=#DBField2Js#>"><HDPrint Value=#empNameex# Replace=#DBField2Js#>[<HDPrint Value=#empcodeex# Replace=#DBField2Js#>]</option>';
+$("select[name=emp<HDPrint Value=#atype# Replace=#DBField2Js#>_1]").append(JsOption);
+</hdloop>
+</script>

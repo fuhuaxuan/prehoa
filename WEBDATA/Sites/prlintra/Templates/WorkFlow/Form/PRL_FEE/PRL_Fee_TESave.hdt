@@ -14,7 +14,7 @@
 <tr><td>[发起人] : <HDPrint Value=#FillUsrName#>[<HDPrint Value=#fillusrdept#>]；
 <tr><td>[待审批单号] : <HDPrint Value=#Num#>；
 <tr><td>[公司名称] : <HDPrint Value=#companyname#>
-<tr><td>[项目名称] : <HDPrint Value=#acgonename#> - <HDPrint Value=#acgtwoname#> 
+<tr><td>[项目名称] : <HDPrint Value=#acgonename#> - <HDPrint Value=#acgtwoname#>
 <tr><td>[DOA信息] : <HDPrint Value=#DOACode#>
 <tr><td>[申请目的] : <HDPrint Value=#target#>
 <tr><td>[申请项目内容] : <HDPrint Value=#Memo#>
@@ -25,7 +25,7 @@
 </table>
 </textarea>
   </form>
-<!-- 
+<!--
 -----------回复规范说明，整行无空格及其他特殊字符-----------
 [Y
 回复内容]
@@ -37,7 +37,7 @@ SystemInfo::EntGid=<HDPrint Value=#EntGid#>;Flowgid=<HDPrint Value=#Flowgid#>;Mo
 
  -->
 <SCRIPT LANGUAGE="JavaScript">
-    alert('审批完毕，审批人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>，审批意见：<HDPrint Value=#AppAssign# Replace=#DBField2Js#>');
+    //alert('审批完毕，审批人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>，审批意见：<HDPrint Value=#AppAssign# Replace=#DBField2Js#>');
 
     //如有打开页面，刷新打开页面
     if (self.opener != null) {

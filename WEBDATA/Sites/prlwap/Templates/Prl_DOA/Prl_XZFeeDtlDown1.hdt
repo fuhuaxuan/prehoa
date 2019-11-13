@@ -1,0 +1,46 @@
+<html><body><meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<table class=ListBar width="100%" border="1">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <tr>
+    <td>Name of Company(公司) </td>
+    <td><HDPrint Value=#ComName#></td>
+    <td>Month(月份)</td>
+    <td><HDPrint Value=#sel_Year#>.<HDPrint Value=#sel_Month#></td>
+  </tr>
+  <tr class="listtr">
+    <td style="cursor:hand;" JQAsc="" JQColumn="f.fillDeptName">Name of department</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="f.PayMan">Name of Staff<br>(员工姓名)</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="f.Position">Designation<br>(职位)</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="f.FeeDate">Date of Expense<br>(费用发生日期)</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="f.f1Fee">8.09-Hotel expense<br>(酒店入住费用)</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="f.f2Fee">8.02-Entertainment<br>(招待费用)</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="f.f3Fee">7.05-Handphone charges<br>(通话费)</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="f.f4Fee">8.04-Transport<br>(差旅费)</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="f.f5Fee">8.08-Others<br>(其他)</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="f.fSumFee">Total<br>(总计)</td>
+  </tr>
+  <HDLoop>
+  <tr class="listtd" onmouseover="this.className='listtdfocus';" onmouseout="this.className='listtd'"  style="background-color:<HDPrint Value=#scolor#>">
+    <td nowrap colspan="<HDPrint Value=#cols#>" align="<HDPrint Value=#salign#>"><HDPrint Value=#DeptName#></td>
+    <td nowrap style="display:<HDPrint Value=#disp#>"><HDPrint Value=#PayMan#></td>
+    <td nowrap style="display:<HDPrint Value=#disp#>"><HDPrint Value=#Position#></td>
+    <td nowrap style="display:<HDPrint Value=#disp#>"><HDPrint Value=#FeeDate#></td>
+    <td nowrap><HDPrint Value=#F1Fee#></td>
+    <td nowrap><HDPrint Value=#F2Fee#></td>
+    <td nowrap><HDPrint Value=#F3Fee#></td>
+    <td nowrap><HDPrint Value=#F4Fee#></td>
+    <td nowrap><HDPrint Value=#F5Fee#></td>
+    <td nowrap><HDPrint Value=#FSumFee#></td>
+  </tr>
+  </HDLoop>
+</table>
+</body></html>

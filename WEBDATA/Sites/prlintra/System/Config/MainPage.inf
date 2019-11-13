@@ -9,7 +9,7 @@ Active=True
 AutoHide=False
 RT=wftodotasklist
 Row=100
-Height=200
+Height=1000
 Position=left
 Function=
 sql=select a.FlowGid, a.ModelGid, a.Code, a.Name, b.Name, decode(a.memo, null, '', '£º' || a.memo) from WF_task a, WF_Model b,wf_flow c where a.EntGid = '{##entgid##}' and b.EntGid = '{##entgid##}' and c.EntGid = '{##entgid##}' and a.ExecGid = '{##usrgid##}' and a.Stat in (1, 2) and nvl(a.DeadLine,SYSDATE) >= sysdate and a.ModelGid = b.ModelGid and a.flowgid = c.flowgid and c.stat < 4 and a.BTime <= sysdate order by a.BTime Desc

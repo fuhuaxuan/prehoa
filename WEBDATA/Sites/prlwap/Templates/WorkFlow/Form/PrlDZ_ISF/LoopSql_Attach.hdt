@@ -1,0 +1,7 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script>
+  <hdloop>
+    $("td[JQ=td_<HDPrint Value=#Attach_Type# Replace=#DBField2Js#>]").append('<A HREF="<HDPrint Value=#Attach_Url# Replace=#DBField2Js#>" target="_blank"><HDPrint Value=#Attach_Title# Replace=#DBField2Js#>;</A>');
+    $("span[JQ=td_<HDPrint Value=#Attach_Type# Replace=#DBField2Js#>]").append('<A HREF="<HDPrint Value=#Attach_Url# Replace=#DBField2Js#>" target="_blank"><HDPrint Value=#Attach_Title# Replace=#DBField2Js#>;</A>');
+  </hdloop>
+</script>

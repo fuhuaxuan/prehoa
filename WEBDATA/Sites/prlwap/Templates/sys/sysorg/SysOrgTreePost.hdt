@@ -1,0 +1,179 @@
+<script language="javascript" src="##GetWebRootPath(/Scripts/common.js)##"></script>
+<!-- JQuery函数引入 -->
+<script language="javascript" src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+
+<form name="frmDo" method="Post">
+  <table cellspacing="1" cellpadding="0" valign="top" class="NewTb" style="width:100%" align="center">
+    <col width="20%">
+    <col width="80%">
+    <tr class="NewTr1">
+      <td colspan=2>
+        <B>部门职务设置</B>
+      </td>
+    </tr>
+    <tr class="NewTr3">
+      <td class="NewTd2">部门名称</td>
+      <td class="NewTd3">[<HDPrint Value=#OrgCode#>]<HDPrint Value=#OrgName#></td>
+    </tr>
+    <tr class="NewTr3">
+      <td class="NewTd2">3行政 <a href="javascript:void(ChangeSelect('3'))">[选择]</a></td>
+      <td class="NewTd3"><select name="emp3_1" style="width:400px;height:40px"  multiple></select></td>
+    </tr>
+    <tr class="NewTr3">
+      <td class="NewTd2">5部门助理 <a href="javascript:void(ChangeSelect('5'))">[选择]</a></td>
+      <td class="NewTd3"><select name="emp5_1" style="width:400px;height:40px"  multiple></select></td>
+    </tr>
+    <tr class="NewTr3">
+      <td class="NewTd2">10部门经理 <a href="javascript:void(ChangeSelect('10'))">[选择]</a></td>
+      <td class="NewTd3"><select name="emp10_1" style="width:400px;height:40px" multiple></select></td>
+    </tr>
+    <tr class="NewTr3">
+      <td class="NewTd2">15部门总经理 <a href="javascript:void(ChangeSelect('15'))">[选择]</a></td>
+      <td class="NewTd3"><select name="emp15_1" style="width:400px;height:40px" multiple></select></td>
+    </tr>
+    <tr class="NewTr3">
+      <td class="NewTd2">20区域财务经理 <a href="javascript:void(ChangeSelect('20'))">[选择]</a></td>
+      <td class="NewTd3"><select name="emp20_1" style="width:400px;height:40px" multiple></select></td>
+    </tr>
+    <tr class="NewTr3">
+      <td class="NewTd2">23成本合约经理 <a href="javascript:void(ChangeSelect('23'))">[选择]</a></td>
+      <td class="NewTd3"><select name="emp23_1" style="width:400px;height:40px" multiple></select></td>
+    </tr>
+    <tr class="NewTr3">
+      <td class="NewTd2">25财务会计 <a href="javascript:void(ChangeSelect('25'))">[选择]</a></td>
+      <td class="NewTd3"><select name="emp25_1" style="width:400px;height:40px" multiple></select></td>
+    </tr>
+    <tr class="NewTr3">
+      <td class="NewTd2">30财务经理 <a href="javascript:void(ChangeSelect('30'))">[选择]</a></td>
+      <td class="NewTd3"><select name="emp30_1" style="width:400px;height:40px" multiple></select></td>
+    </tr>
+    <tr class="NewTr3">
+      <td class="NewTd2">31出纳 <a href="javascript:void(ChangeSelect('31'))">[选择]</a></td>
+      <td class="NewTd3"><select name="emp31_1" style="width:400px;height:40px" multiple></select></td>
+    </tr>
+    <tr class="NewTr3">
+      <td class="NewTd2">35总经理 <a href="javascript:void(ChangeSelect('35'))">[选择]</a></td>
+      <td class="NewTd3"><select name="emp35_1" style="width:400px;height:40px" multiple></select></td>
+    </tr>
+    <tr class="NewTr3">
+      <td class="NewTd2">40项目总经理 <a href="javascript:void(ChangeSelect('40'))">[选择]</a></td>
+      <td class="NewTd3"><select name="emp40_1" style="width:400px;height:40px" multiple></select></td>
+    </tr>
+    <tr class="NewTr3">
+      <td class="NewTd2">50区域总监 <a href="javascript:void(ChangeSelect('50'))">[选择]</a></td>
+      <td class="NewTd3"><select name="emp50_1" style="width:400px;height:40px" multiple></select></td>
+    </tr>
+    <tr class="NewTr3">
+      <td class="NewTd2">71资产经理 AssetManager <a href="javascript:void(ChangeSelect('71'))">[选择]</a></td>
+      <td class="NewTd3"><select name="emp71_1" style="width:400px;height:40px" multiple></select></td>
+    </tr>
+    <tr class="NewTr3">
+      <td class="NewTd2">80资产总监/区域总经理 <a href="javascript:void(ChangeSelect('80'))">[选择]</a></td>
+      <td class="NewTd3"><select name="emp80_1" style="width:400px;height:40px" multiple></select></td>
+    </tr>
+    <tr class="NewTr1">
+      <td colspan="2" >
+        <input type="hidden" name="flag" value="">
+        <input type="hidden" name="layercode" value="<HDPrint Value=#layercode#>">
+        <input type="hidden" name="OrgCode" value="<HDPrint Value=#OrgCode#>">
+        <input type="hidden" name="OrgName" value="<HDPrint Value=#OrgName#>">
+        <input type="hidden" name="OrgGid" value="<HDPrint Value=#OrgGid#>">
+        <input class="NormalSbt" type="button" value=" 仅设置到本部门 " onclick="return CheckSubmit('1')">&nbsp;&nbsp;
+        <input class="NormalSbt" type="button" value=" 批量设置到本部门及下级部门 " onclick="return CheckSubmit('2')">&nbsp;&nbsp;
+        <input class="NormalSbt" type="button" value=" 返回 " onclick="history.back()">
+      </td>
+    </tr>
+  </table>
+  <HDPrint Value=#emplist# Replace=#None#>
+</form>
+
+
+<script>
+function del_click(obj)
+{
+  if (obj.selectedIndex >= 0)
+    obj.remove(obj.selectedIndex);
+}
+
+
+//函数功能：保证被选择对象只被选择一次
+//参数：sGid：用来进行比较的值;sObj：对象
+function GetSingle(sGid, sObj)
+{
+  var i;
+  for (i = 0; i < sObj.length; i++)
+  {
+    if (sObj.options[i].value == sGid)
+    {
+      alert('请勿重复选择');
+      return false;
+    }
+  }
+  return true;
+}
+
+var objEmp;
+var objEmpGid;
+
+function ChangeSelect(str){
+
+  objEmp = document.all('emp'+str+'_1');
+  objEmpGid = document.all('empGid'+str);
+  DataInterface(frmDataInterface_1);
+}
+
+function CallBackFun1(sGid,sCode,sName){
+
+  if (GetSingle(sGid, objEmp))
+  {
+    objEmp.options.add(new Option(sName + '[' + sCode + ']', sGid));
+  }
+}
+
+
+
+function CheckSubmit(str)
+{
+
+  //提交时，验证必填项
+  if (!JQcheck('JQMust')){
+    return false;
+  }
+
+  document.all.flag.value = str;
+  frmDo.action = '##HDNet_AppName##/__ExplainModule?Url=SysOrgTreePostSave&UsrGid=<HDPrint value=#UsrGid#>';
+  frmDo.submit();
+}
+</script>
+
+
+<!--<标准>-->
+<script language="javascript" src="##GetWebRootPath(/Scripts/DataInterface.js)##"></script>
+<!-- Datainterface -->
+<form name="frmDataInterface_1">
+  <input type="hidden" name="DataInterface_Title" value="人员选择列表">
+  <!--在实际应用中sql语句应该加密-->
+  <input type="hidden" name="DataInterface_Sql" value="select h.gid, h.code,h.name ,d.code2, d.name from hr_emp h, dept d where h.EntGid = '<HDPrint Value=#EntGid#>' and d.EntGid = '<HDPrint Value=#EntGid#>' and h.stat not in (2,3,4,5) and h.deptgid = d.gid">
+  <input type="hidden" name="DataInterface_CountSql" value="select count(*) from  hr_emp h, dept d where h.EntGid = '<HDPrint Value=#EntGid#>' and d.EntGid = '<HDPrint Value=#EntGid#>' and h.stat not in (2,3,4,5) and h.deptgid = d.gid">
+
+  <input type="hidden" name="DataInterface_OrderSql" value="order by d.code2, h.code">
+  <input type="hidden" name="DataInterface_UsrGid" value="<HDPrint Value=#UsrGid#>">
+  <input type="hidden" name="DataInterface_AppName" value="##HDNet_AppName##">
+  <!--在实际应用中sql语句应该加密-->
+  <input type="hidden" name="DataInterface_Cols" value="2^代码^left^170">
+  <input type="hidden" name="DataInterface_Cols" value="3^名称^left^170">
+  <input type="hidden" name="DataInterface_Cols" value="5^部门/组织^left^120">
+  <input type="hidden" name="DataInterface_FieldTo" value="">
+  <INPUT TYPE="hidden" name="DataInterface_FieldBy" value="1^2^3">
+  <INPUT TYPE="hidden" name="DataInterface_CallBckFunc" value="CallBackFun1">
+  <input type="hidden" name="DataInterface_Close" value="true">
+  <input type="hidden" name="DataInterface_Search" value="h.code^用户代码^1">
+  <input type="hidden" name="DataInterface_Search" value="h.name^用户名称^1">
+  <input type="hidden" name="DataInterface_Search" value="code2^所属部门^2">
+  <input type="hidden" name="DataInterface_Search_Sql" value="select d.code2 deptcode,decode(length(code1), 8, '　', 12, '　　') || name name from dept d where d.entgid = '<HDPrint Value=#EntGid#>' order by code1">
+  <input type="hidden" name="DataInterface_Search_Cols" value="1^2">
+</form>
+
+
+

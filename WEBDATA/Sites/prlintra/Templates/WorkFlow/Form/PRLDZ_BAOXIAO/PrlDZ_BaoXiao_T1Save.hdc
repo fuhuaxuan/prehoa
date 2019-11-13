@@ -44,7 +44,7 @@ SQL4=delete from Wf_^^ModelCodeT^^_Dtl where EntGid = __ENTGID__ and FlowGid = #
 SQL5=insert into Wf_^^ModelCodeT^^_App (EntGid,ModelGid,FlowGid,Gid,AppGid,AppCode,AppName,AppType,AppOrder,AppAssign,AppMemo,AppDate) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,0,0,##Stat##,##AppMemo##,sysdate from dual where ##Stat## = '提交'
 
 ;插入本流程明细信息
-LoopSql2=insert into Wf_^^ModelCodeT^^_Dtl (EntGid,ModelGid,FlowGid,Gid,Line,AcgGid,AcgCode,AcgName,PAcgGid,PAcgCode,PAcgName,AcgFee,FeeDate,FeeEDate,ApplyFee,TypeGid,TypeName,Memo) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),##%Line%##,##%AcgGid%##, ##%AcgCode%##, ##%AcgName%##, ##%PAcgGid%##, ##%PAcgCode%##, ##%PAcgName%##, ##%AcgFee%##,to_date(##%FeeDate%##,'YYYY.MM.DD'),to_date(##%FeeEDate%##,'YYYY.MM.DD'), ##%ApplyFee%##,##%TypeGid%##,##%TypeName%##,##%Memo%## from dual
+LoopSql2=insert into Wf_^^ModelCodeT^^_Dtl (EntGid,ModelGid,FlowGid,Gid,Line,AcgGid,AcgCode,AcgName,PAcgGid,PAcgCode,PAcgName,AcgFee,FeeDate,FeeEDate,ApplyFee,TypeGid,TypeName,Memo) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),##%Line%##,##%AcgGid%##, ##%AcgCode%##, ##%AcgName%##, ##%PAcgGid%##, ##%PAcgCode%##, ##%PAcgName%##, ##%AcgFee%##,to_date(##%FeeDate%##,'YYYY.MM.DD'),to_date(##%FeeEDate%##,'YYYY.MM.DD'), ##%ApplyFee%##,t.gid,t.name,##%Memo%## from Prl_Baoxiao_Type t where t.entgid = __ENTGID__ and t.gid = ##%TypeGid%##
 
 ;--更新审批人
 LoopSql3=call P_^^ModelCode^^_doApp(__ENTGID__,##ModelGid##,##%FlowGid%##,##Stat##)

@@ -14,7 +14,7 @@
 <tr><td>[发起人] : <HDPrint Value=#FillUsrName#>[<HDPrint Value=#fillusrdept#>]；
 <tr><td>[待审批单号] : <HDPrint Value=#Num#>；
 <tr><td>[公司名称] : <HDPrint Value=#companyname#>
-<tr><td>[项目名称] : <HDPrint Value=#acgonename#> - <HDPrint Value=#acgtwoname#> 
+<tr><td>[项目名称] : <HDPrint Value=#acgonename#> - <HDPrint Value=#acgtwoname#>
 <tr><td>[推荐及理由] : <HDPrint Value=#reason#>
 <tr><td>[本月预算金额] : <HDPrint Value=#controlfee#> 元
 <tr><td>[本次申请金额] : <HDPrint Value=#askfee#> 元
@@ -22,7 +22,7 @@
 </table>
 </textarea>
   </form>
-<!-- 
+<!--
 -----------回复规范说明，整行无空格及其他特殊字符-----------
 [Y
 回复内容]
@@ -34,7 +34,7 @@ SystemInfo::EntGid=<HDPrint Value=#EntGid#>;Flowgid=<HDPrint Value=#Flowgid#>;Mo
 
  -->
 <SCRIPT LANGUAGE="JavaScript">
-    alert('审批完毕，审批人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>，审批意见：<HDPrint Value=#AppAssign# Replace=#DBField2Js#>');
+    //alert('审批完毕，审批人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>，审批意见：<HDPrint Value=#AppAssign# Replace=#DBField2Js#>');
 
   if ('<HDPrint Value=#AppAssign# Replace=#DBField2Js#>' == '同意'){
     frmMail.submit();
@@ -48,9 +48,9 @@ SystemInfo::EntGid=<HDPrint Value=#EntGid#>;Flowgid=<HDPrint Value=#Flowgid#>;Mo
     }
 
   }
-  
+
   else{
-  
+
     //如有打开页面，刷新打开页面
     if (self.opener != null) {
     try{
@@ -63,5 +63,5 @@ SystemInfo::EntGid=<HDPrint Value=#EntGid#>;Flowgid=<HDPrint Value=#Flowgid#>;Mo
     window.close();
   }
 
-  
+
 </SCRIPT>

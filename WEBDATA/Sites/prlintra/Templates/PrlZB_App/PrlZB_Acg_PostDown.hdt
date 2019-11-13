@@ -1,0 +1,31 @@
+[Rep_BeginLine]
+公司
+项目
+15>行政
+20>人事
+25>财务主任
+30>财务经理
+32>副财务总监
+35>财务总监
+40>人事总监
+45>区域总经理
+50>Deputy CEO
+55>CEO
+[Rep_EndLine]
+<HDLoop>
+[Rep_BeginLine]
+<HDPrint Value=#ComName# Replace=#None#>
+<HDPrint Value=#AcgCode# Replace=#None#><HDPrint Value=#AcgName# Replace=#None#>
+#NoForm#<HDPrint Value=#A2Apper# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#A3Apper# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#A4Apper# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#A5Apper# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#A55Apper# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#A6Apper# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#A7Apper# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#A8Apper# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#A9Apper# Replace=#DBField2Excel#>
+#NoForm#<HDPrint Value=#A10Apper# Replace=#DBField2Excel#>
+[Rep_EndLine]
+</HDLoop>
+

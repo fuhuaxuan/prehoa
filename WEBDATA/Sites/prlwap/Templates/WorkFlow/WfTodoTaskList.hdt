@@ -1,0 +1,99 @@
+<!-- JQuery函数引入 -->
+<script language="javascript" src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JSCalendar.js)##"></script>
+
+
+<form name="frmDo" method="Post" action="">
+<br>
+<HDPageBar>
+<table width="100%" class="ListBar" cellpadding="0" cellspacing="0" style="background:#F7F8FC;">
+  <col style="width:100%" valign="top">
+  <HDLoop>
+  <tr>
+    <td>
+      <A HREF="##HDNet_AppName##/WFFlowPage?UsrGid=<HDPrint Value=#UsrGid#>&Url=<HDPrint Value=#Code#>&ModelGid=<HDPrint Value=#ModelGid#>&FlowGid=<HDPrint Value=#FlowGid#>" target="<HDPrint Value=#FlowGid#>" title="点击后，进入执行页面">
+      <table width="100%" border="0" style="margin-top:10px;background:white">
+        <col style="width:50%">
+        <col style="width:50%">
+        <tr valign="center">
+          <td class="App_Title" colspan="2" valign="middle" style="height:40px">
+            <HDPrint Value=#ModelName#>
+            <font class="App_App" style="float:right;">待审批<font>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2"  class="App_SubTitle" style="color:#666666"><HDPrint Value=#Name#></td>
+        </tr>
+        <tr>
+          <td class="App_Info">发起人：<HDPrint Value=#creatername#></td>
+          <td class="App_Info"><HDPrint Value=#BTime#></td>
+        </tr>
+        <tr>
+          <td class="App_Info" colspan="2"><HDPrint Value=#Memo# Replace=#None#></td>
+        </tr>
+      </table>
+      </A>
+    </td>
+  </tr>
+  </HDLoop>
+</table>
+
+<INPUT TYPE="hidden" title="排序点击标题即可排序-用到的控件" name="selOrderBy" value="<HDPrint Value=#selOrderBy# Replace=#DBField2Input#>">
+<INPUT TYPE="hidden" title="排序点击标题即可排序-用到的控件" name="selOrderAsc" value="<HDPrint Value=#selOrderAsc# Replace=#DBField2Input#>">
+<INPUT TYPE="hidden" title="排序点击标题即可排序-用到的控件" name="selOrderColumn" value="<HDPrint Value=#selOrderColumn# Replace=#DBField2Input#>">
+</form>
+
+<SCRIPT LANGUAGE="JavaScript">
+  //函数：ready
+  //功能：document 加载完成后调用
+  $(function(){
+    //Td点击排序时事件
+    $("td[JQColumn]").click(function(){
+      //取出点击Td的参数
+
+      //JQColumn 字段名
+      var sJQColumn = $(this).attr("JQColumn");
+      //JQAsc 可不写，为空 或 desc
+      var sJQAsc = '';
+      if ($(this).attr("JQAsc") != null){
+        sJQAsc = $(this).attr("JQAsc");
+      }
+
+      //取出排序控件，并赋值
+      $("input[name=selOrderBy]").val(sJQColumn + ' ' + sJQAsc);
+
+      //保留本次点击参数
+      $("input[name=selOrderAsc]").val(sJQAsc);
+      $("input[name=selOrderColumn]").val(sJQColumn);
+
+      //获取当前表单对象
+      var JqObj = $("form[name=frmDo]");
+      //表单参数设定
+      JqObj.attr({
+        "action":'',
+        "target":''
+      });
+      //表单提交
+      JqObj.submit();
+    });
+    //数据提交后，对数据提交前点击的排序Td列重新赋值
+    $("td[JQColumn]").each(function(){
+      var sJQColumn = $(this).attr("JQColumn");
+      var selOrderColumn = '<HDPrint Value=#selOrderColumn# Replace=#DBField2Js#>';
+      var selOrderAsc = '<HDPrint Value=#selOrderAsc# Replace=#DBField2Js#>';
+      if (sJQColumn == selOrderColumn){
+        //取出本Td的文本值，并重新赋值
+        var sText = $(this).text();
+        if (selOrderAsc == ''){
+          $(this).text(sText+"↑");
+          $(this).attr("JQAsc","desc");
+        }
+        else{
+          $(this).text(sText+"↓");
+          $(this).attr("JQAsc","");
+        }
+      }
+    });
+  });
+</script>

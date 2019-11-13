@@ -47,9 +47,9 @@ if('<HDPrint Value=#Wf_Stat# Replace=#DBField2Js#>' == '10')
 }
 else
 {
-  alert('提交成功，填单人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>');
+  //alert('提交成功，填单人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>');
   frmMail.submit();
-  if (self.opener != null) 
+  if (self.opener != null)
   {
     try
     {

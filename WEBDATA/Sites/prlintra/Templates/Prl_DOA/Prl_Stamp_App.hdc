@@ -12,6 +12,9 @@ DEFAULTValue2=
 SqlForCondition1=select Name ModuleName,Atype ModuleAtype from rt where lower(id) = lower(##Url##)
 
 SQL1=select d.Gid ComGid,d.Code ComCode,d.Name ComName from prl_company d where d.EntGid = __ENTGID__ and d.Gid = ##sComGid##
+
+SQL2=select s.AppGid,s.AppCode,s.AppName from Prl_Stamp s where s.ComGid = ##sComGid## and s.StampType = ##sStampType##
+
 ;显示公用信息
 LoopSQL1=select Gid ItemGid,name ItemName from prl_company where entgid = __ENTGID__ AND STAT = 10 order by Code
 LoopHDT1=Templates\Prl_Doa\LoopSql_Option.hdt

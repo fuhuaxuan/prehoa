@@ -36,7 +36,7 @@
 </table>
 </textarea>
   </form>
-<!-- 
+<!--
 -----------回复规范说明，整行无空格及其他特殊字符-----------
 [Y
 回复内容]
@@ -50,10 +50,10 @@ SystemInfo::EntGid=<HDPrint Value=#EntGid#>;Flowgid=<HDPrint Value=#Flowgid#>;Mo
 <script language="JavaScript">
   if ('<HDPrint Value=#wf_Stat# Replace=#DBField2Js#>' == '10')
   {
-    alert('提交成功，发起人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>！');
+    //alert('提交成功，发起人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>！');
     frmMail.submit();
     //如有打开页面，刷新打开页面
-    if (self.opener != null) 
+    if (self.opener != null)
     {
       try{
         self.opener.location.reload();
@@ -61,7 +61,7 @@ SystemInfo::EntGid=<HDPrint Value=#EntGid#>;Flowgid=<HDPrint Value=#Flowgid#>;Mo
       catch(e){
       }
     }
-  } 
+  }
   else{
     alert('保存成功，发起人：<HDPrint Value=#CurUsrName# Replace=#DBField2Js#>！');
     location.replace('##HDNet_AppName##/wfflowpage?Modelcode=<HDPrint Value=#ModelCode#>&Url=<HDPrint Value=#ModelCode#>_TMod&UsrGid=<HDPrint Value=#UsrGid#>&flowGid=<HDPrint Value=#flowGid#>');

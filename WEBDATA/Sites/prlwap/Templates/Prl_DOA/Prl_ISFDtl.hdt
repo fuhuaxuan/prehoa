@@ -1,0 +1,357 @@
+<!--Js引入-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/DateControl.js)##"></script>
+<form name="frmDo" method="Post" action="">
+<h3 class="TitleBar" ><HDPrint Value=#ModeleAtype#>-><HDPrint Value=#ModeleName#></h3>
+<TABLE width="100%" class="ButtonBar" cellpadding=0 cellspacing=0>
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+     |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+      <A HREF="##HDNet_AppName##/MainPage?URL=&UsrGid=<HDPrint Value=#UsrGid#>"><FONT class="IconBack">　&nbsp;</FONT> 返回首页</A>
+    </TD>
+  </TR>
+</TABLE>
+<!--排序点击标题即可排序-用到的控件-->
+<INPUT TYPE="hidden" title="点击标题排序-记录上一次排序order by的值" name="selOrderBy" value="<HDPrint Value=#selOrderBy# Replace=#DBField2Input#>">
+<INPUT TYPE="hidden" title="点击标题排序-记录上一次排序是正序还是倒序" name="selOrderAsc" value="<HDPrint Value=#selOrderAsc# Replace=#DBField2Input#>">
+<INPUT TYPE="hidden" title="点击标题排序-记录上一次排序的字段" name="selOrderColumn" value="<HDPrint Value=#selOrderColumn# Replace=#DBField2Input#>">
+<INPUT TYPE="hidden" title="下载报表用到的控件" name="Rep_Download" value="">
+<input type="hidden" name="NotFirst" value="1">
+
+<table class="SearchBar" cellspacing="0" style="width:1100px">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:15%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:15%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:15%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:15%">
+  <tr class="SearchTr" >
+    <td colspan="8"><b>搜索条件</b></td>
+  </tr>
+  <tr>
+    <td>类型 = </td>
+    <td>
+      <select name="sel_Type" class="JQSelect" style="width:90%">
+        <option value="">--请选择--</option>
+        <option value="10">ISF</option>
+        <option value="20">ISCF</option>
+        <option value="30">MALL</option>
+      </select>
+    </td>
+    <td>单号 ≈ </td>
+    <td><input type="Text" name="txt_Num" class="JQText" style="width:90%"></td>
+    <td>发起人 ≈ </td>
+    <td><input type="Text" name="txt_FillUsr" class="JQText" style="width:90%"></td>
+    <td>单位 ≈ </td>
+    <td><input type="Text" name="txt_Unit" class="JQText" style="width:90%"></td>
+  </tr>
+  <tr>
+    <td>类别 = </td>
+    <td>
+      <select name="sel_Atype" class="JQSelect" style="width:90%">
+        <option value="">--请选择--</option>
+        <option value="New 新租赁">New 新租赁</option>
+        <option value="Renewal 续约租赁">Renewal 续约租赁</option>
+      </select>
+    </td>
+    <td>类别2 = </td>
+    <td>
+      <select name="sel_Category" class="JQSelect" style="width:90%">
+        <option value="">--请选择--</option>
+        <option value="Rental 出租">Rental 出租</option>
+        <option value="Licence 短期租约(固定)">Licence 短期租约(固定)</option>
+        <option value="Licence 短期租约(非固定)">Licence 短期租约(非固定)</option>
+        <option value="Others 其他">Others 其他</option>
+      </select>
+    </td>
+    <td>租户 ≈ </td>
+    <td><input type="Text" name="txt_Lessee" class="JQText" style="width:90%"></td>
+    <td>商店营业名称 ≈ </td>
+    <td><input type="Text" name="txt_Tradingname" class="JQText" style="width:90%"></td>
+  </tr>
+  <tr>
+    <td>项目 = </td>
+    <td>
+      <select name="sel_Dept" class="JQSelect" style="width:90%">
+        <option value="">--请选择--</option>
+        <option value="0000">集团</option>
+        <option value="0001">沈阳</option>
+        <option value="0002">佛山</option>
+        <option value="0003">成都青羊</option>
+        <option value="0004">成都东站</option>
+      </select>
+    </td>
+  </tr>
+  <tr >
+    <td colspan="4">
+     <a href="javascript:void(0)" onclick="JQExpand('tb_Search','font_Icon');" class="IconDown">　&nbsp;显示说明信息</a>（请进行相应的查询，找到您需要的信息）
+    </td>
+    <td colspan="4" align="right">
+      <INPUT TYPE="hidden" name="NotFirst" value="1">
+      <INPUT TYPE="submit" name="btnSearch" class="NormalSbt" value=" 查询 " >
+      <INPUT TYPE="reset" name="btnReset" class="NormalSbt" value=" 默认 ">
+      <INPUT TYPE="button" name="btnDownload" class="NormalSbt" value="下载Excel" onclick="return DownLoad()">
+    </td>
+  </tr>
+  <tr>
+    <td colspan="8" align="left">
+      <div id="tb_Search" style="display:none">
+        <li>≈:可进行模糊查询</li>
+        <li>时间格式：YYYY.MM.DD HH24:MI/YYYY.MM.DD</li>
+        <li>ISF 状态已完成，可发起ISCF,ISTF</li>
+        <li>ISF 已发起ISTF，不可以发起ISCF</li>
+        <li>ISF 已发起ISCF，不可以发起ISTF</li>
+      </div>
+    </td>
+  </tr>
+</table>
+<script language="javascript">
+  //数据提交后，对页面查询条件重新赋值
+  document.all.sel_Type.value = '<HDPrint value=#sel_Type# Replace=#DBField2Js#>';
+  document.all.txt_Num.value = '<HDPrint value=#txt_Num# Replace=#DBField2Js#>';
+  document.all.txt_FillUsr.value = '<HDPrint value=#txt_FillUsr# Replace=#DBField2Js#>';
+  document.all.txt_Unit.value = '<HDPrint value=#txt_Unit# Replace=#DBField2Js#>';
+  document.all.sel_Category.value = '<HDPrint value=#sel_Category# Replace=#DBField2Js#>';
+  document.all.sel_Atype.value = '<HDPrint value=#sel_Atype# Replace=#DBField2Js#>';
+  document.all.txt_Lessee.value = '<HDPrint value=#txt_Lessee# Replace=#DBField2Js#>';
+  document.all.txt_Tradingname.value = '<HDPrint value=#txt_Tradingname# Replace=#DBField2Js#>';
+  document.all.sel_Dept.value = '<HDPrint value=#sel_Dept# Replace=#DBField2Js#>';
+
+</script>
+<BR>
+<HDPageBar>
+<table class=ListBar width="100%" cellspacing="1">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <col style="padding-left:4px;">
+  <tr class="listtr">
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.ISFFlowType">类型</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.ISFNum">单号</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.ISFFillUsrName">发起人</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.ISFCreateDate">发起日期</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.ISFStatText">状态</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.Atype">类别</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.Category">类别2</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.Dept">楼层</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.unit">单位</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.Area">面积</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.BuildArea">建筑面积</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.Trade">业态</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.lessee">租户</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.Tradingname">商店营业名称</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.Contactor">联系人</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.Address">地址</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.Phone">电话</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.Email">Email</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.Fax">Fax</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.leaseTermY">免租期-年</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.leaseTermM">免租期-月</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.leaseTermD">免租期-日</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.交付日期">交付日期</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.related">牵连关系实体交易</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.FreeRentY">免租期-年</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.FreeRentM">免租期-月</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.FreeRentD">免租期-日</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.FitoutM">装修期-月</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.FitoutD">装修期-日</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.FitoutD">细节</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.FitoutDate1">装修期起始</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.FitoutDate2">装修期结束</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.Contractdate1">合同起始</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.Contractdate2">合同截止</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.Rate">租金形式</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.COLLECTION">收银方式</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.POSFeeD">POS机-日</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.POSFeeM">POS机-月</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.LegalFeeD">法律费用-日</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.LegalFeeM">法律费用-月</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.TotalFeeD">总费用-日</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.TotalFeeM">总费用-月</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.AGR">预付租金 + 物业管理费</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.Security">保证金</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.Incash">方式</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.BRCNew">新</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.BRCExist">目前</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.BRCBudget">批准预算</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.SDTopUp">增添保证金</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.AdminFee">文本费用</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.FitAllowance">装修补贴</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.TotalFee">总金额</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.OtherFeeName">其它费用名称</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.OtherFee">其它费用名称</td>
+    <td nowrap style="cursor:hand;" JQAsc="" JQColumn="f.OtherTotalFee">其它费用总金额</td>
+  </tr>
+  <HDLoop>
+  <tr class="listtd" onmouseover="this.className='listtdfocus';" onmouseout="this.className='listtd'">
+    <td nowrap><HDPrint value=#ISFFlowType#></td>
+    <td nowrap><a href="##HDNet_AppName##/WFFlowPage?Url=<HDPrint value=#ModelCode#>&UsrGid=<HDPrint value=#UsrGid#>&ModelGid=<HDPrint value=#ModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint value=#FlowGid#>" target="_blank"><HDPrint value=#Num#></a></td>
+    <td nowrap><HDPrint value=#FillUsrName#></td>
+    <td nowrap><HDPrint value=#CreateDate#></td>
+    <td nowrap><HDPrint value=#FStatText#>:<HDPrint value=#StatText#></td>
+    <td nowrap><HDPrint value=#Atype#></td>
+    <td nowrap><HDPrint value=#Category#></td>
+    <td nowrap><HDPrint value=#Dept#></td>
+    <td nowrap><HDPrint value=#unit#></td>
+    <td nowrap><HDPrint value=#Area#></td>
+    <td nowrap><HDPrint value=#BuildArea#></td>
+    <td nowrap><HDPrint value=#Trade#>:<HDPrint value=#TradeName#></td>
+    <td nowrap><HDPrint value=#lessee#></td>
+    <td nowrap><HDPrint value=#Tradingname#></td>
+    <td nowrap><HDPrint value=#Contactor#></td>
+    <td nowrap><HDPrint value=#Address#></td>
+    <td nowrap><HDPrint value=#Phone#></td>
+    <td nowrap><HDPrint value=#Email#></td>
+    <td nowrap><HDPrint value=#Fax#></td>
+    <td nowrap><HDPrint value=#leaseTermY#></td>
+    <td nowrap><HDPrint value=#leaseTermM#></td>
+    <td nowrap><HDPrint value=#leaseTermD#></td>
+    <td nowrap><HDPrint value=#HandoverDate#></td>
+    <td nowrap><HDPrint value=#related#></td>
+    <td nowrap><HDPrint value=#FreeRentY#></td>
+    <td nowrap><HDPrint value=#FreeRentM#></td>
+    <td nowrap><HDPrint value=#FreeRentD#></td>
+    <td nowrap><HDPrint value=#FitoutM#></td>
+    <td nowrap><HDPrint value=#FitoutD#></td>
+    <td nowrap><HDPrint value=#FitoutD#></td>
+    <td nowrap><HDPrint value=#FitoutDate1#></td>
+    <td nowrap><HDPrint value=#FitoutDate2#></td>
+    <td nowrap><HDPrint value=#Contractdate1#></td>
+    <td nowrap><HDPrint value=#Contractdate2#></td>
+    <td nowrap><HDPrint value=#Rate#>-<HDPrint value=#Rate1#></td>
+    <td nowrap><HDPrint value=#COLLECTION#></td>
+    <td nowrap><HDPrint value=#POSFeeD#></td>
+    <td nowrap><HDPrint value=#POSFeeM#></td>
+    <td nowrap><HDPrint value=#LegalFeeD#></td>
+    <td nowrap><HDPrint value=#LegalFeeM#></td>
+    <td nowrap><HDPrint value=#TotalFeeD#></td>
+    <td nowrap><HDPrint value=#TotalFeeM#></td>
+    <td nowrap><HDPrint value=#AGR#></td>
+    <td nowrap><HDPrint value=#Security#></td>
+    <td nowrap><HDPrint value=#Incash#></td>
+    <td nowrap><HDPrint value=#BRCNew#></td>
+    <td nowrap><HDPrint value=#BRCExist#></td>
+    <td nowrap><HDPrint value=#BRCBudget#></td>
+    <td nowrap><HDPrint value=#SDTopUp#></td>
+    <td nowrap><HDPrint value=#AdminFee#></td>
+    <td nowrap><HDPrint value=#FitAllowance#></td>
+    <td nowrap><HDPrint value=#TotalFee#></td>
+    <td nowrap><HDPrint value=#OtherFeeName#></td>
+    <td nowrap><HDPrint value=#OtherFee#></td>
+    <td nowrap><HDPrint value=#OtherTotalFee#></td>
+  </tr>
+  </HDLoop>
+</table>
+
+<SCRIPT LANGUAGE="JavaScript">
+  //下载Excel
+  function DownLoad(){
+    document.all.Rep_Download.value = '1';
+    //获取当前表单对象
+    var JqObj = $("form[name=frmDo]");
+    //表单参数设定
+    JqObj.attr({
+      "action":'##HDNet_AppName##/__ExplainModule?Url=Prl_ISFDtlDown&UsrGid=<HDPrint Value=#UsrGid#>',
+      "target":'_blank'
+    });
+    //表单提交
+    JqObj.submit();
+    //表单参数还原
+    JqObj.attr({
+      "action":'',
+      "target":'_self'
+    });
+    document.all.Rep_Download.value = '';
+    return true;
+  }
+  //函数：ready
+  //功能：document 加载完成后调用
+  $(function(){
+    //Td点击排序时事件
+    $("td[JQColumn]").click(function(){
+      //取出点击Td的参数
+
+      //JQColumn 字段名
+      var sJQColumn = $(this).attr("JQColumn");
+      //JQAsc 可不写，为空 或 desc
+      var sJQAsc = '';
+      if ($(this).attr("JQAsc") != null){
+        sJQAsc = $(this).attr("JQAsc");
+      }
+
+      //取出排序控件，并赋值
+      $("input[name=selOrderBy]").val(sJQColumn + ' ' + sJQAsc);
+
+      //保留本次点击参数
+      $("input[name=selOrderAsc]").val(sJQAsc);
+      $("input[name=selOrderColumn]").val(sJQColumn);
+
+      //获取当前表单对象
+      var JqObj = $("form[name=frmDo]");
+      //表单参数设定
+      JqObj.attr({
+        "action":'',
+        "target":''
+      });
+      //表单提交
+      JqObj.submit();
+    });
+    //数据提交后，对数据提交前点击的排序Td列重新赋值
+    $("td[JQColumn]").each(function(){
+      var sJQColumn = $(this).attr("JQColumn");
+      var selOrderColumn = '<HDPrint Value=#selOrderColumn# Replace=#DBField2Js#>';
+      var selOrderAsc = '<HDPrint Value=#selOrderAsc# Replace=#DBField2Js#>';
+      if (sJQColumn == selOrderColumn){
+        //取出本Td的文本值，并重新赋值
+        var sText = $(this).text();
+        if (selOrderAsc == ''){
+          $(this).text(sText+"↑");
+          $(this).attr("JQAsc","desc");
+        }
+        else{
+          $(this).text(sText+"↓");
+          $(this).attr("JQAsc","");
+        }
+      }
+    });
+  });
+  </script>
+</form>

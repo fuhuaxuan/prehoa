@@ -1,0 +1,176 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<!-- Ajax函数引入 -->
+<script language="JavaScript" src="##GetWebRootPath(/Scripts/Ajax/json.js)##"></Script>
+
+<script language="JavaScript">
+  //调用路径
+  var url = '';
+  var OrganizationID = '';
+
+  var datainfo = {
+    OrganizationID: "",
+    JobNO: "<HDPrint Value=#Num# Replace=#DBField2Js#>",
+    Department: "<HDPrint Value=#FillUsrDeptCode# Replace=#DBField2Js#>",
+    Location: "<HDPrint Value=#unit# Replace=#DBField2Js#>",
+    FormatsCode: "<HDPrint Value=#Trade# Replace=#DBField2Js#>",
+    FormatsName: "<HDPrint Value=#Tradename# Replace=#DBField2Js#>",
+    LeaseCode: "<HDPrint Value=#LesseeGid# Replace=#DBField2Js#>",
+    LeaseName: "<HDPrint Value=#Lessee# Replace=#DBField2Js#>",
+    ShopsCode: "<HDPrint Value=#TradingGid# Replace=#DBField2Js#>",
+    ShopsName: "<HDPrint Value=#Tradingname# Replace=#DBField2Js#>",
+    ContactBy: "<HDPrint Value=#Contactor# Replace=#DBField2Js#>",
+    Address: "<HDPrint Value=#Address# Replace=#DBField2Js#>",
+    Tel: "<HDPrint Value=#Phone# Replace=#DBField2Js#>",
+    Email: "<HDPrint Value=#Email# Replace=#DBField2Js#>",
+    Fax: "<HDPrint Value=#Fax# Replace=#DBField2Js#>",
+    CalcArea: "<HDPrint Value=#Area# Replace=#DBField2Js#>",
+    BuildArea: "<HDPrint Value=#BuildArea# Replace=#DBField2Js#>",
+    LeaseY: "<HDPrint Value=#LeaseTermY# Replace=#DBField2Js#>",
+    LeaseM: "<HDPrint Value=#LeaseTermM# Replace=#DBField2Js#>",
+    LeaseD: "<HDPrint Value=#LeaseTermD# Replace=#DBField2Js#>",
+    DeliverDate: "<HDPrint Value=#HandoverDate# Replace=#DBField2Js#>",
+    FreeDateM: "<HDPrint Value=#FreeRentM# Replace=#DBField2Js#>",
+    FreeDateD: "<HDPrint Value=#FreeRentD# Replace=#DBField2Js#>",
+    DecorateDateM: "<HDPrint Value=#FitoutM# Replace=#DBField2Js#>",
+    DecorateDateMD: "<HDPrint Value=#fitoutD# Replace=#DBField2Js#>",
+    CalcMode: "<HDPrint Value=#RateText# Replace=#DBField2Js#><HDPrint Value=#Rate# Replace=#DBField2Js#>",
+    CashierMode: "<HDPrint Value=#Collection# Replace=#DBField2Js#>",
+    POSUseFee: "<HDPrint Value=#POSFeeD# Replace=#DBField2Js#>",
+    LawFee: "<HDPrint Value=#LegalFeeD# Replace=#DBField2Js#>",
+    DepositFee: "<HDPrint Value=#Security# Replace=#DBField2Js#>",
+    Remark: "<HDPrint Value=#Memo# Replace=#DBField2Js#>",
+    DetailList: []
+  };
+  /*
+  *函数功能：Ajax中POST方式取出员工资料
+  *参数：代码控件对象
+  */
+  function PostMall2() {
+    Run_Div_Show();
+    var PreDeptCode = '<HDPrint Value=#ParentDeptCode# Replace=#DBField2Js#>';
+    //青羊
+    if (PreDeptCode == '0003') {
+      url = 'http://171.221.248.15/MallOAService/MallService.asmx/InsertContract';
+      datainfo.OrganizationID = 'BDA02110-39BF-48CE-8D00-E4D31A45EE88';
+    }
+    //佛山
+    else if (PreDeptCode == '0002') {
+      url = 'http://121.9.230.202/MallAppService/MallService.asmx/InsertContract';
+      datainfo.OrganizationID = '06C36E50-AFB4-44AF-A75E-0D1623DCD551';
+    }
+    //参数
+    var data = {
+      data : JSON.stringify(datainfo)
+    };
+    //回调函数
+    var cb = {
+      //成功，处理函数
+      success : function (ret){
+        if(ret.returnCode == '00'){
+          PostMall1('2');
+        }
+        else{
+          Run_Div_hide();
+          alert(ret.errorMsg);
+        }
+        return true;
+      },
+      //失败，处理函数
+      failed : function (ret){
+        Run_Div_hide();
+        alert('发送失败');
+        return false;
+      }
+    };
+    //调用Ajax函数
+    JQAjax(url,data,cb);
+  }
+
+  /*
+  *函数功能：Ajax中POST方式取出员工资料
+  *参数：代码控件对象
+  */
+  function PostMall1(MallStat) {
+    //调用路径
+    //若在报表(RepDisplay)中使用，则标记Rep=1
+    //若在流程(WFFlowPage)中使用，则标记Flow=1
+    var url = '##HDNet_AppName##/__ExplainAjax?Url=<HDPrint Value=#ModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&Flow=1&OpAtype=2';
+
+    //参数
+    var data = {
+      ThisFlowGid : '<HDPrint Value=#FlowGid# Replace=#DBField2Js#>',
+      MallStat : MallStat
+    };
+    //回调函数
+    var cb = {
+      //成功，处理函数
+      success : function (ret){
+        alert('已经发送成功！');
+        location.reload();
+        return true;
+      },
+      //失败，处理函数
+      failed : function (ret){
+        alert('发送失败！');
+        return false;
+      }
+    };
+    //调用Ajax函数
+    JQAjax(url,data,cb);
+  }
+
+</script>
+
+<HDPrint Value=#DtlList# Replace=#None#>
+<form name="frmDo" method="post" action="">
+<h3 class="TitleBar" ><HDPrint Value=#ModelName#>-明细</h3>
+<TABLE width="100%" class="ButtonBar" cellpadding="0" cellspacing="0">
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <HDIF EqualNot(<HDPrint Value=#NextStepCode# Replace=#None#>, )>
+        <A HREF="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#NextStepCode#>&UsrGid=<HDPrint Value=#UsrGid#>&FlowGid=<HDPrint Value=#FlowGid#>&ModelGid=<HDPrint Value=#ModelGid#>" target="_blank"><FONT class="IconNext">　&nbsp;</FONT> 下一步操作：<HDPrint Value=#NextStepName#></A>
+      </HDIF>
+      <script language="javascript">
+        //函数：ready
+        //功能：document 加载完成后调用
+        $(document).ready(function(){
+          var PreDeptCode = '<HDPrint Value=#ParentDeptCode# Replace=#DBField2Js#>';
+          if (PreDeptCode == '0003' || PreDeptCode == '0002') {
+            $("[JQ=MALL2]").show();
+          }
+          else{
+            $("[JQ=MALL1]").show();
+          }
+        });
+      </script>
+      |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+      <A HREF="javascript:window.close();void(0)"><FONT class="IconClose">　&nbsp;</FONT> 关闭</A>
+      <A HREF="##HDNet_AppName##/MainPage?URL=&UsrGid=<HDPrint Value=#UsrGid#>"><FONT class="IconHome">　&nbsp;</FONT> 返回首页</A>
+    </TD>
+  </TR>
+</TABLE>
+<iframe onload="JQAutoHeight(this)" id="iframeDtl" frameborder ='0' width="100%"  scrolling="no" style="width:100%" Src="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_DTL&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid#>&IsMall=1"></iframe>
+<br>
+<TABLE width="100%" class="ButtonBar" cellpadding="0" cellspacing="0">
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <HDIF EqualNot(<HDPrint Value=#NextStepCode# Replace=#None#>, )>
+        <A HREF="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#NextStepCode#>&UsrGid=<HDPrint Value=#UsrGid#>&FlowGid=<HDPrint Value=#FlowGid#>&ModelGid=<HDPrint Value=#ModelGid#>" target="_blank"><FONT class="IconNext">　&nbsp;</FONT> 下一步操作：<HDPrint Value=#NextStepName#></A>
+      </HDIF>
+      |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+      <A HREF="javascript:window.close();void(0)"><FONT class="IconClose">　&nbsp;</FONT> 关闭</A>
+      <A HREF="##HDNet_AppName##/MainPage?URL=&UsrGid=<HDPrint Value=#UsrGid#>"><FONT class="IconHome">　&nbsp;</FONT> 返回首页</A>
+    </TD>
+  </TR>
+</TABLE>
+</form>
+
+<HDPrint Value=#EmailPhone# Replace=#None#>

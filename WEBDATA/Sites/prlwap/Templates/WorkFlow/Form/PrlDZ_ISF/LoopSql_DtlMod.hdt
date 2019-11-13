@@ -1,0 +1,22 @@
+<script>
+  <hdloop>
+    Add_Dtl('<HDPrint Value=#TbId# Replace=#DBField2Js#>',
+    '<HDPrint Value=#Gid# Replace=#DBField2Js#>',
+    '<HDPrint Value=#YearType# Replace=#DBField2Js#>',
+    '<HDPrint Value=#FreeRentDate1# Replace=#DBField2Js#>',
+    '<HDPrint Value=#FreeRentDate2# Replace=#DBField2Js#>',
+    '<HDPrint Value=#TBRD# Replace=#DBField2Js#>',
+    '<HDPrint Value=#TBRM# Replace=#DBField2Js#>',
+    '<HDPrint Value=#PMFD# Replace=#DBField2Js#>',
+    '<HDPrint Value=#PMFM# Replace=#DBField2Js#>',
+    '<HDPrint Value=#Apfixed# Replace=#DBField2Js#>',
+    '<HDPrint Value=#AP# Replace=#DBField2Js#>',
+    '<HDPrint Value=#GTO# Replace=#DBField2Js#>',
+    '<HDPrint Value=#ProGTOD# Replace=#DBField2Js#>',
+    '<HDPrint Value=#ProGTOM# Replace=#DBField2Js#>',
+    '<HDPrint Value=#ProGTOrent# Replace=#DBField2Js#>',
+    '<HDPrint Value=#JTBRD# Replace=#DBField2Js#>',
+    '<HDPrint Value=#JPMFD# Replace=#DBField2Js#>',
+    '<HDPrint Value=#JApfixed# Replace=#DBField2Js#>');
+  </hdloop>
+</script>

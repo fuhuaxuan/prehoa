@@ -21,15 +21,17 @@ LoopSql4=insert into PrlZB_Acg_Post(EntGid,Gid,ComGid,ComCode,ComName,AcgGid,Acg
 
 LoopSql5=insert into PrlZB_Acg_Post(EntGid,Gid,ComGid,ComCode,ComName,AcgGid,AcgCode,AcgName,Apper,PostGid,PostCode,PostName) select __ENTGID__,sys_guid(), ##%ComGid%##,##%ComCode%##,##%ComName%##,##%AcgGid%##,##%AcgCode%##,##%AcgName%##,##%A5Apper%##,m.Gid,m.Code,m.Name from PrlZb_Post m where m.EntGid = __ENTGID__ and m.Code = '30'
 
-LoopSql6=insert into PrlZB_Acg_Post(EntGid,Gid,ComGid,ComCode,ComName,AcgGid,AcgCode,AcgName,Apper,PostGid,PostCode,PostName) select __ENTGID__,sys_guid(), ##%ComGid%##,##%ComCode%##,##%ComName%##,##%AcgGid%##,##%AcgCode%##,##%AcgName%##,##%A6Apper%##,m.Gid,m.Code,m.Name from PrlZb_Post m where m.EntGid = __ENTGID__ and m.Code = '35'
+LoopSql6=insert into PrlZB_Acg_Post(EntGid,Gid,ComGid,ComCode,ComName,AcgGid,AcgCode,AcgName,Apper,PostGid,PostCode,PostName) select __ENTGID__,sys_guid(), ##%ComGid%##,##%ComCode%##,##%ComName%##,##%AcgGid%##,##%AcgCode%##,##%AcgName%##,##%A55Apper%##,m.Gid,m.Code,m.Name from PrlZb_Post m where m.EntGid = __ENTGID__ and m.Code = '32'
 
-LoopSql7=insert into PrlZB_Acg_Post(EntGid,Gid,ComGid,ComCode,ComName,AcgGid,AcgCode,AcgName,Apper,PostGid,PostCode,PostName) select __ENTGID__,sys_guid(), ##%ComGid%##,##%ComCode%##,##%ComName%##,##%AcgGid%##,##%AcgCode%##,##%AcgName%##,##%A7Apper%##,m.Gid,m.Code,m.Name from PrlZb_Post m where m.EntGid = __ENTGID__ and m.Code = '40'
+LoopSql7=insert into PrlZB_Acg_Post(EntGid,Gid,ComGid,ComCode,ComName,AcgGid,AcgCode,AcgName,Apper,PostGid,PostCode,PostName) select __ENTGID__,sys_guid(), ##%ComGid%##,##%ComCode%##,##%ComName%##,##%AcgGid%##,##%AcgCode%##,##%AcgName%##,##%A6Apper%##,m.Gid,m.Code,m.Name from PrlZb_Post m where m.EntGid = __ENTGID__ and m.Code = '35'
 
-LoopSql8=insert into PrlZB_Acg_Post(EntGid,Gid,ComGid,ComCode,ComName,AcgGid,AcgCode,AcgName,Apper,PostGid,PostCode,PostName) select __ENTGID__,sys_guid(), ##%ComGid%##,##%ComCode%##,##%ComName%##,##%AcgGid%##,##%AcgCode%##,##%AcgName%##,##%A8Apper%##,m.Gid,m.Code,m.Name from PrlZb_Post m where m.EntGid = __ENTGID__ and m.Code = '45'
+LoopSql8=insert into PrlZB_Acg_Post(EntGid,Gid,ComGid,ComCode,ComName,AcgGid,AcgCode,AcgName,Apper,PostGid,PostCode,PostName) select __ENTGID__,sys_guid(), ##%ComGid%##,##%ComCode%##,##%ComName%##,##%AcgGid%##,##%AcgCode%##,##%AcgName%##,##%A7Apper%##,m.Gid,m.Code,m.Name from PrlZb_Post m where m.EntGid = __ENTGID__ and m.Code = '40'
 
-LoopSql9=insert into PrlZB_Acg_Post(EntGid,Gid,ComGid,ComCode,ComName,AcgGid,AcgCode,AcgName,Apper,PostGid,PostCode,PostName) select __ENTGID__,sys_guid(), ##%ComGid%##,##%ComCode%##,##%ComName%##,##%AcgGid%##,##%AcgCode%##,##%AcgName%##,##%A9Apper%##,m.Gid,m.Code,m.Name from PrlZb_Post m where m.EntGid = __ENTGID__ and m.Code = '50'
+LoopSql9=insert into PrlZB_Acg_Post(EntGid,Gid,ComGid,ComCode,ComName,AcgGid,AcgCode,AcgName,Apper,PostGid,PostCode,PostName) select __ENTGID__,sys_guid(), ##%ComGid%##,##%ComCode%##,##%ComName%##,##%AcgGid%##,##%AcgCode%##,##%AcgName%##,##%A8Apper%##,m.Gid,m.Code,m.Name from PrlZb_Post m where m.EntGid = __ENTGID__ and m.Code = '45'
 
-LoopSql10=insert into PrlZB_Acg_Post(EntGid,Gid,ComGid,ComCode,ComName,AcgGid,AcgCode,AcgName,Apper,PostGid,PostCode,PostName) select __ENTGID__,sys_guid(), ##%ComGid%##,##%ComCode%##,##%ComName%##,##%AcgGid%##,##%AcgCode%##,##%AcgName%##,##%A10Apper%##,m.Gid,m.Code,m.Name from PrlZb_Post m where m.EntGid = __ENTGID__ and m.Code = '55'
+LoopSql10=insert into PrlZB_Acg_Post(EntGid,Gid,ComGid,ComCode,ComName,AcgGid,AcgCode,AcgName,Apper,PostGid,PostCode,PostName) select __ENTGID__,sys_guid(), ##%ComGid%##,##%ComCode%##,##%ComName%##,##%AcgGid%##,##%AcgCode%##,##%AcgName%##,##%A9Apper%##,m.Gid,m.Code,m.Name from PrlZb_Post m where m.EntGid = __ENTGID__ and m.Code = '50'
+
+LoopSql11=insert into PrlZB_Acg_Post(EntGid,Gid,ComGid,ComCode,ComName,AcgGid,AcgCode,AcgName,Apper,PostGid,PostCode,PostName) select __ENTGID__,sys_guid(), ##%ComGid%##,##%ComCode%##,##%ComName%##,##%AcgGid%##,##%AcgCode%##,##%AcgName%##,##%A10Apper%##,m.Gid,m.Code,m.Name from PrlZb_Post m where m.EntGid = __ENTGID__ and m.Code = '55'
 
 [AddtionalSQLUseWhere]
 ;显示，单条数据的查询，可以用于HDT显示，有select命令。从SQL1～SQL20共支持20条，同时会使用上面的[where]中的sql语句
