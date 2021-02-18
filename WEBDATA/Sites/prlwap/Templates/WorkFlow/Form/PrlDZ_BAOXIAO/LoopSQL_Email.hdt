@@ -10,11 +10,10 @@
 <TR><TD class="App_ListTr">单据信息</TD></TR>
 <TR><TD class="App_ListTd">[公司名称] : <HDPrint Value=#ComName#>；</td></tr>
 <TR><TD class="App_ListTd">[报销金额汇总] : <HDPrint Value=#SumFee#> 元；</td></tr>
-<TR><TD class="App_ListTd">[附件信息] : <HDPrint Value=#AttachList# Replace=#None#></td></tr>
-<HDIF EqualNot(<HDPrint Value=#isCEO# Replace=#None#>, 0)>
-<TR><TD class="App_ListTd">[潘总审批附件:] : <HDPrint Value=#AttachList2# Replace=#None#></td></tr>
-</HDIF>
+<TR><TD class="App_ListTd">[附件信息] : <span JQ="td_10"></span> </td></tr>
+<TR><TD class="App_ListTd">[电子发票] : <span JQ="td_20"></span> </td></tr>
 </table>
+<HDPrint Value=#AttachList# Replace=#None#>
 <table cellpadding="0" cellspacing="0" width="100%" class="App_List" style="margin-top:10px">
   <col style="padding-left:4px;">
   <col style="width:30px;" align="center">

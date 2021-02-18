@@ -203,13 +203,13 @@
     <td class="listtd"><HDPrint Value=#AtypeText# Replace=#None#>
       <br>
       <HDPrint Value=#CategoryText1# Replace=#None#>
+      <HDIF Equal(<HDPrint Value=#Category# Replace=#None#>, Others 其他)>
+      :<HDPrint Value=#CategoryTextText# Replace=#None#>
+    </HDIF>
       <script language="javascript">
         //函数：ready
         //功能：document 加载完成后调用
         $(document).ready(function(){
-          if ('<HDPrint Value=#Category# Replace=#DBField2Js#>' == 'Others 其他'){
-            document.write(':<HDPrint Value=#CategoryTextText# Replace=#None#>');
-          }
           if ('<HDPrint Value=#Atype# Replace=#DBField2Js#>' == 'Renewal 续约租赁') {
               $("tr[JQ=sale]").show();
           }
@@ -332,7 +332,7 @@
     第一租赁期固定租金（人民币）</td>
     <td colspan="3">
     Property Mgmt Fee<br>
-    物业管理费 (RMB)</td>
+    物业管理服务费 (RMB)</td>
     <td colspan="2">A&P 市场推广费</td>
     <td>GTO Rent Structure<br>
     提成租金构造</td>

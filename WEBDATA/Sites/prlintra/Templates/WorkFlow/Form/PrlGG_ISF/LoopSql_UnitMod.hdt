@@ -1,3 +1,3 @@
 <HDLoop>
-<option value='<HDPrint Value=#fno# Replace=#DBField2Input#>' JsFloor="<HDPrint Value=#floorno# Replace=#DBField2Input#>" JsFmr="<HDPrint Value=#fmr# Replace=#DBField2Input#>"><HDPrint Value=#fno#></option>
+<option value='<HDPrint Value=#fno# Replace=#DBField2Input#>' JsFloor="<HDPrint Value=#floorno# Replace=#DBField2Input#>" JsFmr="<HDPrint Value=#fmr# Replace=#DBField2Input#>" JsFArea="<HDPrint Value=#farea# Replace=#DBField2Input#>" JsJArea="<HDPrint Value=#jarea# Replace=#DBField2Input#>"><HDPrint Value=#fno#></option>
 </HDLoop>

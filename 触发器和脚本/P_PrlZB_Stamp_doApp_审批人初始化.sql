@@ -11,6 +11,7 @@ create or replace procedure P_PrlZB_Stamp_doApp(p_EntGid    varchar2, --企业Gid
   v_DeptGid     varchar2(32); --当前用户部门
   v_PreDeptCode varchar2(32); --所属部门代码
   v_StampType   varchar2(128); --印章类型
+  v_ApplyType   varchar2(128); --印章类型
   v_ComGid      varchar2(32); --项目ID
   v_Count       int;
 begin
@@ -20,8 +21,14 @@ begin
          f.FillDeptGid,
          substr(f.FillDeptCode, 0, 4),
          f.Stamptype,
+         f.ApplyType,
          f.Comgid
-    into v_UsrGid, v_DeptGid, v_PreDeptCode, v_StampType, v_ComGid
+    into v_UsrGid,
+         v_DeptGid,
+         v_PreDeptCode,
+         v_StampType,
+         v_ApplyType,
+         v_ComGid
     from wf_PrlZB_Stamp f
    where f.entgid = p_EntGid
      and f.flowgid = p_FlowGid;
@@ -69,6 +76,17 @@ begin
                      v.PostCode AppCode,
                      v.PostName AppName,
                      2          AppOrder,
+                     25         AppType
+                from v_Post v
+               where v.EntGid = p_EntGid
+                 and v.deptGid = v_DeptGid
+                 and v.atype = 30
+                 and rownum = 1
+              union
+              select v.PostGid  AppGid,
+                     v.PostCode AppCode,
+                     v.PostName AppName,
+                     3          AppOrder,
                      35         AppType
                 from v_Post v
                where v.EntGid = p_EntGid
@@ -79,32 +97,80 @@ begin
               select v.PostGid  AppGid,
                      v.PostCode AppCode,
                      v.PostName AppName,
-                     3          AppOrder,
+                     4          AppOrder,
                      37         AppType
                 from v_Post v
                where v.EntGid = p_EntGid
                  and v.deptGid = v_DeptGid
                  and v.atype = 80
-                 and rownum = 1) t;
-  
-    for R in (select AppGid, AppCode, AppName, Line, StampType
-                from PrlZB_Stamp_App
-               where EntGid = p_EntGid
-                 and v_StampType like '%' || StampType || '%'
-                 and ComGid = v_ComGid
-               order by decode(StampType,
-                               '财务印章',
-                               50,
-                               '公司公章',
-                               60,
-                               '法定代表人名章',
-                               70,
-                               '公司股东章',
-                               80,
-                               '合同章',
-                               90),
-                        Line) loop
-      select count(*)
+                 and rownum = 1
+              ) t;
+    if v_ApplyType <> '标准类合同用印' or v_PreDeptCode in ('0001', '0023') then
+      for R in (select AppGid, AppCode, AppName, Line, StampType
+                  from PrlZB_Stamp_App
+                 where EntGid = p_EntGid
+                   and v_StampType like '%' || StampType || '%'
+                   and ComGid = v_ComGid
+                 order by decode(StampType,
+                                 '财务印章',
+                                 50,
+                                 '公司公章',
+                                 60,
+                                 '法定代表人名章',
+                                 70,
+                                 '公司股东章',
+                                 80,
+                                 '合同章',
+                                 90),
+                          Line) loop
+        select max(apporder)
+          into v_Count
+          from wf_PrlZB_Stamp_App t
+         where t.entgid = p_EntGid
+           and t.Flowgid = p_FlowGid
+           and t.apporder < 100;
+        insert into wf_PrlZB_Stamp_App
+          (EntGid,
+           ModelGid,
+           FlowGid,
+           Gid,
+           AppGid,
+           AppCode,
+           AppName,
+           AppOrder,
+           AppType)
+          select p_EntGid,
+                 p_ModelGid,
+                 p_FlowGid,
+                 sys_guid(),
+                 R.AppGid,
+                 R.AppCode,
+                 R.AppName,
+                 v_Count + 1,
+                 decode(R.StampType,
+                        '财务印章',
+                        50,
+                        '公司公章',
+                        60,
+                        '法定代表人名章',
+                        70,
+                        '公司股东章',
+                        80,
+                        '合同章',
+                        90)
+            from dual;
+        commit;
+      end loop;
+    end if;
+  /*
+    for R in (select distinct s.AppGid, s.AppCode, s.Appname
+                from PrlZB_Stamp s, WF_PrlZB_Stamp f
+               where f.EntGid = p_EntGid
+                 and f.FlowGid = p_FlowGid
+                 and s.ComGid = f.ComGid
+                 and f.StampType like '%' || s.StampType || '%'
+               order by s.appcode) loop
+      select max(AppOrder)
         into v_Count
         from wf_PrlZB_Stamp_App t
        where t.entgid = p_EntGid
@@ -128,20 +194,12 @@ begin
                R.AppCode,
                R.AppName,
                v_Count + 1,
-               decode(R.StampType,
-                      '财务印章',
-                      50,
-                      '公司公章',
-                      60,
-                      '法定代表人名章',
-                      70,
-                      '公司股东章',
-                      80,
-                      '合同章',
-                      90)
+               98
           from dual;
+    
       commit;
     end loop;
+  */
     --取出审批人中重复的审批人
     delete from wf_PrlZB_Stamp_App f
      where f.EntGid = p_EntGid
@@ -251,3 +309,26 @@ exception
     end;
 end;
 /
+
+/*
+union
+              select o.AppGid, o.AppCode, o.AppName, 5 AppOrder, 38 AppType
+                from v_wf_model_usr_app o
+               where o.EntGid = p_EntGid
+                 and o.ModelGid = p_ModelGid
+                 and replace(lower(o.Modelcode), lower(v_ModelCode), '') in
+                     ('_tc3')
+                 and rownum = 1
+                 and (v_ApplyType <> '标准类合同用印' or
+                     v_PreDeptCode in ('0001', '0023'))
+              union
+              select o.AppGid, o.AppCode, o.AppName, 6 AppOrder, 39 AppType
+                from v_wf_model_usr_app o
+               where o.EntGid = p_EntGid
+                 and o.ModelGid = p_ModelGid
+                 and replace(lower(o.Modelcode), lower(v_ModelCode), '') in
+                     ('_tc2')
+                 and rownum = 1
+                 and (v_ApplyType <> '标准类合同用印' or
+                     v_PreDeptCode in ('0001', '0023'))
+*/

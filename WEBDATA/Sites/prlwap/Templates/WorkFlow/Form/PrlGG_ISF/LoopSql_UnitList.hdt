@@ -1,10 +1,19 @@
 <script language="javascript">
 var JsFloor = ''
 var JsUnit = '';
+var JsFArea = 0;
+var JsJArea = 0;
 <HDLoop>
-JsUnit += "<HDPrint Value=#fNo# Replace=#DBField2Input#>;";
-JsFloor += "<HDPrint Value=#floorno# Replace=#DBField2Input#>;";
+  JsUnit += "<HDPrint Value=#fNo# Replace=#DBField2Input#>;";
+  JsFloor += "<HDPrint Value=#floorno# Replace=#DBField2Input#>;";
+  JsFArea += parseFloat("<HDPrint Value=#farea# Replace=#DBField2Input#>");
+  JsJArea += parseFloat("<HDPrint Value=#jArea# Replace=#DBField2Input#>");
 </HDLoop>
 $("[JQ=JQUnit]").html(JsUnit);
 $("[JQ=JQFloor]").html(JsFloor);
+if (JsFArea == JsJArea) {
+  $("[JQ=JQArea]").html(JsFArea.toFixed(2));
+}else{
+  $("[JQ=JQArea]").html(JsFArea.toFixed(2) + "-" + JsJArea.toFixed(2));
+}
 </script>

@@ -13,7 +13,7 @@
   <INPUT type="text" style="display:none" name="CurUrl" value="<HDPrint Value=#Url# Replace=#DBField2Input#>">
   <!--·¢ÆðÈËUsrGid-->
   <INPUT type="text" style="display:none" name="T1Gid" value="<HDPrint Value=#FillUsrGid# Replace=#DBField2Input#>">
-  <input type="text" style="display:none" name="FillUsrDeptGid" value="<HDPrint Value=#FillUsrDeptGid# Replace=#DBField2Input#>">
+  <input type="text" style="display:none" name="FillDeptGid" value="<HDPrint Value=#FillDeptGid# Replace=#DBField2Input#>">
   <input type="text" style="display:none" name="ParentDeptCode" value="<HDPrint Value=#ParentDeptCode# Replace=#DBField2Input#>">
 <INPUT type="text" style="display:none" name="AppOrder" value="<HDPrint Value=#AppOrder# Replace=#DBField2Input#>">
 <INPUT type="text" style="display:none" name="AppType" value="<HDPrint Value=#AppType# Replace=#DBField2Input#>">

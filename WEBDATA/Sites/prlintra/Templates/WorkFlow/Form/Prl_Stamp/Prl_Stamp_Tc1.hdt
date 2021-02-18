@@ -34,6 +34,23 @@
 </div>
 <iframe onload="JQAutoHeight(this)" id="iframeDtl" frameborder ='0' width="100%"  scrolling="no" style="width:100%" src="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_Content&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid#>"></iframe>
 <br>
+<h3 class="SubTitleBar"><FONT style="padding-left:10px">确认信息</FONT></h3>
+<table cellpadding="0" cellspacing="1" class="ListBar" width="100%">
+  <col style="padding-left:4px;width:10%" valign="top">
+  <col style="padding-left:4px;width:40%" valign="top">
+  <col style="padding-left:4px;width:10%" valign="top">
+  <col style="padding-left:4px;width:40%" valign="top">
+  <tr>
+    <td class="DtlBarTitle">确认人:</td>
+    <td class="listtd">[<HDPrint Value=#CurUsrCode#>]<HDPrint Value=#CurUsrName#></td>
+    <td class="DtlBarTitle">确认时间:</td>
+    <td class="listtd"><HDPrint Value=#CurDate#> <HDPrint Value=#CurTime#></td>
+  </tr>
+  <tr>
+    <td class="DtlBarTitle">确认意见:<br><font color="gray">(500字内)</font></td>
+    <td class="listtd" colspan="3"><textarea class="JQText JQNo" rows="5" id="AppMemo" name="AppMemo" maxlength="500"></textarea></td>
+  </tr>
+</table>
 </form>
 <script language="javascript">
   //复制一个工具栏

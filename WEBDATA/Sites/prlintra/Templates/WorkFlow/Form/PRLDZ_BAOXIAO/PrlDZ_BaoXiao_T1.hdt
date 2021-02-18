@@ -3,6 +3,10 @@
 <script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
 <script language="javascript" src="##GetWebRootPath(/Scripts/JSCalendar.js)##"></script>
 <script>
+  var g_Type = '';
+  function chgAttach(JsType){
+    g_Type = JsType;
+  }
   /*
   *函数名称：新增附件添加到附件列表中
   *参数：sFileName-附件名称
@@ -12,13 +16,13 @@
     if (JsFileName == '')
       return false;
     //判断是否存在附件
-    if (!JQgetSingle("selFileList_1",JsFileName)){
+    if (!JQgetSingle("fileList",JsFileName,"^")){
       alert('对不起，已经存在该附件！');
       return false;
     }
     //添加到附件表中
-    var JsOption = '<option value="'+JsFileName+'">'+JsFileName+'</option>';
-    $("select[name=selFileList_1]").append(JsOption);
+    var JsOption = "<option value='"+JsFileName+"'>"+JsFileName+"</option>";
+    $("select[name=fileList"+g_Type+"_1]").append(JsOption);
   }
   //检查整数
   function changeInt(JsObj) {
@@ -235,8 +239,8 @@
 <form name="frmDo" method="post" action="">
 <!--流程用到一些控件-->
 <input type="text" style="display:none" name="ModelGid" value="<HDPrint Value=#ModelGid# Replace=#DBField2Input#>">
-<input type="text" style="display:none" name="FlowGid" value="<HDPrint Value=#NewGid# Replace=#DBField2Input#>">
-<input type="text" style="display:none" name="FlowGid_1" value="<HDPrint Value=#NewGid# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="FlowGid" value="<HDPrint Value=#NewNum# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="FlowGid_1" value="<HDPrint Value=#NewNum# Replace=#DBField2Input#>">
 <INPUT type="text" style="display:none" name="CurUrl" value="<HDPrint Value=#Url# Replace=#DBField2Input#>">
 <INPUT type="text" style="display:none" name="Num" value="<HDPrint Value=#NewNum# Replace=#DBField2Input#>">
 <input type="text" style="display:none" name="FillDeptGid" value="<HDPrint Value=#FillDeptGid# Replace=#DBField2Input#>">
@@ -307,7 +311,7 @@
       <INPUT type="text" name="ApplyUsrName" value="<HDPrint Value=#ApplyUsrName# Replace=#DBField2Input#>" readonly Class="JQText JQMust" style="width:200px">
       <INPUT type="hidden" name="ApplyUsrCode" value="<HDPrint Value=#ApplyUsrCode# Replace=#DBField2Input#>">
       <INPUT type="hidden" name="ApplyUsrGid" value="<HDPrint Value=#ApplyUsrGid# Replace=#DBField2Input#>">
-      <input type="checkbox" name="IsCM_1" value="是" class="JQCheckBox">报销人为项目总经理/财务经理
+      <input type="checkbox" name="IsCM_1" value="是" class="JQCheckBox">报销人为项目总经理
       <input type="hidden" name="IsCM" value="<HDPrint Value=#IsCM# Replace=#DBField2Input#>" JQChkName="IsCM_1" JQChkTab=";">
       <script language="javascript">
       JQcheckBoxVal("IsCM_1",";",'<HDPrint Value=#IsCM# Replace=#DBField2Js#>')
@@ -348,10 +352,20 @@
   </tr>
   <tr valign="top">
     <td class="DtlBarTitle">附件信息:<br><font color="gray">(双击删除)</font></td>
-    <td class="listtd" colspan="5">
-      <SELECT NAME="selFileList_1" size="3" style="width:250;" multiple><HDPrint Value=#AttachList# Replace=#None#></SELECT><br>
+    <td class="listtd">
+      <SELECT NAME="fileList10_1" size="3" style="width:250;" multiple></SELECT><br>
+      <iframe FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid# Replace=#DBField2Input#>&CallBackFun=chgAttach('10');WinObj.AddAttach" height=28></iframe>
+    </td>
+    <td class="DtlBarTitle">电子发票:<br><font color="gray">(双击删除)</font></td>
+    <td class="listtd">
+      <SELECT NAME="fileList20_1" size="3" style="width:250;" multiple></SELECT><br>
+      <iframe FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid# Replace=#DBField2Input#>&CallBackFun=chgAttach('20');WinObj.AddAttach" height=28></iframe>
+    </td>
+    <td class="DtlBarTitle"></td>
+    <td class="listtd">
       <input type="hidden" name="HDTempPath" value="<HDPrint Value=#NewGid# Replace=#DBField2Input#>">
-      <iframe FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid# Replace=#DBField2Input#>&CallBackFun=AddAttach" height=28></iframe>
+      <SELECT NAME="selFileList_1" size="3" style="width:250;display:none" multiple></SELECT>
+      <HDPrint Value=#AttachList# Replace=#None#>
     </td>
   </tr>
 </table>
@@ -429,6 +443,14 @@
       sCss = 'JQMust';
       sConfirm = '您确定已经填写完申请单，并提交吗？';
     }
+    //所有附件集中
+    var JsObj = $("select[name=selFileList_1]");
+    JsObj.empty();
+    $("select[name^=fileList]>option").each(function() {
+      if ($(this).val() != null) {
+       JsObj.append("<option value='"+$(this).val()+"'>"+$(this).val()+"</option>");
+     }
+    });
     //提交时，验证必填项
     if (!JQcheck(sCss)){
       return false;
@@ -475,7 +497,7 @@
   <INPUT TYPE="hidden" name="DataInterface_UsrGid" value="<HDPrint Value=#UsrGid#>">
   <INPUT TYPE="hidden" name="DataInterface_AppName" value="##HDNet_AppName##">
 
-  <INPUT TYPE="hidden" name="DataInterface_Cols" value="2^科目编号^left^10">
+  <INPUT TYPE="hidden" name="DataInterface_Cols" value="2^科目编号^left^20">
   <INPUT TYPE="hidden" name="DataInterface_Cols" value="3^科目名称^left^100">
 
   <INPUT TYPE="hidden" name="DataInterface_Search" value="v.code^科目编号^1">

@@ -1,0 +1,153 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<script language="javascript">
+  //窗口改变，重计算iframe的高度
+  $(window).resize(function (){
+    JQChgHeight();
+  });
+</script>
+
+<HDPrint Value=#EmailPhone# Replace=#None#>
+<form name="frmDtl" method="Post" action="">
+<table cellpadding="0" cellspacing="1" align="center" width="100%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:20%">
+  <col style="padding-left:4px;width:40%">
+  <col style="padding-left:4px;width:30%">
+  <TR>
+    <TD class="newtd2">单号:</TD>
+    <TD class="newtd3"><HDPrint Value=#Num#></td>
+    <td class="title" rowspan="3" align="center"><HDPrint Value=#ModelName#></td>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2">发起人:</TD>
+    <TD class="newtd3"><HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]</td>
+    <TD>流程状态:<HDPrint Value=#Flowstat# Replace=#None#></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2">发起日期:</TD>
+    <TD class="newtd3"><HDPrint Value=#CreateDate#></td>
+    <TD>单据状态:<font color="blue"><HDPrint Value=#stat#></font></TD>
+  </TR>
+</table>
+<!--显示审批人信息-->
+<HDIF EqualNot(<HDPrint Value=#IsShow# Replace=#None#>, 0)>
+<HDPrint Value=#AppList# Replace=#None#>
+</HDIF>
+<h3 class="SubTitleBar" >
+<TABLE cellspacing="1" cellpadding="0" width="100%">
+  <col style="padding-left:4px;">
+  <col style="width:20px;" align="center">
+  <TR>
+    <TD align="left" style="padding-left:10px;"><b>单据信息</b></TD>
+    <TD onclick="JQExpand('tb_Order');" style="cursor:hand" class="IconUp">　&nbsp;</TD>
+  </TR>
+</TABLE>
+</h3>
+<table cellpadding="0" cellspacing="1" class="ListBar" width="100%" id="tb_Order">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:23%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:23%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:23%">
+  <tr valign="top">
+    <td class="DtlBarTitle">是否关联流程:</td>
+    <td class="listtd" colspan="5">
+      <HDPrint Value=#mIsFlow#>
+      <font id="f_flow" style="display:none">
+      （单号：<a id="a_flow" href="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#mModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&ModelCode=<HDPrint Value=#mModelCode#>&FlowGid=<HDPrint Value=#mFlowGid#>" target="_blank"><HDPrint Value=#mNum#></a>）
+      </font>
+      <script language="javascript">
+        if('<HDPrint Value=#mIsFlow# Replace=#DBField2Js#>' == '是'){
+          $("#f_flow").show();
+        }
+        //函数：ready
+        //功能：document 加载完成后调用
+        $(document).ready(function(){
+          $("input[name=mIsFlow]").click(function (){
+            if($(this).val() == '是'){
+              $("#f_flow").show();
+            }
+            else{
+              $("#f_flow").hide();
+            }
+          });
+        });
+      </script>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">申请类型:</td>
+    <td class="listtd"><HDPrint Value=#ApplyType#>
+      <script language="javascript">
+        //函数：ready
+        //功能：document 加载完成后调用
+        $(document).ready(function(){
+          var JsValue = '<HDPrint Value=#ApplyType# Replace=#DBField2Js#>' == '非合同类文件用印' ? '1' : '2';
+          $("[JQ^=Type]").hide();
+          $("[JQ=Type_"+JsValue+"]").show();
+        });
+      </script>
+    </td>
+    <td class="DtlBarTitle">申请印章种类:</td>
+    <td class="listtd"><HDPrint Value=#StampType#></td>
+    <td class="DtlBarTitle">公司名称:</td>
+    <td class="listtd"><HDPrint Value=#ComList# Replace=#None#></td>
+  </tr>
+  <tr valign="top" JQ="Type_1">
+    <td class="DtlBarTitle">文件接收方名称:</td>
+    <td class="listtd"><HDPrint Value=#FilerName#></td>
+    <td class="DtlBarTitle">文件名称:</td>
+    <td class="listtd"><HDPrint Value=#FileName#></td>
+    <td class="DtlBarTitle">文件份数:</td>
+    <td class="listtd"><HDPrint Value=#FileCount#></td>
+  </tr>
+  <tr valign="top" JQ="Type_1">
+    <td class="DtlBarTitle">文件目的:</td>
+    <td class="listtd"><HDPrint Value=#FileAim#></td>
+    <td class="DtlBarTitle">申请人声明及保证:</td>
+    <td class="listtd" colspan="3">我保证我所提交的用于盖章的非合同类文件与本申请所注载内容一致</td>
+  </tr>
+  <tr valign="top" JQ="Type_2">
+    <td class="DtlBarTitle">合同名称:</td>
+    <td class="listtd"><HDPrint Value=#ContractName#></td>
+    <td class="DtlBarTitle">合同份数:</td>
+    <td class="listtd"><HDPrint Value=#ContractCount#></td>
+    <td class="DtlBarTitle">合同金额/总租金:</td>
+    <td class="listtd"><HDPrint Value=#ContractFee#></td>
+  </tr>
+  <tr valign="top" JQ="Type_2">
+    <td class="DtlBarTitle">合作公司:</td>
+    <td class="listtd"><HDPrint Value=#ContactName#></td>
+    <td class="DtlBarTitle">合同期限:</td>
+    <td class="listtd"><HDPrint Value=#ContractDate1#>~<HDPrint Value=#ContractDate2#></td>
+    <td class="DtlBarTitle"></td>
+    <td class="listtd"></td>
+  </tr>
+  <tr valign="top" JQ="Type_2">
+    <td class="DtlBarTitle">合同概要:</td>
+    <td class="listtd" colspan="5"><HDPrint Value=#ComtractMemo#></td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">备注:</td>
+    <td class="listtd" colspan="5"><HDPrint Value=#Memo#></td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">附件信息:</td>
+    <td class="listtd" colspan="5"><HDPrint Value=#AttachList# Replace=#None#></td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">已盖章文件:</td>
+    <td class="listtd" colspan="5"><HDPrint Value=#AttachList2# Replace=#None#></td>
+  </tr>
+  <HDIF EqualNot(<HDPrint Value=#EndMemo# Replace=#None#>, )>
+  <tr valign="top">
+    <td class="DtlBarTitle">终止原因:</td>
+    <td class="listtd" colspan="5"><HDPrint Value=#EndMemo#></td>
+  </tr>
+  </HDIF>
+</table>
+</form>

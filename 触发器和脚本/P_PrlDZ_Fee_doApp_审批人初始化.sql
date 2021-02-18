@@ -122,7 +122,7 @@ begin
                      35         AppType
                 from v_Post v
                where v.EntGid = p_EntGid
-                 and v.deptGid = v_ComGid
+                 and v.deptGid = v_DeptGid
                  and v.atype = 35
                  and rownum = 1
               union
@@ -192,6 +192,19 @@ begin
                where v.EntGid = p_EntGid
                  and v.deptGid = v_ComGid
                  and v.atype = 80
+                 and rownum = 1
+                 and v_AppFee > v_cFee
+                 and (v_cFee + v_dFee + v_eFee) > 0
+              union
+              select v.PostGid  AppGid,
+                     v.PostCode AppCode,
+                     v.PostName AppName,
+                     92         AppOrder,
+                     92         AppType
+                from v_Post v
+               where v.EntGid = p_EntGid
+                 and v.deptGid = v_ComGid
+                 and v.atype = 92
                  and rownum = 1
                  and v_AppFee > v_cFee
                  and (v_cFee + v_dFee + v_eFee) > 0

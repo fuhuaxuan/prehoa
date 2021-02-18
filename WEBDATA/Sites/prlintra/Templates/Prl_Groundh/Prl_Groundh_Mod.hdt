@@ -95,17 +95,17 @@
   </tr>
   <tr>
     <td class="DtlBarTitle">面积:<font color ="red">*</font></td>
-    <td class="listtd"><input type="text" NAME="farea" maxlength="16" class="JQFloat JQMust" value="<HDPrint
+    <td class="listtd"><input type="text" NAME="farea" maxlength="16" class="JQFloat JQMust" JQBit="4" value="<HDPrint
     Value=#farea# Replace=#DBField2Input#>"></td>
     <td class="DtlBarTitle">建筑面积:<font color ="red">*</font></td>
-    <td class="listtd"><input type="text" NAME="Jarea" maxlength="16" class="JQFloat JQMust" value="<HDPrint
+    <td class="listtd"><input type="text" NAME="Jarea" maxlength="16" class="JQFloat JQMust" JQBit="4" value="<HDPrint
     Value=#Jarea# Replace=#DBField2Input#>"></td>
     <td class="DtlBarTitle">预算:<font color ="red">*</font></td>
     <td class="listtd"><input type="text" NAME="fmr" maxlength="16" class="JQFloat JQMust" JQBit="4" value="<HDPrint Value=#fmr# Replace=#DBField2Input#>"></td>
   </tr>
   <tr>
     <td class="DtlBarTitle">年度总预算:<font color ="red">*</font></td>
-    <td class="listtd"><input type="text" NAME="fmrY" maxlength="16" class="JQFloat JQMust" value="<HDPrint Value=#fmrY# Replace=#DBField2Input#>"></td>
+    <td class="listtd"><input type="text" NAME="fmrY" maxlength="16" class="JQFloat JQMust" JQBit="4" value="<HDPrint Value=#fmrY# Replace=#DBField2Input#>"></td>
     <td class="listtd" colspan="4"></td>
   </tr>
 </table>

@@ -17,7 +17,7 @@
     <td class="PrintTdRT"><HDPrint Value=#Apptypetext#></td>
     <td class="PrintTdRT"><HDPrint Value=#AppName#></td>
     <td class="PrintTdRT"><HDPrint Value=#AppAssign#></td>
-    <td class="PrintTdRT"><HDPrint Value=#note#></td>
+    <td class="PrintTdRT"><HDPrint Value=#AppMemo#></td>
   </tr>
   </HDLoop>
 </table>

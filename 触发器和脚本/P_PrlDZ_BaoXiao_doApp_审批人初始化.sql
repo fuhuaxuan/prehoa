@@ -114,7 +114,7 @@ begin
                      35         AppType
                 from v_Post v
                where v.EntGid = p_EntGid
-                 and v.deptGid = v_ComGid
+                 and v.deptGid = v_DeptGid
                  and v.atype = 35
                  and rownum = 1
               union
@@ -139,7 +139,7 @@ begin
                  and v.deptGid = v_ComGid
                  and v.atype = 71
                  and rownum = 1
-                 and ((v_AppFee > 2000 and v_IsCM is null) or v_IsCM = 'ÊÇ')
+                 and v_AppFee > 2000
               union
               select v.PostGid  AppGid,
                      v.PostCode AppCode,
@@ -151,7 +151,7 @@ begin
                  and v.deptGid = v_DeptGid
                  and v.atype = 50
                  and rownum = 1
-                 and ((v_AppFee > 2000 and v_IsCM is null) or v_IsCM = 'ÊÇ')
+                 and v_AppFee > 2000
               union
               select o.AppGid, o.AppCode, o.AppName, 70 AppOrder, 70 AppType
                 from v_wf_model_usr_app o
@@ -183,6 +183,18 @@ begin
                  and rownum = 1
                  and v_AppFee > 10000
               union
+              select v.PostGid  AppGid,
+                     v.PostCode AppCode,
+                     v.PostName AppName,
+                     92         AppOrder,
+                     92         AppType
+                from v_Post v
+               where v.EntGid = p_EntGid
+                 and v.deptGid = v_ComGid
+                 and v.atype = 92
+                 and rownum = 1
+                 and v_AppFee > 10000
+              union
               select o.AppGid, o.AppCode, o.AppName, 95 AppOrder, 95 AppType
                 from v_wf_model_usr_app o
                where o.EntGid = p_EntGid
@@ -190,7 +202,7 @@ begin
                  and replace(lower(o.Modelcode), lower(v_ModelCode), '') in
                      ('_td1')
                  and rownum = 1
-                 and v_AppFee > 50000
+                 and ((v_AppFee > 50000 and v_IsCM is null) or v_IsCM = 'ÊÇ')
               union
               select o.AppGid,
                      o.AppCode,

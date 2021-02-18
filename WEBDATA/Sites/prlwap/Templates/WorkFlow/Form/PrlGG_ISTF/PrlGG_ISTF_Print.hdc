@@ -23,7 +23,7 @@ Sql2=select f.*,decode(wf.stat,'0', '未执行','1', '待执行','2', '执行中','3', '<
 SQL3=select count(*) IsShow from Wf_PrlGG_ISF_App where EntGid = __ENTGID__ and  FlowGid = ##FlowGid## and AppDate is not null
 
 ;显示本流程已审批审批人信息
-LoopSQL2=select a.*,decode(a.apptype,0,'发起人',10,'部门经理',30,'财务经理',40,'商场总经理',50,'资产经理',60,'部门总监',70,'副财务总监',80,'财务总监',90,'区域总经理',95,'中国区CEO',99,'集团CEO') apptypetext  from Wf_PrlGG_ISF_App a where FlowGid = ##FlowGid## and AppDate is not null order by AppDate
+LoopSQL2=select a.*,decode(a.apptype,0,'发起人',10,'部门经理',30,'财务经理',35,'总经理/项目总监',40,'项目总经理',50,'资产经理',60,'区域部门总监',70,'副财务总监',80,'财务总监',90,'区域总经理',95,'中国区CEO',99,'集团CEO') apptypetext  from Wf_PrlGG_ISF_App a where FlowGid = ##FlowGid## and AppDate is not null order by AppDate
 LoopHDT2=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AppPrint.hdt
 LoopVAR2=AppList
 

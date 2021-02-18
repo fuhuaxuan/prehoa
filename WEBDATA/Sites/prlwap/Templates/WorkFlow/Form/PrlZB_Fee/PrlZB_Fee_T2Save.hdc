@@ -91,6 +91,7 @@ Log=
 ;页面显示: 0:BodyPage;1:DetailPage;2:BlankPage
 PageKind=2
 
+
 WF1=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T4 | null | and ##AppAssign## = '同意' and ##NextApp## = '0' |^^AppFlowMemo^^)
 
 WF2=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T4 | F1Gid | and ##AppAssign## = '同意' |^^AppFlowMemo^^)

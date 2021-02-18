@@ -22,7 +22,7 @@
     tdArr[k++] = '<td align="center"><INPUT TYPE="text" NAME="Line_1" value="'+ i +'" style="border:0px;text-align:center" readonly class="JQText"></td>';
 
     tdArr[k++] = '<td>'
-      +'<INPUT TYPE="text" NAME="Name_1" ID="Name_1'+ iRow +'" maxlength="32" class="JQText JQMust" value = "'+Name+'">'
+      +'<INPUT TYPE="text" NAME="Name_1" ID="Name_1'+ iRow +'" maxlength="128" class="JQText JQMust" value = "'+Name+'">'
       +'<INPUT TYPE="hidden" NAME="Gid_1" ID="Gid_1'+ iRow +'" maxlength="32" class="JQText" value = "'+Gid+'">'
     +'</td>';
 

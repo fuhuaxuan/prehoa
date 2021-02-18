@@ -3,11 +3,11 @@ select to_char(t.createdate, 'YYYY') feeY,
        to_char(t.createdate, 'MM') feeM,
        t.comgid,
        t.comname,
-       t.filldeptgid,
-       t.filldeptname,
+       dp.Gid filldeptgid,
+       dp.Name filldeptname,
        t.fillusrname,
        t.payman,
-       t.payposition position,
+       hr.position position,
        d.gid,
        d.feedate,
        d.feeedate,
@@ -15,11 +15,13 @@ select to_char(t.createdate, 'YYYY') feeY,
        d.acgcode,
        '个人报销单' ModelName,
        d.memo memo
-  from wf_prlzb_baoxiao t, wf_flow tf, wf_prlzb_baoxiao_dtl d
+  from wf_prlzb_baoxiao t, wf_flow tf, wf_prlzb_baoxiao_dtl d,dept dp,hr_emp hr
  where t.entgid = d.entgid
    and t.entgid = tf.entgid
    and t.flowgid = d.flowgid
    and t.flowgid = tf.flowgid
+   and t.PayUsrGid = hr.UsrGid
+   and hr.deptGid = dp.Gid
    and tf.stat < 4
    and t.stat not in ('终止', '否决')
    and d.acgcode in

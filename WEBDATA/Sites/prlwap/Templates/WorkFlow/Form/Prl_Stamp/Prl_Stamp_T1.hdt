@@ -25,7 +25,7 @@
     var JsDate1 = $("input[name=ContractDate1]").val();
     var JsDate2 = $("input[name=ContractDate2]").val();
     if (JsDate1 != '' && JsDate2 != '' ){
-      if (JQDateCompare(JsDate1,JsDate2) <= 0){
+      if (JQDateCompare(JsDate1,JsDate2) < 0){
         alert('合同结束日期必须大于合同开始日期！');
         JsObj.focus();
         JsObj.value = '';

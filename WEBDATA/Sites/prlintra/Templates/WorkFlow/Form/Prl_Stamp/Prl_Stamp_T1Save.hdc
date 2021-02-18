@@ -25,7 +25,7 @@ SqlForCondition1=select wm.Code ModelCode, wm.Name ModelName,d.Name StepName fro
 SQLForCondition2=select name ComName from prl_company where EntGid = __ENTGID__ and gid = ##ComGid##
 
 ;定义流程备注
-SQLForCondition3=select decode(##mIsFlow##,'是','关联流程：'||##mNum##||'；','')||##ApplyType## || '-' || ##StampType## || '；公司：' || ##ComName## || decode(##ApplyType##,'合同签署用印','；合作公司：'||##ContactName##,'') TheMemo from dual
+SQLForCondition3=select decode(##mIsFlow##,'是','关联流程：'||##mNum##||'；','')||##ApplyType## || '-' || ##StampType## || '；公司：' || ##ComName## || decode(##ApplyType##,'非合同类文件用印','；接收方：'||##FilerName##,'；合作公司：'||##ContactName##) TheMemo from dual
 
 SQLForCondition4=select '单号：'|| ##Num##|| '；' || ##TheMemo##  TheFlowMemo,'待修改 - ' || ##TheMemo## ModFlowMemo,'待审批 - 发起人：' || ##CurUsrName## ||'；' || ##TheMemo## AppFlowMemo from dual
 
@@ -45,7 +45,7 @@ SQL4=update Wf_^^ModelCode^^ set (LastUpdDate,mIsFlow,mModelCode,mFlowGid,mNum) 
 
 SQL5=update Wf_^^ModelCode^^ set (LastUpdDate,FilerName,FileName,FileCount,FileAim,ApplyState) = (select sysdate,##FilerName##,##FileName##,##FileCount##,##FileAim##,##ApplyState## from dual) where FlowGid = ##FlowGid## and EntGid = __ENTGID__ and ##Stat## <> '终止' and ##ApplyType## = '非合同类文件用印'
 
-SQL6=update Wf_^^ModelCode^^ set (LastUpdDate,ContractName,ContractCount,ContractFee,ContactName,ContractDate1,ContractDate2,ComtractMemo) = (select sysdate,##ContractName##,##ContractCount##,##ContractFee##,##ContactName##,to_date(##ContractDate1##,'YYYY.MM.DD'),to_date(##ContractDate2##,'YYYY.MM.DD'),##ComtractMemo## from dual) where FlowGid = ##FlowGid## and EntGid = __ENTGID__ and ##Stat## <> '终止' and ##ApplyType## = '合同签署用印'
+SQL6=update Wf_^^ModelCode^^ set (LastUpdDate,ContractName,ContractCount,ContractFee,ContactName,ContractDate1,ContractDate2,ComtractMemo) = (select sysdate,##ContractName##,##ContractCount##,##ContractFee##,##ContactName##,to_date(##ContractDate1##,'YYYY.MM.DD'),to_date(##ContractDate2##,'YYYY.MM.DD'),##ComtractMemo## from dual) where FlowGid = ##FlowGid## and EntGid = __ENTGID__ and ##Stat## <> '终止' and ##ApplyType## <> '非合同类文件用印'
 
 ;更新本流程流程主表信息，终止
 SQL7=update Wf_^^ModelCode^^ set (LastUpdDate,Stat,EndMemo) = (select sysdate,##Stat##,##EndMemo## from dual) where FlowGid = ##FlowGid## and EntGid = __ENTGID__ and ##Stat## = '终止'

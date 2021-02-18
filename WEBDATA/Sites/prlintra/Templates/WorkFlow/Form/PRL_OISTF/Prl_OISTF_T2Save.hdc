@@ -96,20 +96,17 @@ Log=
 ;页面显示: 0:BodyPage;1:DetailPage;2:BlankPage
 PageKind=0
 
-;同意，流转到下一步
-WF1=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_T2 | selApp_1 | and ##AppAssign## = '同意' and ##NextApp## <> '0'| ^^AppFlowMemo^^)
-
 ;否决，返回发起人
-WF2=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TMod | Null | and ##AppAssign## = '否决' |^^AppFlowMemo^^)
+WF1=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_TMod | Null | and ##AppAssign## = '否决' |^^AppFlowMemo^^)
 
 ;同意并结束流程，抄送取除当前审批人外的所有审批人+部门助理+及资产经理
-WF3=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_Tcc | selTcc_1 | and ##AppAssign## = '同意' and ##NextApp## = '0' |^^AppFlowMemo^^)
-
-;返回核实，返回上一步
-WF4=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_T2 | LastGid | and ##AppAssign## = '返回核实'| ^^AppFlowMemo^^)
+WF2=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_Tcc | selTcc_1 | and ##AppAssign## = '同意' and ##NextApp## = '0' |^^AppFlowMemo^^)
 
 ;同意，没有下一步，发起人确认
-WF5=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T3 | null | and ##AppAssign## = '同意' and ##NextApp## = '0'|^^AppFlowMemo^^)
+WF3=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T3 | null | and ##AppAssign## = '同意' and ##NextApp## = '0'|^^AppFlowMemo^^)
 
-;同意，没有下一步，结束
-;WF5=WFFlowFinish( ^^CurUrl^^ | and ##AppAssign## = '同意' and ##NextApp## = '0')
+;同意，流转到下一步
+WF4=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_T2 | selApp_1 | and ##AppAssign## = '同意' and ##NextApp## <> '0'| ^^AppFlowMemo^^)
+
+;返回核实，返回上一步
+WF5=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_T2 | LastGid | and ##AppAssign## = '返回核实'| ^^AppFlowMemo^^)

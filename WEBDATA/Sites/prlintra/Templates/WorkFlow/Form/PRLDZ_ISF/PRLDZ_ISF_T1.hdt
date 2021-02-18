@@ -264,7 +264,7 @@
     }
     if (JsTbId == 'tb_Dtl30'){
       tdArr[k++] = '<td align="center">'
-        +'<font name="YearType_1">Yr '+i+' 第'+i+'年</font><INPUT TYPE="hidden" NAME="YearType_1" ID="YearType_1'+ iRow +'" JQLine="'+JsTbId+'" maxlength="10" class="JQInt" value="'+i+'" style="border:0px" readonly>'
+        +'<font name="YearType_1">Yr '+i+' 第'+i+'年</font><INPUT TYPE="hidden" NAME="YearType_1" ID="YearType_1'+ iRow +'" JQLine="'+JsTbId+'" JsRow="'+ iRow +'" maxlength="10" class="JQInt" value="'+i+'" style="border:0px" readonly>'
         +'<INPUT TYPE="hidden" NAME="FreeRentDate1_1" ID="FreeRentDate1_1'+ iRow +'" maxlength="10" class="JQDate">'
         +'<INPUT TYPE="hidden" NAME="FreeRentDate2_1" ID="FreeRentDate2_1'+ iRow +'" maxlength="10" class="JQDate">'
       +'</td>';
@@ -741,6 +741,8 @@
     //表格
     var JqTb = $("table#tb_Dtl30");
     var JqTbMZQ = $("table#tb_Dtl10");
+    //基数 = 365/12
+    var JsBase = 365/12;
 
     //联营形式  租金形式（固定租金与提成租金二者取高  租金（含物管费）扣率取高  租金+扣率  固定租金  扣率）
     var JsRate = $("input[name=Rate]").val();
@@ -755,68 +757,184 @@
     var JsBuildArea = $("input[name=BuildArea]").val();
 
     var JsP1 = 0,JsP2 = 0,JsFee = 0;
-    var JsVal = 0,JsA = 0,JsB = 0,JsC = 0;
-    var JsValMZQ = 0,JsAMZQ = 0,JsBMZQ = 0,JsCMZQ = 0;
+    var JsVal = 0,JsA = 0,JsB = 0,JsC = 0,JsD = 0;
+    var Js1 = 0,Js2 = 0,Js3 = 0,Js4 = 0,Js5 = 0,Js6 = 0;
+    var JsV1 = 0,JsV2 = 0,JsV3 = 0,JsV4 = 0,JsV5 = 0,JsV6 = 0;
+    var JsValMZQ = 0,JsAMZQ = 0,JsBMZQ = 0,JsCMZQ = 0,JsDMZQ = 0;
+
     //第一年租金
     if (JqTb.find("input[name=TBRD_1]").first().length > 0){
       //租金
       JsA = JqTb.find("input[name=TBRD_1]").first().val();
 
-      //物业管理费
+      //物业管理服务费
       JsB = JqTb.find("input[name=PMFD_1]").first().val();
 
+      //推广费
+      JsC = JqTb.find("input[name=Apfixed_1]").first().val();
+
       //预估提成租金
-      JsC = JqTb.find("input[name=ProGTOrent_1]").first().val();
+      JsD = JqTb.find("input[name=ProGTOrent_1]").first().val();
     }
     //免租期
     if (JqTbMZQ.find("input[name=TBRD_1]").first().length > 0){
       //租金
       JsAMZQ = JqTbMZQ.find("input[name=TBRD_1]").first().val();
 
-      //物业管理费
+      //物业管理服务费
       JsBMZQ = JqTbMZQ.find("input[name=PMFD_1]").first().val();
 
+      //推广费
+      JsCMZQ = JqTb.find("input[name=Apfixed_1]").first().val();
+
       //预估提成租金
-      JsCMZQ = JqTbMZQ.find("input[name=ProGTOrent_1]").first().val();
+      JsDMZQ = JqTbMZQ.find("input[name=ProGTOrent_1]").first().val();
     }
+
     if (JsA == ''){JsA = '0';}
     if (JsB == ''){JsB = '0';}
     if (JsC == ''){JsC = '0';}
+    if (JsD == ''){JsD = '0';}
 
     if (JsAMZQ == ''){JsAMZQ = '0';}
     if (JsBMZQ == ''){JsBMZQ = '0';}
     if (JsCMZQ == ''){JsCMZQ = '0';}
+    if (JsDMZQ == ''){JsDMZQ = '0';}
+
+    JsC = JsC / JsBase;
+    JsCMZQ = JsCMZQ / JsBase;
 
     if (JsBRCBudget == ''){JsBRCBudget = '0';}
     if (JsArea == ''){JsArea = '0';}
     if (JsBuildArea == ''){JsBuildArea = '0';}
 
-    //物业管理费 + 预估提成租金
+    //物业管理服务费 + 预估提成租金
     if (JsRate == '联营形式' || JsRate == '扣率'){
-      JsVal = parseFloat(parseFloat(JsB) + parseFloat(JsC)).toFixed(4);
-      JsValMZQ = parseFloat(parseFloat(JsBMZQ) + parseFloat(JsCMZQ)).toFixed(4);
+      JsV1 = parseFloat(parseFloat(JsB) + parseFloat(JsD)).toFixed(4);
+      JsValMZQ = parseFloat(parseFloat(JsBMZQ) + parseFloat(JsDMZQ)).toFixed(4);
     }
-    //租金 + 物业管理费
+    //租金 + 物业管理服务费
     if (JsRate == '固定租金'){
-      JsVal = parseFloat(parseFloat(JsA) + parseFloat(JsB)).toFixed(4);
+      JsV2 = parseFloat(parseFloat(JsA) + parseFloat(JsB)).toFixed(4);
       JsValMZQ = parseFloat(parseFloat(JsAMZQ) + parseFloat(JsBMZQ)).toFixed(4);
     }
-    //租金 + 物业管理费 + 预估提成租金
+    //租金 + 物业管理服务费 + 预估提成租金
     if (JsRate == '租金+扣率'){
-      JsVal = parseFloat(parseFloat(JsA) + parseFloat(JsB) + parseFloat(JsC)).toFixed(4);
-      JsValMZQ = parseFloat(parseFloat(JsAMZQ) + parseFloat(JsBMZQ) + parseFloat(JsCMZQ)).toFixed(4);
+      JsV3 = parseFloat(parseFloat(JsA) + parseFloat(JsB) + parseFloat(JsD)).toFixed(4);
+      JsValMZQ = parseFloat(parseFloat(JsAMZQ) + parseFloat(JsBMZQ) + parseFloat(JsDMZQ)).toFixed(4);
     }
-    //max(租金,预估提成租金) + 物业管理费
+    //max(租金,预估提成租金) + 物业管理服务费
     if (JsRate == '固定租金与提成租金二者取高'){
-      JsVal = parseFloat(Math.max(parseFloat(JsA),parseFloat(JsC)) + parseFloat(JsB)).toFixed(4);
-      JsValMZQ = parseFloat(Math.max(parseFloat(JsAMZQ),parseFloat(JsCMZQ)) + parseFloat(JsBMZQ)).toFixed(4);
+      JsV4 = parseFloat(Math.max(parseFloat(JsA),parseFloat(JsD)) + parseFloat(JsB)).toFixed(4);
+      JsValMZQ = parseFloat(Math.max(parseFloat(JsAMZQ),parseFloat(JsDMZQ)) + parseFloat(JsBMZQ)).toFixed(4);
     }
-    //max(租金+物业管理费,预估提成租金)
-    if (JsRate == '租金（含物管费）扣率取高' || JsRate == '租金（含物管费与推广费）扣率取高'){
-      JsVal = parseFloat(Math.max(parseFloat(JsA) + parseFloat(JsB),parseFloat(JsC))).toFixed(4);
-      JsValMZQ = parseFloat(Math.max(parseFloat(JsAMZQ) + parseFloat(JsBMZQ),parseFloat(JsCMZQ))).toFixed(4);
+    //max(租金+物业管理服务费,预估提成租金)
+    if (JsRate == '租金（含物管费）扣率取高'){
+      JsV5 = parseFloat(Math.max(parseFloat(JsA) + parseFloat(JsB),parseFloat(JsD))).toFixed(4);
+      JsValMZQ = parseFloat(Math.max(parseFloat(JsAMZQ) + parseFloat(JsBMZQ),parseFloat(JsDMZQ))).toFixed(4);
     }
 
+    //max(租金+物业管理服务费+推广费,预估提成租金)
+    if (JsRate == '租金（含物管费与推广费）扣率取高'){
+      JsV6 = parseFloat(Math.max(parseFloat(JsA) + parseFloat(JsB) + parseFloat(JsC),parseFloat(JsD))).toFixed(4);
+      JsValMZQ = parseFloat(Math.max(parseFloat(JsAMZQ) + parseFloat(JsBMZQ)+parseFloat(JsCMZQ),parseFloat(JsDMZQ))).toFixed(4);
+    }
+    $("input[JQLine=tb_Dtl30]").each(function(){
+      var JsRow = $(this).attr("JsRow");
+      //租 金
+       JsA = $("input#TBRD_1"+JsRow).val();
+
+      //物业费
+       JsB = $("input#PMFD_1"+JsRow).val();
+
+      //推广费
+       JsC = $("input#Apfixed_1"+JsRow).val();
+
+      //预估提成租金
+       JsD = $("input#ProGTOrent_1"+JsRow).val();
+
+      //判断 为空，则为 0
+      if (JsA == ''){JsA = '0';}
+      if (JsB == ''){JsB = '0';}
+      if (JsC == ''){JsC = '0';}
+      if (JsD == ''){JsD = '0';}
+
+      JsC = JsC / JsBase;
+
+      //物业管理服务费 + 预估提成租金
+      if (JsRate == '联营形式' || JsRate == '扣率'){
+        Js1 = parseFloat(parseFloat(JsB) + parseFloat(JsD)).toFixed(4);
+        console.log('1-'+Js1+'|'+JsV1)
+        if (parseFloat(Js1) < parseFloat(JsV1)) {
+          JsV1 = Js1;
+        }
+      }
+      //租金 + 物业管理服务费
+      if (JsRate == '固定租金'){
+        Js2 = parseFloat(parseFloat(JsA) + parseFloat(JsB)).toFixed(4);
+        console.log('2-'+Js2+'|'+JsV2)
+        if (parseFloat(Js2) < parseFloat(JsV2)) {
+          JsV2 = Js2;
+        }
+      }
+      //租金 + 物业管理服务费 + 预估提成租金
+      if (JsRate == '租金+扣率'){
+        Js3 = parseFloat(parseFloat(JsA) + parseFloat(JsB) + parseFloat(JsD)).toFixed(4);
+        console.log('3-'+Js3+'|'+JsV3)
+        if (parseFloat(Js3) < parseFloat(JsV3)) {
+          JsV3 = Js3;
+        }
+      }
+      //max(租金,预估提成租金) + 物业管理服务费
+      if (JsRate == '固定租金与提成租金二者取高'){
+        Js4 = parseFloat(Math.max(parseFloat(JsA),parseFloat(JsD)) + parseFloat(JsB)).toFixed(4);
+        console.log('4-'+Js4+'|'+JsV4)
+        if (parseFloat(Js4) < parseFloat(JsV4)) {
+          JsV4 = Js4;
+        }
+      }
+      //max(租金+物业管理服务费,预估提成租金)
+      if (JsRate == '租金（含物管费）扣率取高'){
+        Js5 = parseFloat(Math.max(parseFloat(JsA) + parseFloat(JsB),parseFloat(JsD))).toFixed(4);
+        console.log('5-'+Js5+'|'+JsV5)
+        if (parseFloat(Js5) < parseFloat(JsV5)) {
+          JsV5 = Js5;
+        }
+      }
+      console.log('6-'+JsA+'|'+JsB+'|'+JsC+'|'+JsD+'|'+JsRow)
+
+      if (JsRate == '租金（含物管费与推广费）扣率取高'){
+        Js6 = parseFloat(Math.max(parseFloat(JsA) + parseFloat(JsB) + parseFloat(JsC),parseFloat(JsD))).toFixed(4);
+        console.log('6-'+Js6+'|'+JsV6)
+        if (parseFloat(Js6) < parseFloat(JsV6)) {
+          JsV6 = Js6;
+        }
+      }
+    });
+    console.log('===========')
+    //物业管理服务费 + 预估提成租金
+    if (JsRate == '联营形式' || JsRate == '扣率'){
+      JsVal = JsV1;
+    }
+    //租金 + 物业管理服务费
+    if (JsRate == '固定租金'){
+      JsVal = JsV2;
+    }
+    //租金 + 物业管理服务费 + 预估提成租金
+    if (JsRate == '租金+扣率'){
+      JsVal = JsV3;
+    }
+    //max(租金,预估提成租金) + 物业管理服务费
+    if (JsRate == '固定租金与提成租金二者取高'){
+      JsVal = JsV4;
+    }
+    //max(租金+物业管理服务费,预估提成租金)
+    if (JsRate == '租金（含物管费）扣率取高'){
+      JsVal = JsV5;
+    }
+    if (JsRate == '租金（含物管费与推广费）扣率取高'){
+      JsVal = JsV6;
+    }
     //计算P1,P2
     //P1=（批准预算-New:新）/批准预算*100)
     if (parseFloat(JsBRCBudget) == 0){
@@ -832,6 +950,12 @@
     else{
       JsP2 = parseFloat((JsBRCBudget - JsVal)*JsArea*(365/12)).toFixed(4);
     }
+    //第一年租金
+    if (JqTb.find("input[name=TBRD_1]").first().length > 0){
+      //租金
+      JsA = JqTb.find("input[name=TBRD_1]").first().val();
+    }
+    if (JsA == ''){JsA = '0';}
 
     //反算建筑面积单价=(第一年租金单价*建筑面积总和)/面积总和
     if (parseFloat(JsArea) == 0){
@@ -851,11 +975,11 @@
     //反算建筑面积单价=(第一年租金单价*建筑面积总和)/面积总和
     $("input[name=BuildAreaPrice]").val(JsFee);
 
-    //计算预付租金+物业管理费 = （第一年 固定租金总数 + 物业管理费总数 + 推广费 月* 面积）
+    //计算预付租金+物业管理服务费 = （第一年 固定租金总数 + 物业管理服务费总数 + 推广费 月* 面积）
     if (JqTb.find("input[name=TBRD_1]").first().length > 0 && JsStr != '1'){
       //租金
       JsA = JqTb.find("input[name=TBRM_1]").first().val();
-      //物业管理费
+      //物业管理服务费
       JsB = JqTb.find("input[name=PMFM_1]").first().val();
       //推广费
       JsC = JqTb.find("input[name=Apfixed_1]").first().val();
@@ -868,11 +992,11 @@
       JsT = parseFloat(JsT).toFixed(4);
       $("input[name=AGR]").val(JsT);
     }
-    //计算保证金 = （最后一年 固定租金总数 + 物业管理费总数 + 推广费 月* 面积）* 3
+    //计算保证金 = （最后一年 固定租金总数 + 物业管理服务费总数 + 推广费 月* 面积）* 3
     if (JqTb.find("input[name=TBRD_1]").last().length > 0 && JsStr != '1'){
       //租金
       JsA = JqTb.find("input[name=TBRM_1]").last().val();
-      //物业管理费
+      //物业管理服务费
       JsB = JqTb.find("input[name=PMFM_1]").last().val();
       //推广费
       JsC = JqTb.find("input[name=Apfixed_1]").last().val();
@@ -905,8 +1029,8 @@
 <form name="frmDo" method="post" action="">
 <!--流程用到一些控件-->
 <input type="text" style="display:none" name="ModelGid" value="<HDPrint Value=#ModelGid# Replace=#DBField2Input#>">
-<input type="text" style="display:none" name="FlowGid" value="<HDPrint Value=#NewGid# Replace=#DBField2Input#>">
-<input type="text" style="display:none" name="FlowGid_1" value="<HDPrint Value=#NewGid# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="FlowGid" value="<HDPrint Value=#NewNum# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="FlowGid_1" value="<HDPrint Value=#NewNum# Replace=#DBField2Input#>">
 <INPUT type="text" style="display:none" name="CurUrl" value="<HDPrint Value=#Url# Replace=#DBField2Input#>">
 <INPUT type="text" style="display:none" name="Num" value="<HDPrint Value=#NewNum# Replace=#DBField2Input#>">
 <input type="text" style="display:none" name="FillDeptGid" value="<HDPrint Value=#FillDeptGid# Replace=#DBField2Input#>">
@@ -1200,7 +1324,7 @@
     第一租赁期固定租金（人民币）</td>
     <td colspan="3">
     Property Mgmt Fee<br>
-    物业管理费 (RMB)</td>
+    物业管理服务费 (RMB)</td>
     <td colspan="2">A&P 市场推广费</td>
     <td>GTO Rent Structure<br>
     提成租金构造</td>

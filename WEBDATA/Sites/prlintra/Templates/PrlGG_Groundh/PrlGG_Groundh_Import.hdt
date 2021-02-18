@@ -88,6 +88,28 @@
       <b>备注：</b>请输入数字，以免报错<br/>
     </TD>
   </TR>
+  <TR>
+    <TD class="DtlBarTitle" align="center">第5列</TD>
+    <TD class="DtlBarTitle" align="center">第6列</TD>
+    <TD class="DtlBarTitle" align="center"></TD>
+    <TD class="DtlBarTitle" align="center"></TD>
+  </TR>
+  <TR valign="top">
+    <TD class="ListTD">
+      <b>名称：</b>最小面积<br/>
+      <b>数据类型(大小)：</b>数字<br/>
+      <b>是否必填：</b><font color="red">是</font><br/>
+      <b>备注：</b>请输入数字，以免报错<br/>
+    </TD>
+    <TD class="ListTD">
+      <b>名称：</b>最大面积<br/>
+      <b>数据类型(大小)：</b>数字<br/>
+      <b>是否必填：</b><font color="red">是</font><br/>
+      <b>备注：</b>请输入数字，以免报错<br/>
+    </TD>
+    <TD class="ListTD"></TD>
+    <TD class="ListTD"></TD>
+  </TR>
 </TABLE>
 
 </form>
@@ -161,6 +183,8 @@ function CheckSubmit(){
     <td nowrap><font color="red">编号<font></td>
     <td nowrap><font color="red">位置<font></td>
     <td nowrap><font color="red">预算<font></td>
+    <td nowrap><font color="red">最小面积<font></td>
+    <td nowrap><font color="red">最大面积<font></td>
   </tr>
   <HDLoop>
   <tr class="listtd" onmouseover="this.className='listtdfocus';" onmouseout="this.className='listtd'">
@@ -169,6 +193,8 @@ function CheckSubmit(){
     <td nowrap><HDPrint Value=#FNo# Replace=#None#></td>
     <td nowrap><HDPrint Value=#floorno# Replace=#None#></td>
     <td nowrap><HDPrint Value=#fmr# Replace=#None#></td>
+    <td nowrap><HDPrint Value=#FAREA# Replace=#None#></td>
+    <td nowrap><HDPrint Value=#JAREA# Replace=#None#></td>
   </tr>
   </HDLoop>
 </table>

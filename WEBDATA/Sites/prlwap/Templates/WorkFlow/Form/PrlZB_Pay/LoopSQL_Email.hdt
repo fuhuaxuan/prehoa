@@ -36,6 +36,8 @@
 <TR><TD class="App_ListTd">[尚欠余额=A-B-C] : <HDPrint Value=#feeleft#>；</td></tr>
 <TR><TD class="App_ListTd">[实际付款总额=B+C] : <HDPrint Value=#feeok#>；</td></tr>
 </HDIF>
-<TR><TD class="App_ListTd">[附件信息] : <HDPrint Value=#AttachList# Replace=#None#></td></tr>
+<TR><TD class="App_ListTd">[附件信息] : <span JQ="td_10"></span> </td></tr>
+<TR><TD class="App_ListTd">[电子发票] : <span JQ="td_20"></span> </td></tr>
 </table>
+<HDPrint Value=#AttachList# Replace=#None#>
 <HDPrint Value=#AppEmail# Replace=#None#>

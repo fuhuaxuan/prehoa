@@ -27,7 +27,7 @@ SQLForCondition4=select 'µ•∫≈£∫'|| ##Num##|| '£ª' || ##TheMemo##  TheFlowMemo,'¥
 SQL1=update wf_flow set flownote = ##TheFlowMemo## where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and ##Stat## <> '÷’÷π' and ##IsNew## > 0
 
 ;T1-≤Â»Î±æ¡˜≥Ã÷˜±Ì
-SQL2=insert into wf_^^ModelCode^^ (EntGid,ModelGid,FlowGid,Num,LastUpdDate,Stat,FillUsrGid,FillUsrCode,FillUsrName,FillDeptGid,FillDeptCode,FillDeptName)select __ENTGID__,##ModelGid##,##FlowGid##,##Num##,sysdate,##Stat##,__USRGID__,__USRCODE__,__USRNAME__,##FillDeptGid##,##FillDeptCode##,##FillDeptName## from dual where ##IsNew## <= 0
+SQL2=insert into wf_^^ModelCode^^ (EntGid,ModelGid,FlowGid,Num,LastUpdDate,FillUsrGid,FillUsrCode,FillUsrName,FillDeptGid,FillDeptCode,FillDeptName)select __ENTGID__,##ModelGid##,##FlowGid##,##Num##,sysdate,__USRGID__,__USRCODE__,__USRNAME__,##FillDeptGid##,##FillDeptCode##,##FillDeptName## from dual where ##IsNew## <= 0
 
 ;TMod-∏¸–¬±æ¡˜≥Ã÷˜±Ì–≈œ¢£¨±£¥Ê£¨Ã·Ωª
 SQL3=update wf_^^ModelCode^^ set (LastUpdDate,Stat,ComGid,ComName,TotalFee,Memo) = (select sysdate,##Stat##,##ComGid##,##ComName##,##TotalFee##,##Memo## from dual) where FlowGid = ##FlowGid## and EntGid = __ENTGID__ and ##Stat## <> '÷’÷π'
@@ -53,7 +53,7 @@ SQL9=insert into Wf_^^ModelCode^^_App (EntGid,ModelGid,FlowGid,Gid,AppGid,AppCod
 LoopSql2=insert into Wf_^^ModelCode^^_Dtl (EntGid,ModelGid,FlowGid,Gid,Line,AcgGid,AcgCode,AcgName,PAcgGid,PAcgCode,PAcgName,AcgFee,LeftFee,ApplyFee) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),##%Line%##,##%AcgGid%##, ##%AcgCode%##, ##%AcgName%##, ##%PAcgGid%##, ##%PAcgCode%##, ##%PAcgName%##, ##%AcgFee%##,##%LeftFee%##, ##%ApplyFee%## from dual where ##Stat## <> '÷’÷π'
 
 ;--∏¸–¬…Û≈˙»À
-LoopSql3=call P_^^ModelCode^^_doApp(__ENTGID__,##ModelGid##,##%FlowGid%##,##Stat##)
+LoopSql4=call P_^^ModelCode^^_doApp(__ENTGID__,##ModelGid##,##%FlowGid%##,##Stat##)
 
 ;≤Â»Î±æ¡˜≥Ã∏Ωº˛–≈œ¢
 AttachSqlAdd1=insert into Wf_^^ModelCode^^_Attach (EntGid,ModelGid,FlowGid,Attach_Gid,Attach_Title,Attach_Url,Attach_Size) select __ENTGID__ ,##ModelGid##,##FlowGid##, @@AttachID@@, @@FileName@@, @@FilePath@@,@@FileSize@@ from dual where ##Stat## <> '÷’÷π'

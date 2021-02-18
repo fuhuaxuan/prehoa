@@ -15,6 +15,8 @@ create or replace procedure P_PrlGG_ISF_doMail(p_FlowGid varchar --流程Gid
   v_TEnd   varchar(32);
   v_T1     varchar(1024);
   v_T2     varchar(1024);
+  v_T3     number;
+  v_T4     number;
   v_Foot   varchar(64); --表尾
 
 begin
@@ -28,6 +30,8 @@ begin
   v_Content := '';
   v_T1      := '';
   v_T2      := '';
+  v_T3      := 0;
+  v_T4      := 0;
   --for 循环 取出未领取的快递
   for R in (select f.*,
                    substr(wm.code, instr(wm.code, '_', 1) + 1) MCode,
@@ -49,7 +53,7 @@ begin
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
     v_Body    := '[发起时间] : ' || to_char(R.Createdate, 'YYYY.MM.DD HH24:MI');
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
-    v_Body    := '[类别] : ' || R.Atype;
+    v_Body    := '[类别] : ' || R.Atype || ' ' || R.Atype2 || ' ' || R.Atype3;
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
   
     for D in (select f.*
@@ -59,11 +63,20 @@ begin
                order by f.fno) loop
       v_T1 := v_T1 || D.fNo || ';';
       v_T2 := v_T2 || D.floorno || ';';
+      select v_T3 + nvl(D.fArea, 0) into v_T3 from dual;
+      select v_T4 + nvl(D.jArea, 0) into v_T4 from dual;
     end loop;
     v_Body    := '[单位] : ' || v_T1;
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
     v_Body    := '[位置] : ' || v_T2;
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
+    if v_T3 = v_T4 then
+      v_Body    := '[面积] : ' || v_T3;
+      v_Content := v_Content || v_TStart || v_Body || v_TEnd;
+    else
+      v_Body    := '[面积] : ' || v_T3 || '-' || v_T4;
+      v_Content := v_Content || v_TStart || v_Body || v_TEnd;
+    end if;
     v_Body    := '[A、租户信息] : ';
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
     v_Body    := '[租户] : ' || R.Lessee;
@@ -80,25 +93,25 @@ begin
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
     v_Body    := '[传真] : ' || R.Fax;
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
-    v_Body    := '[B、合同信息] : ' ;
+    v_Body    := '[B、合同信息] : ';
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
     v_Body    := '[租赁期限] : ' || R.Leasetermy || '年/' || R.Leasetermm || '月/' ||
                  R.Leasetermd || '日';
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
     v_Body    := '[交付日期] : ' || to_char(R.Handoverdate, 'YYYY.MM.DD');
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
+    v_Body    := '[免租期] : ' || R.Freerentm || '月/' || R.Freerentd || '日';
+    v_Content := v_Content || v_TStart || v_Body || v_TEnd;
+    v_Body    := '[装修期] : ' || R.Fitoutm || '月/' || R.Fitoutd || '日（' ||
+                 to_char(R.Fitoutdate1, 'YYYY.MM.DD') || '~' ||
+                 to_char(R.Fitoutdate2, 'YYYY.MM.DD') || ')';
+    v_Content := v_Content || v_TStart || v_Body || v_TEnd;
     v_Body    := '[合同起始日期] : ' || to_char(R.Contractdate1, 'YYYY.MM.DD') || '~' ||
                  to_char(R.Contractdate2, 'YYYY.MM.DD');
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
-    v_Body    := '[免租期] : ' || R.Freerentm || '月/' || R.Freerentd || '日';
-    v_Content := v_Content || v_TStart || v_Body || v_TEnd;
     v_Body    := '[租金方式] : ' || R.Rate;
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
-    v_Body    := '[预付租金+费用] : ' || R.AGR;
-    v_Content := v_Content || v_TStart || v_Body || v_TEnd;
-    v_Body    := '[保证金] : ' || R.Security;
-    v_Content := v_Content || v_TStart || v_Body || v_TEnd;
-    v_Body    := '[方式] : ' || R.Incash;
+    v_Body    := '[收银方式] : ' || R.Collection;
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
     v_Body    := '[C、租赁条件]';
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
@@ -110,10 +123,28 @@ begin
     v_Body    := v_Body || '<col style="padding-left:4px;">';
     v_Body    := v_Body ||
                  '  <tr style="background-color: #ecedef;" align="center">';
-    v_Body    := v_Body || '    <td nowrap>Yr年</td>';
-    v_Body    := v_Body || '    <td nowrap>类别</td>';
+    v_Body    := v_Body || '    <td nowrap rowspan="4">Yr年</td>';
+    v_Body    := v_Body || '    <td nowrap rowspan="4">类别</td>';
     v_Body    := v_Body || '    <td nowrap>元/天</td>';
     v_Body    := v_Body || '    <td nowrap>元/月</td>';
+    v_Body    := v_Body || ' </tr>';
+    v_Content := v_Content || v_TStart || v_Body;
+    v_Body    := v_Body ||
+                 '  <tr style="background-color: #ecedef;" align="center">';
+    v_Body    := v_Body ||
+                 '    <td class="App_ListTd" style="padding:0px" nowrap colspan="2">Details 细节</td>';
+    v_Body    := v_Body || ' </tr>';
+    v_Content := v_Content || v_TStart || v_Body;
+    v_Body    := v_Body ||
+                 '  <tr style="background-color: #ecedef;" align="center">';
+    v_Body    := v_Body ||
+                 '    <td class="App_ListTd" style="padding:0px" nowrap colspan="2">㎡/天</td>';
+    v_Body    := v_Body || ' </tr>';
+    v_Content := v_Content || v_TStart || v_Body;
+    v_Body    := v_Body ||
+                 '  <tr style="background-color: #ecedef;" align="center">';
+    v_Body    := v_Body ||
+                 '    <td class="App_ListTd" style="padding:0px" nowrap colspan="2">㎡/天</td>';
     v_Body    := v_Body || ' </tr>';
     v_Content := v_Content || v_TStart || v_Body;
   
@@ -123,7 +154,7 @@ begin
                  and f.FlowGid = p_FlowGid
                  and lower(f.TBID) in ('tb_dtl10', 'tb_dtl30')
                order by f.TBID, f.yeartype) loop
-      v_Body := ' <tr valign="top" style="background-color: white" align="center">';
+      v_Body := ' <tr valign="top" style="background-color: white" align="center"  rowspan="4">';
       if lower(D.TbId) = 'tb_dtl10' then
         v_Body := v_Body || '<td nowrap> 免:' ||
                   to_char(D.Freerentdate1, 'YYYY.MM.DD') || '~' ||
@@ -138,6 +169,24 @@ begin
                    to_char(D.Tbrm, 'FM999999999990.9990') || ' </td>';
       v_Body    := v_Body || ' </tr>';
       v_Content := v_Content || v_Body;
+      v_Body    := ' <tr valign="top" style="background-color: white" align="center">';
+      v_Body    := v_Body || '  <td nowrap> 提成租金构造 </td>';
+      v_Body    := v_Body || '  <td nowrap  colspan="2"> ' ||
+                   to_char(D.GTO, 'FM999999999990.9990') || ' </td>';
+      v_Body    := v_Body || ' </tr>';
+      v_Content := v_Content || v_Body;
+      v_Body    := ' <tr valign="top" style="background-color: white" align="center">';
+      v_Body    := v_Body || '  <td nowrap> 预估营业额 </td>';
+      v_Body    := v_Body || '  <td nowrap  colspan="2"> ' ||
+                   to_char(D.ProGTO, 'FM999999999990.9990') || ' </td>';
+      v_Body    := v_Body || ' </tr>';
+      v_Content := v_Content || v_Body;
+      v_Body    := ' <tr valign="top" style="background-color: white" align="center">';
+      v_Body    := v_Body || '  <td nowrap> 预估提成租金 </td>';
+      v_Body    := v_Body || '  <td nowrap  colspan="2"> ' ||
+                   to_char(D.ProGTOrent, 'FM999999999990.9990') || ' </td>';
+      v_Body    := v_Body || ' </tr>';
+      v_Content := v_Content || v_Body;
     end loop;
   
     v_Body    := '</table>';
@@ -149,6 +198,26 @@ begin
     v_Body    := '[批准预算] : ' || R.Brcbudget;
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
     v_Body    := '[合同期内总收入] : ' || R.TotalFee;
+    v_Content := v_Content || v_TStart || v_Body || v_TEnd;
+    v_Body    := '[预付租金+费用] : ' || R.AGR;
+    v_Content := v_Content || v_TStart || v_Body || v_TEnd;
+    v_Body    := '[保证金] : ' || R.Security;
+    v_Content := v_Content || v_TStart || v_Body || v_TEnd;
+    v_Body    := '[方式] : ' || R.Incash;
+    v_Content := v_Content || v_TStart || v_Body || v_TEnd;
+    v_Body    := '[电费收取] : ' || R.PowerType;
+    if R.PowerType = '按度' then
+      v_Body := v_Body || R.PowerFee1 || '元/度';
+    elsif R.PowerType = '固定费用' then
+      v_Body := v_Body || R.PowerFee2 || '元/天';
+    end if;
+    v_Content := v_Content || v_TStart || v_Body || v_TEnd;
+    v_Body    := '[水费收取] : ' || R.WaterType;
+    if R.WaterType = '按度' then
+      v_Body := v_Body || R.WaterFee1 || '元/吨';
+    elsif R.WaterType = '固定费用' then
+      v_Body := v_Body || R.WaterFee2 || '元/天';
+    end if;
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
     v_Body    := '[特别条件/评语] : ' || R.Memo;
     v_Content := v_Content || v_TStart || v_Body || v_TEnd;
@@ -201,4 +270,3 @@ exception
       commit;
     end;
 end;
-/

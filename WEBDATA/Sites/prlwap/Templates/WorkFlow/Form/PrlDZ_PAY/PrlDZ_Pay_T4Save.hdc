@@ -32,7 +32,7 @@ Sql1=update wf_^^ModelCodeT^^ set (LastUpdDate,Stat) = (select sysdate,'已确认' 
 Sql2=insert into wf_^^ModelCodeT^^_App (EntGid,FlowGid,dtlgid,AppGid,AppCode,AppName,AppType,AppAssign,note,AppDate) select __ENTGID__,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__, 120,##AppAssign##,##AppMemo##,sysdate from dual
 
 ;插入本流程中审批人二信息
-SQL11=update Wf_^^ModelCodeT^^_App set (AppAssign,note,AppDate) = (select '同意', __USRNAME__||'确认',sysdate from dual) where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppOrder = 100
+SQL11=update Wf_^^ModelCodeT^^_App set (AppAssign,note,AppDate) = (select '同意', '',sysdate from dual) where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppOrder = 100
 
 ;删除本流程全部附件信息
 SQL12=delete from WF_Prl_Flow_Attach where EntGid = __ENTGID__ and FlowGid = ##FlowGid##

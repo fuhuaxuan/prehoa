@@ -51,6 +51,7 @@ DefaultWhere=
 11=and lower(f.Memo) like '%' || lower(##txt_Memo##) || '%'
 12=and a.Gid in (##txt_Acg##)
 
+13=and exists (select 1 from WF_prl_pay_attach t where t.flowgid = f.flowgid and t.attach_type = ##sel_Voice##)
 [GroupBy]
 ;多条记录的查询的分组
 GroupBy=

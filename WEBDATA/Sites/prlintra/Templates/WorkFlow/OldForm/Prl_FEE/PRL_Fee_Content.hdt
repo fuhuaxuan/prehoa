@@ -1,0 +1,94 @@
+
+<HDPrint Value=#applist# Replace=#None#>
+
+ <table cellspacing="1">
+  <col style="padding-left:20px;width:200">
+  <tr class="listtr2"><td><b>单据内容</b></td></tr>
+</table>
+   <table cellspacing="1">
+    <tr ><td>&nbsp;&nbsp;(货币：RMB)</td></tr>
+  </table>
+<table class="NewTb"  width="100%" cellpadding="0" cellspacing="1"  >
+<col style="width:10%">
+<col style="width:23%">
+<col style="width:10%">
+<col style="width:23%">
+<col style="width:10%">
+<col style="width:23%">
+<tr>
+  <td class="Newtd2">公司名称：</td>
+  <td class="Newtd3" colspan="5"> <HDPrint Value=#companyname#></td>
+</tr>
+<tr>
+  <td class="Newtd2">项目名称：</td>
+  <td class="Newtd3" colspan="2"><HDPrint Value=#acgonename#> - <HDPrint Value=#acgtwoname#>   </td>
+  <td class="Newtd2">
+  DOA信息： </td>
+  <td class="Newtd3" colspan="2"><HDPrint Value=#DOACODE#>
+  <font style="display: <HDPrint Value=#acgotherdis# Replace=#None#>">- <HDPrint Value=#acgotherdoatext#></font>
+  </td>
+</tr>
+<tr>
+  <td class="Newtd2">申请目的</td>
+  <td class="Newtd3" colspan="2"><HDPrint Value=#target#></td>
+  <td class="Newtd2">申请项目内容</td>
+  <td class="Newtd3" colspan="2"><HDPrint Value=#Memo#></td>
+</tr>
+<tr>
+  <td  class="Newtd3" align="center" colspan="6">
+供应商报价QUOTATION BY VENDOR<br>
+（按例采购需采取货比三家  As a rule, purchase should have quotation from 3 vendors）
+  </td>
+</tr>
+<tr>
+  <td colspan="6">
+  <table style="width:100%"cellpadding="0" cellspacing="1" id="tb_Task">
+  <col style="width:100px">
+  <col style="width:100px">
+  <col style="width:100px">
+  <col style="width:100px">
+  <col style="width:100px">
+  <col style="width:100px">
+  <col style="width:100px">
+  <tr class="Newtd1">
+    <td class="Newtd2"><a [新增报价行] href="javascript:void(AddTr())"></a>&nbsp;报价/供应商</td>
+    <td class="Newtd2">供应商1  Vendor1:<br><font color="blue"><b><HDPrint Value=#VENDORname1#></b></font></td>
+    <td class="Newtd2">供应商2  Vendor2:<br><font color="blue"><b><HDPrint Value=#VENDORname2#></td>
+    <td class="Newtd2">供应商3  Vendor3:<br><font color="blue"><b><HDPrint Value=#VENDORname3#></td>
+    <td class="Newtd2">供应商4  Vendor4:<br><font color="blue"><b><HDPrint Value=#VENDORname4#></td>
+    <td class="Newtd2">供应商5  Vendor5:<br><font color="blue"><b><HDPrint Value=#VENDORname5#></td>
+    <td class="Newtd2">供应商6  Vendor6:<br><font color="blue"><b><HDPrint Value=#VENDORname6#></td>
+  </tr>
+  <tr class="Newtd1">
+    <td class="Newtd3">报价1 &nbsp;</td>
+    <td class="Newtd3"><HDPrint Value=#VENDORfee1#></td>
+    <td class="Newtd3"><HDPrint Value=#VENDORfee2#></td>
+    <td class="Newtd3"><HDPrint Value=#VENDORfee3#></td>
+    <td class="Newtd3"><HDPrint Value=#VENDORfee4#></td>
+    <td class="Newtd3"><HDPrint Value=#VENDORfee5#></td>
+    <td class="Newtd3"><HDPrint Value=#VENDORfee6#></td>
+  </tr>
+  </table>  </td>
+</tr>
+<tr>
+  <td class="Newtd2">推荐及理由</td>
+  <td class="Newtd3" colspan="5"><HDPrint Value=#reason#></td>
+</tr>
+<tr>
+  <td class="Newtd2">剩余预算金额</td>
+  <td class="Newtd3"><HDPrint Value=#controlfee#></td>
+  <td class="Newtd2">本次申请金额</td>
+  <td class="Newtd3">今年：<HDPrint Value=#askfee#>；跨年：<HDPrint Value=#Naskfee#></td>
+  <td class="Newtd2">本次实际金额</td>
+  <td class="Newtd3">今年：<HDPrint Value=#confirmfee#>；跨年：<HDPrint Value=#Nconfirmfee#><br>确认时间：<HDPrint Value=#confirmdate#></td>
+</tr>
+
+<tr valign="top">
+  <td class="newtd2">附件</td>
+  <td class="newtd3" colspan="5">
+  <font color="gray">(本处附预算控制表和合同或报价)</font><br>
+     <HDPrint Value=#AttachList# Replace=#None#>&nbsp;
+  </td>
+</tr>
+</table>
+</form>

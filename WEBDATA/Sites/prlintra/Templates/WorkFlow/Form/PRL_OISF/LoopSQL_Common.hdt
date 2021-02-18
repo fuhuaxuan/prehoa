@@ -270,7 +270,7 @@
     }
     if (JsTbId == 'tb_Dtl30'){
       tdArr[k++] = '<td align="center">'
-        +'<font name="YearType_1">Yr '+i+' 第'+i+'年</font><INPUT TYPE="hidden" NAME="YearType_1" ID="YearType_1'+ iRow +'" JQLine="'+JsTbId+'" maxlength="10" class="JQInt" value="'+i+'" style="border:0px" readonly>'
+        +'<font name="YearType_1">Yr '+i+' 第'+i+'年</font><INPUT TYPE="hidden" NAME="YearType_1" ID="YearType_1'+ iRow +'" JQLine="'+JsTbId+'" JsRow="'+ iRow +'" maxlength="10" class="JQInt" value="'+i+'" style="border:0px" readonly>'
         +'<INPUT TYPE="hidden" NAME="FreeRentDate1_1" ID="FreeRentDate1_1'+ iRow +'" maxlength="10" class="JQDate">'
         +'<INPUT TYPE="hidden" NAME="FreeRentDate2_1" ID="FreeRentDate2_1'+ iRow +'" maxlength="10" class="JQDate">'
       +'</td>';
@@ -642,7 +642,20 @@
     //租金 + 物业管理费
     JsVal = parseFloat(parseFloat(JsA) + parseFloat(JsB)).toFixed(4);
     JsValMZQ = parseFloat(parseFloat(JsAMZQ) + parseFloat(JsBMZQ)).toFixed(4);
+    var Js1 = 0;
+    $("input[JQLine=tb_Dtl30]").each(function(){
+      var JsRow = $(this).prop("JsRow");
+      //租 金
+       JsA = $("input#TBRD_1"+JsRow).val();
 
+      //物业费
+       JsB = $("input#PMFD_1"+JsRow).val();
+
+       Js1 = parseFloat(parseFloat(JsA) + parseFloat(JsB)).toFixed(4);
+       if (parseFloat(Js1) < parseFloat(JsVal)) {
+        JsVal = Js1;
+      }
+    });
     //计算P1,P2
     //P1=（批准预算-New:新）/批准预算*100)
     if (parseFloat(JsBRCBudget) == 0){

@@ -207,7 +207,8 @@
 
   if ('<HDPrint Value=#IsNew# Replace=#DBField2Js#>' == '0'){
     //T1时，加载FlowGid的数据
-    $("input[name=FlowGid]").val('<HDPrint Value=#NewGid# Replace=#DBField2Js#>');
+    $("input[name=FlowGid]").val('<HDPrint Value=#Num# Replace=#DBField2Js#>');
+    $("input[name=FlowGid_1]").val('<HDPrint Value=#Num# Replace=#DBField2Js#>');
     $("input[name=WFCreate]").val('WF');
   }
   else{

@@ -39,7 +39,7 @@
       </script>
     </td>
     <td class="listtd" align="center"><HDPrint Value=#AppDate#></td>
-    <td class="listtd"><HDPrint Value=#note#></td>
+    <td class="listtd"><HDPrint Value=#AppMemo#></td>
   </tr>
   </HDLoop>
 </table>

@@ -4,6 +4,41 @@
 <script language="javascript" src="##GetWebRootPath(/Scripts/JSCalendar.js)##"></script>
 <script>
   /*
+  *函数功能：Ajax中验证代码是否存在
+  *参数：代码控件对象
+  */
+  function checkBlack(obj) {
+    //验证必填项
+    if (obj.value == ''){
+      return false;
+    }
+    //调用路径
+    //若在报表(RepDisplay)中使用，则标记Rep=1
+    //若在流程(WFFlowPage)中使用，则标记Flow=1
+    var url = '##HDNet_AppName##/__ExplainAjax?Url=PrlDZ_Fee_T2&UsrGid=<HDPrint Value=#UsrGid#>&OpAtype=1&Flow=1';
+
+    //参数
+    var data = {
+      sCode : obj.value
+    };
+    //回调函数
+    var cb = {
+      //成功，处理函数
+      success : function (ret){
+        alert('该供应商名称已经被设置黑名单，请重新填写!');
+        obj.className = 'MustFillBox';
+        obj.value = '';
+        return false;
+      },
+      //失败，处理函数
+      failed : function (ret){
+        return false;
+      }
+    };
+    //调用Ajax函数
+    JQAjax(url,data,cb);
+  }
+  /*
   *函数名称：新增附件添加到附件列表中
   *参数：sFileName-附件名称
   */
@@ -254,12 +289,12 @@
   <tbody>
   <tr class="DtlBarTitle" align="center">
     <td>供应商</td>
-    <td><INPUT TYPE="text" NAME="VendorName1" maxlength="32" value="<HDPrint Value=#VendorName1# Replace=#DBField2Input#>" class="JQText"></td>
-    <td><INPUT TYPE="text" NAME="VendorName2" maxlength="32" value="<HDPrint Value=#VendorName2# Replace=#DBField2Input#>" class="JQText"></td>
-    <td><INPUT TYPE="text" NAME="VendorName3" maxlength="32" value="<HDPrint Value=#VendorName3# Replace=#DBField2Input#>" class="JQText"></td>
-    <td><INPUT TYPE="text" NAME="VendorName4" maxlength="32" value="<HDPrint Value=#VendorName4# Replace=#DBField2Input#>" class="JQText"></td>
-    <td><INPUT TYPE="text" NAME="VendorName5" maxlength="32" value="<HDPrint Value=#VendorName5# Replace=#DBField2Input#>" class="JQText"></td>
-    <td><INPUT TYPE="text" NAME="VendorName6" maxlength="32" value="<HDPrint Value=#VendorName6# Replace=#DBField2Input#>" class="JQText"></td>
+    <td><INPUT TYPE="text" NAME="VendorName1" maxlength="32" value="<HDPrint Value=#VendorName1# Replace=#DBField2Input#>" class="JQText" onblur="checkBlack(this)"></td>
+    <td><INPUT TYPE="text" NAME="VendorName2" maxlength="32" value="<HDPrint Value=#VendorName2# Replace=#DBField2Input#>" class="JQText" onblur="checkBlack(this)"></td>
+    <td><INPUT TYPE="text" NAME="VendorName3" maxlength="32" value="<HDPrint Value=#VendorName3# Replace=#DBField2Input#>" class="JQText" onblur="checkBlack(this)"></td>
+    <td><INPUT TYPE="text" NAME="VendorName4" maxlength="32" value="<HDPrint Value=#VendorName4# Replace=#DBField2Input#>" class="JQText" onblur="checkBlack(this)"></td>
+    <td><INPUT TYPE="text" NAME="VendorName5" maxlength="32" value="<HDPrint Value=#VendorName5# Replace=#DBField2Input#>" class="JQText" onblur="checkBlack(this)"></td>
+    <td><INPUT TYPE="text" NAME="VendorName6" maxlength="32" value="<HDPrint Value=#VendorName6# Replace=#DBField2Input#>" class="JQText" onblur="checkBlack(this)"></td>
   </tr>
   <tr class="DtlBarTitle" align="center">
     <td>报价</td>
@@ -316,7 +351,8 @@
 
   if ('<HDPrint Value=#IsNew# Replace=#DBField2Js#>' == '0'){
     //T1时，加载FlowGid的数据
-    $("input[name=FlowGid]").val('<HDPrint Value=#NewGid# Replace=#DBField2Js#>');
+    $("input[name=FlowGid]").val('<HDPrint Value=#Num# Replace=#DBField2Js#>');
+    $("input[name=FlowGid_1]").val('<HDPrint Value=#Num# Replace=#DBField2Js#>');
     $("input[name=WFCreate]").val('WF');
   }
   else{

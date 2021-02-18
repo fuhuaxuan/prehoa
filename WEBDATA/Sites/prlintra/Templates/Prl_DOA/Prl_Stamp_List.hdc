@@ -1,0 +1,64 @@
+[Permission]
+SQL=
+Remind=
+
+;赋予默认值，共可赋予10个默认值，都是字符串形式
+;DefaultX为变量名
+;DefaultValueX为设置的默认值
+DEFAULT1=txtCreateDate1
+DEFAULTValue1=[date],-60
+
+ 
+[Master]
+;拥有流程模型监视权限的人，可以看到所有的工作流程实例
+SQL=select a.*,to_char(a.createdate,'yyyy.mm.dd hh24:mi:ss') FlowCreateDate,to_char(a.FinishDate,'yyyy.mm.dd hh24:mi:ss') FlowFinishDate, b.Code ModelCode, b.Name ModelName ,decode(a.stat,'0', '未执行','1', '待执行','2', '执行中','3', '<FONT COLOR="blue">已完成</FONT>','4', '<font color="gray">已停止</font>','5', '<FONT COLOR="red">已作废</FONT>','6', '<FONT COLOR="red">已超时</FONT>') Flowstat,decode(a.stat,'0', '未执行','1', '待执行','2', '执行中','3', '已完成','4', '已停止','5', '已作废','6', '已超时') Flowstat1,decode(a.stat,0,'a',1,'a',2,'a','div style="display:inline"') stattext,a.stat FStat,decode(wt.tsnum,0,'',1,wt.tsname,2,wt.tsname,'','',wt.tsnum||'人待执行') tsname  from WF_Flow a, WF_Model b,(select count(1) tsnum, wm_concat(distinct(t.execname)) tsname,t.EntGid,t.FlowGid from wf_task t,WF_Flow ff where t.EntGid = __ENTGID__ and t.stat < 3 and t.EntGid = ff.EntGid and t.FlowGid = ff.FlowGid and ff.stat<3 group by t.EntGid,t.FlowGid order by t.createdate ) wt where a.entgid=__ENTGID__ and b.entgid=__ENTGID__ and a.ModelGid = b.ModelGid and exists (select 1 from wf_rt c, v_org_usr d where c.entgid = __ENTGID__ and c.modelgid = b.modelgid and d.entgid = __ENTGID__ and c.usrgidex = d.orggid and d.usrgid = __USRGID__ and substr(c.rtid, 1, 1) = '1' and c.deptrt like '%'|| substr(a.FillDeptCode, 0, 4) ||'%' and c.deptrt is not null ) and a.EntGid = wt.EntGid(+) and a.FlowGid = wt.FlowGid(+) and lower(b.code) in ('prl_stamp','prlzb_stamp')
+
+Count=select count(1) from WF_Flow a, WF_Model b,(select count(1) tsnum, wm_concat(distinct(t.execname)) tsname,t.EntGid,t.FlowGid from wf_task t,WF_Flow ff where t.EntGid = __ENTGID__ and t.stat < 3 and t.EntGid = ff.EntGid and t.FlowGid = ff.FlowGid and ff.stat<3 group by t.EntGid,t.FlowGid order by t.createdate ) wt where a.entgid=__ENTGID__ and b.entgid=__ENTGID__ and a.ModelGid = b.ModelGid and exists (select 1 from wf_rt c, v_org_usr d where c.entgid = __ENTGID__ and c.modelgid = b.modelgid and d.entgid = __ENTGID__ and c.usrgidex = d.orggid and d.usrgid = __USRGID__ and substr(c.rtid, 1, 1) = '1' and c.deptrt like '%'|| substr(a.FillDeptCode, 0, 4) ||'%' and c.deptrt is not null ) and a.EntGid = wt.EntGid(+) and a.FlowGid = wt.FlowGid(+) and lower(b.code) in ('prl_stamp','prlzb_stamp')
+
+[Detail]
+SQL=
+
+[Where]
+200= and (a.CreaterCode like '%' || ##txtCreaterCode## || '%' or  a.CreaterName like '%' || ##txtCreaterCode## || '%')
+400= and a.Stat = ##selStat##
+500= and a.CreateDate >= to_date(##txtCreateDate1##, 'yyyy.mm.dd hh24:mi')
+510= and a.CreateDate <= to_date(##txtCreateDate2##, 'yyyy.mm.dd hh24:mi')
+600= and a.FinishDate >= to_date(##txtFinishDate1##, 'yyyy.mm.dd hh24:mi')
+610= and a.FinishDate <= to_date(##txtFinishDate2##, 'yyyy.mm.dd hh24:mi')
+620= and lower(a.FlowNote) like '%' || lower(##txtFlowNote##) || '%'
+700= and a.flowgid in (select FlowGid from v_WF_task where EntGid = __ENTGID__ and ExecCode like lower('%' || ##txtExecInfo## || '%') or ExecName like lower('%' || ##txtExecInfo## || '%'))
+
+3= and a.FlowNote like '%；' || ##ApplyType## || '%' 
+
+[DefaultWhere]
+DefaultWhere= 
+
+[OrderBy]
+1=##selOrderBy##
+
+
+[DefaultOrderBy]
+DefaultOrderBy= a.CreateDate desc
+
+[GroupBy]
+
+[AddtionalSQL]
+
+
+[Title]
+Text1=工作流程实例查询
+Text2=
+Text3=
+Text4=
+Text5=
+log=
+ChangePage=1
+PageKind=0
+showsql=
+
+[Link]
+;URL1=HrUsrAdd
+;URL2=HrUsrMod
+;URL3=HrUsrDelete
+URL4=
+URL5=

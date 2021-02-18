@@ -17,9 +17,18 @@
 <iframe onload="JQAutoHeight(this)" id="iframeDtl" frameborder ='0' width="100%"  scrolling="no" style="width:100%" src="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_Content&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid#>"></iframe>
 <br>
 <table cellpadding="0" cellspacing="0" width="100%" class="App_List" style="margin-top:10px">
-  <col style="width:100%" valign="top">
+  <col style="width:30%" valign="top">
+  <col style="width:30%" valign="top">
+  <col style="width:40%" valign="top">
+  <TR><TD class="App_ListTr" colspan="3">确认意见</TD></TR>
+  <tr>
+    <td colspan="3"><textarea class="JQText JQNo" rows="5" id="AppMemo" name="AppMemo" maxlength="500"></textarea></td>
+  </tr>
   <tr align="center">
-    <td><div class="App_Yes" onclick="javascript:CheckSubmit('已阅');void(0)">已阅<div></td>
+    <td>　</td><td> </td>
+  </tr>
+  <tr align="center">
+    <td colspan="3"><div class="App_Yes" onclick="javascript:CheckSubmit('已阅');void(0)">已阅<div></td>
   </tr>
 </table>
 </form>

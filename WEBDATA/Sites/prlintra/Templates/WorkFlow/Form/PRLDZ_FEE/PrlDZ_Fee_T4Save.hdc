@@ -35,7 +35,7 @@ SQL5=update PRL_ACG_COMPANY o set (LeftBudgutFee,OpUsrGid,OpUsrCode,OpUsrName,Op
 SQL6=insert into PRL_ACG_COMPANY (EntGid,Gid,CompanyGid,AcgGid,LeftBudgutFee,Year,OpUsrGid,OpUsrCode,OpUsrName,OpDate,OpMemo,OpModelCode,OpFlowGid,OpNum) select __ENTGID__,sys_guid(),wf.CompanyGid,wf.acgtwogid,0-nvl(##Nconfirmfee##,0),to_char(add_months(wf.CreateDate,12),'YYYY'),__USRGID__,__USRCODE__,__USRNAME__,sysdate,'费用申请单扣减',##ModelCode##,##FlowGid##,##Num## from WF_^^ModelCodeT^^ wf where wf.entgid = __ENTGID__ and wf.flowgid = ##FlowGid## and not exists (select 1 from PRL_ACG_COMPANY o where wf.entgid = __ENTGID__ and wf.flowgid = ##FlowGid## and o.ACGGID = wf.acgtwogid and o.CompanyGid = wf.CompanyGid and to_char(add_months(wf.CreateDate,12),'YYYY') = o.Year) 
 
 ;插入本流程中审批人二信息
-SQL11=update Wf_^^ModelCodeT^^_App set (AppAssign,note,AppDate) = (select '同意', __USRNAME__||'确认',sysdate from dual) where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppOrder = 100
+SQL11=update Wf_^^ModelCodeT^^_App set (AppAssign,note,AppDate) = (select '同意', '',sysdate from dual) where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppOrder = 100
 
 ;删除本流程全部附件信息
 SQL12=delete from WF_Prl_Flow_Attach where EntGid = __ENTGID__ and FlowGid = ##FlowGid##

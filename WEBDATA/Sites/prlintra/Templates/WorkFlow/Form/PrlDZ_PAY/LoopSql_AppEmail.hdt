@@ -16,7 +16,7 @@
           document.write('<b><HDPrint Value=#AppAssign#></b>');
         }
       </script>]
-      <HDPrint Value=#note#>
+      <HDPrint Value=#AppMemo#>
     </td>
   </tr>
   </HDLoop>

@@ -3,21 +3,26 @@
 <script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
 <script language="javascript" src="##GetWebRootPath(/Scripts/JSCalendar.js)##"></script>
 <script>
+  var g_Type = '';
+  function chgAttach(JsType){
+    g_Type = JsType;
+  }
   /*
   *函数名称：新增附件添加到附件列表中
   *参数：sFileName-附件名称
   */
-  function AddAttach(JsFileName){
+  function AddAttach(JsFileName)
+  {
     if (JsFileName == '')
       return false;
-    //唯一性判断
-    if (!JQgetSingle("selFileList_1",JsFileName)){
+    //判断是否存在附件
+    if (!JQgetSingle("fileList",JsFileName,"^")){
       alert('对不起，已经存在该附件！');
       return false;
     }
-    //添加到列表框中
-    var JsOption = '<option value="'+JsFileName+'">'+JsFileName+'</option>';
-    $("select[name=selFileList_1]").append(JsOption);
+    //添加到附件表中
+    var JsOption = "<option value='"+JsFileName+"'>"+JsFileName+"</option>";
+    $("select[name=fileList"+g_Type+"_1]").append(JsOption);
   }
 
   //选择采购单后，回调
@@ -427,11 +432,21 @@
   </tr>
   <tr valign="top">
     <td class="DtlBarTitle">附件信息:<font color="red">*</font><br><font color="gray">(双击删除)</font></td>
-    <td class="listtd" colspan="5">
+    <td class="listtd">
       <font color="gray">(本处请附上订单，发票，合同等)</font><br>
-      <SELECT NAME="selFileList_1" size="3" style="width:250;" multiple class="JQMust"><HDPrint Value=#AttachList# Replace=#None#></SELECT><br>
+      <SELECT NAME="fileList10_1" size="3" style="width:250;" multiple class="JQMust"></SELECT><br>
+      <iframe FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid# Replace=#DBField2Input#>&CallBackFun=chgAttach('10');WinObj.AddAttach" height=28></iframe>
+    </td>
+    <td class="DtlBarTitle">电子发票:<br><font color="gray">(双击删除)</font></td>
+    <td class="listtd">
+      <SELECT NAME="fileList20_1" size="3" style="width:250;" multiple></SELECT><br>
+      <iframe FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid# Replace=#DBField2Input#>&CallBackFun=chgAttach('20');WinObj.AddAttach" height=28></iframe>
+    </td>
+    <td class="DtlBarTitle"></td>
+    <td class="listtd">
       <input type="hidden" name="HDTempPath" value="<HDPrint Value=#NewGid# Replace=#DBField2Input#>">
-      <iframe FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid# Replace=#DBField2Input#>&CallBackFun=AddAttach" height=28></iframe>
+      <SELECT NAME="selFileList_1" size="3" style="width:250;display:none" multiple></SELECT>
+      <HDPrint Value=#AttachList# Replace=#None#>
     </td>
   </tr>
 </table>
@@ -466,7 +481,8 @@
 
     if ('<HDPrint Value=#IsNew# Replace=#DBField2Js#>' == '0'){
       //T1时，加载FlowGid的数据
-      $("input[name=FlowGid]").val('<HDPrint Value=#NewGid# Replace=#DBField2Js#>');
+      $("input[name=FlowGid]").val('<HDPrint Value=#Num# Replace=#DBField2Js#>');
+      $("input[name=FlowGid_1]").val('<HDPrint Value=#Num# Replace=#DBField2Js#>');
       $("input[name=WFCreate]").val('WF');
       if ('<HDPrint Value=#IsFirst# Replace=#DBField2Js#>' == ''){
         getFee('init');
@@ -510,6 +526,14 @@
       sCss = 'JQEnd';
       sConfirm = '你确定要终止该流程吗？';
     }
+    //所有附件集中
+    var JsObj = $("select[name=selFileList_1]");
+    JsObj.empty();
+    $("select[name^=fileList]>option").each(function() {
+      if ($(this).val() != null) {
+       JsObj.append("<option value='"+$(this).val()+"'>"+$(this).val()+"</option>");
+     }
+    });
     //验证必填项
     if (!JQcheck(sCss)){
       return false;

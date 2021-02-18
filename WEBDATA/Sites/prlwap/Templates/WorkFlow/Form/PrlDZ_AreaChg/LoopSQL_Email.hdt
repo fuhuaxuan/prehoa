@@ -1,0 +1,98 @@
+<table cellpadding="0" cellspacing="0" width="100%" class="App_List" style="margin-top:10px">
+  <col style="width:100%" valign="top">
+  <TR><TD class="App_ListTr">基本信息</TD></TR>
+  <TR><TD class="App_ListTd">单号：<HDPrint Value=#Num#></TD></TR>
+  <TR><TD class="App_ListTd">发起人：<HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]</TD></TR>
+  <TR><TD class="App_ListTd">发起日期：<HDPrint Value=#CreateDate#></TD></TR>
+</table>
+<table cellpadding="0" cellspacing="0" width="100%" class="App_List" style="margin-top:10px">
+<col style="width:100%" valign="top">
+<TR><TD class="App_ListTr">单据信息</TD></TR>
+<tr><td class="App_ListTd">[项目] : <HDPrint Value=#ProjectName#>；</td></tr>
+<tr><td class="App_ListTd">[申报日期] : <HDPrint Value=#AddDate#>；</td></tr>
+<tr><td class="App_ListTd">[变更日期] : <HDPrint Value=#ChgDate#>；</td></tr>
+<TR><TD class="App_ListTd">[申报备注] : <HDPrint Value=#Addmemo#> ；</td></tr>
+<TR><TD class="App_ListTd">[变更备注] : <HDPrint Value=#Chgmemo#> ；</td></tr>
+<TR><TD class="App_ListTd">[申报附件] : <HDPrint Value=#AttachList1# Replace=#None#></td></tr>
+<TR><TD class="App_ListTd">[变更附件] : <HDPrint Value=#AttachList# Replace=#None#></td></tr>
+
+<table cellpadding="0" cellspacing="0" width="100%" class="App_List" style="margin-top:10px">
+  <col style="padding-left:4px;">
+  <col style="width:30px;" align="center">
+  <TR>
+    <TD align="left" class="App_ListTr" style="padding-left:10px;width:auto"><b>地上信息</b></TD>
+    <TD onclick="JQExpand('tb_Dtl1');" style="cursor:hand" class="IconDown">　　</TD>
+  </TR>
+</table>
+<table cellpadding="0" cellspacing="1" width="100%" id="tb_Dtl1" style="display:none;background-color: #d9dbdf;">
+  <colgroup>
+   <col style="width:10%">
+   <col style="width:20%">
+   <col style="width:15%">
+   <col style="width:15%">
+   <col style="width:10%">
+   <col style="width:15%">
+   <col style="width:15%">
+  </colgroup>
+  <thead>
+  <tr style="background-color: #ecedef;">
+    <td align="center">行号</td>
+    <td align="center">项目</td>
+    <td align="center">预算面积</td>
+    <td align="center">变更面积</td>
+    <td align="center">差异</td>
+    <td align="center">预算备注</td>
+    <td align="center">变更备注</td>
+  </tr>
+  <HDPrint Value=#EmailDtl1# Replace=#None#>
+  <tfoot>
+  <tr class="ListTdFocus">
+    <td align="right" colspan="2">汇总[㎡]：</td>
+    <td align="center"><HDPrint Value=#AddArea1#></td>
+    <td align="center"><HDPrint Value=#ChgArea1#></td>
+    <td align="center"><HDPrint Value=#DiffArea1#></td>
+    <td align="center" colspan="2">&nbsp;</td>
+  </tr>
+  </tfoot>
+</table>
+
+<table cellpadding="0" cellspacing="1" width="100%" class="App_List" style="margin-top:10px">
+  <col style="padding-left:4px;">
+  <col style="width:30px;" align="center">
+  <TR>
+    <TD align="left" class="App_ListTr" style="padding-left:10px;width:auto"><b>地下信息</b></TD>
+    <TD onclick="JQExpand('tb_Dtl2');" style="cursor:hand" class="IconDown">　　</TD>
+  </TR>
+</table>
+<table cellpadding="0" cellspacing="1" width="100%" id="tb_Dtl2" style="display:none;background-color: #d9dbdf;">
+  <colgroup>
+   <col style="width:10%">
+   <col style="width:20%">
+   <col style="width:15%">
+   <col style="width:15%">
+   <col style="width:10%">
+   <col style="width:15%">
+   <col style="width:15%">
+  </colgroup>
+  <thead>
+  <tr style="background-color: #ecedef;">
+    <td align="center">行号</td>
+    <td align="center">项目</td>
+    <td align="center">预算面积</td>
+    <td align="center">变更面积</td>
+    <td align="center">差异</td>
+    <td align="center">预算备注</td>
+    <td align="center">变更备注</td>
+  </tr>
+  <HDPrint Value=#EmailDtl2# Replace=#None#>
+  <tfoot>
+  <tr class="ListTdFocus">
+    <td align="right" colspan="2">汇总[㎡]：</td>
+    <td align="center"><HDPrint Value=#AddArea1#></td>
+    <td align="center"><HDPrint Value=#ChgArea1#></td>
+    <td align="center"><HDPrint Value=#DiffArea1#></td>
+    <td align="center" colspan="2">&nbsp;</td>
+  </tr>
+  </tfoot>
+</table>
+<HDPrint Value=#AppEmail# Replace=#None#>

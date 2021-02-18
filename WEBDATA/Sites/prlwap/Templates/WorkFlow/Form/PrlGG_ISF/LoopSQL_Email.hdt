@@ -14,9 +14,10 @@
 <HDIF EqualNot(<HDPrint Value=#ISCFNum# Replace=#None#>, )>
 <TR><TD class="App_ListTd">[下一版本ISF/ISCF] : <a href="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ISCFModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ISCFModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#ISCFFlowGid#>" target="_blank"><HDPrint Value=#ISCFNum#></a>；</td></tr>
 </HDIF>
-<TR><TD class="App_ListTd">[类别] : <HDPrint Value=#atype#> <HDPrint Value=#Category#>；</td></tr>
+<TR><TD class="App_ListTd">[类别] : <HDPrint Value=#atype#> <HDPrint Value=#Atype2#> <HDPrint Value=#Atype3#>；</td></tr>
 <TR><TD class="App_ListTd">[单位] : <font JQ="JQUnit"></font></td></tr>
 <TR><TD class="App_ListTd">[位置] : <font JQ="JQFloor"></font></td></tr>
+<tr><td>[面积] : <font JQ="JQArea"></font></td></tr>
 <HDPrint Value=#unitList# Replace=#None#>
 <TR><TD class="App_ListTd">[租户] : <HDPrint Value=#lessee#>；</td></tr>
 <TR><TD class="App_ListTd">[商店营业名称] : <HDPrint Value=#Tradingname#>；</td></tr>
@@ -35,17 +36,33 @@
 <col style="width:100%" valign="top">
 <TR><TD class="App_ListTd">[租赁期限] : <HDPrint Value=#leasetermy#> 年/ <HDPrint Value=#leasetermm#> 月/ <HDPrint Value=#leasetermd#> 日；</td></tr>
 <TR><TD class="App_ListTd">[交付日期] : <HDPrint Value=#handoverdate#>；</td></tr>
-<TR><TD class="App_ListTd">[合同起始日期] : <HDPrint Value=#contractdate1#>~<HDPrint Value=#contractdate2#></td></tr>
 <TR><TD class="App_ListTd">[免租期] : <HDPrint Value=#freerentm#> 月/ <HDPrint Value=#freerentd#>天；</td></tr>
+<tr><td class="App_ListTd">[装修期] : <HDPrint Value=#fitoutm#> 月/ <HDPrint Value=#fitoutd#> 天（<HDPrint Value=#fitoutdate1#> ~ <HDPrint Value=#fitoutdate2#>）；</td></tr>
+<TR><TD class="App_ListTd">[合同起始日期] : <HDPrint Value=#contractdate1#>~<HDPrint Value=#contractdate2#></td></tr>
 <TR><TD class="App_ListTd">[租金方式] : <HDPrint Value=#Rate#>；</td></tr>
-<TR><TD class="App_ListTd">[预付租金+费用] : <HDPrint Value=#AGR#>；</td></tr>
-<TR><TD class="App_ListTd">[保证金] : <HDPrint Value=#Security#>；</td></tr>
-<TR><TD class="App_ListTd">[方式] : <HDPrint Value=#Incash#>；</td></tr>
+<tr><td class="App_ListTd">[收银方式] : <HDPrint Value=#Collection#>；</td></tr>
 <TR><TD class="App_ListTd">[C、租赁条件]</td></tr>
 <TR><TD><HDPrint Value=#EmailDtl# Replace=#None#></td></tr>
 <TR><TD class="App_ListTd">[新] : <HDPrint Value=#brcnew#>；</td></tr>
 <TR><TD class="App_ListTd">[目前] : <HDPrint Value=#brcexist#>；</td></tr>
 <TR><TD class="App_ListTd">[批准预算] : <HDPrint Value=#brcbudget#>；</td></tr>
 <TR><TD class="App_ListTd">[合同期内总收入] : <HDPrint Value=#TotalFee#>；</td></tr>
+<TR><TD class="App_ListTd">[预付租金+费用] : <HDPrint Value=#AGR#>；</td></tr>
+<TR><TD class="App_ListTd">[保证金] : <HDPrint Value=#Security#>；</td></tr>
+<TR><TD class="App_ListTd">[方式] : <HDPrint Value=#Incash#>；</td></tr>
+<tr><td class="App_ListTd">[电费收取] : <HDPrint Value=#PowerType#>
+      <HDIF Equal(<HDPrint Value=#PowerType# Replace=#None#>, 按度)>
+        <HDPrint Value=#PowerFee1#>元/度
+      </HDIF>
+      <HDIF Equal(<HDPrint Value=#PowerType# Replace=#None#>, 固定费用)>
+        <HDPrint Value=#PowerFee2#>元/天
+      </HDIF>；</td></tr>
+<tr><td class="App_ListTd">[水费收取] : <HDPrint Value=#WaterType#>
+      <HDIF Equal(<HDPrint Value=#WaterType# Replace=#None#>, 按度)>
+        <HDPrint Value=#WaterFee1#>元/吨
+      </HDIF>
+      <HDIF Equal(<HDPrint Value=#WaterType# Replace=#None#>, 固定费用)>
+        <HDPrint Value=#WaterFee2#>元/天
+      </HDIF>；</td></tr>
 </table>
 <HDPrint Value=#AppEmail# Replace=#None#>

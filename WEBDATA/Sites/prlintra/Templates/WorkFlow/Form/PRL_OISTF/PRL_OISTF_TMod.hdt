@@ -286,8 +286,8 @@
   <tr valign="top">
     <td class="DtlBarTitle">Category:<br>类别:<font color="red">*</font></td>
     <td class="listtd" colspan="3">
-      <input type="radio" name="Category" value="10" class="JQRadio">Early Termination 提前终止
-      <input type="radio" name="Category" value="20" class="JQRadio" checked>Termination 到期终止
+      <input type="radio" name="Category" value="10" class="JQRadio" checked>Early Termination 提前终止
+      <input type="radio" name="Category" value="20" class="JQRadio" >Termination 到期终止
       <input type="radio" name="Category" value="30" class="JQRadio">Others(Pls Specify) 其它(请指明)
       <INPUT TYPE="text" NAME="CategoryText" maxlength="64" value="<HDPrint Value=#CategoryText# Replace=#DBField2Input#>" class="JQText" style="width:200px;display:none">
       <script language="javascript">

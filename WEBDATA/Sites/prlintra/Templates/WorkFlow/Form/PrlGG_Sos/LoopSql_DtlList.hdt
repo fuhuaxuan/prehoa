@@ -1,0 +1,13 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script>
+  <hdloop>
+    AddUnit('<HDPrint Value=#aType# Replace=#DBField2Js#>',
+      '<HDPrint Value=#Line# Replace=#DBField2Js#>',
+      '<HDPrint Value=#Gid# Replace=#DBField2Js#>',
+      '<HDPrint Value=#fNo# Replace=#DBField2Js#>',
+      '<HDPrint Value=#floorNo# Replace=#DBField2Js#>',
+      '<HDPrint Value=#fArea# Replace=#DBField2Js#>',
+      '<HDPrint Value=#jArea# Replace=#DBField2Js#>',
+      '<HDPrint Value=#fmr# Replace=#DBField2Js#>')
+  </hdloop>
+</script>

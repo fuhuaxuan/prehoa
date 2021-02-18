@@ -39,7 +39,7 @@ LoopHDT1=Templates\WorkFlow\Form\PRLDZ_ISF\LoopSql_Option.hdt
 LoopVAR1=AttachList
 
 ;TMod时，获取本流程审批人信息
-LoopSQL2=select a.*,decode(a.apptype,0,'发起人',10,'部门经理',32,'部门总经理',30,'财务经理',35,'总经理',40,'项目总经理',45,'资产经理',50,'资产经理',60,'租赁部总监',70,'副财务总监',80,'财务总监',85,'资产经理',90,'区域总经理',95,'中国区CEO',100,'集团CEO') apptypetext  from WF_PRL_ISF_App a where FlowGid = ##FlowGid## and AppDate is not null order by AppDate
+LoopSQL2=select a.*,decode(a.apptype,0,'发起人',10,'部门经理',32,'部门总监',30,'财务经理',35,'总经理/项目总监',40,'项目总经理',45,'资产经理',50,'资产经理',60,'租赁部总监',70,'副财务总监',80,'财务总监',85,'资产经理',90,'区域总经理',95,'中国区CEO',100,'集团CEO') apptypetext  from WF_PRL_ISF_App a where FlowGid = ##FlowGid## and AppDate is not null order by AppDate
 LoopHDT2=Templates\WorkFlow\Form\PRLDZ_ISF\Loopsql_App.hdt
 LoopVAR2=AppList
 

@@ -1,0 +1,55 @@
+<table border="0" style="width:100%;">
+<tr><td>您好 :</td></tr>
+<tr><td>[流程名称] : <HDPrint Value=#ModelName#>；</td></tr>
+<tr><td>[单号] : <HDPrint Value=#Num#>；</td></tr>
+<tr><td>[发起人] : <HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]；</td></tr>
+<tr><td>[发起时间] : <HDPrint Value=#CreateDate#>]；</td></tr>
+<tr><td>[项目] : <HDPrint Value=#ProjectName#>；</td></tr>
+<tr><td>[申报日期] : <HDPrint Value=#AddDate#>；</td></tr>
+<tr><td>地上信息；</td></tr>
+<tr><td>
+  <table cellpadding="0" cellspacing="1" class="ListBar" width="100%" style="background-color: #d9dbdf;">
+    <colgroup>
+      <col style="width:5%">
+      <col style="width:30%">
+      <col style="width:40%">
+      <col style="width:45%">
+    </colgroup>
+    <thead>
+    <tr class="listtr">
+      <td align="center">行号</td>
+      <td align="center">项目</td>
+      <td align="center">申报面积</td>
+      <td align="center">备注</td>
+    </tr>
+    <HDPrint Value=#EmailDtl1# Replace=#None#>
+  </table>
+</td></tr>
+<tr><td>地下信息；</td></tr>
+<tr><td>
+  <table cellpadding="0" cellspacing="1" class="ListBar" width="100%" style="background-color: #d9dbdf;">
+    <colgroup>
+      <col style="width:5%">
+      <col style="width:30%">
+      <col style="width:40%">
+      <col style="width:45%">
+    </colgroup>
+    <thead>
+    <tr class="listtr">
+      <td align="center">行号</td>
+      <td align="center">项目</td>
+      <td align="center">申报面积</td>
+      <td align="center">备注</td>
+    </tr>
+    <HDPrint Value=#EmailDtl2# Replace=#None#>
+  </table>
+</td></tr>
+<tr><td>[备注] : <HDPrint Value=#AddMemo#> ；</td></tr>
+<tr><td>[附件信息] : <HDPrint Value=#AttachList# Replace=#None#></td></tr>
+<tr><td>-----------内容展示完毕-----------</td></tr>
+</table>
+<HDPrint Value=#AppEmail# Replace=#None#>
+
+
+
+

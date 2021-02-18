@@ -122,7 +122,7 @@
   </tbody>
   <tfoot>
   <tr>
-    <td class="PrintTdRT">合计：</td>
+    <td class="PrintTdRT">未完成租约合计：</td>
     <td class="PrintTdRT" align="center"><HDPrint Value=#DataASum#></td>
     <td class="PrintTdRT" align="center"><HDPrint Value=#DataBSum#></td>
     <td class="PrintTdRT" align="center"><HDPrint Value=#DataCSum#></td>

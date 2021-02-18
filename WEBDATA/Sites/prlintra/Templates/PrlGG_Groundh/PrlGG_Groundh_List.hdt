@@ -113,6 +113,8 @@
     <td style="cursor:hand;" JQAsc="" JQColumn="s.fno">编号</td>
     <td style="cursor:hand;" JQAsc="" JQColumn="s.floorno">位置</td>
     <td style="cursor:hand;" JQAsc="" JQColumn="s.fmr">预算</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="s.farea">最小面积</td>
+    <td style="cursor:hand;" JQAsc="" JQColumn="s.jarea">最大面积</td>
     <td style="cursor:hand;" JQAsc="" JQColumn="s.fstat">租赁状态</td>
     <td style="cursor:hand;" JQAsc="" JQColumn="s.OpType">最近操作类型</td>
     <td style="cursor:hand;" JQAsc="" JQColumn="s.OpName">最近操作人</td>
@@ -125,6 +127,8 @@
     <td><a href="##HDNet_AppName##/__ExplainModule?Url=PrlGG_Groundh_Dtl&UsrGid=<HDPrint Value=#UsrGid#>&fGid=<HDPrint Value=#fGid#>" target="_self"><HDPrint Value=#fno#></a></td>
     <td align="center"><HDPrint Value=#floorno#></td>
     <td align="right"><HDPrint Value=#fmr#></td>
+    <td align="right"><HDPrint Value=#farea#></td>
+    <td align="right"><HDPrint Value=#jarea#></td>
     <td align="center"><HDPrint Value=#fstat#></td>
     <td align="center"><HDPrint Value=#OpType#></td>
     <td align="center"><HDPrint Value=#OpName#></td>

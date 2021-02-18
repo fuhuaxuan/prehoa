@@ -37,12 +37,13 @@ Sql4=select * from wf_^^ModelCodeT^^ where EntGid = __ENTGID__ and  FlowGid = ##
 SQL5=select count(*) IsShow from wf_^^ModelCodeT^^_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid## 
 
 ;TMod时，获取本流程附件信息
-LoopSQL1=select Attach_Title ItemGid,Attach_Title ItemName from wf_^^ModelCodeT^^_Attach where EntGid = __ENTGID__ and  FlowGid = ##FlowGid## order by Attach_Title
-LoopHDT1=Templates\WorkFlow\Form\^^ModelCode^^\LoopSql_Option.hdt
+LoopSQL1=select * from wf_^^ModelCodeT^^_Attach where EntGid = __ENTGID__ and  FlowGid = ##FlowGid## order by Attach_Title
+LoopHDT1=Templates\WorkFlow\Form\^^ModelCode^^\LoopSql_AttachMod.hdt
 LoopVAR1=AttachList
 
 ;TMod时，获取本流程审批人信息
-LoopSQL2=select a.*,decode(a.apptype,0,'发起人',10,'部门经理',20,'部门总经理',23,'成本合约经理',30,'财务经理',35,'总经理',40,'项目总经理',45,'区域财务经理',50,'资产经理',60,'部门总监',70,'副财务总监',80,'财务总监',85,'资产经理',90,'区域总经理',95,'中国区CEO',100,'集团CEO',110,'执行委员会',120,'发起人确认',130,'出纳付款',140,'发起人修改支付信息') apptypetext  from wf_^^ModelCodeT^^_App a where FlowGid = ##FlowGid## order by AppDate,AppType
+LoopSQL2=select a.AppCode,a.AppName,a.AppAssign,a.AppDate,a.note AppMemo,a.AppOrder,decode(a.apptype,0,'发起人',10,'部门经理',20,'部门总监',23,'成本合约经理',30,'财务经理',35,'总经理/项目总监',40,'项目总经理',45,'区域财务经理',50,'资产经理',60,'区域部门总监',70,'副财务总监',80,'财务总监',85,'资产经理',90,'区域总经理',92,'首席投资官',95,'中国区CEO',100,'集团CEO',110,'执行委员会',120,'发起人确认',130,'出纳付款',140,'发起人修改支付信息') apptypetext from WF_^^ModelCodeT^^_App a where FlowGid = ##FlowGid## union select ExecCode AppCode,ExecName AppName,decode(t.stat,3,'已阅读','') AppAssign,ETIME AppDate,'' AppMemo,100 AppOrder,t.Name apptypetext from v_wf_task t where FlowGid = ##FlowGid## and t.ISMCF = 1 order by AppDate,AppOrder
+
 LoopHDT2=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AppList.hdt
 LoopVAR2=AppList
 

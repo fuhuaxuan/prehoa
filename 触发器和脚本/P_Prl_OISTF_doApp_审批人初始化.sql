@@ -12,14 +12,16 @@ create or replace procedure P_Prl_OISTF_doApp(p_EntGid    varchar2, --企业Gid
   v_PreDeptCode varchar2(32); --所属部门代码
 
   v_AppFee number(20, 2);
+  v_Category varchar2(10); --类型
 begin
   commit;
   v_Stage := '取出流程信息';
   select nvl(numsum, 0),
          f.FillUsrGid,
          f.filldeptgid,
-         substr(f.filldeptcode, 0, 4)
-    into v_AppFee, v_UsrGid, v_DeptGid, v_PreDeptCode
+         substr(f.filldeptcode, 0, 4),
+         f.Category
+    into v_AppFee, v_UsrGid, v_DeptGid, v_PreDeptCode,v_Category
     from wf_Prl_OISTF f
    where f.entgid = p_EntGid
      and f.flowgid = p_FlowGid;
@@ -71,6 +73,7 @@ begin
                  and v.deptGid = v_DeptGid
                  and v.atype = 30
                  and rownum = 1
+                 and v_Category <> '30'
               union
               select v.PostGid  AppGid,
                      v.PostCode AppCode,
@@ -82,6 +85,7 @@ begin
                  and v.deptGid = v_DeptGid
                  and v.atype = 15
                  and rownum = 1
+                 and v_Category <> '30'
               union
               select v.PostGid  AppGid,
                      v.PostCode AppCode,
@@ -93,6 +97,7 @@ begin
                  and v.deptGid = v_DeptGid
                  and v.atype = 40
                  and rownum = 1
+                 and v_Category <> '30'
               union
               select v.PostGid  AppGid,
                      v.PostCode AppCode,
@@ -104,6 +109,7 @@ begin
                  and v.deptGid = v_DeptGid
                  and v.atype = 71
                  and rownum = 1
+                 and v_Category <> '30'
               union
               select o.AppGid, o.AppCode, o.AppName, 60 AppOrder, 60 AppType
                 from v_wf_model_usr_app o
@@ -112,6 +118,7 @@ begin
                  and replace(lower(o.Modelcode), lower(v_ModelCode), '') in
                      ('_tb2')
                  and rownum = 1
+                 and v_Category <> '30'
               union
               select o.AppGid, o.AppCode, o.AppName, 70 AppOrder, 70 AppType
                 from v_wf_model_usr_app o
@@ -121,6 +128,7 @@ begin
                      ('_tc0')
                  and rownum = 1
                  and v_AppFee > 80000
+                 and v_Category <> '30'
               union
               select o.AppGid, o.AppCode, o.AppName, 80 AppOrder, 80 AppType
                 from v_wf_model_usr_app o
@@ -130,6 +138,7 @@ begin
                      ('_tc1')
                  and rownum = 1
                  and v_AppFee > 80000
+                 and v_Category <> '30'
               union
               select v.PostGid  AppGid,
                      v.PostCode AppCode,
@@ -142,6 +151,7 @@ begin
                  and v.atype = 80
                  and rownum = 1
                  and v_AppFee > 80000
+                 and v_Category <> '30'
               union
               select o.AppGid, o.AppCode, o.AppName, 95 AppOrder, 95 AppType
                 from v_wf_model_usr_app o
@@ -151,6 +161,7 @@ begin
                      ('_tc3')
                  and rownum = 1
                  and v_AppFee > 80000
+                 and v_Category <> '30'
               union
               select o.AppGid,
                      o.AppCode,
@@ -163,7 +174,8 @@ begin
                  and replace(lower(o.Modelcode), lower(v_ModelCode), '') in
                      ('_td')
                  and rownum = 1
-                 and v_AppFee > 300000) t;
+                 and v_AppFee > 300000
+                 and v_Category <> '30') t;
   
     commit;
     --取出审批人中重复的审批人

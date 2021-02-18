@@ -44,6 +44,16 @@
     <td class="DtlBarTitle">预算:</td>
     <td class="listtd"><HDPrint Value=#fmr#></td>
   </tr>
+  <tr>
+    <td class="DtlBarTitle">最小面积:</td>
+    <td class="listtd"><HDPrint Value=#FAREA#></td>
+    <td class="DtlBarTitle">最大面积:</td>
+    <td class="listtd"><HDPrint Value=#JAREA#></td>
+    <td class="DtlBarTitle"></td>
+    <td class="listtd"></td>
+    <td class="DtlBarTitle"></td>
+    <td class="listtd"></td>
+  </tr>
 </table>
 
 <h3 class="SubTitleBar" >

@@ -41,7 +41,7 @@ LoopHDT1=Templates\WorkFlow\Form\^^ModelCode^^\LoopSql_Option.hdt
 LoopVAR1=AttachList
 
 ;显示本流程审批人信息
-LoopSQL2=select a.*,decode(a.apptype,0,'发起人',10,'部门经理',30,'财务经理',40,'商场总经理',50,'资产经理',60,'部门总监',70,'副财务总监',80,'财务总监',90,'区域总经理',95,'中国区CEO',99,'集团CEO') apptypetext  from wf_PrlGG_ISF_App a where FlowGid = ##FlowGid## order by AppDate,AppType
+LoopSQL2=select a.*,decode(a.apptype,0,'发起人',10,'部门经理',30,'财务经理',35,'总经理/项目总监',40,'项目总经理',50,'资产经理',60,'区域部门总监',70,'副财务总监',80,'财务总监',90,'区域总经理',95,'中国区CEO',99,'集团CEO') apptypetext  from wf_PrlGG_ISF_App a where FlowGid = ##FlowGid## order by AppDate,AppType
 LoopHDT2=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AppList.hdt
 LoopVAR2=AppList
 

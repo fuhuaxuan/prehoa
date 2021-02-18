@@ -32,7 +32,7 @@ LoopHDT1=Templates\WorkFlow\Form\^^ModelCode^^\LoopSql_Option.hdt
 LoopVAR1=AppList
 
 ;取出抄送人(除当前审批外的所有审批人(60以上不发送)+部门助理+资产经理+财务会计） 用于同意并结束流程，或否决抄送
-LoopSQL2=select distinct AppGid ItemGid,AppName ItemName from Wf_PRL_ISF_App where EntGid = __ENTGID__ and  FlowGid = ##FlowGid## and AppGid <> __USRGID__ and AppType = 0 union select distinct v.PostGid ItemGid,v.PostName ItemName from v_Post v,Wf_PRL_ISTF f where v.EntGid = __ENTGID__ and v.EntGid = f.EntGid and f.FlowGid = ##FlowGid## and v.deptGid = f.FillUsrDeptGid and v.atype in (5,25)
+LoopSQL2=select distinct v.PostGid ItemGid,v.PostName ItemName from v_Post v,Wf_PRL_ISTF f where v.EntGid = __ENTGID__ and v.EntGid = f.EntGid and f.FlowGid = ##FlowGid## and v.deptGid = f.FillUsrDeptGid and v.atype in (5,25)
 LoopHDT2=Templates\WorkFlow\Form\^^ModelCode^^\LoopSql_Option.hdt
 LoopVAR2=Tcclist
 [AddtionalSQL]

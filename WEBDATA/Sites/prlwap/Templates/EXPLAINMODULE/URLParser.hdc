@@ -513,3 +513,13 @@ HDT=Templates\Prl_DOA\Prl_OGroundDtl.hdt
 [Prl_OGroundDtlDown]
 HDC=Templates\Prl_DOA\Prl_OGroundDtlDown.hdc
 HDT=Templates\Prl_DOA\Prl_OGroundDtlDown.hdt
+
+
+
+[Prl_Stamp_List]
+HDC=Templates\Prl_DOA\Prl_Stamp_List.hdc
+HDT=Templates\Prl_DOA\Prl_Stamp_List.hdt
+
+[Prl_Stamp_Down]
+HDC=Templates\Prl_DOA\Prl_Stamp_List.hdc
+HDT=Templates\Prl_DOA\Prl_Stamp_Down.hdt

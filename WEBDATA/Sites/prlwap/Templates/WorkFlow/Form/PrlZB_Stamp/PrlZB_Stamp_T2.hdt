@@ -47,6 +47,12 @@
   <col style="width:30%" valign="top">
   <col style="width:40%" valign="top">
   <TR><TD class="App_ListTr" colspan="3">审批意见</TD></TR>
+  <tr valign="top" JQ="AppCheck_1" style="display:none">
+    <td colspan="3" class="App_ListTd">
+      <input type="radio" name="AppCheck" value="我确认盖章文件与附件一致" class="JQRadio" checked>我确认盖章文件与附件一致<Br>
+       <input type="radio" name="AppCheck" value="最终修正版确认内容" class="JQRadio">最终修正版确认内容
+    </td>
+  </tr>
   <tr>
     <td colspan="3"><textarea class="JQText JQNo" rows="5" id="AppMemo" name="AppMemo" maxlength="500"></textarea></td>
   </tr>
@@ -54,11 +60,32 @@
     <td>　</td><td> </td>
   </tr>
   <tr align="center">
-    <td><div class="App_No" onclick="javascript:CheckSubmit('否决');void(0)">否决<div></td>
+    <td JQ="AppCheck_2"><div class="App_No" onclick="javascript:CheckSubmit('否决');void(0)">否决<div></td>
     <td><div class="App_Yes" onclick="javascript:CheckSubmit('同意');void(0)">同意<div></td>
-    <td><div class="App_Other" onclick="javascript:CheckSubmit('返回核实');void(0)">返回核实<div></td>
+    <td JQ="AppCheck_2"><div class="App_Other" onclick="javascript:CheckSubmit('返回核实');void(0)">返回核实<div></td>
   </tr>
 </table>
+ <script language="javascript">
+ //函数：ready
+ //功能：document 加载完成后调用
+ $(document).ready(function(){
+    if ('<HDPrint Value=#AppType# Replace=#DBField2Js#>' == '98') {
+      $("[JQ=AppCheck_1]").show();
+      $("[JQ=AppCheck_2]").hide();
+    }
+    $("input[name=AppCheck]").click(function(){
+      $AppMemo = $("textarea[name=AppMemo]")
+      if ($(this).val() == '最终修正版确认内容') {
+        $AppMemo.show();
+        $AppMemo.addClass("JQMust");
+      }
+      else{
+        $AppMemo.hide();
+        $AppMemo.removeClass("JQMust");
+      }
+    });
+ });
+ </script>
 </form>
 <script language="javascript">
   //复制一个工具栏

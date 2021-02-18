@@ -70,7 +70,7 @@
     <td>单据状态 = </td>
     <td>
       <select name="sel_Stat" class="JQSelect"  style="width:90%">
-        <option value="">--请选择--</option>
+        <option value="">--全部--</option>
         <option value="in ('保存','提交')">保存,提交</option>
         <option value="= '审批中'">审批中</option>
         <option value="= '已审批'">已审批</option>
@@ -83,6 +83,13 @@
   <tr>
     <td>单号 ≈ </td>
     <td><input type="Text" name="txt_Num" class="JQDate" style="width:90%"></td>
+    <td>是否有电子发票 = </td>
+    <td>
+      <select name="sel_Voice" class="JQSelect"  style="width:90%">
+        <option value="">--全部--</option>
+        <option value="20">是</option>
+      </select>
+    </td>
   </tr>
   <tr >
     <td colspan="4">
@@ -116,6 +123,7 @@
   document.all.txt_Acg1.value = '<HDPrint value=#txt_Acg1# Replace=#DBField2Js#>';
   document.all.txt_Acg.value = '<HDPrint value=#txt_Acg# Replace=#DBField2Js#>';
   document.all.sel_Stat.value = '<HDPrint value=#sel_Stat# Replace=#DBField2Js#>';
+  document.all.sel_Voice.value = '<HDPrint value=#sel_Voice# Replace=#DBField2Js#>';
 </script>
 <BR>
 <HDPageBar>

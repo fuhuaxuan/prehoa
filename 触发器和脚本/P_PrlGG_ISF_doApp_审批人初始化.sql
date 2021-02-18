@@ -93,6 +93,20 @@ begin
              v.PostGid AppGid,
              v.PostCode AppCode,
              v.PostName AppName,
+             35 AppOrder,
+             35 AppType
+        from v_Post v
+       where v.EntGid = p_EntGid
+         and v.deptGid = v_DeptGid
+         and v.atype = 35
+         and rownum = 1
+      union
+      select p_EntGid,
+             p_FlowGid,
+             sys_guid(),
+             v.PostGid AppGid,
+             v.PostCode AppCode,
+             v.PostName AppName,
              40 AppOrder,
              40 AppType
         from v_Post v

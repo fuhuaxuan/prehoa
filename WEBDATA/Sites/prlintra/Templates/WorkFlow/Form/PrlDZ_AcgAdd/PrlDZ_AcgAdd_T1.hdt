@@ -228,7 +228,7 @@
   <tr valign="top">
     <td class="DtlBarTitle">附件信息:<font color="red">*</font><br><font color="gray">(双击删除)</font></td>
     <td class="listtd">
-      <SELECT NAME="selFileList_1" size="3" style="width:250;" multiple class="JQMust"><HDPrint Value=#AttachList# Replace=#None#></SELECT><br>
+      <SELECT NAME="selFileList_1" size="3" style="width:250;" multiple class="JQSelect JQMust"><HDPrint Value=#AttachList# Replace=#None#></SELECT><br>
       <input type="hidden" name="HDTempPath" value="<HDPrint Value=#NewGid# Replace=#DBField2Input#>">
       <iframe FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid# Replace=#DBField2Input#>&CallBackFun=AddAttach" height=28></iframe>
     </td>
@@ -294,8 +294,8 @@
 <script language="javascript">
   if ('<HDPrint Value=#IsNew# Replace=#DBField2Js#>' == '0'){
     //T1时，加载FlowGid的数据
-    $("input[name=FlowGid]").val('<HDPrint Value=#NewGid# Replace=#DBField2Js#>');
-    $("input[name=FlowGid_1]").val('<HDPrint Value=#NewGid# Replace=#DBField2Js#>');
+    $("input[name=FlowGid]").val('<HDPrint Value=#Num# Replace=#DBField2Js#>');
+    $("input[name=FlowGid_1]").val('<HDPrint Value=#Num# Replace=#DBField2Js#>');
     $("input[name=WFCreate]").val('WF');
   }
   else{

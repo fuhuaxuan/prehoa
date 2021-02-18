@@ -18,8 +18,5 @@
 <TR><TD class="App_ListTd">[增加预算汇总] : <HDPrint Value=#TotalFee#> 元；</td></tr>
 <TR><TD class="App_ListTd">[备注] : <HDPrint Value=#memo#> ；</td></tr>
 <TR><TD class="App_ListTd">[附件信息] : <HDPrint Value=#AttachList# Replace=#None#></td></tr>
-<HDIF EqualNot(<HDPrint Value=#isCEO# Replace=#None#>, 0)>
-<TR><TD class="App_ListTd">[潘总审批附件:] : <HDPrint Value=#AttachList2# Replace=#None#></td></tr>
-</HDIF>
 </table>
 <HDPrint Value=#AppEmail# Replace=#None#>

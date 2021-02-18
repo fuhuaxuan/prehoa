@@ -63,7 +63,7 @@
     <td class="DtlBarTitle">本次确认金额:<font color="red">*</font></td>
     <td class="listtd" colspan="3">
       今年：<INPUT TYPE="text" NAME="Confirmfee" maxlength="20" value="<HDPrint Value=#Confirmfee# Replace=#DBField2Input#>" class="JQFloat JQMust" style="width:100px;">
-      明年：<INPUT TYPE="text" NAME="NConfirmfee" maxlength="20" value="<HDPrint Value=#NConfirmfee# Replace=#DBField2Input#>" class="JQFloat" style="width:100px;">
+      跨年：<INPUT TYPE="text" NAME="NConfirmfee" maxlength="20" value="<HDPrint Value=#NConfirmfee# Replace=#DBField2Input#>" class="JQFloat" style="width:100px;">
     </td>
   </tr>
   <tr>

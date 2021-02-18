@@ -11,6 +11,7 @@
       '<HDPrint Value=#Apfixed# Replace=#DBField2Js#>',
       '<HDPrint Value=#GTO# Replace=#DBField2Js#>',
       '<HDPrint Value=#Rent# Replace=#DBField2Js#>',
-      '<HDPrint Value=#Memo# Replace=#DBField2Js#>')
+      '<HDPrint Value=#Memo# Replace=#DBField2Js#>',
+      '<HDPrint Value=#Moded# Replace=#DBField2Js#>')
   </hdloop>
 </script>

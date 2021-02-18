@@ -55,7 +55,11 @@
       <td class="NewTd3" colspan=3 id="emp10"></td>
     </tr>
     <tr id="dept" style="display:'none'">
-      <td class="NewTd2">15部门总经理 </td>
+      <td class="NewTd2">13项目副总监 </td>
+      <td class="NewTd3" colspan=3 id="emp13"></td>
+    </tr>
+    <tr id="dept" style="display:'none'">
+      <td class="NewTd2">15部门总监 </td>
       <td class="NewTd3" colspan=3 id="emp15"></td>
     </tr>
     <tr id="dept" style="display:'none'">
@@ -79,7 +83,7 @@
       <td class="NewTd3" colspan=3 id="emp31"></td>
     </tr>
     <tr id="dept" style="display:'none'">
-      <td class="NewTd2">35总经理 </td>
+      <td class="NewTd2">35总经理/项目总监 </td>
       <td class="NewTd3" colspan=3 id="emp35"></td>
     </tr>
     <tr id="dept" style="display:'none'">
@@ -87,7 +91,7 @@
       <td class="NewTd3" colspan=3 id="emp40"></td>
     </tr>
     <tr id="dept" style="display:'none'">
-      <td class="NewTd2">50区域总监 </td>
+      <td class="NewTd2">50区域部门总监 </td>
       <td class="NewTd3" colspan=3 id="emp50"></td>
     </tr>
     <tr id="dept" style="display:'none'">
@@ -97,6 +101,10 @@
     <tr id="dept" style="display:'none'">
       <td class="NewTd2">80资产总监/区域总经理 </td>
       <td class="NewTd3" colspan=3 id="emp80"></td>
+    </tr>
+    <tr id="dept" style="display:'none'">
+      <td class="NewTd2">92首席投资官 </td>
+      <td class="NewTd3" colspan=3 id="emp92"></td>
     </tr>
     <HDPrint Value=#emplist# Replace=#None#>
     <tr id="dept" style="display:'none'">

@@ -81,6 +81,10 @@
     <td><input name="txtFlowNote" maxlength=100 class="JQText"></td>
   </tr>
   <tr>
+    <td>待执行人 ≈ </td>
+    <td> <input name="txtTsName" maxlength=100 style="width:95%"> </td>
+  </tr>
+  <tr>
     <td colspan="2">（请进行相应的查询，找到您需要的信息）</td>
     <td colspan="6" align="right">
       <INPUT TYPE="hidden" name="NotFirst" value="1">
@@ -105,6 +109,7 @@
   document.all.txtFlowNote.value = '<HDPrint Value=#txtFlowNote# Replace=#DBField2Js#>';
   document.all.selModelName.value = '<HDPrint Value=#selModelName# Replace=#DBField2Js#>';
   document.all.selModelType.value = '<HDPrint Value=#selModelType# Replace=#DBField2Js#>';
+  document.all.txtTsName.value = '<HDPrint Value=#txtTsName# Replace=#DBField2Js#>';
 
   function CheckSubmit() {
     if (document.all.txtCreateDate1.value == '') {
@@ -139,6 +144,7 @@
   <col style="padding-left:4px;width:55" valign="top">
   <col style="padding-left:4px;width:120" align=center valign="top">
   <col style="padding-left:4px;width:120" align=center valign="top">
+  <col style="padding-left:4px;width:70" align=center valign="top">
   <col style="padding-left:4px;width:50" align=center valign="top">
   <col style="padding-left:4px;width:70" align=center valign="top">
   <tr class=listtr>
@@ -147,6 +153,7 @@
     <td id="tdOrder" style="cursor:hand;" JQAsc="" JQColumn="a.CreaterName">发起人</td>
     <td id="tdOrder" style="cursor:hand;" JQAsc="" JQColumn="a.CreateDate">发起时间</td>
     <td id="tdOrder" style="cursor:hand;" JQAsc="" JQColumn="a.FinishDate">结束时间</td>
+    <td id="tdOrder" style="cursor:hand;" >待执行人</td>
     <td id="tdOrder" style="cursor:hand;" JQAsc="" JQColumn="a.Stat">状态</td>
     <td>操作</td>
   </tr>
@@ -158,6 +165,7 @@
     <td><HDPrint Value=#creatername#></td>
     <td><HDPrint Value=#Flowcreatedate#></td>
     <td><HDPrint Value=#FlowFinishDate#></td>
+    <td><HDPrint Value=#tsname# Replace=#None#></td>
     <td><HDPrint Value=#Flowstat# Replace=#None#></td>
     <td>
       <A HREF="##HDNet_AppName##/__ExplainModule?UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Input#>&url=WFFlowTrace&flowgid=<HDPrint Value=#flowgid#>&modelgid=<HDPrint Value=#modelgid#>" target="_blank">过程</A>

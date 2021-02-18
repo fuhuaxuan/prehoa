@@ -28,14 +28,14 @@
   }
 
   //单位选择后，计算
-  function CallUnit(fgid,fno,floorno,fmr){
+  function CallUnit(fgid,fno,floorno,fmr,fArea,jArea){
     //判断是否存在附件
     if (!JQgetSingle("selUnit_1",fno)){
       alert('对不起，已经存在该单位！');
       return false;
     }
     //添加单位列表中
-    var JsOption = '<option value="'+fno+'" JsFloor="'+floorno+'" JsFmr="'+fmr+'">'+fno+'</option>';
+    var JsOption = '<option value="'+fno+'" JsFloor="'+floorno+'" JsFmr="'+fmr+'" JsFArea="'+fArea+'" JsJArea="'+jArea+'">'+fno+'</option>';
     $("select[name=selUnit_1]").append(JsOption);
 
     //重新计算所有值
@@ -56,9 +56,13 @@
     var JsFloor = ''
     //批准预算总和 = (单位面积1*单位批准预算1+单位面积2*单位批准预算2+...)
     var JsBudget = 0;
+    var JsFArea = 0;
+    var JsJArea = 0;
 
     $("select[name=selUnit_1]>option").each(function(){
       JsBudget += parseFloat($(this).attr("JsFmr"));
+      JsFArea += parseFloat($(this).attr("JsFArea"));
+      JsJArea += parseFloat($(this).attr("JsJArea"));
       JsFloor += $(this).attr("JsFloor")+";<br>";
     });
     //if ($("select[name=selUnit_1]>option").length > 0) {
@@ -69,6 +73,11 @@
       $("input[name=BRCBudget]").val(parseFloat(JsBudget).toFixed(4));
     }
     $("[JQ=JQFloor]").html(JsFloor);
+    if (JsFArea == JsJArea) {
+      $("[JQ=JQArea]").html(JsFArea.toFixed(2));
+    }else{
+      $("[JQ=JQArea]").html(JsFArea.toFixed(2) + "-" + JsJArea.toFixed(2));
+    }
   }
   //租赁期，免租期 新增行
   function callDtl(JsStr){
@@ -186,7 +195,7 @@
   *函数功能：明细新增一行
   *参数说明：使用JQTr_Add() 函数新增行时，需写在 tbody 标记中
   */
-  function Add_Dtl(JsTbId,Gid,YearType,FreeRentDate1,FreeRentDate2,TBRD,TBRM,PMFD,PMFM,ProGTOD,ProGTOM)
+  function Add_Dtl(JsTbId,Gid,YearType,FreeRentDate1,FreeRentDate2,TBRD,TBRM,GTO,ProGTO,ProGTOrent)
   {
     var sTrClass = 'listtd';
     var tdArr = new Array();
@@ -199,10 +208,9 @@
       FreeRentDate2 = '';
       TBRD = '';
       TBRM = '';
-      PMFD = '';
-      PMFM = '';
-      ProGTOD = '';
-      ProGTOM = '';
+      GTO = '';
+      ProGTO = '';
+      ProGTOrent = '';
     }
     if (JsTbId == 'tb_Dtl10'){
       tdArr[k++] = '<td>'
@@ -229,6 +237,11 @@
 
     tdArr[k++] = '<td><INPUT TYPE="text" NAME="TBRM_1" ID="TBRM_1'+ iRow +'"  maxlength="16" class="JQFloat" JQBit="4" value="'+TBRM+'" style="border:0px;" readonly></td>';
 
+    tdArr[k++] = '<td><INPUT TYPE="text" NAME="GTO_1" ID="GTO_1'+ iRow +'" maxlength="16" class="JQFloat JQMust" JQBit="4" value="'+GTO+'" onblur="CalcGTO();" style="width:80%">%</td>';
+
+    tdArr[k++] = '<td><INPUT TYPE="text" NAME="ProGTO_1" ID="ProGTO_1'+ iRow +'" maxlength="16" class="JQFloat JQMust" JQBit="4" value="'+ProGTO+'" onblur="CalcGTO();"></td>';
+
+    tdArr[k++] = '<td><INPUT TYPE="text" NAME="ProGTOrent_1" ID="ProGTOrent_1'+ iRow +'" maxlength="16" class="JQFloat" JQBit="4" value="'+ProGTOrent+'" style="border:0px;" readonly></td>';
     if (JsTbId != 'tb_Dtl20'){
       tdArr[k++] ='<td align="center">&nbsp;</td>';
     }
@@ -260,6 +273,14 @@
     //交付日期
     var JsHandoverDate = $("input[name=HandoverDate]").val();
 
+    //装修 月，日
+    var JsFitoutM = $("input[name=FitoutM]").val();
+    var JsFitoutD = $("input[name=FitoutD]").val();
+
+    //装修期
+    var JqFitoutDate1 = $("input[name=FitoutDate1]");
+    var JqFitoutDate2 = $("input[name=FitoutDate2]");
+
     //租赁期限
     var JqContractDate1 = $("input[name=ContractDate1]");
     var JqContractDate2 = $("input[name=ContractDate2]");
@@ -271,15 +292,39 @@
       //日期转换为 YYYY/MM/DD 直接可以转换成日期
       d = new Date(JsHandoverDate.replace('.','/').replace('.','/'));
 
+      if (JsFitoutM == ''){JsFitoutM = '0';}
+      if (JsFitoutD == ''){JsFitoutD = '0';}
+
       if (JsLeaseTermY == ''){JsLeaseTermY = '0';}
       if (JsLeaseTermM == ''){JsLeaseTermM = '0';}
       if (JsLeaseTermD == ''){JsLeaseTermD = '0';}
+
+      if (JsFitoutM == '0' && JsFitoutD == '0'){
+        JqFitoutDate1.val('');
+        JqFitoutDate2.val('');
+      }
+      else{
+        /*if (JsFitoutM > 12){JsFitoutM = 12;}
+        if (JsFitoutD > 31){JsFitoutD = 31;}*/
+        JqFitoutDate1.val(JsHandoverDate);
+        d.setMonth(d.getMonth() + parseFloat(JsFitoutM));
+        d.setDate(d.getDate() + parseFloat(JsFitoutD) - 1);
+        JsDate = d.getFullYear() + '.' +  parseFloat(d.getMonth() + 1) + '.' + d.getDate();
+        JqFitoutDate2.val(JsDate);
+
+      }
 
       if (JsLeaseTermY == '0' && JsLeaseTermM == '0' && JsLeaseTermD == '0'){
         JqContractDate1.val('');
         JqContractDate2.val('');
       }
       else{
+        if (JsFitoutM == '0' && JsFitoutD == '0'){
+          d.setDate(d.getDate());
+        }
+        else{
+          d.setDate(d.getDate()+1);
+        }
         //如果租赁期 的大小判断
         /*if (JsLeaseTermY > 50){JsLeaseTermY = 50;}
         if (JsLeaseTermM > 12){JsLeaseTermM = 12;}
@@ -297,6 +342,8 @@
       }
     }
     else{
+      JqFitoutDate1.val('');
+      JqFitoutDate2.val('');
       JqContractDate1.val('');
       JqContractDate2.val('');
     }
@@ -380,6 +427,29 @@
     var JsFreeRentM = JqFreeRentM.val();
     var JsFreeRentD = JqFreeRentD.val();
 
+    //装修 月，日
+    var JqFitoutM = $("input[name=FitoutM]");
+    var JqFitoutD = $("input[name=FitoutD]");
+
+    var JsFitoutM = JqFitoutM.val();
+    var JsFitoutD = JqFitoutD.val();
+
+    //免租期 月，日
+    var JqFreeRentM = $("input[name=FreeRentM]");
+    var JqFreeRentD = $("input[name=FreeRentD]");
+
+    //装修
+    if (JsFitoutM == '' && JsFitoutD == ''){
+      JqFitoutM.addClass("JQMust");
+      JqFitoutD.addClass("JQMust");
+    }
+    else{
+      JqFitoutM.removeClass("JQMust");
+      JqFitoutD.removeClass("JQMust");
+      JqFitoutM.css("border", "1px solid #C0C0C0");
+      JqFitoutD.css("border", "1px solid #C0C0C0");
+    }
+
     //免租期
     if (JsFreeRentM == '' && JsFreeRentD == ''){
       JqFreeRentM.addClass("JQMust");
@@ -406,8 +476,8 @@
   //计算每行租赁租金相关数值
   function CalcGTO() {
     /*-------------------------------------
-    |    租 金   |   物业费   | 市场推广费 |
-    |  A  |   B  |  M  |   N  |  C  |   D  |
+    |    租 金   | 提成租金构造 | 预估营业额 | 预估提成租金 |
+    |  A  |   B  |       D      |      E     |       G      |
     -------------------------------------*/
     $("input[name=Gid_1]").each(function(){
       var JsRow = $(this).val();
@@ -415,37 +485,70 @@
       var JsA = $("input#TBRD_1"+JsRow).val();
       var JqB = $("input#TBRM_1"+JsRow);
 
+      //提成租金构造
+      var JsD = $("input#GTO_1"+JsRow).val();
+
+      //预估营业额
+      var JqE = $("input#ProGTO_1"+JsRow).val();
+
+      //预估提成租金
+      var JqG = $("input#ProGTOrent_1"+JsRow);
+
       //基数 = 365/12
       var JsBase = 365/12;
       var JsVal = 0;
 
       //判断 为空，则为 0
       if (JsA == ''){JsA = '0';}
+      if (JsD == ''){JsD = '0';}
+      if (JqE == ''){JqE = '0';}
 
       //租金 月 = 租金 日 * 基数
       JsVal = parseFloat(JsA * JsBase).toFixed(4);
       JqB.val(JsVal);
+
+      JsVal = parseFloat(JqE * JsD / 100).toFixed(4);
+      JqG.val(JsVal);
     });
     calcNew()
   }
 
   //计算New值
   function calcNew(JsStr){
+    var JsRate = $("input[name=Rate]:checked").val();
     //表格
     var JqTb = $("table#tb_Dtl30");
     var JsVal = 0;
-    var JsValM = 0;
+    var JsA = 0;
+    var JsC = 0;
     //第一年租金
     if (JqTb.find("input[name=TBRD_1]").first().length > 0){
       //租金
-      JsVal = JqTb.find("input[name=TBRD_1]").first().val();
-      JsValM = JqTb.find("input[name=TBRM_1]").first().val();
+      JsA = JqTb.find("input[name=TBRD_1]").first().val();
+      //JsC = JqTb.find("input[name=TBRM_1]").first().val();
+      //预估提成租金
+      JsC = JqTb.find("input[name=ProGTOrent_1]").first().val();
     }
-    if (JsVal == ''){JsVal = '0';}
-    if (JsValM == ''){JsValM = '0';}
-    //New 赋值
+    if (JsA == ''){JsA = '0';}
+    if (JsC == ''){JsC = '0';}
+    //固定租金
+    if (JsRate == '固定' || JsRate == '置换'){
+      JsVal = parseFloat(JsA).toFixed(4);
+    }
+    //预估提成租金
+    if (JsRate == '扣率'){
+      JsVal = parseFloat(JsC).toFixed(4);
+    }
+    // 固定租金 预估提成租金 取高
+    if (JsRate == '固定租金与扣率取高'){
+      JsVal = parseFloat(Math.max(parseFloat(JsA),parseFloat(JsC))).toFixed(4);
+    }
+    //固定租金 + 预估提成租金
+    if (JsRate == '固定租金+扣率'){
+      JsVal = parseFloat(parseFloat(JsA) + parseFloat(JsC)).toFixed(4);
+    }
+    console.log(JsRate + "-" + JsVal)
     $("input[name=BRCNew]").val(JsVal);
-    $("input[name=BRCNewM]").val(JsValM);
   }
   //判断日期大小
   function callDate1(JsObj){
@@ -562,26 +665,46 @@
   </tr>
   </HDIF>
   <tr valign="top">
-    <td class="DtlBarTitle">类别: <font color="red">*</font></td>
+    <td class="DtlBarTitle" rowspan="3">类别: <font color="red">*</font></td>
     <td class="listtd">
       <input type="radio" name="Atype" value="新租赁" class="JQRadio JQSave JQMust" checked>新租赁
       <input type="radio" name="Atype" value="续约租赁" class="JQRadio JQSave JQMust">续约租赁
       <script language="javascript">
         $("input[name=Atype][value='<HDPrint Value=#Atype# Replace=#DBField2Js#>']").prop("checked",true);
-        $("input[name=Category][value='<HDPrint Value=#Category# Replace=#DBField2Js#>']").prop("checked",true);
       </script>
     </td>
-    <td class="DtlBarTitle">
+    <td class="DtlBarTitle" rowspan="3">
       <a href="javascript:DataInterface(frmDataInterface_Unit);void(0)">单位[选择]:</a><font color="red">*</font>
       <br><font color="gray">(双击删除)</font><br></td>
-    <td class="listtd">
+    <td class="listtd" rowspan="3">
       <select name="selUnit_1" class="JQList JQSave JQMust" multiple style="width:100%" ondblclick="JqDel(this);" JQOpen="false">
         <HDPrint Value=#unitList# Replace=#None#>
         <HDPrint Value=#unitList2# Replace=#None#>
       </select>
     </td>
-    <td class="DtlBarTitle">位置</td>
-    <td class="listtd" JQ="JQFloor"></td>
+    <td class="DtlBarTitle" rowspan="2">位置</td>
+    <td class="listtd" JQ="JQFloor" rowspan="2"></td>
+  </tr>
+  <tr valign="top">
+    <td class="listtd">
+      <input type="radio" name="Atype2" value="广告位" class="JQRadio JQSave JQMust" checked>广告位
+      <input type="radio" name="Atype2" value="场地租赁" class="JQRadio JQSave JQMust">场地租赁
+      <input type="radio" name="Atype2" value="其他" class="JQRadio JQSave JQMust">其他
+      <script language="javascript">
+        $("input[name=Atype2][value='<HDPrint Value=#Atype2# Replace=#DBField2Js#>']").prop("checked",true);
+      </script>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="listtd">
+      <input type="radio" name="Atype3" value="场内租户" class="JQRadio JQSave JQMust" checked>场内租户
+      <input type="radio" name="Atype3" value="非场内租户" class="JQRadio JQSave JQMust">非场内租户
+      <script language="javascript">
+        $("input[name=Atype3][value='<HDPrint Value=#Atype3# Replace=#DBField2Js#>']").prop("checked",true);
+      </script>
+    </td>
+    <td class="DtlBarTitle">面积[㎡]</td>
+    <td class="listtd" JQ="JQArea"></td>
   </tr>
   <tr valign="top">
     <td class="listtd" colspan="6">A、租户信息</td>
@@ -620,40 +743,42 @@
     </td>
     <td class="DtlBarTitle">交付日期:<font color="red">*</font></td>
     <td class="listtd"><INPUT TYPE="text" NAME="HandoverDate" maxlength="10" value="<HDPrint Value=#HandoverDate# Replace=#DBField2Input#>" class="JQDate JQMust" onblur="callDate1(this);calcContract();"></td>
+    <td class="DtlBarTitle">收银方式:<font color="red">*</font></td>
+    <td class="listtd">
+      <input type="radio" name="Collection" value="独立收银" class="JQRadio JQMust" checked>独立收银
+      <input type="radio" name="Collection" value="中央收银" class="JQRadio JQMust" >中央收银
+      <script language="javascript">
+      $("input[name=Collection][value='<HDPrint Value=#Collection# Replace=#DBField2Js#>']").prop("checked",true);
+      </script>
+    </td>
+  </tr>
+  <tr valign="top">
     <td class="DtlBarTitle">免租期:<font color="red">*</font></td>
     <td class="listtd">
      <INPUT TYPE="text" NAME="FreeRentM" maxlength="4" value="<HDPrint Value=#FreeRentM# Replace=#DBField2Input#>" class="JQInt JQMust" style="width:50px;" JQMin="0" JQMax="11" onblur="callDtl('FreeRentM');calcContract();">月/
      <INPUT TYPE="text" NAME="FreeRentD" maxlength="4" value="<HDPrint Value=#FreeRentD# Replace=#DBField2Input#>" class="JQInt JQMust" style="width:50px;" JQMin="0" JQMax="31" onblur="callDtl('FreeRentD');calcContract();">日
     </td>
-  </tr>
-  <tr valign="top">
+    <td class="DtlBarTitle">装修期:<font color="red">*</font></td>
+    <td class="listtd">
+     <INPUT TYPE="text" NAME="FitoutM" maxlength="4" value="<HDPrint Value=#FitoutM# Replace=#DBField2Input#>" class="JQInt JQMust" style="width:50px;" JQMin="0" JQMax="11" onblur="calcContract();">月/
+     <INPUT TYPE="text" NAME="FitoutD" maxlength="4" value="<HDPrint Value=#FitoutD# Replace=#DBField2Input#>" class="JQInt JQMust" style="width:50px;" JQMin="0" JQMax="31" onblur="calcContract();">日<br>
+     （<INPUT TYPE="text" NAME="FitoutDate1" maxlength="10" value="<HDPrint Value=#FitoutDate1# Replace=#DBField2Input#>" class="JQText" style="width:80px;border:0px" readonly>~<INPUT TYPE="text" NAME="FitoutDate2" maxlength="10" value="<HDPrint Value=#FitoutDate2# Replace=#DBField2Input#>" class="JQText" style="width:80px;border:0px" readonly>）
+    </td>
     <td class="DtlBarTitle">合同起始日期:<font color="red">*</font></td>
     <td class="listtd">
       <INPUT TYPE="text" NAME="ContractDate1" maxlength="10" value="<HDPrint Value=#ContractDate1# Replace=#DBField2Input#>" class="JQText" style="width:80px;border:0px;" readonly>~<INPUT TYPE="text" NAME="ContractDate2" maxlength="10" value="<HDPrint Value=#ContractDate2# Replace=#DBField2Input#>" class="JQText" style="width:80px;border:0px;" readonly>
     </td>
-    <td class="DtlBarTitle">租金方式:<font color="red">*</font></td>
-    <td class="listtd">
-      <input type="radio" name="Rate" value="固定" class="JQRadio JQMust" checked>固定
-      <input type="radio" name="Rate" value="置换" class="JQRadio JQMust">置换
-      <script language="javascript">
-        $("input[name=Rate][value='<HDPrint Value=#Rate# Replace=#DBField2Js#>']").prop("checked",true);
-      </script>
-    </td>
-    <td class="DtlBarTitle"></td>
-    <td class="listtd"></td>
   </tr>
   <tr valign="top">
-    <td class="DtlBarTitle">预付租金+费用:<font color="red">*</font></td>
-    <td class="listtd"><INPUT TYPE="text" NAME="AGR" maxlength="16" value="<HDPrint Value=#AGR# Replace=#DBField2Input#>" class="JQFloat JQMust" JQBit="4"></td>
-    </td>
-    <td class="DtlBarTitle">保证金:<font color="red">*</font></td>
-    <td class="listtd"><INPUT TYPE="text" NAME="Security" maxlength="16" value="<HDPrint Value=#Security# Replace=#DBField2Input#>" class="JQFloat JQMust" JQBit="4"></td>
-    <td class="DtlBarTitle">方式</td>
-    <td class="listtd">
-      <input type="radio" name="Incash" value="现金" class="JQRadio JQMust" checked>固定
-      <input type="radio" name="Incash" value="银行担保" class="JQRadio JQMust">银行担保
+    <td class="DtlBarTitle">租金方式:<font color="red">*</font></td>
+    <td class="listtd" colspan="6">
+      <input type="radio" name="Rate" value="固定" onclick="calcNew();" class="JQRadio JQMust" checked>固定
+      <input type="radio" name="Rate" value="扣率" onclick="calcNew();" class="JQRadio JQMust">扣率
+      <input type="radio" name="Rate" value="固定租金与扣率取高" onclick="calcNew();" class="JQRadio JQMust">固定租金与扣率取高
+      <input type="radio" name="Rate" value="固定租金+扣率" onclick="calcNew();" class="JQRadio JQMust">固定租金+扣率
+      <input type="radio" name="Rate" value="置换" onclick="calcNew();" class="JQRadio JQMust">置换
       <script language="javascript">
-        $("input[name=Incash][value='<HDPrint Value=#Incash# Replace=#DBField2Js#>']").prop("checked",true);
+        $("input[name=Rate][value='<HDPrint Value=#Rate# Replace=#DBField2Js#>']").prop("checked",true);
       </script>
     </td>
   </tr>
@@ -661,20 +786,32 @@
     <td class="listtd" colspan="6">C、租赁条件</td>
   </tr>
   <tr valign="top">
-    <td class="listtd" colspan="4" rowspan="4">
+    <td class="listtd" colspan="6">
       <table width="100%" class="ListBar" cellpadding="0"  cellspacing="1" style="margin-top:1px">
         <colgroup>
            <col style="width:20%">
-           <col style="width:35%">
-           <col style="width:35%">
-           <col style="width:10%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:5%">
         </colgroup>
         <thead>
         <tr class="DtlBarTitle" align="center">
-          <td>序号</td>
+          <td colspan="3">1st Term Base Rental (RMB)<br>第一租赁期固定租金（人民币）</td>
+          <td>GTO Rent Structure<br>提成租金构造</td>
+          <td>Projected GTO<br />预估营业额</td>
+          <td>Projected GTO Rent<br>预估提成租金</td>
+          <td rowspan="2">操作</td>
+        </tr>
+        <tr class="DtlBarTitle" align="center">
+          <td>序号<A HREF="javascript:Add_Dtl('tb_Dtl20');">[新增日期段]</A></td>
           <td>固定租金[元/天]<font color="red">*</font></td>
           <td>固定租金[元/月]</td>
-          <td>操作</td>
+          <td>Details 细节<font color="red">*</font></td>
+          <td>psm/day<br>㎡/天<font color="red">*</font></td>
+          <td>psm/day<br>㎡/天</td></td>
         </tr>
         </thead>
         <tbody>
@@ -683,9 +820,12 @@
       <table width="100%" class="ListBar" cellpadding="0"  cellspacing="1" id="tb_Dtl10" style="margin-top:2px;">
         <colgroup>
            <col style="width:20%">
-           <col style="width:35%">
-           <col style="width:35%">
-           <col style="width:10%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:5%">
         </colgroup>
         <tbody>
         </tbody>
@@ -693,9 +833,12 @@
       <table width="100%" class="ListBar" cellpadding="0"  cellspacing="1" id="tb_Dtl20" style="margin-top:2px;">
         <colgroup>
            <col style="width:20%">
-           <col style="width:35%">
-           <col style="width:35%">
-           <col style="width:10%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:5%">
         </colgroup>
         <tbody>
         </tbody>
@@ -703,9 +846,12 @@
       <table width="100%" class="ListBar JQMust" cellpadding="0"  cellspacing="1" id="tb_Dtl30" style="margin-top:2px;margin-bottom:2px;">
         <colgroup>
            <col style="width:20%">
-           <col style="width:35%">
-           <col style="width:35%">
-           <col style="width:10%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:5%">
         </colgroup>
         <tbody>
         </tbody>
@@ -713,20 +859,96 @@
       <HDPrint Value=#DtlList# Replace=#None#>
       <HDPrint Value=#DtlList2# Replace=#None#>
     </td>
-    <td class="DtlBarTitle">新:</td>
-    <td class="listtd"><INPUT TYPE="text" NAME="BRCNew" maxlength="16" value="<HDPrint Value=#BRCNew# Replace=#DBField2Input#>" class="JQText" style="border:0px" readonly><INPUT TYPE="hidden" NAME="BRCNewM" maxlength="16" value="<HDPrint Value=#BRCNewM# Replace=#DBField2Input#>" class="JQText" style="border:0px" readonly></td>
-  </tr>
-  <tr valign="top">
-    <td class="DtlBarTitle">目前:<font color="red">*</font></td>
-    <td class="listtd"><INPUT TYPE="text" NAME="BRCExist" maxlength="16" value="<HDPrint Value=#BRCExist# Replace=#DBField2Input#>" class="JQText JQMust" JQBit="2"></td>
-  </tr>
-  <tr valign="top">
-    <td class="DtlBarTitle">批准预算:</td>
-    <td class="listtd"><INPUT TYPE="text" NAME="BRCBudget" maxlength="16" value="<HDPrint Value=#BRCBudget# Replace=#DBField2Input#>" class="JQText" style="border:0px" readonly></td>
   </tr>
   <tr valign="top">
     <td class="DtlBarTitle">合同期内总收入:<font color="red">*</font></td>
     <td class="listtd"><INPUT TYPE="text" NAME="TotalFee" maxlength="16" value="<HDPrint Value=#TotalFee# Replace=#DBField2Input#>" class="JQText JQMust" JQBit="2"></td>
+    <td class="DtlBarTitle">预付租金+费用:<font color="red">*</font></td>
+    <td class="listtd"><INPUT TYPE="text" NAME="AGR" maxlength="16" value="<HDPrint Value=#AGR# Replace=#DBField2Input#>" class="JQFloat JQMust" JQBit="4"></td>
+    </td>
+    <td class="DtlBarTitle">新:</td>
+    <td class="listtd"><INPUT TYPE="text" NAME="BRCNew" maxlength="16" value="<HDPrint Value=#BRCNew# Replace=#DBField2Input#>" class="JQText" style="border:0px" readonly>
+  </tr>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">电费收取</td>
+    <td class="listtd">
+      <input type="radio" name="PowerType" value="按度" class="JQRadio JQMust" checked>按度        <INPUT TYPE="text" NAME="PowerFee1" maxlength="16" value="<HDPrint Value=#PowerFee1# Replace=#DBField2Input#>" class="JQFloat JQMust" style="width:50px;">元/度<br>
+      <input type="radio" name="PowerType" value="固定费用" class="JQRadio JQMust">固定费用        <INPUT TYPE="text" NAME="PowerFee2" maxlength="16" value="<HDPrint Value=#PowerFee2# Replace=#DBField2Input#>" class="JQFloat" style="width:50px;">元/天<br>
+      <input type="radio" name="PowerType" value="无" class="JQRadio JQMust">无
+      <script language="javascript">
+
+        function changeType(aType,aValue){
+          var $Fee1 = $("input[name="+aType+"Fee1]");
+          var $Fee2 = $("input[name="+aType+"Fee2]");
+          $Fee1.removeClass("JQMust");
+          $Fee2.removeClass("JQMust");
+          if (aValue == '按度') {
+            $Fee1.addClass("JQMust");
+            $Fee2.val('');
+          } else if (aValue == '固定费用') {
+            $Fee2.addClass("JQMust");
+            $Fee1.val('');
+          } else {
+            $Fee1.val('');
+            $Fee2.val('');
+          }
+        }
+        //函数：ready
+        //功能：document 加载完成后调用
+        $(document).ready(function(){
+          $("input[name=PowerType]").click(function(){
+            changeType('Power',$(this).val());
+          });
+          var PowerType = '<HDPrint Value=#PowerType# Replace=#DBField2Js#>';
+          if (PowerType == '') {
+            PowerType = '按度';
+          }
+          $("input[name=PowerType][value='"+PowerType+"']").prop("checked",true);
+           changeType('Power',PowerType);
+        });
+      </script>
+    </td>
+    <td class="DtlBarTitle">保证金:<font color="red">*</font></td>
+    <td class="listtd"><INPUT TYPE="text" NAME="Security" maxlength="16" value="<HDPrint Value=#Security# Replace=#DBField2Input#>" class="JQFloat JQMust" JQBit="4"></td>
+    <td class="DtlBarTitle">目前:<font color="red">*</font></td>
+    <td class="listtd"><INPUT TYPE="text" NAME="BRCExist" maxlength="16" value="<HDPrint Value=#BRCExist# Replace=#DBField2Input#>" class="JQFloat JQMust" JQBit="2"></td>
+  </tr>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">水费收取</td>
+    <td class="listtd">
+      <input type="radio" name="WaterType" value="按度" class="JQRadio JQMust" checked>按度
+      <INPUT TYPE="text" NAME="WaterFee1" maxlength="16" value="<HDPrint Value=#WaterFee1# Replace=#DBField2Input#>" class="JQFloat JQMust" style="width:50px;">元/吨<br>
+      <input type="radio" name="WaterType" value="固定费用" class="JQRadio JQMust">固定费用
+      <INPUT TYPE="text" NAME="WaterFee2" maxlength="16" value="<HDPrint Value=#WaterFee2# Replace=#DBField2Input#>" class="JQFloat" style="width:50px;">元/天<br>
+      <input type="radio" name="WaterType" value="无" class="JQRadio JQMust">无
+      <script language="javascript">
+        //函数：ready
+        //功能：document 加载完成后调用
+        $(document).ready(function(){
+          $("input[name=WaterType]").click(function(){
+             changeType('Water',$(this).val());
+          });
+          var WaterType = '<HDPrint Value=#WaterType# Replace=#DBField2Js#>';
+          if (WaterType == '') {
+            WaterType = '按度';
+          }
+          $("input[name=WaterType][value='"+WaterType+"']").prop("checked",true);
+          changeType('Water',WaterType);
+        });
+      </script>
+    </td>
+    <td class="DtlBarTitle">方式</td>
+    <td class="listtd">
+      <input type="radio" name="Incash" value="现金" class="JQRadio JQMust" checked>固定
+      <input type="radio" name="Incash" value="银行担保" class="JQRadio JQMust">银行担保
+      <script language="javascript">
+        $("input[name=Incash][value='<HDPrint Value=#Incash# Replace=#DBField2Js#>']").prop("checked",true);
+      </script>
+    </td>
+    <td class="DtlBarTitle">批准预算:</td>
+    <td class="listtd"><INPUT TYPE="text" NAME="BRCBudget" maxlength="16" value="<HDPrint Value=#BRCBudget# Replace=#DBField2Input#>" class="JQText" style="border:0px" readonly></td>
   </tr>
   <tr valign="top">
     <td class="listtd" colspan="6">D、其他信息</td>
@@ -762,8 +984,8 @@
 
   if ('<HDPrint Value=#IsNew# Replace=#DBField2Js#>' == '0'){
     //T1时，加载FlowGid的数据
-    $("input[name=FlowGid]").val('<HDPrint Value=#NewGid# Replace=#DBField2Js#>');
-    $("input[name=FlowGid_1]").val('<HDPrint Value=#NewGid# Replace=#DBField2Js#>');
+    $("input[name=FlowGid]").val('<HDPrint Value=#Num# Replace=#DBField2Js#>');
+    $("input[name=FlowGid_1]").val('<HDPrint Value=#Num# Replace=#DBField2Js#>');
     $("input[name=WFCreate]").val('WF');
   }
   else{
@@ -850,7 +1072,7 @@
 <FORM NAME="frmDataInterface_Unit" ACTION="">
   <INPUT TYPE="hidden" name="DataInterface_Title" ID="t_Unit" value="单位_选择列表">
 
-  <INPUT TYPE="hidden" name="DataInterface_Sql" ID="s_Unit" value="select fgid,fno,floorno,fmr from PrlGG_GROUNDH WHERE deptsource = '<HDPrint Value=#ParentDeptCode#>'">
+  <INPUT TYPE="hidden" name="DataInterface_Sql" ID="s_Unit" value="select fgid,fno,floorno,fmr,nvl(farea,0),nvl(jarea,0) from PrlGG_GROUNDH WHERE deptsource = '<HDPrint Value=#ParentDeptCode#>'">
   <INPUT TYPE="hidden" name="DataInterface_CountSql" ID="c_Unit" value="select count(*) from PrlGG_GROUNDH WHERE deptsource = '<HDPrint Value=#ParentDeptCode#>'">
   <INPUT TYPE="hidden" name="DataInterface_OrderSql" value="order by fno">
   <INPUT TYPE="hidden" name="DataInterface_UsrGid" value="<HDPrint Value=#UsrGid#>">
@@ -859,6 +1081,8 @@
   <input type="hidden" name="DataInterface_Cols" value="2^单位编号^left^150">
   <input type="hidden" name="DataInterface_Cols" value="3^位置^left^80">
   <input type="hidden" name="DataInterface_Cols" value="4^预算^left^80">
+  <input type="hidden" name="DataInterface_Cols" value="5^面积^left^80">
+  <input type="hidden" name="DataInterface_Cols" value="6^面积^left^80">
 
   <input type="hidden" name="DataInterface_Search" value="fno^单位编号^1">
   <input type="hidden" name="DataInterface_Search" value="floorno^单位编号^1">
@@ -866,7 +1090,7 @@
   <input TYPE="hidden" name="DataInterface_Search_Cols" value="">
 
   <INPUT TYPE="hidden" name="DataInterface_FieldTo" value="">
-  <INPUT TYPE="hidden" name="DataInterface_FieldBy" value="1^2^3^4">
+  <INPUT TYPE="hidden" name="DataInterface_FieldBy" value="1^2^3^4^5^6">
   <INPUT TYPE="hidden" name="DataInterface_CallBckFunc" value="CallUnit">
   <INPUT TYPE="hidden" name="DataInterface_Close" value="false">
 </FORM>

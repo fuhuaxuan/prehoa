@@ -56,7 +56,7 @@
     <td class="listtd" colspan="3">
       今年：<INPUT TYPE="text" NAME="Confirmfee" maxlength="20" value="<HDPrint Value=#Confirmfee# Replace=#DBField2Input#>" class="JQFloat JQMust" style="width:100px;">
       <font style="display:none">
-      明年：<INPUT TYPE="text" NAME="NConfirmfee" maxlength="20" value="<HDPrint Value=#NConfirmfee# Replace=#DBField2Input#>" class="JQFloat" style="width:100px;">
+      跨年：<INPUT TYPE="text" NAME="NConfirmfee" maxlength="20" value="<HDPrint Value=#NConfirmfee# Replace=#DBField2Input#>" class="JQFloat" style="width:100px;">
       </font>
     </td>
   </tr>

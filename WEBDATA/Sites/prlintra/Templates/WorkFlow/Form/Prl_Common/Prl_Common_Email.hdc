@@ -14,9 +14,7 @@ Remind1=¶Ô²»Æğ£¬ÄúÖ¸¶¨µÄÁ÷³ÌÉêÇëµ¥Ã»ÓĞÕÒµ½<script>alert('¶Ô²»Æğ£¬ÄúÖ¸¶¨µÄÁ÷³ÌÉêÇ
 ;È¡³ö±¾Á÷³ÌÄ£ĞÍĞÅÏ¢
 SqlForCondition1=select wm.Code ModelCode, wm.Name ModelName from wf_Model wm where wm.EntGid = __ENTGID__ and wm.ModelGid = ##ModelGid##
 
-SqlForCondition2=select * from (select t.* from wf_task t where t.EntGid = __ENTGID__ and t.FlowGid = ##FlowGid## and t.Stat = 1 order by t.createdate desc) where rownum = 1
-
-SQL10=select platform,registrationid from usr where EntGid = __ENTGID__ and Gid = '^^ExecGid^^'
+SQL10=select platform,registrationid from usr where EntGid = __ENTGID__ and Gid in (select ExecGid from (select t.* from wf_task t where t.EntGid = __ENTGID__ and t.FlowGid = ##FlowGid## and t.Stat = 1 order by t.createdate desc) where rownum = 1 )
 
 ;ÏÔÊ¾±¾Á÷³ÌÖ÷±íĞÅÏ¢
 Sql1=select f.*,wf.stat Flowstat,'Í¨ÓÃ' MCode from WF_^^ModelCode^^ f,wf_flow wf where f.EntGid = __ENTGID__ and f.EntGid = wf.EntGid and f.FlowGid = wf.FlowGid and f.FlowGid = ##FlowGid##

@@ -1,0 +1,37 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<script language="javascript">
+  //窗口改变，重计算iframe的高度
+  $(window).resize(function (){
+    JQChgHeight();
+  });
+
+  function AddUnit(aType,Line,Gid,fNo,floorNo,fArea,jArea,fmr){
+    var sTbId = 'tb_Dtl'+aType;
+    var sTrClass = 'listtd';
+    var tdArr = new Array();
+    var iRow = Math.floor(Math.random() * 100000 + 1);
+    var i = $("table#"+sTbId+">tbody>tr").length + 1;
+    var k = 0;
+    if (Gid == null){
+      Gid = '';
+      fNo = '';
+      floorNo = '';
+      fArea = '';
+      jArea = '';
+      fmr = '';
+    }
+
+    tdArr[k++] = '<td align="center">'+ Line +'</td>';
+    tdArr[k++] = '<td align="center">'+fNo+'</td>';
+    tdArr[k++] = '<td align="center">'+floorNo+'</td>';
+    tdArr[k++] = '<td align="center">'+fArea+'</td>';
+    tdArr[k++] = '<td align="center">'+jArea+'</td>';
+    tdArr[k++] = '<td align="center">'+fmr+'</td>';
+    //新增一行
+    JQTr_Add(sTbId,sTrClass,tdArr);
+  }
+</script>
+
+<HDPrint Value=#EmailPhone# Replace=#None#>

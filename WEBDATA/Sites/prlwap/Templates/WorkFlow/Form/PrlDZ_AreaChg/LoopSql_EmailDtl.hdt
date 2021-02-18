@@ -1,0 +1,11 @@
+<hdloop>
+<tr valign="top" style="background-color: white">
+  <td align="center"><HDPrint Value=#Line#></td>
+  <td><HDPrint Value=#Name#></td>
+  <td align="center"><HDPrint Value=#AddArea#></td>
+  <td align="center"><HDPrint Value=#ChgArea#></td>
+  <td align="center"><HDPrint Value=#DiffArea#></td>
+  <td><HDPrint Value=#AddMemo#></td>
+  <td><HDPrint Value=#ChgMemo#></td>
+</tr>
+</hdloop>

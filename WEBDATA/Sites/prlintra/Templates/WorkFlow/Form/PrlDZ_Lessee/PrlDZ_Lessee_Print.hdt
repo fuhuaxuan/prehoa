@@ -1,0 +1,109 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<style type="text/css">
+.PrintTdRT {
+  border-right:1 solid black;
+  border-top:1 solid black;
+}
+</style>
+<table style="width:645;margin-top:10px;" align="center" border="0" cellpadding="0" cellspacing="0">
+  <col style="width:30%">
+  <col style="width:40%">
+  <col style="width:30%">
+  <tr>
+    <td class="Title" align="center" colspan="3"><HDPrint Value=#ModelName#></td>
+  </tr>
+  <tr>
+    <td align="center" colspan="3">（OA流程已审批完）</td>
+  </tr>
+  <tr>
+    <td align="center"><B>单号</B>：<HDPrint Value=#Num#></td>
+    <td align="center"><B>申请人</B>：<HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]</td>
+    <td align="center"><B>申请时间</B>：<HDPrint Value=#CreateDate#></td>
+  </tr>
+</table>
+
+<table width="645" cellspacing="0" cellpadding="0" align="center" style="border-left:1 solid black;">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:40%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:40%">
+  <tr valign="top">
+    <td class="PrintTdRT">类型:</td>
+    <td class="PrintTdRT"><HDPrint Value=#aType#></td>
+    <td class="PrintTdRT">租户名称:</td>
+    <td class="PrintTdRT"><HDPrint Value=#Lessee#></td>
+  </tr>
+  <tr valign="top">
+    <td class="PrintTdRT">商铺代码:</td>
+    <td class="PrintTdRT"><HDPrint Value=#TradingCode#></td>
+    <td class="PrintTdRT">商铺营业名称:</td>
+    <td class="PrintTdRT"><HDPrint Value=#TradingName#></td>
+  </tr>
+  <tr valign="top" id="tr_out">
+    <td class="PrintTdRT">逃场日:</td>
+    <td class="PrintTdRT" colspan="3"><HDPrint Value=#OutDate#></td>
+  </tr>
+  <tr valign="top" id="tr_close" style="display:none">
+    <td class="PrintTdRT">非正常关闭日:</td>
+    <td class="PrintTdRT" colspan="3"><HDPrint Value=#CloseDate#></td>
+  </tr>
+  <tr valign="top" id="tr_return" style="display:none">
+    <td class="PrintTdRT">非正常关闭日:</td>
+    <td class="PrintTdRT"><HDPrint Value=#CloseDate#></td>
+    <td class="PrintTdRT">返场经营日:</td>
+    <td class="PrintTdRT"><HDPrint Value=#ReturnDate#></td>
+  </tr>
+  <tr valign="top">
+    <td class="PrintTdRT">备注:</td>
+    <td class="PrintTdRT" colspan="3"><HDPrint Value=#Memo#></td>
+  </tr>
+</table>
+<table width="645" cellspacing="0" cellpadding="0" align="center" ID="tb_Dtl" style="border-bottom:1 solid black;border-left:1 solid black;">
+  <col style="width:20%" valign="top">
+  <col style="width:15%" valign="top">
+  <col style="width:15%" valign="top">
+  <col style="width:20%" valign="top">
+  <col style="width:30%" valign="top">
+  <tr align="center">
+    <td class="PrintTdRT">执行人类别</td>
+    <td class="PrintTdRT">执行人</td>
+    <td class="PrintTdRT">审批概要</td>
+    <td class="PrintTdRT">时间</td>
+    <td class="PrintTdRT">审批备注</td>
+  </tr>
+  <HDPrint Value=#AppList# Replace=#None#>
+</table>
+<HDLoop>
+<table width="645" cellspacing="0" cellpadding="0" align="center" style="margin-top:5px">
+  <tr>
+    <td>打印次数：<HDPrint Value=#PrintTime#>次</td>
+  </tr>
+</table>
+</HDLoop>
+<script language="javascript">
+  window.print();
+</script>
+
+<script language="javascript">
+  //函数：ready
+  //功能：document 加载完成后调用
+  $(document).ready(function(){
+    var $tr_out = $("tr#tr_out");
+    var $tr_close = $("tr#tr_close");
+    var $tr_return = $("tr#tr_return");
+
+    $tr_out.hide();
+    $tr_close.hide();
+    $tr_return.hide();
+    var aType = '<HDPrint Value=#aType# Replace=#DBField2Js#>';
+    if (aType == '租户逃场') {
+      $tr_out.show();
+    } else if(aType == '非正常关闭'){
+      $tr_close.show();
+    } else {
+      $tr_return.show();
+    }
+  });
+</script>

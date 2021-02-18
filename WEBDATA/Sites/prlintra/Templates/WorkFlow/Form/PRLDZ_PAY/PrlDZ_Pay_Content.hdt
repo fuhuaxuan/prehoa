@@ -142,7 +142,11 @@
   </HDIF>
   <tr valign="top">
     <td class="DtlBarTitle">附件信息:</td>
-    <td class="listtd" colspan="5"><HDPrint Value=#AttachList# Replace=#None#></td>
+    <td class="listtd" JQ="td_10"></td>
+    <td class="DtlBarTitle">电子发票:</td>
+    <td class="listtd" JQ="td_20"></td>
+    <td class="DtlBarTitle"></td>
+    <td class="listtd"><HDPrint Value=#AttachList# Replace=#None#></td>
   </tr>
   <HDIF EqualNot(<HDPrint Value=#isCEO# Replace=#None#>, 0)>
   <tr valign="top">

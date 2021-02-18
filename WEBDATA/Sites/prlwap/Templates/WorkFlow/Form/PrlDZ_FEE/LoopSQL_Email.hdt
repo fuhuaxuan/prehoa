@@ -60,9 +60,6 @@
 <tr><td class="App_ListTd">[剩余预算金额] : <HDPrint Value=#controlfee#> 元；</td></tr>
 <tr><td class="App_ListTd">[本次申请金额] : 今年：<font style="color:red"><HDPrint Value=#askfee#></font> 元；跨年：<font style="color:red"><HDPrint Value=#NaskfeeStr#></font> 元；</td></tr>
 <tr><td class="App_ListTd">[附件信息] : <HDPrint Value=#AttachList# Replace=#None#></td></tr>
-<HDIF EqualNot(<HDPrint Value=#isCEO# Replace=#None#>, 0)>
-<TR><TD class="App_ListTd">[潘总审批附件:] : <HDPrint Value=#AttachList2# Replace=#None#></td></tr>
-</HDIF>
 </table>
 <table cellpadding="0" cellspacing="0" width="100%" class="App_List" style="margin-top:10px;">
   <col style="padding-left:4px;">

@@ -39,7 +39,7 @@ LoopHDT1=Templates\WorkFlow\Form\^^ModelCode^^\LoopSql_Option.hdt
 LoopVAR1=AttachList
 
 ;TMod时，获取本流程审批人信息
-LoopSQL2=select a.*,decode(a.apptype,0,'发起人',10,'部门经理',30,'财务经理',40,'商场总经理',50,'资产经理',60,'部门总监',65,'副财务总监',70,'财务总监',80,'区域总经理',85,'中国区CEO',90,'集团CEO',110,'发起人确认') apptypetext  from wf_^^ModelCode^^_App a where FlowGid = ##FlowGid## order by AppDate,AppType
+LoopSQL2=select a.AppCode,a.AppName,a.AppAssign,a.AppDate,a.AppMemo,a.AppOrder,decode(a.apptype,0,'发起人',10,'部门经理',30,'财务经理',35,'总经理/项目总监',40,'项目总经理',50,'资产经理',60,'区域部门总监',65,'副财务总监',70,'财务总监',80,'区域总经理',82,'首席投资官',85,'中国区CEO',90,'集团CEO',110,'发起人确认') apptypetext from WF_^^ModelCode^^_App a where FlowGid = ##FlowGid## union select ExecCode AppCode,ExecName AppName,decode(t.stat,3,'已阅读','') AppAssign,ETIME AppDate,'' AppMemo,100 AppOrder,t.Name apptypetext from v_wf_task t where FlowGid = ##FlowGid## and t.ISMCF = 1 order by AppDate,AppOrder
 LoopHDT2=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AppList.hdt
 LoopVAR2=AppList
 

@@ -13,7 +13,7 @@
 <TR><TD class="App_ListTd">[文件目的] : <HDPrint Value=#FileAim#>；</td></tr>
 <TR><TD class="App_ListTd">[申请人声明及保证] : 我保证我所提交的用于盖章的非合同类文件与本申请所注载内容一致；</td></tr>
 </HDIF>
-<HDIF Equal(<HDPrint Value=#ApplyType# Replace=#None#>, 合同签署用印)>
+<HDIF EqualNot(<HDPrint Value=#ApplyType# Replace=#None#>, 非合同类文件用印)>
 <TR><TD class="App_ListTd">[合同名称] : <HDPrint Value=#ContractName#>；</td></tr>
 <TR><TD class="App_ListTd">[合同份数] : <HDPrint Value=#ContractCount#>；</td></tr>
 <TR><TD class="App_ListTd">[合同金额] : <HDPrint Value=#ContractFee#>；</td></tr>

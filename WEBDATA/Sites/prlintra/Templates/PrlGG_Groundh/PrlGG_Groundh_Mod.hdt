@@ -101,6 +101,18 @@
     <td class="listtd"><input type="text" NAME="fmr" maxlength="16" class="JQFloat JQMust" JQBit="4"
     value="<HDPrint Value=#fmr# Replace=#DBField2Input#>"></td>
   </tr>
+  <tr>
+    <td class="DtlBarTitle">最小面积:<font color ="red">*</font></td>
+    <td class="listtd"><input type="text" NAME="FAREA" maxlength="16" class="JQFloat JQMust" JQBit="4"
+    value="<HDPrint Value=#FAREA# Replace=#DBField2Input#>"></td>
+    <td class="DtlBarTitle">最大面积:<font color ="red">*</font></td>
+    <td class="listtd"><input type="text" NAME="JAREA" maxlength="16" class="JQFloat JQMust" JQBit="4"
+    value="<HDPrint Value=#JAREA# Replace=#DBField2Input#>"></td>
+    <td class="DtlBarTitle"></td>
+    <td class="listtd"></td>
+    <td class="DtlBarTitle"></td>
+    <td class="listtd"></td>
+  </tr>
 </table>
 </form>
 

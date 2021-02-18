@@ -1,0 +1,27 @@
+<table cellpadding="0" cellspacing="0" width="100%" class="App_List" style="margin-top:10px">
+  <col style="width:100%" valign="top">
+  <TR><TD class="App_ListTr">基本信息</TD></TR>
+  <TR><TD class="App_ListTd">单号：<HDPrint Value=#Num#></TD></TR>
+  <TR><TD class="App_ListTd">发起人：<HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]</TD></TR>
+  <TR><TD class="App_ListTd">发起日期：<HDPrint Value=#CreateDate#></TD></TR>
+</table>
+<table cellpadding="0" cellspacing="0" width="100%" class="App_List" style="margin-top:10px">
+<col style="width:100%" valign="top">
+<TR><TD class="App_ListTr">单据信息</TD></TR>
+<tr><td class="App_ListTd">[类型] : <HDPrint Value=#aType#>；</td></tr>
+<tr><td class="App_ListTd">[租户] : <HDPrint Value=#Lessee#>；</td></tr>
+<tr><td class="App_ListTd">[商铺代码] : <HDPrint Value=#TradingCode#>；</td></tr>
+<tr><td class="App_ListTd">[商铺营业名称] : <HDPrint Value=#TradingName#>；</td></tr>
+<HDIF Equal(<HDPrint Value=#Atype# Replace=#None#>, 租户逃场)>
+<tr><td class="App_ListTd">[逃场日] : <HDPrint Value=#OutDate#>；</td></tr>
+</HDIF>
+<HDIF Equal(<HDPrint Value=#Atype# Replace=#None#>, 非正常关闭,返场确认)>
+<tr><td class="App_ListTd">[非正常关闭日] : <HDPrint Value=#CloseDate#>；</td></tr>
+</HDIF>
+<HDIF Equal(<HDPrint Value=#Atype# Replace=#None#>, 返场确认)>
+<tr><td class="App_ListTd">[返场经营日] : <HDPrint Value=#ReturnDate#>；</td></tr>
+</HDIF>
+<TR><TD class="App_ListTd">[备注] : <HDPrint Value=#memo#> ；</td></tr>
+<TR><TD class="App_ListTd">[附件信息] : <HDPrint Value=#AttachList# Replace=#None#></td></tr>
+</table>
+<HDPrint Value=#AppEmail# Replace=#None#>

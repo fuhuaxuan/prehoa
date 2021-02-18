@@ -97,6 +97,15 @@
     <td>付款备注 ≈ </td>
     <td><input type="Text" name="txt_Memo" class="JQText" style="width:90%"></td>
   </tr>
+  <tr>
+    <td>是否有电子发票 = </td>
+    <td>
+      <select name="sel_Voice" class="JQSelect"  style="width:90%">
+        <option value="">--全部--</option>
+        <option value="20">是</option>
+      </select>
+    </td>
+  </tr>
   <tr >
     <td colspan="4">
      <a href="javascript:void(0)" onclick="JQExpand('tb_Search','font_Icon');" class="IconDown">　&nbsp;显示说明信息</a>（请进行相应的查询，找到您需要的信息）
@@ -132,6 +141,7 @@
   document.all.txt_Memo.value = '<HDPrint value=#txt_Memo# Replace=#DBField2Js#>';
   document.all.txt_Acg1.value = '<HDPrint value=#txt_Acg1# Replace=#DBField2Js#>';
   document.all.txt_Acg.value = '<HDPrint value=#txt_Acg# Replace=#DBField2Js#>';
+  document.all.sel_Voice.value = '<HDPrint value=#sel_Voice# Replace=#DBField2Js#>';
 
 </script>
 <BR>

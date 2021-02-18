@@ -20,10 +20,10 @@ SqlForCondition1=select wm.code ModelCode, wm.Name ModelName,d.Name StepName fro
 Sql1=update WF_Prl_OISF set (LastUpdDate,Stat) = (select sysdate,'已完成' from dual) where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## 
 
 ;插入本流程各级审批人信息
-Sql2=insert into WF_Prl_OISF_App (EntGid,ModelGid,FlowGid,Gid,AppGid,AppCode,AppName,AppType,AppOrder,AppAssign,AppMemo,AppDate) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__, 110,110,##AppAssign##,##AppMemo##,sysdate from dual
+Sql2=insert into WF_Prl_OISF_App (EntGid,FlowGid,dtlgid,AppGid,AppCode,AppName,AppType,AppOrder,AppAssign,AppMemo,AppDate) select __ENTGID__,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__, 110,110,##AppAssign##,##AppMemo##,sysdate from dual
 
 ;插入本流程中审批人二信息
-SQL11=update WF_Prl_OISF_App set (AppAssign,AppMemo,AppDate) = (select '同意', __USRNAME__||'确认',sysdate from dual) where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppOrder = 100
+SQL11=update WF_Prl_OISF_App set (AppAssign,AppMemo,AppDate) = (select '同意', '',sysdate from dual) where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppOrder = 100
 
 ;删除本流程全部附件信息
 SQL12=delete from WF_Prl_Flow_Attach where EntGid = __ENTGID__ and FlowGid = ##FlowGid##

@@ -137,7 +137,7 @@
       document.write('<a href="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ISCFModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ISCFModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#ISCFFlowGid#>" target="_blank"><HDPrint Value=#ISCFNum#></a>');
     }
     else if (ISFStat != '40' && ISTFFlowGid == ''){
-      document.write('<a href="##HDNet_AppName##/WFFlowPage?Url=Prl_ISCFV2_T1&UsrGid=<HDPrint Value=#UsrGid#>&ModelCode=Prl_ISCFV2&OldFlowGid=<HDPrint Value=#ISFFlowGid#>" target="_blank">发起ISCF</a>');
+      document.write('<a href="##HDNet_AppName##/WFFlowPage?Url=Prl_OISCF_T1&UsrGid=<HDPrint Value=#UsrGid#>&ModelCode=Prl_OISCF&OldFlowGid=<HDPrint Value=#ISFFlowGid#>" target="_blank">发起ISCF</a>');
     }
     </script>
     </td>
@@ -155,7 +155,7 @@
       document.write('<a href="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ISTFModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ISTFModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#ISTFFlowGid#>" target="_blank"><HDPrint Value=#ISTFNum#></a>');
     }
     else if (ISFStat != '40' && ISCFFlowGid == ''){
-      document.write('<a href="##HDNet_AppName##/WFFlowPage?Url=Prl_ISTF_T1&UsrGid=<HDPrint Value=#UsrGid#>&ModelCode=Prl_ISTF&OldFlowGid=<HDPrint Value=#ISFFlowGid#>" target="_blank">发起ISTF</a>');
+      document.write('<a href="##HDNet_AppName##/WFFlowPage?Url=Prl_OISTF_T1&UsrGid=<HDPrint Value=#UsrGid#>&ModelCode=Prl_OISTF&OldFlowGid=<HDPrint Value=#ISFFlowGid#>" target="_blank">发起ISTF</a>');
     }
     </script></td>
     <td><HDPrint Value=#ISTFFillUsrName#></td>

@@ -142,7 +142,7 @@
       </td>
       <td class="PrintTD"  colspan="1" style=" background: #c0c0c0; height: 47.25pt">
       <p align="center"class="pline"><b>
-      <span style="font-size:8.0pt;font-family:Arial;">Property Mgmt Fee<br />物业管理费</span></b></p>
+      <span style="font-size:8.0pt;font-family:Arial;">Property Mgmt Fee<br />物业管理服务费</span></b></p>
       </td>
       <td  class="PrintTD"  valign="top" style=" background: #c0c0c0;height: 47.25pt">
       <p  align="center"class="pline"><b>
@@ -238,11 +238,19 @@
   <td>10，</td>
   <td>（1）收银方式：<HDPrint Value=#collectionText#></td>
 </tr>
-<tr valign="top">
+<tr valign="top" id="attach">
   <td></td>
   <td>（2）附件<HDPrint Value=#attachText#></td>
 </tr>
 </table>
 <script language="javascript">
   window.print();
+//函数：ready
+//功能：document 加载完成后调用
+$(document).ready(function(){
+  var Trade = '<HDPrint Value=#Trade# Replace=#DBField2Js#>'
+  if (Trade == '090104' || Trade == '100103') {
+    $("#attach").hide();
+  }
+});
 </script>

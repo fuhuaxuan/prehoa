@@ -97,7 +97,7 @@
   <td class="PrintTdRT">本次申请金额</td>
   <td class="PrintTdRT">
     今年：<HDPrint Value=#Askfee#>
-    明年：<HDPrint Value=#NAskfee#>
+    跨年：<HDPrint Value=#NAskfee#>
   </td>
   <td class="PrintTdRT">剩余预算金额</td>
   <td class="PrintTdRT"><HDPrint Value=#controlfee#></td>
@@ -106,7 +106,7 @@
   <td class="PrintTdRT">本次实际金额</td>
   <td class="PrintTdRT" colspan="3">
     今年：<HDPrint Value=#confirmfeeText#>
-    明年：<HDPrint Value=#NConfirmfee#>
+    跨年：<HDPrint Value=#NConfirmfee#>
   </td>
 </tr>
 </table>

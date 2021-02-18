@@ -88,7 +88,7 @@ PageKind=0
 [Ajax]
 ;此Section“[Ajax]”,表明以下内容是为了Ajax应用而配置的文件。
 ;需要显示一条的内容，可以支持21条, Detail, Detail1～Detail20
-Detail=
+Detail1=select 1 from Prl_FeeBlack where EntGid = __ENTGID__ and Name = ##sCode##
 
 ;需要循环显示的内容,可以支持11条，Master, Master1～Master10
 Master=

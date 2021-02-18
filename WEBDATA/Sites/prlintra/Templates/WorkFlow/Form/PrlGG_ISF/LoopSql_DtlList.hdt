@@ -15,6 +15,9 @@
     }
     tdArr[k++] = '<td align="right"><HDPrint Value=#TBRD# Replace=#None#></td>';
     tdArr[k++] = '<td align="right"><HDPrint Value=#TBRM# Replace=#None#></td>';
+    tdArr[k++] = '<td align="right"><HDPrint Value=#GTO# Replace=#None#></td>';
+    tdArr[k++] = '<td align="right"><HDPrint Value=#ProGTO# Replace=#None#></td>';
+    tdArr[k++] = '<td align="right"><HDPrint Value=#ProGTOrent# Replace=#None#></td>';
     //新增一行
     JQTr_Add(JsTbId,sTrClass,tdArr);
   </script>

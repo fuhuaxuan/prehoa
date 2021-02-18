@@ -1,0 +1,225 @@
+<!-- JQuery函数引入 -->
+<script language="javascript" src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JSCalendar.js)##"></script>
+
+<form name="frmDo" method="POST" action="">
+
+<h3 class="TitleBar">用印查询</h3><input type="text" style="display:none" title="防止一个text框回车直接提交">
+<table class="ButtonBar" cellpadding="0" cellspacing="0">
+  <col style="width:80%">
+  <col style="width:20%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+    </TD>
+    <td>
+      <A Href="javascript:location.reload();void(0);" name="btn_1"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新 </A>
+      <A HREF="##HDNet_AppName##/MainPage?URL=&UsrGid=<HDPrint Value=#UsrGid#>"><FONT class="IconHome">　&nbsp;</FONT> 返回首页 </A>
+    </td>
+  </TR>
+</TABLE>
+
+<table width="100%"  class="SearchBar" cellspacing="0">
+  <col style="padding-left:4px;width:11%">
+  <col style="padding-left:4px;width:14%">
+  <col style="padding-left:4px;width:11%">
+  <col style="padding-left:4px;width:14%">
+  <col style="padding-left:4px;width:11%">
+  <col style="padding-left:4px;width:14%">
+  <col style="padding-left:4px;width:11%">
+  <col style="padding-left:4px;width:14%">
+  <tr>
+    <td>开始时间从</td>
+    <td><input name="txtCreateDate1" maxlength=16 class="JQDateTime"></td>
+    <td>到</td>
+    <td><input name="txtCreateDate2" maxlength=16 class="JQDateTime"></td>
+    <td>结束时间从</td>
+    <td><input name="txtFinishDate1" maxlength=16 class="JQDateTime"></td>
+    <td>到</td>
+    <td><input name="txtFinishDate2" maxlength=16 class="JQDateTime"></td>
+  </tr>
+  <tr>
+    <td title="可以输入发起人代码，或者发起人姓名">发起人信息 ≈ </td>
+    <td><input name="txtCreaterCode" maxlength=16 class="JQText"></td>
+    <td title="可以输入参与人代码，或者参与人姓名">参与人信息 ≈ </td>
+    <td><input name="txtExecInfo" maxlength=16  class="JQText"></td>
+    <td>流程状态</td>
+    <td>
+      <select name="selStat" class="JQText">
+      <option value="">--全部--</option>
+      <option value="0">未执行</option>
+      <option value="1">待执行</option>
+      <option value="2">执行中</option>
+      <option value="3" style="color:blue">已完成</option>
+      <option value="4"><font color="gray">已停止</font></option>
+      <option value="5" style="color:red">已作废</option>
+      <option value="6" style="color:red">已超时</option>
+      </select>
+    </td>
+    <td>实例备注 ≈ </td>
+    <td><input name="txtFlowNote" maxlength=100 class="JQText"></td>
+  </tr>
+  <tr>
+    <td>申请类型</td>
+    <td style="padding-left:10px;padding-right:10px" colspan="3">
+      <input type="radio" name="ApplyType" value="" class="JQRadio" checked>全部
+      <input type="radio" name="ApplyType" value="非合同类文件用印" class="JQRadio">非合同类文件用印
+      <input type="radio" name="ApplyType" value="标准类合同用印" class="JQRadio">标准类合同用印
+      <input type="radio" name="ApplyType" value="非标准类合同用印" class="JQRadio">非标准类合同用印
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">（请进行相应的查询，找到您需要的信息）</td>
+    <td colspan="6" align="right">
+      <INPUT TYPE="hidden" name="NotFirst" value="1">
+      <INPUT TYPE="submit" name="btnSearch" class="NormalSbt" value=" 查询 " onclick="return CheckSubmit()">
+      <INPUT TYPE="reset" name="btnSearch" class="NormalSbt" value=" 默认 ">
+      <INPUT TYPE="button" name="btnDownload" class="NormalSbt" value="下载Excel" onclick="return JQListDown('##HDNet_AppName##/__ExplainModule?Url=prl_stamp_down&UsrGid=<HDPrint Value=#UsrGid#>')">
+      <INPUT TYPE="hidden" name="Rep_Download" value="">
+    </td>
+  </tr>
+</table>
+<SCRIPT LANGUAGE="JavaScript">
+  //保留查询条件
+  document.all.txtCreaterCode.value = '<HDPrint Value=#txtCreaterCode# Replace=#DBField2Js#>';
+  document.all.txtExecInfo.value = '<HDPrint Value=#txtExecInfo# Replace=#DBField2Js#>';
+  document.all.selStat.value = '<HDPrint Value=#selStat# Replace=#DBField2Js#>';
+  document.all.txtCreateDate1.value = '<HDPrint Value=#txtCreateDate1# Replace=#DBField2Js#>';
+  document.all.txtCreateDate2.value = '<HDPrint Value=#txtCreateDate2# Replace=#DBField2Js#>';
+  document.all.txtFinishDate1.value = '<HDPrint Value=#txtFinishDate1# Replace=#DBField2Js#>';
+  document.all.txtFinishDate2.value = '<HDPrint Value=#txtFinishDate2# Replace=#DBField2Js#>';
+  document.all.txtFlowNote.value = '<HDPrint Value=#txtFlowNote# Replace=#DBField2Js#>';
+
+  $("input[name=ApplyType][value='<HDPrint Value=#ApplyType# Replace=#DBField2Js#>']").prop("checked",true);
+  function CheckSubmit() {
+    if (document.all.txtCreateDate1.value == '') {
+      document.all.txtCreateDate1.value = '2000.01.01';
+    }
+    return true;
+  }
+
+  function Abolish(sflowgid,smodelgid)
+  {
+	document.all.AbolishFlowGid.value = sflowgid;
+	document.all.AbolishModelGid.value = smodelgid;
+
+	if (confirm('该操作不能还原，您确定要作废该流程？')) {
+	frmDo.action='##HDNet_AppName##/__ExplainModule?UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Input#>&url=WFFlowSetState&stat=5&flowgid='+sflowgid+'&modelgid='+smodelgid;
+	frmDo.target="frm_abolish";
+	frmDo.submit();
+	frmDo.target="";}
+   // window.open('##HDNet_AppName##/__ExplainModule?UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Input#>&url=WFFlowSetState&stat=5&flowgid='+sflowgid+'&modelgid='+smodelgid);
+
+  }
+
+  </SCRIPT>
+  <iframe name="frm_abolish" id="frm_abolish" style="display:none" src=""></iframe>
+	<input type="hidden" name="AbolishFlowGid">
+	<input type="hidden" name="AbolishModelGid">
+<BR>
+<HDPageBar>
+<table width="100%" class="ListBar" cellspacing="1">
+  <col style="padding-left:4px;width:180" valign="top">
+  <col style="padding-left:4px;" valign="top">
+  <col style="padding-left:4px;width:55" valign="top">
+  <col style="padding-left:4px;width:120" align=center valign="top">
+  <col style="padding-left:4px;width:120" align=center valign="top">
+  <col style="padding-left:4px;width:70" align=center valign="top">
+  <col style="padding-left:4px;width:50" align=center valign="top">
+  <col style="padding-left:4px;width:70" align=center valign="top">
+  <tr class=listtr>
+    <td id="tdOrder" style="cursor:hand;" JQAsc="" JQColumn="b.name">工作流程名称</td>
+    <td id="tdOrder" style="cursor:hand;" JQAsc="" JQColumn="a.FlowNote">实例备注</td>
+    <td id="tdOrder" style="cursor:hand;" JQAsc="" JQColumn="a.CreaterName">发起人</td>
+    <td id="tdOrder" style="cursor:hand;" JQAsc="" JQColumn="a.CreateDate">发起时间</td>
+    <td id="tdOrder" style="cursor:hand;" JQAsc="" JQColumn="a.FinishDate">结束时间</td>
+    <td id="tdOrder" style="cursor:hand;" >待执行人</td>
+    <td id="tdOrder" style="cursor:hand;" JQAsc="" JQColumn="a.Stat">状态</td>
+    <td>操作</td>
+  </tr>
+  <HDLoop>
+  <tr class="listtd" onmouseover="this.className='listtdfocus';" onmouseout="this.className='listtd'">
+    <td>
+    <A HREF="##HDNet_AppName##/WFFlowPage?UsrGid=<HDPrint Value=#UsrGid#>&Url=<HDPrint Value=#ModelCode#>&ModelGid=<HDPrint Value=#ModelGid#>&FlowGid=<HDPrint Value=#FlowGid#>" target="_blank"><HDPrint Value=#ModelName#></A></td>
+    <td><HDPrint Value=#FlowNote#></td>
+    <td><HDPrint Value=#creatername#></td>
+    <td><HDPrint Value=#Flowcreatedate#></td>
+    <td><HDPrint Value=#FlowFinishDate#></td>
+    <td><HDPrint Value=#tsname# Replace=#None#></td>
+    <td><HDPrint Value=#Flowstat# Replace=#None#></td>
+    <td>
+      <A HREF="##HDNet_AppName##/__ExplainModule?UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Input#>&url=WFFlowTrace&flowgid=<HDPrint Value=#flowgid#>&modelgid=<HDPrint Value=#modelgid#>" target="_blank">过程</A>
+      <font color=gray>
+      <<HDPrint Value=#stattext# Replace=#None#> href="javascript:Abolish('<HDPrint Value=#flowgid#>','<HDPrint Value=#modelgid#>')"/>作废
+    </td>
+
+  </tr>
+  </HDLoop>
+</table>
+
+<INPUT TYPE="hidden" title="排序点击标题即可排序-用到的控件" name="selOrderBy" value="<HDPrint Value=#selOrderBy# Replace=#DBField2Input#>">
+<INPUT TYPE="hidden" title="排序点击标题即可排序-用到的控件" name="selOrderAsc" value="<HDPrint Value=#selOrderAsc# Replace=#DBField2Input#>">
+<INPUT TYPE="hidden" title="排序点击标题即可排序-用到的控件" name="selOrderColumn" value="<HDPrint Value=#selOrderColumn# Replace=#DBField2Input#>">
+</form>
+
+<SCRIPT LANGUAGE="JavaScript">
+  //函数：ready
+  //功能：document 加载完成后调用
+  $(function(){
+    //Td点击排序时事件
+    $("td[JQColumn]").click(function(){
+      //取出点击Td的参数
+
+      //JQColumn 字段名
+      var sJQColumn = $(this).attr("JQColumn");
+      //JQAsc 可不写，为空 或 desc
+      var sJQAsc = '';
+      if ($(this).attr("JQAsc") != null){
+        sJQAsc = $(this).attr("JQAsc");
+      }
+
+      //取出排序控件，并赋值
+      $("input[name=selOrderBy]").val(sJQColumn + ' ' + sJQAsc);
+
+      //保留本次点击参数
+      $("input[name=selOrderAsc]").val(sJQAsc);
+      $("input[name=selOrderColumn]").val(sJQColumn);
+
+      //获取当前表单对象
+      var JqObj = $("form[name=frmDo]");
+      //表单参数设定
+      JqObj.attr({
+        "action":'',
+        "target":''
+      });
+      //表单提交
+      JqObj.submit();
+    });
+    //数据提交后，对数据提交前点击的排序Td列重新赋值
+    $("td[JQColumn]").each(function(){
+      var sJQColumn = $(this).attr("JQColumn");
+      var selOrderColumn = '<HDPrint Value=#selOrderColumn# Replace=#DBField2Js#>';
+      var selOrderAsc = '<HDPrint Value=#selOrderAsc# Replace=#DBField2Js#>';
+      if (sJQColumn == selOrderColumn){
+        //取出本Td的文本值，并重新赋值
+        var sText = $(this).text();
+        if (selOrderAsc == ''){
+          $(this).text(sText+"↑");
+          $(this).attr("JQAsc","desc");
+        }
+        else{
+          $(this).text(sText+"↓");
+          $(this).attr("JQAsc","");
+        }
+      }
+    });
+  });
+
+  //函数：ready
+  //功能：document 加载完成后调用
+  $(function(){
+    //列表初始化
+    JQListInit('<HDPrint Value=#selOrderColumn# Replace=#DBField2Js#>','<HDPrint Value=#selOrderAsc# Replace=#DBField2Js#>');
+  });
+</script>

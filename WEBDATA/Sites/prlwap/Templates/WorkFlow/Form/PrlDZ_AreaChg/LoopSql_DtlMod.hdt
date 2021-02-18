@@ -1,0 +1,11 @@
+<script>
+  <hdloop>
+    g_Type = '<HDPrint Value=#Atype# Replace=#DBField2Js#>';
+    CallAcg('<HDPrint Value=#Gid# Replace=#DBField2Js#>',
+    '<HDPrint Value=#Name# Replace=#DBField2Js#>',
+    '<HDPrint Value=#AddArea# Replace=#DBField2Js#>',
+    '<HDPrint Value=#ChgArea# Replace=#DBField2Js#>',
+    '<HDPrint Value=#DiffArea# Replace=#DBField2Js#>',
+    '<HDPrint Value=#Memo# Replace=#DBField2Js#>');
+  </hdloop>
+</script>

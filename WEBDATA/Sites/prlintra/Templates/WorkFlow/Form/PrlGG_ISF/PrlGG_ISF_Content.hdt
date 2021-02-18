@@ -70,12 +70,18 @@
     </td>
   </tr>
   <tr valign="top">
-    <td class="DtlBarTitle">类别: </td>
-    <td class="listtd"><HDPrint Value=#Atype#></td>
-    <td class="DtlBarTitle">单位:</td>
-    <td class="listtd" JQ="JQUnit"></td>
+    <td class="DtlBarTitle" rowspan="2">类别: </td>
+    <td class="listtd" rowspan="2">
+      <HDPrint Value=#Atype#><Br><HDPrint Value=#Atype2#><br><HDPrint Value=#Atype3#>
+    </td>
+    <td class="DtlBarTitle" rowspan="2">单位:</td>
+    <td class="listtd" JQ="JQUnit" rowspan="2"></td>
     <td class="DtlBarTitle">位置</td>
     <td class="listtd" JQ="JQFloor"></td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">面积[㎡]</td>
+    <td class="listtd" JQ="JQArea"></td>
   </tr>
 <HDPrint Value=#unitList# Replace=#None#>
   <tr valign="top">
@@ -111,14 +117,25 @@
     <td class="listtd"><HDPrint Value=#LeaseTermY#>年/<HDPrint Value=#LeaseTermM#>月/<HDPrint Value=#LeaseTermD#>日</td>
     <td class="DtlBarTitle">交付日期:</td>
     <td class="listtd"><HDPrint Value=#HandoverDate#></td>
-    <td class="DtlBarTitle">免租期:</td>
-    <td class="listtd"><HDPrint Value=#FreeRentM#>月/<HDPrint Value=#FreeRentD#>日</td>
+    <td class="DtlBarTitle">收银方式:</td>
+    <td class="listtd"><HDPrint Value=#Collection#></td>
   </tr>
   <tr valign="top">
+    <td class="DtlBarTitle">免租期:</td>
+    <td class="listtd"><HDPrint Value=#FreeRentM#>月/<HDPrint Value=#FreeRentD#>日</td>
+    <td class="DtlBarTitle">装修期:</td>
+    <td class="listtd"><HDPrint Value=#FitoutM#  Replace=#None#>月/
+     <HDPrint Value=#FitoutD#  Replace=#None#>日<br>
+     （<HDPrint Value=#FitoutDate1#  Replace=#None#>~<HDPrint Value=#FitoutDate2#  Replace=#None#>）
+    </td>
     <td class="DtlBarTitle">合同起始日期:</td>
     <td class="listtd"><HDPrint Value=#ContractDate1#>~<HDPrint Value=#ContractDate2#></td>
+  </tr>
+  <tr valign="top">
     <td class="DtlBarTitle">租金方式:</td>
     <td class="listtd"><HDPrint Value=#Rate#></td>
+    <td class="DtlBarTitle"></td>
+    <td class="listtd"></td>
     <td class="DtlBarTitle"></td>
     <td class="listtd"></td>
   </tr>
@@ -135,18 +152,33 @@
     <td class="listtd" colspan="6">C、租赁条件</td>
   </tr>
   <tr valign="top">
-    <td class="listtd" colspan="4" rowspan="4">
+    <td class="listtd" colspan="6">
       <table width="100%" class="ListBar" cellpadding="0"  cellspacing="1" style="margin-top:1px">
         <colgroup>
            <col style="width:20%">
-           <col style="width:35%">
-           <col style="width:35%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:5%">
         </colgroup>
         <thead>
+        <tr class="DtlBarTitle" align="center">
+          <tr class="DtlBarTitle" align="center">
+          <td colspan="3">1st Term Base Rental (RMB)<br>第一租赁期固定租金（人民币）</td>
+          <td>GTO Rent Structure<br>提成租金构造</td>
+          <td>Projected GTO<br />预估营业额</td>
+          <td>Projected GTO Rent<br>预估提成租金</td>
+        </tr>
         <tr class="DtlBarTitle" align="center">
           <td>序号</td>
           <td>固定租金[元/天]</td>
           <td>固定租金[元/月]</td>
+          <td>Details 细节</td>
+          <td>psm/day<br>㎡/天</td>
+          <td>psm/day<br>㎡/天</td></td>
+        </tr>
         </tr>
         </thead>
         <tbody>
@@ -155,8 +187,12 @@
       <table width="100%" class="ListBar" cellpadding="0"  cellspacing="1" id="tb_Dtl10" style="margin-top:2px;">
         <colgroup>
            <col style="width:20%">
-           <col style="width:35%">
-           <col style="width:35%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:5%">
         </colgroup>
         <tbody>
         </tbody>
@@ -164,8 +200,12 @@
       <table width="100%" class="ListBar" cellpadding="0"  cellspacing="1" id="tb_Dtl20" style="margin-top:2px;">
         <colgroup>
            <col style="width:20%">
-           <col style="width:35%">
-           <col style="width:35%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:5%">
         </colgroup>
         <tbody>
         </tbody>
@@ -173,28 +213,61 @@
       <table width="100%" class="ListBar JQMust" cellpadding="0"  cellspacing="1" id="tb_Dtl30" style="margin-top:2px;margin-bottom:2px;">
         <colgroup>
            <col style="width:20%">
-           <col style="width:35%">
-           <col style="width:35%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:5%">
         </colgroup>
         <tbody>
         </tbody>
       </table>
       <HDPrint Value=#DtlList# Replace=#None#>
     </td>
-    <td class="DtlBarTitle">新:</td>
-    <td class="listtd"><HDPrint Value=#BRCNew#></td>
-  </tr>
-  <tr valign="top">
-    <td class="DtlBarTitle">目前:</td>
-    <td class="listtd"><HDPrint Value=#BRCExist#></td>
-  </tr>
-  <tr valign="top">
-    <td class="DtlBarTitle">批准预算:</td>
-    <td class="listtd"><HDPrint Value=#BRCBudget#></td>
   </tr>
   <tr valign="top">
     <td class="DtlBarTitle">合同期内总收入:</td>
     <td class="listtd"><HDPrint Value=#TotalFee#></td>
+    <td class="DtlBarTitle">预付租金+费用:</td>
+    <td class="listtd"><HDPrint Value=#AGR#></td>
+    </td>
+    <td class="DtlBarTitle">新:</td>
+    <td class="listtd"><HDPrint Value=#BRCNew#>
+  </tr>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">电费收取</td>
+    <td class="listtd">
+      <HDPrint Value=#PowerType#>
+      <HDIF Equal(<HDPrint Value=#PowerType# Replace=#None#>, 按度)>
+        <HDPrint Value=#PowerFee1#>元/度
+      </HDIF>
+      <HDIF Equal(<HDPrint Value=#PowerType# Replace=#None#>, 固定费用)>
+        <HDPrint Value=#PowerFee2#>元/天
+      </HDIF>
+    </td>
+    <td class="DtlBarTitle">保证金:</td>
+    <td class="listtd"><HDPrint Value=#Security#></td>
+    <td class="DtlBarTitle">目前:</td>
+    <td class="listtd"><HDPrint Value=#BRCExist#></td>
+  </tr>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">水费收取</td>
+    <td class="listtd">
+      <HDPrint Value=#WaterType#>
+      <HDIF Equal(<HDPrint Value=#WaterType# Replace=#None#>, 按度)>
+        <HDPrint Value=#WaterFee1#>元/吨
+      </HDIF>
+      <HDIF Equal(<HDPrint Value=#WaterType# Replace=#None#>, 固定费用)>
+        <HDPrint Value=#WaterFee2#>元/天
+      </HDIF>
+    </td>
+    <td class="DtlBarTitle">方式</td>
+    <td class="listtd"><HDPrint Value=#Incash#></td>
+    <td class="DtlBarTitle">批准预算:</td>
+    <td class="listtd"><HDPrint Value=#BRCBudget#></td>
   </tr>
   <tr valign="top">
     <td class="listtd" colspan="6">D、其他信息</td>

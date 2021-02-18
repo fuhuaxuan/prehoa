@@ -15,10 +15,43 @@
 
 <iframe onload="JQAutoHeight(this)" id="iframeDtl" frameborder ='0' width="100%"  scrolling="no" style="width:100%" src="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ModelCode#>_Content&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ModelGid# Replace=#DBField2Js#>&FlowGid=<HDPrint Value=#FlowGid#>"></iframe>
 <br>
+
 <table cellpadding="0" cellspacing="0" width="100%" class="App_List" style="margin-top:10px">
-  <col style="width:100%" valign="top">
+  <col style="width:30%" valign="top">
+  <col style="width:30%" valign="top">
+  <col style="width:40%" valign="top">
+  <TR><TD class="App_ListTr" colspan="3">确认信息</TD></TR>
+  <tr valign="top">
+    <td colspan="3" class="App_ListTd">
+      <input type="radio" name="AppCheck" value="我确认盖章文件与附件一致" class="JQRadio" checked>我确认盖章文件与附件一致<Br>
+       <input type="radio" name="AppCheck" value="最终修正版确认内容" class="JQRadio">最终修正版确认内容
+       <textarea class="JQText" rows="5" name="AppMemo" maxlength="500" style="display:none"></textarea>
+       <script language="javascript">
+       //函数：ready
+       //功能：document 加载完成后调用
+       $(document).ready(function(){
+          $("input[name=AppCheck]").click(function(){
+            $AppMemo = $("textarea[name=AppMemo]")
+            if ($(this).val() == '最终修正版确认内容') {
+              $AppMemo.show();
+              $AppMemo.addClass("JQMust");
+            }
+            else{
+              $AppMemo.hide();
+              $AppMemo.removeClass("JQMust");
+            }
+          });
+       });
+       </script>
+    </td>
+  </tr>
   <tr align="center">
+    <td>　</td><td> </td><td> </td>
+  </tr>
+  <tr align="center">
+    <td></td>
     <td><div class="App_Yes" onclick="javascript:CheckSubmit('已阅');void(0)">已阅<div></td>
+    <td></td>
   </tr>
 </table>
 </form>

@@ -1,0 +1,465 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JSCalendar.js)##"></script>
+<script>
+//选择租赁意向表后导入 Ajax 实现
+  function CallBackISF(sflowgid){
+    frmISF.action=' ##HDNet_AppName##/WFFlowPage?URL=<HDPrint Value=#ModelCode#>_T1&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ModelGid#>&oldFlowGid=' + sflowgid + '&FlowGid=<HDPrint Value=#FlowGid#  Replace=#DBField2Js#>';
+    frmISF.target='_self';
+    frmISF.submit();
+  }
+  /*
+  *函数名称：新增附件添加到附件列表中
+  *参数：sFileName-附件名称
+  */
+  function AddAttach(JsFileName)
+  {
+    if (JsFileName == '')
+      return false;
+    //判断是否存在附件
+    if (!JQgetSingle("selFileList_1",JsFileName)){
+      alert('对不起，已经存在该附件！');
+      return false;
+    }
+    //添加到附件表中
+    var JsOption = '<option value="'+JsFileName+'">'+JsFileName+'</option>';
+    $("select[name=selFileList_1]").append(JsOption);
+  }
+  var g_Type = ''
+  //增加Acg
+  function AddAcg(AType){
+    g_Type = AType;
+    DataInterface(frmDataInterface_Acg);
+  }
+
+  /*
+  *函数功能：明细新增一行
+  *参数说明：使用JQTr_Add() 函数新增行时，需写在 tbody 标记中
+  */
+  function CallAcg(Gid,Name,AddArea,ChgArea,DiffArea,AddMemo,ChgMemo)
+  {
+    var sTbId = 'tb_Dtl'+g_Type;
+    var sTrClass = 'listtd';
+    var tdArr = new Array();
+    var iRow = Math.floor(Math.random() * (1 + 00 - 1) + 1);
+    var i = $("table#"+sTbId+">tbody>tr").length + 1;
+    var k = 0;
+    if (Gid == null){
+      Gid = '';
+      Name = '';
+    }
+    if (AddArea == null){
+      AddArea = '';
+    }
+    if (ChgArea == null){
+      ChgArea = '';
+    }
+    if (DiffArea == null){
+      DiffArea = '';
+    }
+    if (AddMemo == null){
+      AddMemo = '';
+    }
+    if (ChgMemo == null){
+      ChgMemo = '';
+    }
+    if(!JQgetSingle("Gid"+g_Type+"_1",Gid)){
+      alert('对不起，已经存在该项目！');
+      return false;
+    }
+
+    tdArr[k++] = '<td><INPUT TYPE="text" NAME="Line'+ g_Type +'_1" value="'+ i +'" style="border:0px;width:100%;text-align:center" readonly class="JQText"></td>';
+
+    tdArr[k++] = '<td>'
+      +Name
+      +'<INPUT TYPE="hidden" NAME="Name'+ g_Type +'_1" ID="Name'+ g_Type +'_1'+ iRow +'" maxlength="128" class="JQText" value = "'+Name+'">'
+      +'<INPUT TYPE="hidden" NAME="Gid'+ g_Type +'_1" ID="Gid'+ g_Type +'_1'+ iRow +'" maxlength="32" class="JQText" value = "'+Gid+'">'
+      +'<INPUT TYPE="hidden" NAME="Atype'+ g_Type +'_1" ID="Atype'+ g_Type +'_1'+ iRow +'" maxlength="32" class="JQText" value = "'+g_Type+'">'
+    +'</td>';
+
+    tdArr[k++] = '<td>'
+      +'<INPUT TYPE="text" NAME="AddArea'+ g_Type +'_1" ID="AddArea'+ g_Type +'_1'+ iRow +'" maxlength="16" class="JQFloat" value = "'+AddArea+'" readonly style="border:0px">'
+    +'</td>';
+
+    tdArr[k++] = '<td>'
+      +'<INPUT TYPE="text" NAME="ChgArea'+ g_Type +'_1" ID="ChgArea'+ g_Type +'_1'+ iRow +'"  JQRow="ChgArea'+ g_Type +'_1" maxlength="16" class="JQFloat JQMust" value = "'+ChgArea+'" onblur="calT()">'
+    +'</td>';
+
+    tdArr[k++] = '<td>'
+      +'<INPUT TYPE="text" NAME="DiffArea'+ g_Type +'_1" ID="DiffArea'+ g_Type +'_1'+ iRow +'"  JQRow="DiffArea'+ g_Type +'_1" maxlength="16" class="JQFloat" value = "'+DiffArea+'" readonly style="border:0px">'
+    +'</td>';
+
+    tdArr[k++] = '<td>'
+      +AddMemo
+      +'<INPUT TYPE="hidden" NAME="AddMemo'+ g_Type +'_1" ID="AddMemo'+ g_Type +'_1'+ iRow +'" maxlength="300" class="JQText" value = "'+AddMemo+'">'
+    +'</td>';
+
+    tdArr[k++] = '<td>'
+      +'<INPUT TYPE="text" NAME="ChgMemo'+ g_Type +'_1" ID="ChgMemo'+ g_Type +'_1'+ iRow +'" maxlength="300" class="JQText" value = "'+ChgMemo+'">'
+    +'</td>';
+
+    tdArr[k++] ='<td align="center"></td>';
+//<a href="javascript:void(0)" onclick="javascript:JQTr_Del();JqReCal(\''+g_Type+'\')">删除</a>
+
+    //新增一行
+    JQTr_Add(sTbId,sTrClass,tdArr);
+  }
+
+  function calT(){
+    $("input[name^=AddArea]").each(function(i){
+      var AddArea = $("input[name^=AddArea]:eq("+i+")").val();
+      var ChgArea = $("input[name^=ChgArea]:eq("+i+")").val();
+      var $DiffArea = $("input[name^=DiffArea]:eq("+i+")");
+      if (AddArea == ''){
+        AddArea = 0;
+      }
+      if (ChgArea == ''){
+        ChgArea = 0;
+      }
+      var DiffArea = parseFloat(ChgArea) - parseFloat(AddArea);
+      console.log('i='+i+'/'+DiffArea)
+      $DiffArea.val(DiffArea.toFixed(2));
+      //重新计算合计
+      $("input[JQRowSum]").each(function(){
+        JQSum($(this),'JQRow');
+      });
+    });
+  }
+  /*
+  *函数功能：删除行，重新计算
+  */
+  function JqReCal(aType)
+  {
+    //重新计算行号
+    $("input[name=Line"+aType+"_1]").each(function(i){
+      $(this).val(i+1);
+    });
+    //重新计算合计
+    $("input[JQRowSum]").each(function(){
+      JQSum($(this),'JQRow');
+    });
+  }
+</script>
+<form name="frmISF" method="Post" action=""></form>
+
+<form name="frmDo" method="post" action="">
+<!--流程用到一些控件-->
+<input type="text" style="display:none" name="ModelGid" value="<HDPrint Value=#ModelGid# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="FlowGid" value="<HDPrint Value=#FlowGid# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="OldFlowGid" value="<HDPrint Value=#OFlowGid# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="FlowGid_1" value="<HDPrint Value=#FlowGid# Replace=#DBField2Input#>">
+<INPUT type="text" style="display:none" name="CurUrl" value="<HDPrint Value=#Url# Replace=#DBField2Input#>">
+<INPUT type="text" style="display:none" name="Num" value="<HDPrint Value=#Num# Replace=#DBField2Input#>">
+<INPUT type="text" style="display:none" name="ISFNum" value="<HDPrint Value=#ISFNum# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="FillDeptGid" value="<HDPrint Value=#FillDeptGid# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="FillDeptCode" value="<HDPrint Value=#FillDeptCode# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="FillDeptName" value="<HDPrint Value=#FillDeptName# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="FillUsrName" value="<HDPrint Value=#CurUsrName# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="CreateDate" value="<HDPrint Value=#CreateDate# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="Stat" value="">
+<!--当前流程：0：发起 1：修改-->
+<input type="text" style="display:none" name="IsNew" value="<HDPrint Value=#IsNew# Replace=#DBField2Input#>">
+<input type="text" style="display:none" name="FillUsrName" value="<HDPrint Value=#FillUsrName# Replace=#DBField2Input#>">
+
+<!--当前流程是否发起-->
+<input type="text" style="display:none" name="WFCreate" value="">
+<!--当前流程是否流转-->
+<input type="text" style="display:none" name="WF" value="">
+
+<h3 class="TitleBar" ><HDPrint Value=#ModelName#>-<HDPrint Value=#StepName#></h3>
+<TABLE width="100%" class="ButtonBar" cellpadding="0" cellspacing="0">
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A name="btn_1" HREF="javascript:CheckSubmit('保存');void(0)"><FONT class="IconSave">　&nbsp;</FONT> 保存 </A>
+      <A name="btn_1" HREF="javascript:CheckSubmit('提交');void(0)"><FONT class="IconCheck">　&nbsp;</FONT> 提交 </A>
+      <A name="btn_1" HREF="javascript:CheckSubmit('终止');void(0)" JQ="TMod_1" style="display:none"><FONT class="IconEnd">　&nbsp;</FONT> 终止 </A>
+      |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+      <A HREF="javascript:window.close();void(0)"><FONT class="IconClose">　&nbsp;</FONT> 关闭</A>
+    </TD>
+  </TR>
+</TABLE>
+<table cellpadding="0" cellspacing="1" align="center" width="100%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:20%">
+  <col style="padding-left:4px;width:40%">
+  <col style="padding-left:4px;width:30%">
+  <TR>
+    <TD class="newtd2">单号:</TD>
+    <TD class="newtd3"><HDPrint Value=#Num#></td>
+    <td class="title" rowspan="3" align="center"><HDPrint Value=#ModelName#></td>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2">申请人:</TD>
+    <TD class="newtd3"><HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]</td>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2">申请日期:</TD>
+    <TD class="newtd3"><HDPrint Value=#CreateDate#></td>
+    <TD><font color="blue">状态:填写中</font></TD>
+  </TR>
+</table>
+
+<!--显示审批人信息-->
+<HDIF EqualNot(<HDPrint Value=#IsShow# Replace=#None#>, 0)>
+<HDPrint Value=#AppList# Replace=#None#>
+</HDIF>
+
+<h3 class="SubTitleBar" >
+<TABLE cellspacing="1" cellpadding="0" width="100%">
+  <col style="padding-left:4px;">
+  <col style="width:20px;" align="center">
+  <TR>
+    <TD align="left" style="padding-left:10px;"><b>单据信息</b></TD>
+    <TD onclick="JQExpand('tb_Order');" style="cursor:hand" class="IconUp">　&nbsp;</TD>
+  </TR>
+</TABLE>
+</h3>
+
+<table cellpadding="0" cellspacing="1" class="ListBar" width="100%" id="tb_Order">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:40%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:40%">
+  <tr valign="top">
+    <td class="DtlBarTitle"><a href="javascript:DataInterface(frmDataInterface_ISF);void(0)">上一版本: </a</td>
+    <td class="listtd">
+      <a href="##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#ISFModelCode#>&UsrGid=<HDPrint Value=#UsrGid#>&ModelGid=<HDPrint Value=#ISFModelGid#>&FlowGid=<HDPrint Value=#ISFFlowGid#>" target="_blank"><HDPrint Value=#ISFNum#></a>
+    </td>
+    <td class="DtlBarTitle">项目:</td>
+    <td class="listtd"><HDPrint Value=#ProjectName#><INPUT TYPE="hidden" NAME="ProjectName" maxlength="32" value="<HDPrint Value=#ProjectName# Replace=#DBField2Input#>" class="JQText" style="width:400px" readonly></td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">申报日期:</td>
+    <td class="listtd"><HDPrint Value=#AddDate#><INPUT TYPE="hidden" NAME="AddDate" maxlength="10" value="<HDPrint Value=#AddDate# Replace=#DBField2Input#>" class="JQText" style="width:100px" style="width:150px" readonly></td>
+    <td class="DtlBarTitle">变更日期:<font color="red">*</font></td>
+    <td class="listtd"><INPUT TYPE="text" NAME="ChgDate" maxlength="10" value="<HDPrint Value=#ChgDate# Replace=#DBField2Input#>" class="JQDate JQMust" style="width:100px" style="width:150px"></td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">申报备注:</td>
+    <td class="listtd"><HDPrint Value=#AddMemo#><textarea rows="6" id ="AddMemo" name="AddMemo" class="JQText" maxlength="1000" style="display:none"><HDPrint Value=#AddMemo# Replace=#DBField2InputField#></textarea></td>
+    <td class="DtlBarTitle">变更备注:<br><font color="gray">(1000字以内)</font></td>
+    <td class="listtd"><textarea rows="6" id ="ChgMemo" name="ChgMemo" class="JQText" maxlength="1000"><HDPrint Value=#ChgMemo# Replace=#DBField2InputField#></textarea></td>
+  </tr>
+  <tr style="display:none">
+    <td class="DtlBarTitle">发起人备注:<br><font color="gray">(500字内)</font></td>
+    <td class="listtd" colspan="3"><textarea class="JQText JQNo" rows="5" id="AppMemo" name="AppMemo" maxlength="500"></textarea></td>
+  </tr>
+  <tr JQ="TMod_1" style="display:none">
+    <td class="DtlBarTitle">终止原因:<font color="red">*</font></td>
+    <td class="listtd" colspan="3"><textarea rows="5" id ="EndMemo" name="EndMemo" class="JQText JQEnd" maxlength="1000"><HDPrint Value=#EndMemo# Replace=#DBField2InputField#></textarea></td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">申报附件:</td>
+    <td class="listtd"><HDPrint Value=#AttachList1# Replace=#None#></td>
+    <td class="DtlBarTitle">变更附件:<br><font color="gray">(双击删除)</font></td>
+    <td class="listtd">
+      <SELECT NAME="selFileList_1" size="3" style="width:250;" multiple class="JQSelect"><HDPrint Value=#AttachList# Replace=#None#></SELECT><br>
+      <input type="hidden" name="HDTempPath" value="<HDPrint Value=#NewGid# Replace=#DBField2Input#>">
+      <iframe FRAMEBORDER=0 SCROLLING=NO src="/bin/FileUpload.dll?UploadPath=<HDPrint Value=#NewGid# Replace=#DBField2Input#>&CallBackFun=AddAttach" height=28></iframe>
+    </td>
+  </tr>
+</table>
+<h3 class="SubTitleBar" >
+<TABLE cellspacing="1" cellpadding="0" width="100%">
+  <col style="padding-left:4px;">
+  <col style="width:20px;" align="center">
+  <TR>
+    <TD align="left" style="padding-left:10px;"><b>地上信息</b></TD>
+    <TD onclick="JQExpand('tb_Dtl1');" style="cursor:hand" class="IconUp">　&nbsp;</TD>
+  </TR>
+</TABLE>
+</h3>
+<table width="100%" class="ListBar JQMust" cellpadding="0"  cellspacing="1" id="tb_Dtl1">
+  <colgroup>
+     <col style="width:5%">
+     <col style="width:20%">
+     <col style="width:10%">
+     <col style="width:10%">
+     <col style="width:10%">
+     <col style="width:20%">
+     <col style="width:20%">
+     <col style="width:5%">
+  </colgroup>
+  <thead>
+  <tr class="listtr">
+    <td align="center">行号</td>
+    <td align="center">项目</td>
+    <td align="center">预算面积</td>
+    <td align="center">变更面积<font color="red">*</font></td>
+    <td align="center">差异</td>
+    <td align="center">预算备注</td>
+    <td align="center">变更备注</td>
+    <td align="center">操作</td>
+  </tr>
+  </thead>
+  <tbody>
+  </tbody>
+  <tfoot>
+  <tr class="ListTdFocus">
+    <td align="right" colspan="2">汇总[㎡]：</td>
+    <td align="right"><input type="text" name="AddArea1" style="border:0;width:100%" value='<HDPrint Value=#AddArea1# Replace=#DBField2Input#>' readonly class="listtdfocus"></td>
+    <td align="right"><input type="text" name="ChgArea1" style="border:0;width:100%" value='<HDPrint Value=#ChgArea1# Replace=#DBField2Input#>' readonly class="listtdfocus"  JQRowSum="ChgArea1_1" JQBit="2"></td>
+    <td align="right"><input type="text" name="DiffArea1" style="border:0;width:100%" value='<HDPrint Value=#DiffArea1# Replace=#DBField2Input#>' readonly class="listtdfocus"  JQRowSum="DiffArea1_1" JQBit="2"></td>
+    <td align="center" colspan="3">&nbsp;</td>
+  </tr>
+  </tfoot>
+</table>
+<h3 class="SubTitleBar" >
+<TABLE cellspacing="1" cellpadding="0" width="100%">
+  <col style="padding-left:4px;">
+  <col style="width:20px;" align="center">
+  <TR>
+    <TD align="left" style="padding-left:10px;"><b>地下信息</b</TD>
+    <TD onclick="JQExpand('tb_Dtl2');" style="cursor:hand" class="IconUp">　&nbsp;</TD>
+  </TR>
+</TABLE>
+</h3>
+<table width="100%" class="ListBar JQMust" cellpadding="0"  cellspacing="1" id="tb_Dtl2">
+  <colgroup>
+     <col style="width:5%">
+     <col style="width:20%">
+     <col style="width:10%">
+     <col style="width:10%">
+     <col style="width:10%">
+     <col style="width:20%">
+     <col style="width:20%">
+     <col style="width:5%">
+  </colgroup>
+  <thead>
+  <tr class="listtr">
+    <td align="center">行号</td>
+    <td align="center">项目</td>
+    <td align="center">预算面积</td>
+    <td align="center">变更面积<font color="red">*</font></td>
+    <td align="center">差异</td>
+    <td align="center">预算备注</td>
+    <td align="center">变更备注</td>
+    <td align="center">操作</td>
+  </tr>
+  </thead>
+  <tbody>
+  </tbody>
+  <tfoot>
+  <tr class="ListTdFocus">
+    <td align="right" colspan="2">汇总[㎡]：</td>
+    <td align="right"><input type="text" name="AddArea2" style="border:0;width:100%" value='<HDPrint Value=#AddArea2# Replace=#DBField2Input#>' readonly class="listtdfocus"></td>
+    <td align="right"><input type="text" name="ChgArea2" style="border:0;width:100%" value='<HDPrint Value=#ChgArea2# Replace=#DBField2Input#>' readonly class="listtdfocus"  JQRowSum="ChgArea2_1" JQBit="2"></td>
+    <td align="right"><input type="text" name="DiffArea2" style="border:0;width:100%" value='<HDPrint Value=#DiffArea2# Replace=#DBField2Input#>' readonly class="listtdfocus"  JQRowSum="DiffArea2_1" JQBit="2"></td>
+    <td align="center" colspan="3">&nbsp;</td>
+  </tr>
+  </tfoot>
+</table>
+<HDPrint Value=#DtlList# Replace=#None#>
+<HDPrint Value=#DtlList2# Replace=#None#>
+<TABLE width="100%" class="ButtonBar" cellpadding="0" cellspacing="0">
+  <col style="width:100%">
+  <TR>
+    <TD>
+      <B>工具栏：</B>
+      <A name="btn_1" HREF="javascript:CheckSubmit('保存');void(0)"><FONT class="IconSave">　&nbsp;</FONT> 保存 </A>
+      <A name="btn_1" HREF="javascript:CheckSubmit('提交');void(0)"><FONT class="IconCheck">　&nbsp;</FONT> 提交 </A>
+      |
+      <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
+      <A HREF="javascript:window.close();"><FONT class="IconClose">　&nbsp;</FONT> 关闭</A>
+    </TD>
+  </TR>
+</TABLE>
+</form>
+
+<script language="javascript">
+  if ('<HDPrint Value=#IsNew# Replace=#DBField2Js#>' == '0'){
+    //T1时，加载FlowGid的数据
+    $("input[name=FlowGid]").val('<HDPrint Value=#Num# Replace=#DBField2Js#>');
+    $("input[name=FlowGid_1]").val('<HDPrint Value=#Num# Replace=#DBField2Js#>');
+    $("input[name=WFCreate]").val('WF');
+  }
+  else{
+    //Tmod时，显示Tmod的数据
+    $("[JQ=TMod_1]").show();
+  }
+  //提交函数
+  function CheckSubmit(OpText){
+    //定义 必填验证的 值
+    var sCss = '';
+    //定义 提交提示文字
+    var sConfirm = '';
+    //流转状态初始化
+    $("input[name=WF]").val('WF');
+    if (OpText == '保存'){
+      sCss = 'JQSave';
+      $("input[name=WF]").val('');
+    }
+    else if (OpText == '提交'){
+      sCss = 'JQMust';
+      sConfirm = '您确定已经填写完申请单，并提交吗？';
+    }
+    else if (OpText == '终止'){
+      sCss = 'JQEnd';
+      sConfirm = '你确定要终止该流程吗？';
+    }
+    //提交时，验证必填项
+    if (!JQcheck(sCss)){
+      return false;
+    }
+    //提交时，提示
+    if (OpText != '保存'){
+      if (!(confirm(sConfirm)))
+        return false;
+    }
+
+    $("input[name=ComName]").val($("select[name=ComGid]").find("option:selected").text());
+    //状态赋值
+    $("input[name=Stat]").val(OpText);
+
+    //获取当前表单对象
+    var JqObj = $("form[name=frmDo]");
+    //表单参数设定
+    JqObj.attr({
+      "action":'##HDNet_AppName##/WFFlowPage?Url=<HDPrint Value=#Url#>Save&UsrGid=<HDPrint Value=#UsrGid#>',
+      "target":'_self'
+    });
+    //表单提交
+    JqObj.submit();
+
+    //操作按钮变为不可用
+    $("a[name=btn_1]").each(function(){
+      $(this).prop("disabled",true);
+    });
+    //本函数失效
+    CheckSubmit = function() {return false;}
+  }
+</script>
+
+<script language="javascript" src="##GetWebRootPath(/Scripts/DataInterface.js)##"></script>
+<!--选择审批人调用-->
+<FORM NAME="frmDataInterface_ISF" ACTION="">
+  <INPUT TYPE="hidden" name="DataInterface_Title" ID="t_ISF" value="选择列表">
+
+  <INPUT TYPE="hidden" name="DataInterface_Sql" ID="s_ISF" value="select v.ISFModelGid,v.ISFFlowGid,v.ISFFillUsrName,v.ISFNum,v.ISFProjectName from v_PrlDz_Area v where v.EntGid = '<HDPrint Value=#entgid#>' and v.ISCFFlowGid is null">
+  <INPUT TYPE="hidden" name="DataInterface_CountSql" ID="c_ISF" value="select count(*) from v_PrlDz_Area v where v.EntGid = '<HDPrint Value=#entgid#>' and v.ISCFFlowGid is null">
+  <INPUT TYPE="hidden" name="DataInterface_OrderSql" value="order by v.ISFNum desc">
+  <INPUT TYPE="hidden" name="DataInterface_UsrGid" value="<HDPrint Value=#UsrGid#>">
+  <INPUT TYPE="hidden" name="DataInterface_AppName" value="##HDNet_AppName##">
+
+  <input type="hidden" name="DataInterface_Cols" value="3^发起人^left^80">
+  <input type="hidden" name="DataInterface_Cols" value="4^单号^left^150">
+  <input type="hidden" name="DataInterface_Cols" value="5^项目^left^120">
+
+  <input type="hidden" name="DataInterface_Search" value="v.ISFFillUsrName^发起人^1">
+  <input type="hidden" name="DataInterface_Search" value="v.ISFNum^单号^1">
+  <input type="hidden" name="DataInterface_Search" value="v.ISFProjectName^项目^1">
+
+  <input TYPE="hidden" name="DataInterface_Search_Sql" value="">
+  <input TYPE="hidden" name="DataInterface_Search_Cols" value="">
+
+  <INPUT TYPE="hidden" name="DataInterface_FieldTo" value="">
+  <INPUT TYPE="hidden" name="DataInterface_FieldBy" value="2">
+  <INPUT TYPE="hidden" name="DataInterface_CallBckFunc" value="CallBackISF">
+  <INPUT TYPE="hidden" name="DataInterface_Close" value="false">
+</FORM>

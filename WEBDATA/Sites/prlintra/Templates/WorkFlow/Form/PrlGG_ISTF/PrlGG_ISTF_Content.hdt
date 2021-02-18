@@ -186,7 +186,7 @@
     <td class="ListTd"><HDPrint Value=#NumG#></td>
   </tr>
   <tr valign="top">
-    <td class="DtlBarTitle">合计：</td>
+    <td class="DtlBarTitle">未完成租约合计：</td>
     <td class="ListTd" colspan="5"><HDPrint Value=#NumSum#></td>
   </tr>
   <tr valign="top">

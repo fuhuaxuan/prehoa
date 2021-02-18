@@ -341,7 +341,7 @@
     <td class="ListTd" style="background:#E0E0E0"><HDPrint Value=#NumAStr#></td>
     <td class="DtlBarTitle" title="合同期内有减免的租金、物管、推广等费用,不包含免租期"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">租金（含物业费）减免额：</td>
     <td class="ListTd" style="background:#E0E0E0"><HDPrint Value=#NumBStr#></td>
-    <td class="DtlBarTitle" title="合同内约定由我司支付的装修补贴或工程改造费用，如无，则填0"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">装修补贴：</td>
+    <td class="DtlBarTitle" title="装修补贴剩余未摊销金额或未返还金额，如无，则填0"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">装修补贴：</td>
     <td class="ListTd"><HDPrint Value=#NumC#></td>
   </tr>
   <tr>

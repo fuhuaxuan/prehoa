@@ -51,6 +51,7 @@ DefaultWhere=and f.CreateDate >= to_date(to_char(sysdate,'YYYY.MM')||'.01','YYYY
 5=and fd.AcgGid in (##txt_Acg##)
 6=and f.stat ^^sel_Stat^^
 7=and f.Num like '%' || ##txt_Num## || '%'
+9=and exists (select 1 from WF_prl_BaoXiao_attach t where t.flowgid = f.flowgid and t.attach_type = ##sel_Voice##)
 
 [GroupBy]
 ;多条记录的查询的分组

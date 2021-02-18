@@ -6,6 +6,9 @@
     '<HDPrint Value=#FreeRentDate1# Replace=#DBField2Js#>',
     '<HDPrint Value=#FreeRentDate2# Replace=#DBField2Js#>',
     '<HDPrint Value=#TBRD# Replace=#DBField2Js#>',
-    '<HDPrint Value=#TBRM# Replace=#DBField2Js#>');
+    '<HDPrint Value=#TBRM# Replace=#DBField2Js#>',
+    '<HDPrint Value=#GTO# Replace=#DBField2Js#>',
+    '<HDPrint Value=#ProGTO# Replace=#DBField2Js#>',
+    '<HDPrint Value=#ProGTOrent# Replace=#DBField2Js#>');
   </hdloop>
 </script>

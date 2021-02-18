@@ -20,20 +20,28 @@ Sql1=select f.*,decode(wf.stat,'0', '未执行','1', '待执行','2', '执行中','3', '<
 ;取出本流程已审批的审批人的个数，用于判断是否显示审批人
 SQL2=select count(*) IsShow from wf_^^ModelCode^^_App where EntGid = __ENTGID__ and  FlowGid = ##FlowGid##
 
+;是否有集团CEO
+SQL10=select decode(count(*),0,'none','') isCEO from Wf_^^ModelCode^^_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppCode = 'pua.seckguan'
+
 ;显示本流程附件信息
 LoopSQL1=select replace(AttachUrl,' ','%20') AttachUrl,AttachTitle from wf_^^ModelCode^^_Attach where EntGid = __ENTGID__ and  FlowGid = ##FlowGid## order by AttachTitle
 LoopHDT1=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AttachList.hdt
 LoopVAR1=AttachList
 
 ;显示本流程已审批审批人信息
-LoopSQL2=select a.*,decode(a.apptype,10,'发起人',20,'审批人') apptypetext  from WF_^^ModelCode^^_App a where FlowGid = ##FlowGid## order by AppDate,AppOrder
+LoopSQL2=select a.*,decode(a.apptype,10,'发起人',20,'审批人',30,'发起人确认') apptypetext  from WF_^^ModelCode^^_App a where FlowGid = ##FlowGid## order by AppDate,AppOrder
 LoopHDT2=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AppList.hdt
 LoopVAR2=AppList
 
 ;显示本流程已审批审批人信息
-LoopSQL5=select a.*,decode(a.apptype,010,'发起人',20,'审批人') apptypetext  from WF_^^ModelCode^^_App a where FlowGid = ##FlowGid## order by AppDate,AppOrder
+LoopSQL5=select a.*,decode(a.apptype,010,'发起人',20,'审批人',30,'发起人确认') apptypetext  from WF_^^ModelCode^^_App a where FlowGid = ##FlowGid## order by AppDate,AppOrder
 LoopHDT5=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AppEmail.hdt
 LoopVAR5=AppEmail
+
+;显示集团CEO附件
+LoopSQL10=select replace(Attach_Url,' ','%20') AttachUrl,Attach_Title AttachTitle from WF_Prl_Flow_Attach where EntGid = __ENTGID__ and  FlowGid = ##FlowGid## order by attach_title
+LoopHDT10=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AttachList.hdt
+LoopVAR10=AttachList2
 
 ;显示邮件
 LoopSQL19=select 1 from dual

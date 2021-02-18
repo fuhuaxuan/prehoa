@@ -25,7 +25,7 @@
     var JsDate1 = $("input[name=ContractDate1]").val();
     var JsDate2 = $("input[name=ContractDate2]").val();
     if (JsDate1 != '' && JsDate2 != '' ){
-      if (JQDateCompare(JsDate1,JsDate2) <= 0){
+      if (JQDateCompare(JsDate1,JsDate2) < 0){
         alert('合同结束日期必须大于合同开始日期！');
         JsObj.focus();
         JsObj.value = '';
@@ -169,13 +169,18 @@
     <td class="DtlBarTitle">申请类型:<font color="red">*</font></td>
     <td class="listtd">
       <input type="radio" name="ApplyType" value="非合同类文件用印" class="JQRadio JQMust1 JQMust2  JQSave" checked>非合同类文件用印<br>
-      <input type="radio" name="ApplyType" value="合同签署用印" class="JQRadio JQMust1 JQMust2  JQSave">合同签署用印
+      <input type="radio" name="ApplyType" value="标准类合同用印" class="JQRadio JQMust1 JQMust2  JQSave"><span title="公司固定模板，仅包含租赁收入类、采购类合同">标准类合同用印<img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15"></span><br>
+      <input type="radio" name="ApplyType" value="非标准类合同用印" class="JQRadio JQMust1 JQMust2  JQSave"><span title="非公司固定模板，和除租赁收入类、采购类合同固定类模板">非标准类合同用印<img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15"></span>
       <script language="javascript">
         $("input[name=ApplyType][value='<HDPrint Value=#ApplyType# Replace=#DBField2Js#>']").prop("checked",true);
         //函数：ready
         //功能：document 加载完成后调用
         $(document).ready(function(){
-          var JsValue1 = '<HDPrint Value=#ApplyType# Replace=#DBField2Js#>' == '合同签署用印' ? '2' : '1';
+          var ApplyType = '<HDPrint Value=#ApplyType# Replace=#DBField2Js#>';
+          if (ApplyType == '') {
+            ApplyType = '非合同类文件用印';
+          }
+          var JsValue1 = ApplyType == '非合同类文件用印' ? '1' : '2';
           $("[JQ^=Type]").hide();
           $("[JQ=Type_"+JsValue1+"]").show();
           $("input[name=ApplyType]").click(function (){
@@ -298,7 +303,7 @@
 
   if ('<HDPrint Value=#IsNew# Replace=#DBField2Js#>' == '0'){
     //T1时，加载FlowGid的数据
-    $("input[name=FlowGid]").val('<HDPrint Value=#NewGid# Replace=#DBField2Js#>');
+    $("input[name=FlowGid]").val('<HDPrint Value=#Num# Replace=#DBField2Js#>');
     $("input[name=WFCreate]").val('WF');
   }
   else{
@@ -364,12 +369,12 @@
 </script>
 
 <script language="javascript" src="##GetWebRootPath(/Scripts/DataInterface.js)##"></script>
-<!--选择审批人调用-->
+<!--选择审批人调用 and not exists (select 1 from wf_prl_stamp t,wf_flow tf where t.entgid = f.entgid and t.entgid = tf.entgid and t.flowgid = tf.flowgid and t.stat not in ('终止') and tf.stat < 4 and t.flowgid <> nvl('<HDPrint Value=#FlowGid# Replace=#DBField2Js#>',1) and t.fillusrgid = '<HDPrint Value=#UsrGid#>' and t.mFlowGid = f.flowgid)-->
 <FORM NAME="frmDataInterface_Flow" ACTION="">
   <INPUT TYPE="hidden" name="DataInterface_Title" ID="t_App" value="流程选择">
 
-  <INPUT TYPE="hidden" name="DataInterface_Sql" ID="s_App" value="select f.flowgid, f.fillusrname, f.num, f.Fmemo, wm.code, wm.name from v_Prl_Flow f, wf_flow wf, wf_model wm where f.entgid = '<HDPrint Value=#entgid#>' and f.entgid = wm.entgid and f.entgid = wf.entgid and f.flowgid = wf.flowgid  and f.modelgid = wm.modelgid and f.stat not in ('终止') and wf.stat = 3 and (f.fillusrgid = '<HDPrint Value=#UsrGid#>' or exists (select 1 from PRL_FeeRT r where r.entgid = f.entgid and r.ausrgid = '<HDPrint Value=#UsrGid#>' and r.busrgid = f.fillusrgid)) and not exists (select 1 from wf_prl_stamp t,wf_flow tf where t.entgid = f.entgid and t.entgid = tf.entgid and t.flowgid = tf.flowgid and t.stat not in ('终止') and tf.stat < 4 and t.flowgid <> nvl('<HDPrint Value=#FlowGid# Replace=#DBField2Js#>',1) and t.fillusrgid = '<HDPrint Value=#UsrGid#>' and t.mFlowGid = f.flowgid)">
-  <INPUT TYPE="hidden" name="DataInterface_CountSql" ID="c_App" value="select count(*) from v_Prl_Flow f, wf_flow wf, wf_model wm where f.entgid = '<HDPrint Value=#entgid#>' and f.entgid = wm.entgid and f.entgid = wf.entgid and f.flowgid = wf.flowgid  and f.modelgid = wm.modelgid and f.stat not in ('终止') and wf.stat = 3 and (f.fillusrgid = '<HDPrint Value=#UsrGid#>' or exists (select 1 from PRL_FeeRT r where r.entgid = f.entgid and r.ausrgid = '<HDPrint Value=#UsrGid#>' and r.busrgid = f.fillusrgid)) and not exists (select 1 from wf_prl_stamp t,wf_flow tf where t.entgid = f.entgid and t.entgid = tf.entgid and t.flowgid = tf.flowgid and t.stat not in ('终止') and tf.stat < 4 and t.flowgid <> nvl('<HDPrint Value=#FlowGid# Replace=#DBField2Js#>',1) and t.fillusrgid = '<HDPrint Value=#UsrGid#>' and t.mFlowGid = f.flowgid)">
+  <INPUT TYPE="hidden" name="DataInterface_Sql" ID="s_App" value="select f.flowgid, f.fillusrname, f.num, f.Fmemo, wm.code, wm.name from v_Prl_Flow f, wf_flow wf, wf_model wm where f.entgid = '<HDPrint Value=#entgid#>' and f.entgid = wm.entgid and f.entgid = wf.entgid and f.flowgid = wf.flowgid  and f.modelgid = wm.modelgid and f.stat not in ('终止') and wf.stat = 3 and (f.fillusrgid = '<HDPrint Value=#UsrGid#>' or exists (select 1 from PRL_FeeRT r where r.entgid = f.entgid and r.ausrgid = '<HDPrint Value=#UsrGid#>' and r.busrgid = f.fillusrgid))">
+  <INPUT TYPE="hidden" name="DataInterface_CountSql" ID="c_App" value="select count(*) from v_Prl_Flow f, wf_flow wf, wf_model wm where f.entgid = '<HDPrint Value=#entgid#>' and f.entgid = wm.entgid and f.entgid = wf.entgid and f.flowgid = wf.flowgid  and f.modelgid = wm.modelgid and f.stat not in ('终止') and wf.stat = 3 and (f.fillusrgid = '<HDPrint Value=#UsrGid#>' or exists (select 1 from PRL_FeeRT r where r.entgid = f.entgid and r.ausrgid = '<HDPrint Value=#UsrGid#>' and r.busrgid = f.fillusrgid))">
   <INPUT TYPE="hidden" name="DataInterface_OrderSql" value="order by f.num desc">
   <INPUT TYPE="hidden" name="DataInterface_UsrGid" value="<HDPrint Value=#UsrGid#>">
   <INPUT TYPE="hidden" name="DataInterface_AppName" value="##HDNet_AppName##">

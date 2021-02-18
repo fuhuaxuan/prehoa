@@ -26,9 +26,6 @@
 <tr JQ="tr_30" style="display:none"><td class="App_ListTd">商标注册证 : <span JQ="td_30"></span></td></tr>
 <tr JQ="tr_40" style="display:none"><td class="App_ListTd">授权书 : <span JQ="td_40"></span></td></tr>
 <TR><TD class="App_ListTd">其他 : <span JQ="td_50"></span></td></tr>
-<HDIF EqualNot(<HDPrint Value=#isCEO# Replace=#None#>, 0)>
-<TR><TD class="App_ListTd">[潘总审批附件:] : <HDPrint Value=#AttachList2# Replace=#None#></td></tr>
-</HDIF>
 </table>
 <script>
   //函数：ready

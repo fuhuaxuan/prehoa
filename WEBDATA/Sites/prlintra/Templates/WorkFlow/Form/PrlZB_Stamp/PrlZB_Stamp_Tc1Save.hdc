@@ -15,13 +15,19 @@ Remind1=¶Ô²»Æğ£¬ÄúÖ¸¶¨µÄÁ÷³ÌÉêÇëµ¥Ã»ÓĞÕÒµ½<script>alert('¶Ô²»Æğ£¬ÄúÖ¸¶¨µÄÁ÷³ÌÉêÇ
 SqlForCondition1=select wm.Code ModelCode, wm.Name ModelName,d.Name StepName from wf_Model wm,WF_Task_Define d where wm.EntGid = d.EntGid(+) and wm.EntGid = __ENTGID__ and wm.ModelGid = d.ModelGid(+) and wm.ModelGid = ##ModelGid## and lower(d.code(+)) = replace(lower(##Url##),'save')
 
 ;ÉóÅú±¸×¢
-SQLForCondition2=select ##CurUsrName##||':'||##AppAssign##||' - ÉêÇëÀàĞÍ£º' || ApplyType || '£»ÉêÇëÓ¡ÕÂÖÖÀà£º' || StampType || '£»¹«Ë¾Ãû³Æ£º' || ComName || decode(ApplyType,'ºÏÍ¬Ç©ÊğÓÃÓ¡','£»ºÏ×÷¹«Ë¾£º'||ContactName,'') AppFlowMemo from WF_^^ModelCode^^ where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## 
+SQLForCondition2=select ##CurUsrName##||':'||##AppAssign##||' - ÉêÇëÀàĞÍ£º' || ApplyType || '£»ÉêÇëÓ¡ÕÂÖÖÀà£º' || StampType || '£»¹«Ë¾Ãû³Æ£º' || ComName || decode(ApplyType,'·ÇºÏÍ¬ÀàÎÄ¼şÓÃÓ¡','£»½ÓÊÕ·½£º'||FilerName,'£»ºÏ×÷¹«Ë¾£º'||ContactName) AppFlowMemo from WF_^^ModelCode^^ where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## 
 
 ;ÊÇ·ñ´æÔÚÏÂÒ»¼¶ÉóÅúÈË? 0 ½áÊø£¬µ½ÏÂÒ»²½
-SQLForCondition4=select count(*) NextApp from v_wf_task a where a.EntGid = __ENTGID__ and a.FlowGid = ##FlowGid## and a.STAT = 3 and a.EXECGID <> __USRGID__ and a.ISMCF = 1
+SQLForCondition4=select count(*) NextTcc from v_wf_task a where a.EntGid = __ENTGID__ and a.FlowGid = ##FlowGid## and a.STAT = 1 and a.EXECGID <> __USRGID__ and a.ISMCF = 1 and lower(a.code) not in (lower(##ModelCode##||'_tcc'),lower(##ModelCode##||'_tc'))
+SQLForCondition8=select decode(##NextTcc##,'0','Ìá½»','ÖÕÖ¹') AppStat from dual
 
 [AddtionalSQL]
 ;²Ù×÷£¬Ã»ÓĞ·µ»ØµÄ½á¹û£¬ÊÇÔÚÊı¾İ¿âÖĞÖ´ĞĞ£¬ÓĞInsert, Update, DeleteÃüÁî¡£´ÓSQL1¡«SQL20¹²Ö§³Ö20Ìõ
+SQL1=call P_^^ModelCode^^_doApp2(__ENTGID__,##ModelGid##,##FlowGid##,##AppStat##,##AppFlowMemo##)
+
+;SQL1=insert into WF_Task (EntGid, ModelGid, FlowGid, TaskDefGid, TaskGid, Code, Name, Note, ExecGid, ExecCode, ExecName, OrderValue, IsMCF,stat,bTime,Memo) select distinct d.entgid, d.modelgid, f.flowgid, d.taskdefgid, sys_guid(), d.code, d.name, d.note, s.AppGid,s.AppCode,s.AppName, d.ordervalue, d.ismcf,1,sysdate,##AppFlowMemo## from WF_Task_Define d, ^^ModelCode^^ s,WF_^^ModelCode^^ f where f.EntGid = __ENTGID__ and f.FlowGid = ##FlowGid## and s.ComGid = f.ComGid and f.StampType like '%' || s.StampType || '%' and f.entgid = d.entgid and lower(d.code) = 'prlzb_stamp_tcc' and ##NextTcc## >= 2
+
+SQL2=update wf_task set memo = ##AppMemo## where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and lower(code) = replace(lower(##Url##),'save') and ExecGid = __USRGID__
 
 [AddtionalSQLUseWhere]
 ;ÏÔÊ¾£¬µ¥ÌõÊı¾İµÄ²éÑ¯£¬¿ÉÒÔÓÃÓÚHDTÏÔÊ¾£¬ÓĞselectÃüÁî¡£´ÓSQL1¡«SQL20¹²Ö§³Ö20Ìõ£¬Í¬Ê±»áÊ¹ÓÃÉÏÃæµÄ[where]ÖĞµÄsqlÓï¾ä
@@ -78,6 +84,6 @@ PageKind=0
 ;³­ËÍ½áÊø
 
 ;È«²¿ÉóÅúÍê³É£¬³­ËÍÓ¡ÕÂ¹ÜÀíÈË
-WF1=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_Tcc | TccGid_1 | and ##NextApp## >= 2 | ^^AppFlowMemo^^)
+;WF1=WFFlowRun( ^^ModelCode^^_TC | ^^ModelCode^^_Tcc | TccGid_1 | and ##NextApp## >= 2 | ^^AppFlowMemo^^)
 
 WF2=WFMcf( ^^CurUrl^^ | )

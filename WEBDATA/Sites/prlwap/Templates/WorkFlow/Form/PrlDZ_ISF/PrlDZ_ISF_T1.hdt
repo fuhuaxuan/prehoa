@@ -762,7 +762,7 @@
       //租金
       JsA = JqTb.find("input[name=TBRD_1]").first().val();
 
-      //物业管理费
+      //物业管理服务费
       JsB = JqTb.find("input[name=PMFD_1]").first().val();
 
       //预估提成租金
@@ -773,7 +773,7 @@
       //租金
       JsAMZQ = JqTbMZQ.find("input[name=TBRD_1]").first().val();
 
-      //物业管理费
+      //物业管理服务费
       JsBMZQ = JqTbMZQ.find("input[name=PMFD_1]").first().val();
 
       //预估提成租金
@@ -791,27 +791,27 @@
     if (JsArea == ''){JsArea = '0';}
     if (JsBuildArea == ''){JsBuildArea = '0';}
 
-    //物业管理费 + 预估提成租金
+    //物业管理服务费 + 预估提成租金
     if (JsRate == '联营形式' || JsRate == '扣率'){
       JsVal = parseFloat(parseFloat(JsB) + parseFloat(JsC)).toFixed(4);
       JsValMZQ = parseFloat(parseFloat(JsBMZQ) + parseFloat(JsCMZQ)).toFixed(4);
     }
-    //租金 + 物业管理费
+    //租金 + 物业管理服务费
     if (JsRate == '固定租金'){
       JsVal = parseFloat(parseFloat(JsA) + parseFloat(JsB)).toFixed(4);
       JsValMZQ = parseFloat(parseFloat(JsAMZQ) + parseFloat(JsBMZQ)).toFixed(4);
     }
-    //租金 + 物业管理费 + 预估提成租金
+    //租金 + 物业管理服务费 + 预估提成租金
     if (JsRate == '租金+扣率'){
       JsVal = parseFloat(parseFloat(JsA) + parseFloat(JsB) + parseFloat(JsC)).toFixed(4);
       JsValMZQ = parseFloat(parseFloat(JsAMZQ) + parseFloat(JsBMZQ) + parseFloat(JsCMZQ)).toFixed(4);
     }
-    //max(租金,预估提成租金) + 物业管理费
+    //max(租金,预估提成租金) + 物业管理服务费
     if (JsRate == '固定租金与提成租金二者取高'){
       JsVal = parseFloat(Math.max(parseFloat(JsA),parseFloat(JsC)) + parseFloat(JsB)).toFixed(4);
       JsValMZQ = parseFloat(Math.max(parseFloat(JsAMZQ),parseFloat(JsCMZQ)) + parseFloat(JsBMZQ)).toFixed(4);
     }
-    //max(租金+物业管理费,预估提成租金)
+    //max(租金+物业管理服务费,预估提成租金)
     if (JsRate == '租金（含物管费）扣率取高' || JsRate == '租金（含物管费与推广费）扣率取高'){
       JsVal = parseFloat(Math.max(parseFloat(JsA) + parseFloat(JsB),parseFloat(JsC))).toFixed(4);
       JsValMZQ = parseFloat(Math.max(parseFloat(JsAMZQ) + parseFloat(JsBMZQ),parseFloat(JsCMZQ))).toFixed(4);
@@ -851,11 +851,11 @@
     //反算建筑面积单价=(第一年租金单价*建筑面积总和)/面积总和
     $("input[name=BuildAreaPrice]").val(JsFee);
 
-    //计算预付租金+物业管理费 = （第一年 固定租金总数 + 物业管理费总数 + 推广费 月* 面积）
+    //计算预付租金+物业管理服务费 = （第一年 固定租金总数 + 物业管理服务费总数 + 推广费 月* 面积）
     if (JqTb.find("input[name=TBRD_1]").first().length > 0 && JsStr != '1'){
       //租金
       JsA = JqTb.find("input[name=TBRM_1]").first().val();
-      //物业管理费
+      //物业管理服务费
       JsB = JqTb.find("input[name=PMFM_1]").first().val();
       //推广费
       JsC = JqTb.find("input[name=Apfixed_1]").first().val();
@@ -868,11 +868,11 @@
       JsT = parseFloat(JsT).toFixed(4);
       $("input[name=AGR]").val(JsT);
     }
-    //计算保证金 = （最后一年 固定租金总数 + 物业管理费总数 + 推广费 月* 面积）* 3
+    //计算保证金 = （最后一年 固定租金总数 + 物业管理服务费总数 + 推广费 月* 面积）* 3
     if (JqTb.find("input[name=TBRD_1]").last().length > 0 && JsStr != '1'){
       //租金
       JsA = JqTb.find("input[name=TBRM_1]").last().val();
-      //物业管理费
+      //物业管理服务费
       JsB = JqTb.find("input[name=PMFM_1]").last().val();
       //推广费
       JsC = JqTb.find("input[name=Apfixed_1]").last().val();
@@ -1200,7 +1200,7 @@
     第一租赁期固定租金（人民币）</td>
     <td colspan="3">
     Property Mgmt Fee<br>
-    物业管理费 (RMB)</td>
+    物业管理服务费 (RMB)</td>
     <td colspan="2">A&P 市场推广费</td>
     <td>GTO Rent Structure<br>
     提成租金构造</td>

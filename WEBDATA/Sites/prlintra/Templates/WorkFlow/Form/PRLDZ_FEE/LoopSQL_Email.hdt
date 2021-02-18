@@ -58,7 +58,7 @@
 </td></tr>
 <tr><td>[推荐及理由] : <HDPrint Value=#reason#>；</td></tr>
 <tr><td>[剩余预算金额] : <HDPrint Value=#controlfee#> 元；</td></tr>
-<tr><td>[本次申请金额] : 今年：<HDPrint Value=#askfee#> 元；明年：<HDPrint Value=#Naskfee#> 元；</td></tr>
+<tr><td>[本次申请金额] : 今年：<HDPrint Value=#askfee#> 元；跨年：<HDPrint Value=#Naskfee#> 元；</td></tr>
 <tr><td>[附件信息] : <HDPrint Value=#AttachList# Replace=#None#></td></tr>
 <tr><td>-----------内容展示完毕-----------</td></tr>
 </table>

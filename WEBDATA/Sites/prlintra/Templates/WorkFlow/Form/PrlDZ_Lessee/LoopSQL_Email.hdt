@@ -1,0 +1,24 @@
+<table border="0" style="width:100%;">
+<tr><td>您好 :</td></tr>
+<tr><td>[流程名称] : <HDPrint Value=#ModelName#>；</td></tr>
+<tr><td>[单号] : <HDPrint Value=#Num#>；</td></tr>
+<tr><td>[发起人] : <HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]；</td></tr>
+<tr><td>[发起时间] : <HDPrint Value=#CreateDate#>]；</td></tr>
+<tr><td>[类型] : <HDPrint Value=#aType#>；</td></tr>
+<tr><td>[租户] : <HDPrint Value=#Lessee#>；</td></tr>
+<tr><td>[商铺代码] : <HDPrint Value=#TradingCode#>；</td></tr>
+<tr><td>[商铺营业名称] : <HDPrint Value=#TradingName#>；</td></tr>
+<HDIF Equal(<HDPrint Value=#Atype# Replace=#None#>, 租户逃场)>
+<tr><td>[逃场日] : <HDPrint Value=#OutDate#>；</td></tr>
+</HDIF>
+<HDIF Equal(<HDPrint Value=#Atype# Replace=#None#>, 非正常关闭,返场确认)>
+<tr><td>[非正常关闭日] : <HDPrint Value=#CloseDate#>；</td></tr>
+</HDIF>
+<HDIF Equal(<HDPrint Value=#Atype# Replace=#None#>, 返场确认)>
+<tr><td>[返场经营日] : <HDPrint Value=#ReturnDate#>；</td></tr>
+</HDIF>
+<tr><td>[备注] : <HDPrint Value=#memo#> ；</td></tr>
+<tr><td>[附件信息] : <HDPrint Value=#AttachList# Replace=#None#></td></tr>
+<tr><td>-----------内容展示完毕-----------</td></tr>
+</table>
+<HDPrint Value=#AppEmail# Replace=#None#>

@@ -49,8 +49,12 @@ LoopSql2=insert into Wf_^^ModelCodeT^^_Dtl (EntGid,ModelGid,FlowGid,Gid,Line,Acg
 ;--更新审批人
 LoopSql3=call P_^^ModelCode^^_doApp(__ENTGID__,##ModelGid##,##%FlowGid%##,##Stat##)
 
+
+LoopSql11=insert into Wf_^^ModelCodeT^^_Attach (EntGid,ModelGid,FlowGid,Attach_Gid,Attach_Type,Attach_Title) select __ENTGID__ ,##ModelGid##,##FlowGid##, sys_guid(),10,##%fileList10%## from dual where ##Stat## <> '终止'
+LoopSql12=insert into Wf_^^ModelCodeT^^_Attach (EntGid,ModelGid,FlowGid,Attach_Gid,Attach_Type,Attach_Title) select __ENTGID__ ,##ModelGid##,##FlowGid##, sys_guid(),20,##%fileList20%## from dual where ##Stat## <> '终止'
+
 ;插入本流程附件信息
-AttachSqlAdd1=insert into Wf_^^ModelCodeT^^_Attach (EntGid,ModelGid,FlowGid,Attach_Gid,Attach_Title,Attach_Url,Attach_Size) select __ENTGID__ ,##ModelGid##,##FlowGid##, @@AttachID@@, @@FileName@@, @@FilePath@@,@@FileSize@@ from dual
+AttachSqlAdd1=update Wf_^^ModelCodeT^^_Attach set (Attach_Url,Attach_Size) = (select @@FilePath@@,@@FileSize@@ from dual) where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and Attach_Title = @@FileName@@ and ##Stat## <> '终止'
 
 [AddtionalSQLUseWhere]
 ;显示，单条数据的查询，可以用于HDT显示，有select命令。从SQL1～SQL20共支持20条，同时会使用上面的[where]中的sql语句

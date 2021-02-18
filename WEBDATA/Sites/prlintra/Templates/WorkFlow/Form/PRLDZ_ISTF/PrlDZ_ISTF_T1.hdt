@@ -238,6 +238,7 @@
       var PMFD = $("input[name=DPMFD_1]:eq("+i+")").val();
       var Apfixed = $("input[name=DApfixed_1]:eq("+i+")").val();
       var GTO = $("input[name=DGTO_1]:eq("+i+")").val();
+      var Mod = $("input[name=DModed_1]:eq("+i+")").val();
       var $Rent = $("input[name=DRent_1]:eq("+i+")");
       //(D1+D2+D3*12/365)*面积*天数 + D4
       if (TBRD == ''){
@@ -252,6 +253,9 @@
       if (GTO == ''){
         GTO = 0;
       }
+      if (Mod == '') {
+        Mod = '0';
+      }
       //天数
       var day = 0,month = 0;
       var sDay = 24 * 3600 * 1000;
@@ -260,7 +264,7 @@
       if (sArea == '') {
         sArea = 0;
       }
-      console.log('area:'+sArea)
+      console.log('area:'+Mod)
       if (bDate != '' && eDate != '') {
         var bD = new Date(bDate.replace('.','/').replace('.','/'));
         var eD = new Date(eDate.replace('.','/').replace('.','/'));
@@ -274,7 +278,9 @@
       var a = parseFloat(TBRD) + parseFloat(PMFD) + parseFloat(Apfixed) * 12 / 365
         console.log('a:'+a)
       var Rent = (a * parseFloat(sArea) * day + parseFloat(GTO)).toFixed(2);
-      $Rent.val(Rent);
+      if (Mod == '0') {
+        $Rent.val(Rent);
+      }
     });
   }
 
@@ -288,6 +294,7 @@
       var PMFD = $("input[name=EPMFD_1]:eq("+i+")").val();
       var Apfixed = $("input[name=EApfixed_1]:eq("+i+")").val();
       var GTO = $("input[name=EGTO_1]:eq("+i+")").val();
+      var Mod = $("input[name=EModed_1]:eq("+i+")").val();
       var $Rent = $("input[name=ERent_1]:eq("+i+")");
       //(D1+D2+D3*12/365+D4)*面积*天数
       if (TBRD == ''){
@@ -301,6 +308,9 @@
       }
       if (GTO == ''){
         GTO = 0;
+      }
+      if (Mod == '') {
+        Mod = '0';
       }
       //天数
       var day = 0,month = 0;
@@ -319,13 +329,15 @@
       }
       var a = parseFloat(TBRD) + parseFloat(PMFD) + parseFloat(Apfixed) * 12 / 365 + parseFloat(GTO)
       var Rent = (a * parseFloat(sArea) * day).toFixed(2);
-      $Rent.val(Rent);
+      if (Mod == '0') {
+        $Rent.val(Rent);
+      }
     });
   }
   function CallBackUnit(fNo,fArea){
      Add_Fee('E',fNo,fArea)
   }
-  function Add_Fee(aType,fNo,fArea,Gid,bDate,eDate,TBRD,PMFD,Apfixed,GTO,Rent,Memo)
+  function Add_Fee(aType,fNo,fArea,Gid,bDate,eDate,TBRD,PMFD,Apfixed,GTO,Rent,Memo,Moded)
   {
     var sTbId = 'tb_Fee'+aType;
     var sTrClass = 'listtd';
@@ -351,6 +363,9 @@
       Rent = '';
       Memo = '';
     }
+    if (Moded == null) {
+      Moded = '0';
+    }
 
     if (aType == 'E') {
       if (!JQgetSingle(aType+"fNo_1",fNo)){
@@ -375,13 +390,20 @@
 
     tdArr[k++] = '<td><INPUT TYPE="text" NAME="'+aType+'GTO_1" maxlength="16" class="JQFloat JQMust" value = "'+GTO+'" onblur="callDE()" JQBit="4"></td>';
 
-    tdArr[k++] = '<td><INPUT TYPE="text" NAME="'+aType+'Rent_1" JQRow="'+aType+'Rent_1" JQRowName="'+aType+'Fee" maxlength="16" class="JQFloat" value = "'+Rent+'" style="border:0px" readonly></td>';
+    tdArr[k++] = '<td>'
+      +'<INPUT TYPE="text" id="'+aType+'Rent_1'+iRow+'" NAME="'+aType+'Rent_1" JQRow="'+aType+'Rent_1" JQRowName="'+aType+'Fee" maxlength="16" class="JQFloat" value = "'+Rent+'" onchange="callMod(\''+aType+'\',\''+iRow+'\')">'
+      +'<INPUT TYPE="hidden" id="'+aType+'Moded_1'+iRow+'" NAME="'+aType+'Moded_1" value="'+ Moded +'" class="JQText">'
+    +'</td>';
 
     tdArr[k++] = '<td><textarea type="text" rows=2 NAME="'+aType+'Memo_1" class="JQText"  maxlength="1000">'+Memo+'</textarea></td>';
 
     tdArr[k++] ='<td align="center"><a href="javascript:void(0)" onclick="javascript:JQTr_Del();JqReCal(\''+aType+'\')">删除</a></td>';
     //新增一行
     JQTr_Add(sTbId,sTrClass,tdArr);
+  }
+
+  function callMod(aType,iRow){
+    $("input#"+aType+"Moded_1"+iRow).val('1')
   }
 
   /*
@@ -735,7 +757,7 @@
     <td class="ListTd"><input type="text" NAME="NumB" maxlength="64" Class="JQFloat" value="<HDPrint Value=#NumB# Replace=#DBField2Input#>" style="width:120px;border:0px" readonly JQRow="Num" JQRowName="NumSum"></td>
   </tr>
   <tr>
-    <td class="DtlBarTitle" title="合同内约定由我司支付的装修补贴或工程改造费用，如无，则填0"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">装修补贴：<font color =red>*</font></td>
+    <td class="DtlBarTitle" title="装修补贴剩余未摊销金额或未返还金额，如无，则填0"><img src="##GetWebRootPath(/Images/ask.jpeg)##" width="15" height="15">装修补贴：<font color =red>*</font></td>
     <td class="ListTd"><input type="text" NAME="NumC" maxlength="64" Class="JQFloat JQMust" value="<HDPrint Value=#NumC# Replace=#DBField2Input#>" style="width:120px;" JQRow="Num" JQRowName="NumSum"></td>
   </tr>
   <tr>
@@ -795,7 +817,7 @@
 <script language="javascript">
   function checkD(){
     var tTime = $("input[name=Terminationdate]").val()
-    var sTime = '<HDPrint Value=#CurYear# Replace=#DBField2Js#>.01.01';
+    var sTime = tTime.substring(0,4)+'.01.01';
     var flag = false
     $("input[name=DLine_1]").each(function (i){
       var bDate = $("input[name=DbDate_1]:eq("+i+")").val();
@@ -822,7 +844,7 @@
   }
   function checkE(){
     var tTime = $("input[name=Terminationdate]").val()
-    var eTime = '<HDPrint Value=#CurYear# Replace=#DBField2Js#>.12.31';
+    var eTime = tTime.substring(0,4)+'.12.31';
     var flag = false
     $("input[name=ELine_1]").each(function (i){
       var bDate = $("input[name=EbDate_1]:eq("+i+")").val();
@@ -863,14 +885,6 @@
 
     if ($("input[name=OldModelGid]").val() == ''){
       alert('Pls Choose ISF:请选择租赁意向表!');
-      return false;
-    }
-
-    if (checkD()) {
-      return false;
-    }
-
-    if (checkE()) {
       return false;
     }
 

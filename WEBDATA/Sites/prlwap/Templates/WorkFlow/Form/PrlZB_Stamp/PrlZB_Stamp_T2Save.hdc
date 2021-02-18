@@ -15,14 +15,18 @@ Remind1=¶Ô²»Æğ£¬ÄúÖ¸¶¨µÄÁ÷³ÌÉêÇëµ¥Ã»ÓĞÕÒµ½<script>alert('¶Ô²»Æğ£¬ÄúÖ¸¶¨µÄÁ÷³ÌÉêÇ
 SqlForCondition1=select wm.Code ModelCode, wm.Name ModelName,d.Name StepName from wf_Model wm,WF_Task_Define d where wm.EntGid = d.EntGid(+) and wm.EntGid = __ENTGID__ and wm.ModelGid = d.ModelGid(+) and wm.ModelGid = ##ModelGid## and lower(d.code(+)) = replace(lower(##Url##),'save')
 
 ;ÉóÅú±¸×¢
-SQLForCondition2=select ##CurUsrName##||':'||##AppAssign##||' - ÉêÇëÀàĞÍ£º' || ApplyType || '£»ÉêÇëÓ¡ÕÂÖÖÀà£º' || StampType || '£»¹«Ë¾Ãû³Æ£º' || ComName || decode(ApplyType,'ºÏÍ¬Ç©ÊğÓÃÓ¡','£»ºÏ×÷¹«Ë¾£º'||ContactName,'') AppFlowMemo from WF_^^ModelCode^^ where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## 
+SQLForCondition2=select ##CurUsrName##||':'||##AppAssign##||' - ÉêÇëÀàĞÍ£º' || ApplyType || '£»ÉêÇëÓ¡ÕÂÖÖÀà£º' || StampType || '£»¹«Ë¾Ãû³Æ£º' || ComName || decode(ApplyType,'·ÇºÏÍ¬ÀàÎÄ¼şÓÃÓ¡','','£»ºÏ×÷¹«Ë¾£º'||ContactName) AppFlowMemo,ApplyType,substr(FillDeptCode, 0, 4) PreDeptCode from WF_^^ModelCode^^ where EntGid = __ENTGID__ AND  FlowGid = ##FlowGid## 
 
 ;ÊÇ·ñ´æÔÚÏÂÒ»¼¶ÉóÅúÈË? 0 ½áÊø£¬µ½ÏÂÒ»²½
 SQLForCondition4=select count(*) NextApp from Wf_^^ModelCode^^_App a where a.EntGid = __ENTGID__ and a.FlowGid = ##FlowGid## and a.AppDate is null and a.AppOrder in (select min(t.AppOrder) from Wf_^^ModelCode^^_App t where t.EntGid = __ENTGID__ and t.FlowGid = ##FlowGid## and t.AppOrder > ##AppOrder## and t.appdate is null)
 
 ;È¡³öÏîÄ¿µÄ²ÆÎñ¾­Àí
-SQLForCondition5=select v.PostGid TccGid30 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype = 30 and rownum = 1
+SQLForCondition5=select v.PostGid TccGid30 from v_Post v where v.EntGid = __ENTGID__ and v.deptGid = ##FillDeptGid## and v.atype = 20 and rownum = 1
 
+;ÊÇ·ñ´æÔÚÏÂÒ»¼¶ÉóÅúÈË? 0 ½áÊø£¬µ½ÏÂÒ»²½
+SQLForCondition7=select count(*) NextTcc from v_wf_task a where a.EntGid = __ENTGID__ and a.FlowGid = ##FlowGid## and a.STAT = 1 and a.EXECGID <> __USRGID__ and a.ISMCF = 1 and lower(a.code) not in (lower(##ModelCode##||'_tcc'),lower(##ModelCode##||'_tc'))
+
+SQLForCondition8=select decode(##NextApp##||##NextTcc##,'00',decode(##AppType##,'98','ÖÕÖ¹','Ìá½»'),'ÖÕÖ¹') AppStat from dual
 [AddtionalSQL]
 ;²Ù×÷£¬Ã»ÓĞ·µ»ØµÄ½á¹û£¬ÊÇÔÚÊı¾İ¿âÖĞÖ´ĞĞ£¬ÓĞInsert, Update, DeleteÃüÁî¡£´ÓSQL1¡«SQL20¹²Ö§³Ö20Ìõ
 ;¸üĞÂ±¾Á÷³ÌÖĞÖ÷±íĞÅÏ¢
@@ -33,11 +37,12 @@ Sql2=delete from Wf_^^ModelCode^^_App where EntGid = __ENTGID__ and FlowGid = ##
 Sql3=delete from Wf_^^ModelCode^^_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppDate is null and ##AppAssign## = '·ñ¾ö'
 
 ;²åÈë±¾Á÷³ÌÖĞÉóÅúÈËÒ»ĞÅÏ¢
-SQL4=insert into Wf_^^ModelCode^^_App (EntGid,ModelGid,FlowGid,Gid,AppGid,AppCode,AppName,AppOrder,AppType,AppAssign,AppMemo,AppDate) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,##AppOrder##,##AppType##,##AppAssign##, ##AppMemo##,sysdate from dual
+SQL4=insert into Wf_^^ModelCode^^_App (EntGid,ModelGid,FlowGid,Gid,AppGid,AppCode,AppName,AppOrder,AppType,AppAssign,AppMemo,AppDate) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,##AppOrder##,##AppType##,##AppAssign##, decode(##AppType##,'98',decode(##AppCheck##,'ÎÒÈ·ÈÏ¸ÇÕÂÎÄ¼şÓë¸½¼şÒ»ÖÂ',##AppCheck##,##AppCheck##) || '-','') || ##AppMemo##,sysdate from dual
 
 SQL6=insert into Wf_^^ModelCode^^_App (EntGid,ModelGid,FlowGid,Gid,AppGid,AppCode,AppName,AppType,AppOrder) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),##LastGid##,##LastCode##,##LastName##,##LastType##,##LastOrder## from dual where ##AppAssign## = '·µ»ØºËÊµ'
 
 SQL7=insert into Wf_^^ModelCode^^_App (EntGid,ModelGid,FlowGid,Gid,AppGid,AppCode,AppName,AppType,AppOrder) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,##AppType##,##AppOrder## from dual where ##AppAssign## = '·µ»ØºËÊµ'
+SQL8=call P_^^ModelCode^^_doApp2(__ENTGID__,##ModelGid##,##FlowGid##,##AppStat##,##AppFlowMemo##)
 
 [AddtionalSQLUseWhere]
 ;ÏÔÊ¾£¬µ¥ÌõÊı¾İµÄ²éÑ¯£¬¿ÉÒÔÓÃÓÚHDTÏÔÊ¾£¬ÓĞselectÃüÁî¡£´ÓSQL1¡«SQL20¹²Ö§³Ö20Ìõ£¬Í¬Ê±»áÊ¹ÓÃÉÏÃæµÄ[where]ÖĞµÄsqlÓï¾ä
@@ -91,24 +96,24 @@ Log=
 ;Ò³ÃæÏÔÊ¾: 0:BodyPage;1:DetailPage;2:BlankPage
 PageKind=0
 
-;Í¬Òâ£¬Á÷×ªµ½ÏÂÒ»²½
-WF1=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_T2 | NextGid | and ##AppAssign## = 'Í¬Òâ' and ##NextApp## <> '0'| ^^AppFlowMemo^^)
-
-;·µ»ØºËÊµ£¬·µ»ØÉÏÒ»²½
-WF2=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_T2 | LastGid | and ##AppAssign## = '·µ»ØºËÊµ'| ^^AppFlowMemo^^)
-
-;·ñ¾ö£¬·µ»Ø·¢ÆğÈË
-WF3=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T1 | T1Gid | and ##AppAssign## = '·ñ¾ö' | ^^AppFlowMemo^^)
-
-;²¿ÃÅ¾­ÀíÍ¬Òâ£¬³­ËÍ²ÆÎñ¾­Àí
-WF4=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_Tc1 | TccGid30 | and ##AppAssign## = 'Í¬Òâ' and ##AppType## = '20' | ^^AppFlowMemo^^)
-
-;ÇøÓò×Ü¾­ÀíÍ¬Òâ£¬³­ËÍ²ÆÎñ×Ü¼à
-WF5=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_Tc2 | null | and ##AppAssign## = 'Í¬Òâ' and ##AppType## = '35' | ^^AppFlowMemo^^)
-
-;ÇøÓò×Ü¾­ÀíÍ¬Òâ£¬³­ËÍ¶­ÊÂ»áÃØÊé
-WF6=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_Tc3 | null | and ##AppAssign## = 'Í¬Òâ' and ##AppType## = '35' | ^^AppFlowMemo^^)
-
 
 ;·¢ÆğÈËÈ·ÈÏ
-WF8=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T3 | null | and ##AppAssign## = 'Í¬Òâ' and ##NextApp## = '0' | ^^AppFlowMemo^^)
+WF1=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T3 | null | and ##AppAssign## = 'Í¬Òâ' and ##NextApp## = '0' and ##NextTcc## = '0' and ##AppType## = '98' | ^^AppFlowMemo^^)
+
+;Í¬Òâ£¬Á÷×ªµ½ÏÂÒ»²½
+WF2=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_T2 | NextGid | and ##AppAssign## = 'Í¬Òâ' and ##NextApp## <> '0'| ^^AppFlowMemo^^)
+
+;·µ»ØºËÊµ£¬·µ»ØÉÏÒ»²½
+WF3=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_T2 | LastGid | and ##AppAssign## = '·µ»ØºËÊµ'| ^^AppFlowMemo^^)
+
+;²¿ÃÅ¾­ÀíÍ¬Òâ£¬³­ËÍ²ÆÎñ¾­Àí
+;WF4=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_Tc1 | TccGid30 | and ##AppAssign## = 'Í¬Òâ' and ##AppType## = '20' | ^^AppFlowMemo^^)
+
+;ÇøÓò×Ü¾­ÀíÍ¬Òâ£¬³­ËÍ²ÆÎñ×Ü¼à
+WF5=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_Tc2 | null | and ##AppAssign## = 'Í¬Òâ' and ##AppType## = '35' and (##ApplyType## <> '±ê×¼ÀàºÏÍ¬ÓÃÓ¡' or ##PreDeptCode## in ('0001','0023')) | ^^AppFlowMemo^^)
+
+;ÇøÓò×Ü¾­ÀíÍ¬Òâ£¬³­ËÍ¶­ÊÂ»áÃØÊé
+WF6=WFFlowRun( ^^ModelCode^^_T1 | ^^ModelCode^^_Tc3 | null | and ##AppAssign## = 'Í¬Òâ' and ##AppType## = '35' and (##ApplyType## <> '±ê×¼ÀàºÏÍ¬ÓÃÓ¡' or ##PreDeptCode## in ('0001','0023')) | ^^AppFlowMemo^^)
+
+;·ñ¾ö£¬·µ»Ø·¢ÆğÈË
+WF7=WFFlowRun( ^^CurUrl^^ | ^^ModelCode^^_T1 | T1Gid | and ##AppAssign## = '·ñ¾ö' | ^^AppFlowMemo^^)

@@ -1,0 +1,158 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<style type="text/css">
+.PrintTdRT {
+  border-right:1 solid black;
+  border-top:1 solid black;
+}
+</style>
+<script language="javascript">
+  /*
+  *函数功能：明细新增一行
+  *参数说明：使用JQTr_Add() 函数新增行时，需写在 tbody 标记中
+  */
+  function CallAcg(Gid,Name,AddArea,Memo)
+  {
+    var sTbId = 'tb_Dtl'+g_Type;
+    var sTrClass = 'listtd';
+    var tdArr = new Array();
+    var iRow = Math.floor(Math.random() * (1 + 00 - 1) + 1);
+    var i = $("table#"+sTbId+">tbody>tr").length + 1;
+    var k = 0;
+    if (Gid == null){
+      Gid = '';
+      Name = '';
+    }
+    if (AddArea == null){
+      AddArea = '';
+    }
+    if (Memo == null){
+      Memo = '';
+    }
+
+    tdArr[k++] = '<td class="PrintTdRT" align="center">'+ i +'</td>';
+    tdArr[k++] = '<td class="PrintTdRT">'+Name+'</td>';
+    tdArr[k++] = '<td class="PrintTdRT" align="center">'+AddArea+'</td>';
+    tdArr[k++] = '<td class="PrintTdRT">'+Memo+'</td>';
+
+    //新增一行
+    JQTr_Add(sTbId,sTrClass,tdArr);
+  }
+</script>
+<table style="width:645;margin-top:10px;" align="center" border="0" cellpadding="0" cellspacing="0">
+  <col style="width:30%">
+  <col style="width:40%">
+  <col style="width:30%">
+  <tr>
+    <td class="Title" align="center" colspan="3"><HDPrint Value=#ModelName#></td>
+  </tr>
+  <tr>
+    <td align="center" colspan="3">（OA流程已审批完）</td>
+  </tr>
+  <tr>
+    <td align="center"><B>单号</B>：<HDPrint Value=#Num#></td>
+    <td align="center"><B>申请人</B>：<HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]</td>
+    <td align="center"><B>申请时间</B>：<HDPrint Value=#CreateDate#></td>
+  </tr>
+</table>
+
+<table width="645" cellspacing="0" cellpadding="0" align="center" style="border-left:1 solid black;">
+  <col style="padding-left:4px;width:10%" valign="top">
+  <col style="padding-left:4px;width:90%" valign="top">
+  <tr valign="top">
+    <td class="PrintTdRT">项目:</td>
+    <td class="PrintTdRT"><HDPrint Value=#ProjectName#></td>
+  </tr>
+  <tr valign="top">
+    <td class="PrintTdRT">申报日期:</td>
+    <td class="PrintTdRT"><HDPrint Value=#AddDate#></td>
+  </tr>
+  <tr valign="top">
+    <td class="PrintTdRT">备注:</td>
+    <td class="PrintTdRT" colspan="5"><HDPrint Value=#AddMemo#></td>
+  </tr>
+</table>
+<table width="645" cellspacing="0" cellpadding="0" align="center" ID="tb_Dtl1" style="border-left:1 solid black;">
+<colgroup>
+     <col style="width:5%">
+     <col style="width:20%">
+     <col style="width:10%">
+     <col style="width:60%">
+  </colgroup>
+  <thead>
+  <tr>
+    <td class="PrintTdRT" colspan="4">地上信息</td>
+  </tr>
+  <tr>
+    <td class="PrintTdRT" align="center">行号</td>
+    <td class="PrintTdRT" align="center">项目</td>
+    <td class="PrintTdRT" align="center">申报面积</td>
+    <td class="PrintTdRT" align="center">备注</td>
+  </tr>
+  </thead>
+  <tbody>
+  </tbody>
+  <tfoot>
+  <tr>
+    <td class="PrintTdRT" align="right" colspan="2">汇总[㎡]：</td>
+    <td class="PrintTdRT" align="center"><HDPrint Value=#AddArea1#></td>
+    <td class="PrintTdRT" align="center">&nbsp;</td>
+  </tr>
+  </tfoot>
+</table>
+
+<table width="645" cellspacing="0" cellpadding="0" align="center" ID="tb_Dtl2" style="border-left:1 solid black;">
+<colgroup>
+     <col style="width:5%">
+     <col style="width:20%">
+     <col style="width:10%">
+     <col style="width:60%">
+  </colgroup>
+  <thead>
+  <tr>
+    <td class="PrintTdRT" colspan="4">地下信息</td>
+  </tr>
+  <tr>
+    <td class="PrintTdRT" align="center">行号</td>
+    <td class="PrintTdRT" align="center">项目</td>
+    <td class="PrintTdRT" align="center">申报面积</td>
+    <td class="PrintTdRT" align="center">备注</td>
+  </tr>
+  </thead>
+  <tbody>
+  </tbody>
+  <tfoot>
+  <tr>
+    <td class="PrintTdRT" align="right" colspan="2">汇总[㎡]：</td>
+    <td class="PrintTdRT" align="center"><HDPrint Value=#AddArea2#></td>
+    <td class="PrintTdRT" align="center">&nbsp;</td>
+  </tr>
+  </tfoot>
+</table>
+  <HDPrint Value=#DtlList# Replace=#None#>
+<table width="645" cellspacing="0" cellpadding="0" align="center" ID="tb_Dtl" style="border-bottom:1 solid black;border-left:1 solid black;">
+  <col style="width:20%" valign="top">
+  <col style="width:15%" valign="top">
+  <col style="width:15%" valign="top">
+  <col style="width:20%" valign="top">
+  <col style="width:30%" valign="top">
+  <tr align="center">
+    <td class="PrintTdRT">执行人类别</td>
+    <td class="PrintTdRT">执行人</td>
+    <td class="PrintTdRT">审批概要</td>
+    <td class="PrintTdRT">时间</td>
+    <td class="PrintTdRT">审批备注</td>
+  </tr>
+  <HDPrint Value=#AppList# Replace=#None#>
+</table>
+<HDLoop>
+<table width="645" cellspacing="0" cellpadding="0" align="center" style="margin-top:5px">
+  <tr>
+    <td>打印次数：<HDPrint Value=#PrintTime#>次</td>
+  </tr>
+</table>
+</HDLoop>
+<script language="javascript">
+  window.print();
+</script>

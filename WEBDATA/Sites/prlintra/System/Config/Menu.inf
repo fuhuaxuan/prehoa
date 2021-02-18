@@ -9,6 +9,7 @@
 ^2^出纳批量付款^wftodotasklist^##HDNet_AppName##/WFFlowPage?UsrGid={##usrgid##}&Url=PrlDZ_Baoxiao_Pay&ModelCode=PrlDZ_Baoxiao^MainPage^
 
 ^2^所有任务^wfalltasklist^##HDNet_AppName##/__ExplainModule?Url=wfalltaskList&usrgid={##usrgid##}^MainPage^
+^2^用印查询^prl_stamp_list^##HDNet_AppName##/__ExplainModule?Url=prl_stamp_list&usrgid={##usrgid##}^MainPage^
 ^2^模型个人管理^wfpmodellist^##HDNet_AppName##/__ExplainModule?Url=wfpmodellist&usrgid={##usrgid##}^MainPage^^select 1 from wf_model a, WF_RT c, v_Org_Usr d where a.entgid='{##entgid##}' and c.entgid='{##entgid##}' and d.entgid='{##entgid##}' and c.UsrGidEx = d.OrgGid and d.UsrGid = '{##usrgid##}' and substr(c.RTID, 4, 1) = '1' and c.ModelGid = a.ModelGid^
 ^2^------------------^wfflowlist^#^_self^
 ^2^流程列表^wfflowlist^##HDNet_AppName##/__ExplainModule?Url=wfflowlist&usrgid={##usrgid##}^MainPage^
@@ -43,6 +44,12 @@
 ^2^个人费用明细表^Prl_GRFeeDtl^##HDNet_AppName##/__ExplainModule?Url=Prl_GRFeeDtl&usrgid={##usrgid##}^MainPage^
 ^2^------------------^line^#^_self^
 ^2^楼层出租面积动态统计^Prl_OGroundList^##HDNet_AppName##/__ExplainModule?Url=Prl_OGroundList&usrgid={##usrgid##}^MainPage^
+^2^------------------^line^#^_self^
+^2^项目报规设置^PrlDZ_AreaSet^##HDNet_AppName##/__ExplainModule?Url=PrlDZ_AreaSet&usrgid={##usrgid##}^MainPage^
+^2^项目报规查询^PrlDZ_AreaList^##HDNet_AppName##/__ExplainModule?Url=PrlDZ_AreaList&usrgid={##usrgid##}^MainPage^
+^2^费用供应商黑名单^Prl_FeeBlack^##HDNet_AppName##/__ExplainModule?Url=Prl_FeeBlack&usrgid={##usrgid##}^MainPage^
+^2^电子发票下载^Prl_InvoiceList^##HDNet_AppName##/__ExplainModule?Url=Prl_InvoiceList&usrgid={##usrgid##}^MainPage^
+
 
 ^1^总部流程管理^^^_Self^Prl_ZB
 ^2^公司设置^PrlZb_Company^##HDNet_AppName##/__ExplainModule?Url=PrlZb_Company&usrgid={##usrgid##}^MainPage^

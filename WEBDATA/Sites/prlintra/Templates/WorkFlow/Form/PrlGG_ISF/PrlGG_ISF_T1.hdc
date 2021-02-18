@@ -31,10 +31,10 @@ Sql4=select ModelGid,FlowGid,Num,CreateDate,Stat,FillUsrGid,FillUsrCode,FillUsrN
 SQL5=select count(*) IsShow from wf_PrlGG_ISF_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid##
 
 ;取出oldFlowGid流程主表信息
-Sql6=select f.ModelGid ISFModelGid,m.code ISFModelCode,f.FlowGid ISFFlowGid,f.Num ISFNum,f.Atype,f.Lessee,f.Tradingname,f.Contactor,f.Address,f.Phone,f.Email,f.Fax,f.LeaseTermY,f.LeaseTermM,f.LeaseTermD,f.HandoverDate,f.FreeRentM,f.FreeRentD,f.ContractDate1,f.Contractdate2,f.Rate,f.AGR,f.Security,f.Incash,f.BRCNew,f.BRCExist,f.BRCBudget,f.TotalFee,f.Memo,OldFlowGid OFlowGid from WF_PRLGG_ISF f,wf_model m where f.EntGid = __ENTGID__ and  f.FlowGid = ##FlowGid## and f.EntGid = m.EntGid and f.ModelGid = m.ModelGid and ##OldFlowGid## is null
+Sql6=select f.ModelGid ISFModelGid,m.code ISFModelCode,f.FlowGid ISFFlowGid,f.Num ISFNum,f.Atype,f.Lessee,f.Tradingname,f.Contactor,f.Address,f.Phone,f.Email,f.Fax,f.LeaseTermY,f.LeaseTermM,f.LeaseTermD,f.HandoverDate,f.FreeRentM,f.FreeRentD,f.ContractDate1,f.Contractdate2,f.Rate,f.AGR,f.Security,f.Incash,f.BRCNew,f.BRCExist,f.BRCBudget,f.TotalFee,f.Memo,OldFlowGid OFlowGid,Atype2,Atype3,Collection,PowerType,PowerFee1,PowerFee2,WaterType,WaterFee1,WaterFee2,FitoutM,fitoutD,FitoutDate1,FitoutDate2 from WF_PRLGG_ISF f,wf_model m where f.EntGid = __ENTGID__ and  f.FlowGid = ##FlowGid## and f.EntGid = m.EntGid and f.ModelGid = m.ModelGid and ##OldFlowGid## is null
 
 ;取出oldFlowGid流程主表信息
-Sql7=select f.ModelGid ISFModelGid,m.code ISFModelCode,f.FlowGid ISFFlowGid,f.Num ISFNum,f.Atype,f.Lessee,f.Tradingname,f.Contactor,f.Address,f.Phone,f.Email,f.Fax,f.LeaseTermY,f.LeaseTermM,f.LeaseTermD,f.HandoverDate,f.FreeRentM,f.FreeRentD,f.ContractDate1,f.Contractdate2,f.Rate,f.AGR,f.Security,f.Incash,f.BRCNew,f.BRCExist,f.BRCNew BRCBudget,f.TotalFee,f.Memo,##OldFlowGid## OFlowGid from WF_PRLGG_ISF f,wf_model m where f.EntGid = __ENTGID__ and  f.FlowGid = ##OldFlowGid## and f.EntGid = m.EntGid and f.ModelGid = m.ModelGid
+Sql7=select f.ModelGid ISFModelGid,m.code ISFModelCode,f.FlowGid ISFFlowGid,f.Num ISFNum,f.Atype,f.Lessee,f.Tradingname,f.Contactor,f.Address,f.Phone,f.Email,f.Fax,f.LeaseTermY,f.LeaseTermM,f.LeaseTermD,f.HandoverDate,f.FreeRentM,f.FreeRentD,f.ContractDate1,f.Contractdate2,f.Rate,f.AGR,f.Security,f.Incash,f.BRCNew,f.BRCExist,f.BRCNew BRCBudget,f.TotalFee,f.Memo,##OldFlowGid## OFlowGid,Atype2,Atype3,Collection,PowerType,PowerFee1,PowerFee2,WaterType,WaterFee1,WaterFee2,FitoutM,fitoutD,FitoutDate1,FitoutDate2 from WF_PRLGG_ISF f,wf_model m where f.EntGid = __ENTGID__ and  f.FlowGid = ##OldFlowGid## and f.EntGid = m.EntGid and f.ModelGid = m.ModelGid
 
 ;显示本流程附件信息
 LoopSQL1=select Attach_Title ItemGid,Attach_Title ItemName from wf_PrlGG_ISF_Attach where EntGid = __ENTGID__ and  FlowGid = ##FlowGid## order by Attach_Title
@@ -42,7 +42,7 @@ LoopHDT1=Templates\WorkFlow\Form\PrlGG_ISF\LoopSql_Option.hdt
 LoopVAR1=AttachList
 
 ;显示本流程审批人信息
-LoopSQL2=select a.*,decode(a.apptype,0,'发起人',10,'部门经理',30,'财务经理',40,'商场总经理',50,'资产经理',60,'部门总监',70,'副财务总监',80,'财务总监',90,'区域总经理') apptypetext  from wf_PrlGG_ISF_App a where FlowGid = ##FlowGid## order by AppDate,AppType
+LoopSQL2=select a.*,decode(a.apptype,0,'发起人',10,'部门经理',30,'财务经理',35,'总经理/项目总监',40,'项目总经理',50,'资产经理',60,'区域部门总监',70,'副财务总监',80,'财务总监',90,'区域总经理') apptypetext  from wf_PrlGG_ISF_App a where FlowGid = ##FlowGid## order by AppDate,AppType
 LoopHDT2=Templates\WorkFlow\Form\PrlGG_ISF\Loopsql_AppList.hdt
 LoopVAR2=AppList
 

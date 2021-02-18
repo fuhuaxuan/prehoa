@@ -1,0 +1,205 @@
+<!--版本号：2014年3月份（此行不允许删除）-->
+<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+<script language="javascript">
+  //窗口改变，重计算iframe的高度
+  $(window).resize(function (){
+    JQChgHeight();
+  });
+
+  function AddUnit(aType,Line,Gid,fNo,floorNo,fArea,jArea,fmr){
+    var sTbId = 'tb_Dtl'+aType;
+    var sTrClass = 'listtd';
+    var tdArr = new Array();
+    var iRow = Math.floor(Math.random() * 100000 + 1);
+    var i = $("table#"+sTbId+">tbody>tr").length + 1;
+    var k = 0;
+    if (Gid == null){
+      Gid = '';
+      fNo = '';
+      floorNo = '';
+      fArea = '';
+      jArea = '';
+      fmr = '';
+    }
+
+    tdArr[k++] = '<td align="center">'+ Line +'</td>';
+    tdArr[k++] = '<td align="center">'+fNo+'</td>';
+    tdArr[k++] = '<td align="center">'+floorNo+'</td>';
+    tdArr[k++] = '<td align="center">'+fArea+'</td>';
+    tdArr[k++] = '<td align="center">'+jArea+'</td>';
+    tdArr[k++] = '<td align="center">'+fmr+'</td>';
+    //新增一行
+    JQTr_Add(sTbId,sTrClass,tdArr);
+  }
+</script>
+
+<HDPrint Value=#EmailPhone# Replace=#None#>
+<form name="frmDtl" method="Post" action="">
+<table cellpadding="0" cellspacing="1" align="center" width="100%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:20%">
+  <col style="padding-left:4px;width:40%">
+  <col style="padding-left:4px;width:30%">
+  <TR>
+    <TD class="newtd2">单号:</TD>
+    <TD class="newtd3"><HDPrint Value=#Num#></td>
+    <td class="title" rowspan="3" align="center"><HDPrint Value=#ModelName#></td>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2">发起人:</TD>
+    <TD class="newtd3"><HDPrint Value=#FillUsrName#>[<HDPrint Value=#FillDeptName#>]</td>
+    <TD>流程状态:<HDPrint Value=#Flowstat# Replace=#None#></TD>
+  </TR>
+  <TR>
+    <TD class="newtd2">发起日期:</TD>
+    <TD class="newtd3"><HDPrint Value=#CreateDate#></td>
+    <TD>单据状态:<font color="blue"><HDPrint Value=#stat#></font></TD>
+  </TR>
+</table>
+<!--显示审批人信息-->
+<HDIF EqualNot(<HDPrint Value=#IsShow# Replace=#None#>, 0)>
+<HDPrint Value=#AppList# Replace=#None#>
+</HDIF>
+<h3 class="SubTitleBar" >
+<TABLE cellspacing="1" cellpadding="0" width="100%">
+  <col style="padding-left:4px;">
+  <col style="width:20px;" align="center">
+  <TR>
+    <TD align="left" style="padding-left:10px;"><b>单据信息</b></TD>
+    <TD onclick="JQExpand('tb_Order');" style="cursor:hand" class="IconUp">　&nbsp;</TD>
+  </TR>
+</TABLE>
+</h3>
+<table cellpadding="0" cellspacing="1" class="ListBar" width="100%" id="tb_Order">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:40%">
+  <col style="padding-left:4px;width:10%">
+  <col style="padding-left:4px;width:40%">
+  <tr valign="top">
+    <td class="DtlBarTitle">申请类型:</td>
+    <td class="listtd"><HDPrint Value=#ApplyType#>
+      <script language="javascript">
+        var applyType = '<HDPrint Value=#ApplyType# Replace=#DBField2Js#>'
+        if (applyType == '') {
+          applyType = '新增'
+        }
+        //函数：ready
+        //功能：document 加载完成后调用
+        $(document).ready(function(){
+          if(applyType == '新增'){
+              $("[JQ=pre]").hide();
+            }else{
+              $("[JQ=pre]").show();
+            }
+        });
+      </script>
+    </td>
+    <td class="DtlBarTitle">分类:</td>
+    <td class="listtd"><HDPrint Value=#SosType#></td>
+  </tr>
+  <tr valign="top" JQ="pre" style="display:none">
+    <td class="DtlBarTitle">调整前:</td>
+    <td class="listtd" colspan="3">
+      <table width="100%" class="ListBar" cellpadding="0"  cellspacing="1" id="tb_Dtl10">
+        <colgroup>
+           <col style="width:5%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:10%">
+           <col style="width:10%">
+           <col style="width:10%">
+           <col style="width:5%">
+        </colgroup>
+        <thead>
+        <tr class="DtlBarTitle" align="center">
+          <td >序号</td>
+          <td>单位</td>
+          <td>楼层</td>
+          <td>最小面积</td>
+          <td>最大面积</td>
+          <td>预算单价</td>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        <tfoot>
+        <tr class="ListTdFocus">
+          <td align="right" colspan="3">合计：</td>
+          <td align="center" JQ="fAreaSum1"><HDPrint Value=#fAreaSum1#></td>
+          <td align="center" JQ="jAreaSum1"><HDPrint Value=#jAreaSum1#></td>
+          <td align="center"></td>
+        </tr>
+        </tfoot>
+      </table>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">调整后:</td>
+    <td class="listtd" colspan="3">
+      <table width="100%" class="ListBar JQMust" cellpadding="0"  cellspacing="1" id="tb_Dtl20">
+        <colgroup>
+           <col style="width:5%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:15%">
+           <col style="width:10%">
+           <col style="width:10%">
+           <col style="width:10%">
+           <col style="width:5%">
+        </colgroup>
+        <thead>
+        <tr class="DtlBarTitle" align="center">
+          <td >序号</td>
+          <td>单位</td>
+          <td>楼层</td>
+          <td>最小面积</td>
+          <td>最大面积</td>
+          <td>预算单价</td>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        <tfoot>
+        <tr class="ListTdFocus">
+          <td align="right" colspan="3">合计：</td>
+          <td align="center" JQ="fAreaSum2"><HDPrint Value=#fAreaSum2#></td>
+          <td align="center" JQ="jAreaSum2"><HDPrint Value=#jAreaSum2#></td>
+          <td align="center"></td>
+        </tr>
+        </tfoot>
+      </table>
+      <script language="javascript">
+        if ('<HDPrint Value=#fAreaSum1# Replace=#DBField2Js#>' != '<HDPrint Value=#fAreaSum2# Replace=#DBField2Js#>') {
+          $("[JQ=fAreaSum2]").css("color","red")
+        }
+        if ('<HDPrint Value=#jAreaSum1# Replace=#DBField2Js#>' != '<HDPrint Value=#jAreaSum2# Replace=#DBField2Js#>') {
+          $("[JQ=jAreaSum2]").css("color","red")
+        }
+        if ('<HDPrint Value=#fmrMSum1# Replace=#DBField2Js#>' != '<HDPrint Value=#fmrMSum2# Replace=#DBField2Js#>') {
+          $("[JQ=fmrMSum2]").css("color","red")
+        }
+      </script>
+    </td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">备注:</td>
+    <td class="listtd" colspan="3"><HDPrint Value=#Memo#></td>
+  </tr>
+  <tr valign="top">
+    <td class="DtlBarTitle">附件信息:</td>
+    <td class="listtd" colspan="3"><HDPrint Value=#AttachList# Replace=#None#></td>
+  </tr>
+  <HDIF EqualNot(<HDPrint Value=#EndMemo# Replace=#None#>, )>
+  <tr valign="top">
+    <td class="DtlBarTitle">终止原因:</td>
+    <td class="listtd" colspan="3"><HDPrint Value=#EndMemo#></td>
+  </tr>
+  </HDIF>
+</table>
+<HDPrint Value=#DtlList# Replace=#None#>
+</form>

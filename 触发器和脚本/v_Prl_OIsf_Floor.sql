@@ -6,7 +6,7 @@ select t.fno,
        v.ISFNum,
        v.ISFFlowType,
        v.ISFlessee
-  from wf_prl_oisf_ground g, prl_groundh t, v_Prl_OISF v
+  from wf_prl_oisf_ground g, prl_groundh t, v_Prl_OISF_Done v
  where g.entgid = v.entgid
    and g.flowgid = v.ISFFlowGid
    and lower(g.fno) = lower(t.fno)

@@ -439,7 +439,7 @@
     <td class="ListTd"><input type="text" NAME="NumG" maxlength="64" Class="JQFloat JQMust" value="<HDPrint Value=#NumG# Replace=#DBField2Input#>" onblur="calTotal()"></td>
   </tr>
   <tr>
-    <td class="DtlBarTitle">合计：</td>
+    <td class="DtlBarTitle">未完成租约合计：</td>
     <td class="ListTd" colspan="5"><input type="text" NAME="NumSum" maxlength="64" Class="JQFloat JQMust" value="<HDPrint Value=#NumSum# Replace=#DBField2Input#>" style="width:120px;border:0px" readonly></td>
   </tr>
   <tr valign="top">
@@ -473,8 +473,8 @@
 
   if ('<HDPrint Value=#IsNew# Replace=#DBField2Js#>' == '0'){
     //T1时，加载FlowGid的数据
-    $("input[name=FlowGid]").val('<HDPrint Value=#NewGid# Replace=#DBField2Js#>');
-    $("input[name=FlowGid_1]").val('<HDPrint Value=#NewGid# Replace=#DBField2Js#>');
+    $("input[name=FlowGid]").val('<HDPrint Value=#Num# Replace=#DBField2Js#>');
+    $("input[name=FlowGid_1]").val('<HDPrint Value=#Num# Replace=#DBField2Js#>');
     $("input[name=WFCreate]").val('WF');
   }
   else{

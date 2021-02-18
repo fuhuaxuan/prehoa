@@ -22,7 +22,7 @@ ImportSeparator=#9
 SQL1=delete from  PrlGG_Groundh_Temp t where t.ENTGID = __ENTGID__ and t.ImportGid = __USRGID__
 
 ;SQL1~SQL10，导入前执行，执行的Sql语句与导入文件内容无关
-LOOPSQL1=insert into PrlGG_Groundh_Temp t (EntGid,Gid,Line,fGid,deptsource,fno,floorno,fmr,ImportGid) select distinct __ENTGID__,sys_guid(),(select count(*) from PrlGG_Groundh_Temp where ENTGID = __ENTGID__ and ImportGid = __USRGID__) + 1,(select nvl(max(fGid),1) from PrlGG_Groundh),substr(trim(@@Param1@@), 0, 32),substr(trim(@@Param2@@), 0, 32),substr(trim(@@Param3@@), 0, 20),substr(trim(@@Param4@@), 0, 20),__USRGID__ from dual
+LOOPSQL1=insert into PrlGG_Groundh_Temp t (EntGid,Gid,Line,fGid,deptsource,fno,floorno,fmr,FAREA,JAREA,ImportGid) select distinct __ENTGID__,sys_guid(),(select count(*) from PrlGG_Groundh_Temp where ENTGID = __ENTGID__ and ImportGid = __USRGID__) + 1,(select nvl(max(fGid),1) from PrlGG_Groundh),substr(trim(@@Param1@@), 0, 32),substr(trim(@@Param2@@), 0, 32),substr(trim(@@Param3@@), 0, 20),substr(trim(@@Param4@@), 0, 20),substr(trim(@@Param5@@), 0, 20),substr(trim(@@Param6@@), 0, 20),__USRGID__ from dual
 
 [Detail]
 ;显示，单条数据的查询，可以用于HDT显示，有select命令。从SQL1～SQL20共支持20条
@@ -33,15 +33,15 @@ SqlForCondition1=select Name ModeleName,Atype ModeleAtype from rt where lower(id
 ^^SQL^^1=select count(*) cTotal from PrlGG_Groundh_Temp where ENTGID = __ENTGID__ and ImportGid = __USRGID__
 
 ;计算成功数量
-^^SQL^^2=select count(*) cYes from PrlGG_Groundh_Temp t,dept d where t.EntGid = __ENTGID__ and t.ImportGid = __USRGID__ and t.EntGid = d.EntGid and lower(t.deptsource) = lower(d.code2)  and length(d.code1) = 8 and t.fno is not null and t.fmr is not null and t.floorno is not null
+^^SQL^^2=select count(*) cYes from PrlGG_Groundh_Temp t,dept d where t.EntGid = __ENTGID__ and t.ImportGid = __USRGID__ and t.EntGid = d.EntGid and lower(t.deptsource) = lower(d.code2)  and length(d.code1) = 8 and t.fno is not null and t.fmr is not null and t.farea is not null and t.jarea is not null and t.floorno is not null
 
 [^^AddtionalSQL^^]
 ;操作，没有返回的结果，是在数据库中执行，有Insert, Update, Delete命令。从SQL1～SQL20共支持20条
 ;更新数据
-SQL1=insert into PrlGG_Groundh s (fgid,fno,fmr,floorno,deptsource,fstat,OpType,OpDate,OpGid,OpCode,OpName) select t.fGid+t.Line,t.fno,t.fmr,t.floorno,t.deptsource,'未租','导入',sysdate,__USRGID__,__USRCODE__,__USRNAME__ from PrlGG_Groundh_Temp t,dept d where t.EntGid = __ENTGID__ and t.ImportGid = __USRGID__ and t.EntGid = d.EntGid and lower(t.deptsource) = lower(d.code2)  and length(d.code1) = 8 and t.fno is not null and t.fmr is not null and t.floorno is not null
+SQL1=insert into PrlGG_Groundh s (fgid,fno,fmr,FAREA,JAREA,floorno,deptsource,fstat,OpType,OpDate,OpGid,OpCode,OpName) select t.fGid+t.Line,t.fno,t.fmr,t.FAREA,t.JAREA,t.floorno,t.deptsource,'未租','导入',sysdate,__USRGID__,__USRCODE__,__USRNAME__ from PrlGG_Groundh_Temp t,dept d where t.EntGid = __ENTGID__ and t.ImportGid = __USRGID__ and t.EntGid = d.EntGid and lower(t.deptsource) = lower(d.code2)  and length(d.code1) = 8 and t.fno is not null and t.fmr is not null and t.farea is not null and t.jarea is not null and t.floorno is not null
 
 ;插入操作记录表
-SQL2=insert into PrlGG_Groundh_Rcd (EntGid,Gid,fGid,fNo,OpType,OpDate,OpGid,OpCode,OpName,OpMemo) select __ENTGID__,sys_guid(),t.fGid+t.Line,t.fNo,'新增',sysdate,__USRGID__,__USRCODE__,__USRNAME__,'编号：'||t.fno||';预算：'||t.fmr||';位置：'||t.floorno||';项目：'||t.deptsource from PrlGG_Groundh_Temp t,dept d where t.EntGid = __ENTGID__ and t.ImportGid = __USRGID__ and t.EntGid = d.EntGid and lower(t.deptsource) = lower(d.code2)  and length(d.code1) = 8 and t.fno is not null and t.fmr is not null and t.floorno is not null
+SQL2=insert into PrlGG_Groundh_Rcd (EntGid,Gid,fGid,fNo,OpType,OpDate,OpGid,OpCode,OpName,OpMemo) select __ENTGID__,sys_guid(),t.fGid+t.Line,t.fNo,'新增',sysdate,__USRGID__,__USRCODE__,__USRNAME__,'编号：'||t.fno||';预算：'||t.fmr||';最小面积：'||t.FAREA||';最大面积：'||t.JAREA||';位置：'||t.floorno||';项目：'||t.deptsource from PrlGG_Groundh_Temp t,dept d where t.EntGid = __ENTGID__ and t.ImportGid = __USRGID__ and t.EntGid = d.EntGid and lower(t.deptsource) = lower(d.code2)  and length(d.code1) = 8 and t.fno is not null and t.fmr is not null and t.farea is not null and t.jarea is not null and t.floorno is not null
 
 ;删除临时表
 SQL3=delete from PrlGG_Groundh_Temp t where t.ENTGID = __ENTGID__ and t.ImportGid = __USRGID__

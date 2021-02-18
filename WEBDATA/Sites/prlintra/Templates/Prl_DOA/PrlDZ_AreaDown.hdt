@@ -1,0 +1,18 @@
+[Rep_BeginLine]
+类别
+单号
+发起人
+发起日期
+变更单号
+变更发起人
+[Rep_EndLine]
+<HDLoop>
+[Rep_BeginLine]
+<HDPrint Value=#ISFModelCode# Replace=#None#>
+<HDPrint Value=#ISFNum# Replace=#None#>
+<HDPrint Value=#ISFFillUsrName# Replace=#None#>
+<HDPrint Value=#ISFCreateDate# Replace=#None#>
+<HDPrint Value=#ISCFNum# Replace=#None#>
+<HDPrint Value=#ISCFFillUsrName# Replace=#None#>
+[Rep_EndLine]
+</HDLoop>
