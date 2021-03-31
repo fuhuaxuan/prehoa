@@ -61,6 +61,33 @@ begin
          and v.deptGid = v_DeptGid
          and v.atype = 10
          and rownum = 1;
+
+    v_AppOrder := v_AppOrder + 1;
+    insert into wf_PrlDZ_Stamp_App
+      (EntGid,
+       ModelGid,
+       FlowGid,
+       Gid,
+       AppGid,
+       AppCode,
+       AppName,
+       AppOrder,
+       AppType)
+      select p_EntGid,
+             p_ModelGid,
+             p_FlowGid,
+             sys_guid(),
+             v.PostGid AppGid,
+             v.PostCode AppCode,
+             v.PostName AppName,
+             v_AppOrder AppOrder,
+             21 AppType
+        from v_Post v
+       where v.EntGid = p_EntGid
+         and v.deptGid = v_DeptGid
+         and v.atype = 15
+         and rownum = 1;
+
     v_AppOrder := v_AppOrder + 1;
     insert into wf_PrlDZ_Stamp_App
       (EntGid,

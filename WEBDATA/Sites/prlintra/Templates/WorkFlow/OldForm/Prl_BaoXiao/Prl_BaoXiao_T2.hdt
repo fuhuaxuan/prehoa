@@ -1,6 +1,6 @@
 <!--版本号：2014年3月份（此行不允许删除）-->
-<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
-<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+
+
 <SCRIPT LANGUAGE="JavaScript">
   //进入时，函数
 </script>
@@ -15,7 +15,7 @@
   <INPUT type="text" style="display:none" name="FillUsrGid" value="<HDPrint Value=#FillUsrGid# Replace=#DBField2Input#>">
   <input type="text" style="display:none" name="FillDeptGid" value="<HDPrint Value=#FillDeptGid# Replace=#DBField2Input#>">
   <INPUT type="text" style="display:none" name="FillDeptName" value="<HDPrint Value=#FillDeptName# Replace=#DBField2Input#>">
-  
+
   <!--意见标志：同意；否决-->
   <input type="text" style="display:none" name="AppAssign" value="">
 
@@ -88,8 +88,8 @@
     if (!confirm(sConfirm)){
       return false;
     }
-    
-    //获取当前表单对象 
+
+    //获取当前表单对象
     var JqObj = $("form[name=frmDo]");
     //表单参数设定
     JqObj.attr({

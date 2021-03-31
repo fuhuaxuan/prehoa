@@ -195,16 +195,15 @@ begin
              p_ModelGid,
              p_FlowGid,
              sys_guid(),
-             o.AppGid,
-             o.AppCode,
-             o.AppName,
+             v.PostGid AppGid,
+             v.PostCode AppCode,
+             v.PostName AppName,
              85 AppOrder,
              85 AppType
-        from v_wf_model_usr_app o
-       where o.EntGid = p_EntGid
-         and o.ModelGid = p_ModelGid
-         and replace(lower(o.Modelcode), lower(v_ModelCode), '') in
-             ('_td1')
+        from v_Post v
+       where v.EntGid = p_EntGid
+         and v.deptGid = v_DeptGid
+         and v.atype = 95
          and rownum = 1
       union
       select p_EntGid,

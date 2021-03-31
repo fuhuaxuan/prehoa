@@ -103,23 +103,23 @@ begin
                  and v.atype = 71
                  and rownum = 1
               union
-              select v.PostGid  AppGid,
-                     v.PostCode AppCode,
-                     v.PostName AppName,
-                     60          AppOrder,
-                     60         AppType
-                from v_Post v
-               where v.EntGid = p_EntGid
-                 and v.deptGid = v_DeptGid
-                 and v.atype = 80
-                 and rownum = 1
-              union
               select o.AppGid, o.AppCode, o.AppName, 70 AppOrder, 70 AppType
                 from v_wf_model_usr_app o
                where o.EntGid = p_EntGid
                  and o.ModelGid = p_ModelGid
                  and replace(lower(o.Modelcode), lower(v_ModelCode), '') in
                      ('_th7')
+                 and rownum = 1
+              union
+              select v.PostGid  AppGid,
+                     v.PostCode AppCode,
+                     v.PostName AppName,
+                     80          AppOrder,
+                     80         AppType
+                from v_Post v
+               where v.EntGid = p_EntGid
+                 and v.deptGid = v_DeptGid
+                 and v.atype = 80
                  and rownum = 1) t;
  
     --取出审批人中重复的审批人

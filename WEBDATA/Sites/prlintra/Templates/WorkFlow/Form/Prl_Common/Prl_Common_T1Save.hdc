@@ -42,7 +42,7 @@ SQL9=update wf_^^ModelCode^^_App set AppOrder = AppOrder + 100 where EntGid = __
 ;插入本流程发起人信息
 SQL10=insert into Wf_^^ModelCode^^_App (EntGid,ModelGid,FlowGid,Gid,AppGid,AppCode,AppName,AppOrder,AppType,AppAssign,AppMemo,AppDate) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),__USRGID__,__USRCODE__,__USRNAME__,0,10,##Stat##,'',sysdate from dual where ##Stat## <> '保存'
 
-LoopSql1=insert into Wf_^^ModelCode^^_App (EntGid,ModelGid,FlowGid,Gid,AppGid,AppCode,AppName,AppOrder,AppType) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),v.Gid,v.Code,v.Name,(select count(*) from Wf_^^ModelCode^^_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppOrder <=100 and AppType = 20) + 1,20 from v_usr v where v.EntGid = __ENTGID__ and v.Gid = ##%AppGid%##
+LoopSql1=insert into Wf_^^ModelCode^^_App (EntGid,ModelGid,FlowGid,Gid,AppGid,AppCode,AppName,AppOrder,AppType) select __ENTGID__,##ModelGid##,##FlowGid##,sys_guid(),v.Gid,v.Code,v.Name,(select count(*) from Wf_^^ModelCode^^_App where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and AppOrder <=100 and AppType = 20) + 1,20 from v_usr v where v.EntGid = __ENTGID__ and v.Gid = ##%AppGid%## and ##Stat## <> '终止'
 
 ;删除本流程全部附件信息
 SQL13=delete from Wf_^^ModelCode^^_Attach where EntGid = __ENTGID__ and FlowGid = ##FlowGid## and ##Stat## <> '终止'

@@ -1,8 +1,8 @@
 <script language="javascript" src="##GetWebRootPath(/Scripts/Common.js)##"></script>
 <script language="javascript" src="##GetWebRootPath(/Scripts/JSCalendar.js)##"></script>
 <script language="javascript" src="##GetWebRootPath(/Scripts/DataInterface.js)##"></script>
-<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
-<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+
+
 <SCRIPT LANGUAGE="JavaScript">
 function check(sAssign) {
   if (!confirm('您确定已经阅读完毕这条单据，并作出 “' + sAssign + '” 的审核意见吗？' )) {

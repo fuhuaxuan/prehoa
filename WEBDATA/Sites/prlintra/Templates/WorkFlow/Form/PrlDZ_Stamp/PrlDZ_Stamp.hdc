@@ -78,7 +78,7 @@ ChangePageRow=
 Log=
 
 ;页面显示: 0:BodyPage;1:DetailPage;2:BlankPage
-PageKind=0
+PageKind=1
 
 ;以下内容是为了让ExplainAjax引擎来读的。对ExplainModule引擎来说，忽略此部分内容。
 [Ajax]

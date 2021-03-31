@@ -1,6 +1,6 @@
 <!--Js引入-->
-<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
-<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+
+
 <form name="frmDo" method="post" action="">
 <!--模块使用到一些隐藏的控件-->
 <input type="text" style="display:none" name="Gid" value="<HDPrint Value=#NewGid# Replace=#DBField2Input#>">
@@ -65,8 +65,8 @@
     //提交时，提示
     if (!(confirm(sConfirm)))
       return false;
-    
-    //获取当前表单对象 
+
+    //获取当前表单对象
     var JqObj = $("form[name=frmDo]");
     //表单参数设定
     JqObj.attr({

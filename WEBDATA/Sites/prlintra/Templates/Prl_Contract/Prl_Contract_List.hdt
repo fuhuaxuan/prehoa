@@ -1,6 +1,6 @@
 <!--Js引入-->
-<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
-<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+
+
 <script language="javascript" src="##GetWebRootPath(/Scripts/DateControl.js)##"></script>
 <form name="frmDo" method="Post" action="">
 <h3 class="TitleBar" ><HDPrint Value=#ModeleAtype#>-<HDPrint Value=#ModeleName#></h3>
@@ -148,7 +148,7 @@
   //下载Excel
   function DownLoad(){
     document.all.Rep_Download.value = '1';
-    //获取当前表单对象 
+    //获取当前表单对象
     var JqObj = $("form[name=frmDo]");
     //表单参数设定
     JqObj.attr({
@@ -182,7 +182,7 @@
       $("input[name=selOrderAsc]").val(sJQAsc);
       $("input[name=selOrderColumn]").val(sJQColumn);
 
-      //获取当前表单对象 
+      //获取当前表单对象
       var JqObj = $("form[name=frmDo]");
       //表单参数设定
       JqObj.attr({

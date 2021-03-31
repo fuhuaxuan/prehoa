@@ -1,6 +1,6 @@
 <!--版本号：2014年3月份（此行不允许删除）-->
-<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
-<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+
+
 <style type="text/css">
 .PrintTdRT {
   border-right:1 solid black;
@@ -81,7 +81,7 @@
     <td class="PrintTdRT">Related Party:<br>牵连关系实体交易:</td>
     <td class="PrintTdRT"><HDPrint Value=#Related#></td>
   </tr>
-  <tr valign="top"> 
+  <tr valign="top">
     <td class="PrintTdRT">Free of rent Period:免租期:</td>
     <td class="PrintTdRT"><HDPrint Value=#FreeRentM#>月/
      <HDPrint Value=#FreeRentD#>日
@@ -151,25 +151,25 @@
   <col style="padding-left:4px;width:20%">
   <col style="padding-left:4px;width:30%">
   <col style="padding-left:4px;width:20%">
-  <tr> 
+  <tr>
     <td class="PrintTdRT">未完成租约期限的租金及费用：</td>
     <td class="PrintTdRT"><HDPrint Value=#NumA#></td>
     <td class="PrintTdRT">租金（含物业费）减免额：</td>
     <td class="PrintTdRT"><HDPrint Value=#NumB#></td>
   </tr>
-  <tr> 
+  <tr>
     <td class="PrintTdRT">装修补贴：</td>
     <td class="PrintTdRT"><HDPrint Value=#NumC#></td>
     <td class="PrintTdRT">提前终止的补偿款（包括可没收的款项）：</td>
     <td class="PrintTdRT"><HDPrint Value=#NumD#></td>
   </tr>
-  <tr> 
+  <tr>
     <td class="PrintTdRT">本会计年度的预计租金损失：</td>
     <td class="PrintTdRT"><HDPrint Value=#NumE#></td>
     <td class="PrintTdRT">冲减直线法租金收入的金额：</td>
     <td class="PrintTdRT"><HDPrint Value=#NumF#></td>
   </tr>
-  <tr> 
+  <tr>
     <td class="PrintTdRT">欠租金额：</td>
     <td class="PrintTdRT"><HDPrint Value=#NumG#></td>
     <td class="PrintTdRT">合计：</td>

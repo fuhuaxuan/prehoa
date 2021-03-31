@@ -1,5 +1,5 @@
-<script language="javascript" src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
-<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+
+
 <script language="javascript">
   function PostPush() {
     var url = 'http://116.62.206.211/MallAppService/PushService.asmx/PushInfo';

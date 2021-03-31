@@ -1,7 +1,7 @@
 <script language="javascript" src="##GetWebRootPath(/Scripts/common.js)##"></script>
 <!-- JQuery函数引入 -->
-<script language="javascript" src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
-<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+
+
 
 <form name="frmDo" method="Post">
   <table cellspacing="1" cellpadding="0" valign="top" class="NewTb" style="width:100%" align="center">
@@ -79,6 +79,10 @@
     <tr class="NewTr3">
       <td class="NewTd2">92首席投资官 <a href="javascript:void(ChangeSelect('92'))">[选择]</a></td>
       <td class="NewTd3"><select name="emp92_1" style="width:400px;height:30px" multiple></select></td>
+    </tr>
+    <tr class="NewTr3">
+      <td class="NewTd2">95中国区CEO <a href="javascript:void(ChangeSelect('95'))">[选择]</a></td>
+      <td class="NewTd3"><select name="emp95_1" style="width:400px;height:30px" multiple></select></td>
     </tr>
     <tr class="NewTr1">
       <td colspan="2" >

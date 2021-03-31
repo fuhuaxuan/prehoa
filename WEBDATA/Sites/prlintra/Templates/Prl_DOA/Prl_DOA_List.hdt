@@ -1,5 +1,5 @@
 <!-- JQueryº¯ÊýÒýÈë -->
-<script language="javascript" src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+
 <script language="javascript" src="##GetWebRootPath(/Scripts/JQTree.js)##"></script>
 <link rel="stylesheet" href="##GetWebRootPath(/css/JQTree.css)##" type="text/css">
 

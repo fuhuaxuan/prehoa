@@ -1,6 +1,6 @@
 <!-- JQuery函数引入 -->
-<script language="javascript" src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
-<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+
+
 <form name="frmMail" method="POST" action="/bin/hdmailsend.dll/send" target="_self">
 <input type="hidden" name="Title" maxlength="100" style="width:100%" value="ISTF提醒:<HDPrint Value=#fillusrdept# Replace=#DBField2Input#>">
 <input type="hidden" name="Email" maxlength="400" style="width:100%" value="<HDPrint Value=#AppEmail# Replace=#DBField2InputField#>;">

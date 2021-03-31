@@ -1,6 +1,6 @@
 <!--JsÒýÈë-->
-<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
-<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+
+
 
 <HDIF EqualNot(<HDPrint Value=#IsShow#>, yes)>
 <form name="frmDo" method="Post" action="">

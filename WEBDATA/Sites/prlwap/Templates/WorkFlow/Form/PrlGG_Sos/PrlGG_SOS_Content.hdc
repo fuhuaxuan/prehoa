@@ -26,13 +26,13 @@ LoopHDT1=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AttachList.hdt
 LoopVAR1=AttachList
 
 ;显示本流程已审批审批人信息
-LoopSQL2=select a.*,decode(a.apptype,10,'发起人',20,'部门经理',30,'财务经理',35,'总经理/项目总监',40,'项目总经理',50,'资产经理',60,'区域总经理',70,'总部招商总监',100,'发起人确认') apptypetext  from WF_^^ModelCode^^_App a where FlowGid = ##FlowGid## order by AppDate,AppOrder
+LoopSQL2=select a.*,decode(a.apptype,10,'发起人',20,'部门经理',30,'财务经理',35,'总经理/项目总监',40,'项目总经理',50,'资产经理',60,'区域总经理',70,'总部招商总监',80,'区域总经理',100,'发起人确认') apptypetext  from WF_^^ModelCode^^_App a where FlowGid = ##FlowGid## order by AppDate,AppOrder
 LoopHDT2=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AppList.hdt
 LoopVAR2=AppList
 
 
 ;显示本流程已审批审批人信息
-LoopSQL5=select a.*,decode(a.apptype,10,'发起人',20,'部门经理',30,'财务经理',35,'总经理/项目总监',40,'项目总经理',50,'资产经理',60,'区域总经理',70,'总部招商总监',100,'发起人确认') apptypetext  from WF_^^ModelCode^^_App a where FlowGid = ##FlowGid## order by AppDate,AppOrder
+LoopSQL5=select a.*,decode(a.apptype,10,'发起人',20,'部门经理',30,'财务经理',35,'总经理/项目总监',40,'项目总经理',50,'资产经理',60,'区域总经理',70,'总部招商总监',80,'区域总经理',100,'发起人确认') apptypetext  from WF_^^ModelCode^^_App a where FlowGid = ##FlowGid## order by AppDate,AppOrder
 LoopHDT5=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AppEmail.hdt
 LoopVAR5=AppEmail
 

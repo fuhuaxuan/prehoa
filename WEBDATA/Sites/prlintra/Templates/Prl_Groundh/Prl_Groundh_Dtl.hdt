@@ -1,6 +1,6 @@
 <!--JsÒýÈë-->
-<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
-<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+
+
 
 <form name="frmDo" method="post" action="">
 <h3 class="TitleBar" ><HDPrint Value=#ModeleAtype#>-<HDPrint Value=#ModeleName#>£º[<HDPrint Value=#fno#>]</h3>

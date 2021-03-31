@@ -153,12 +153,15 @@ begin
                  and v_AppFee > 80000
                  and v_Category <> '30'
               union
-              select o.AppGid, o.AppCode, o.AppName, 95 AppOrder, 95 AppType
-                from v_wf_model_usr_app o
-               where o.EntGid = p_EntGid
-                 and o.ModelGid = p_ModelGid
-                 and replace(lower(o.Modelcode), lower(v_ModelCode), '') in
-                     ('_tc3')
+              select v.PostGid  AppGid,
+                     v.PostCode AppCode,
+                     v.PostName AppName,
+                     95         AppOrder,
+                     95         AppType
+                from v_Post v
+               where v.EntGid = p_EntGid
+                 and v.deptGid = v_DeptGid
+                 and v.atype = 95
                  and rownum = 1
                  and v_AppFee > 80000
                  and v_Category <> '30'

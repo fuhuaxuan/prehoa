@@ -76,6 +76,17 @@ begin
                      v.PostCode AppCode,
                      v.PostName AppName,
                      2          AppOrder,
+                     21         AppType
+                from v_Post v
+               where v.EntGid = p_EntGid
+                 and v.deptGid = v_DeptGid
+                 and v.atype = 15
+                 and rownum = 1
+              union
+              select v.PostGid  AppGid,
+                     v.PostCode AppCode,
+                     v.PostName AppName,
+                     3          AppOrder,
                      23         AppType
                 from v_Post v
                where v.EntGid = p_EntGid
@@ -87,7 +98,7 @@ begin
               select v.PostGid  AppGid,
                      v.PostCode AppCode,
                      v.PostName AppName,
-                     3          AppOrder,
+                     4          AppOrder,
                      25         AppType
                 from v_Post v
                where v.EntGid = p_EntGid
@@ -98,7 +109,7 @@ begin
               select v.PostGid  AppGid,
                      v.PostCode AppCode,
                      v.PostName AppName,
-                     4          AppOrder,
+                     5          AppOrder,
                      30         AppType
                 from v_Post v
                where v.EntGid = p_EntGid
@@ -109,7 +120,7 @@ begin
               select v.PostGid  AppGid,
                      v.PostCode AppCode,
                      v.PostName AppName,
-                     5          AppOrder,
+                     6          AppOrder,
                      35         AppType
                 from v_Post v
                where v.EntGid = p_EntGid
@@ -120,7 +131,7 @@ begin
               select v.PostGid  AppGid,
                      v.PostCode AppCode,
                      v.PostName AppName,
-                     6          AppOrder,
+                     7          AppOrder,
                      37         AppType
                 from v_Post v
                where v.EntGid = p_EntGid

@@ -1,6 +1,6 @@
 <!--Js引入-->
-<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
-<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+
+
 <script language="javascript" src="##GetWebRootPath(/Scripts/JSCalendar.js)##"></script>
 <script>
   function getSingle(JsObj,JsName,JsRow){
@@ -47,7 +47,7 @@
     tdArr[k++] = '<td><INPUT TYPE="text" NAME="Line_1" ID="Line_1'+ iRow +'" value="'+ Line +'" class="JQInt JQMust" onchange="getSingle(this,\'Line_1\',\''+ iRow +'\');"><INPUT TYPE="hidden" NAME="Gid_1" value="'+ Gid +'" ></td>';
 
     tdArr[k++] = '<td><INPUT TYPE="text" NAME="TypeName_1" ID="TypeName_1'+ iRow +'" maxlength="64" class="JQText JQMust" value = "'+TypeName+'" onchange="getSingle(this,\'TypeName_1\',\''+ iRow +'\');"></td>';
-    
+
     var JsHtml = '&nbsp;';
     if (TCount == '0'){
       JsHtml = '<a href="javascript:void(0)" onclick="javascript:if (!(confirm(\'你确定要删除该信息吗？\\n删除操作是不能还原的！\'))) return false;JQTr_Del();">删除</a>';
@@ -55,7 +55,7 @@
     else if (TCount == ''){
       JsHtml = '<a href="javascript:void(0)" onclick="javascript:JQTr_Del();">删除</a>';
     }
-    
+
     tdArr[k++] ='<td align="center">'+JsHtml+'</td>';
 
     //新增一行
@@ -147,8 +147,8 @@
     //提交时，提示
     if (!(confirm(sConfirm)))
       return false;
-    
-    //获取当前表单对象 
+
+    //获取当前表单对象
     var JqObj = $("form[name=frmDo]");
     //表单参数设定
     JqObj.attr({

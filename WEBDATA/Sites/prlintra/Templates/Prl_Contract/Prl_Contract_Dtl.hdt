@@ -1,6 +1,6 @@
 <!--Js引入-->
-<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
-<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+
+
 
 <form name="frmDo" method="post" action="">
 <h3 class="TitleBar" ><HDPrint Value=#ModeleAtype#>-><HDPrint Value=#ModeleName#>->[条款编号：<HDPrint Value=#CNum#>]</h3>
@@ -17,7 +17,7 @@
       </HDIF>
      |
       <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
-      
+
       <a HREF="##HDNet_AppName##/__ExplainModule?URL=Prl_Contract_List&UsrGid=<HDPrint Value=#UsrGid#>"><FONT class="IconBack">　&nbsp;</FONT> 返回列表</A>
     </TD>
   </TR>

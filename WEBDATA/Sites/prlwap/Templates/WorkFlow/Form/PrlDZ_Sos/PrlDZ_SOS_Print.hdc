@@ -18,7 +18,7 @@ SqlForCondition1=select wm.Code ModelCode, wm.Name ModelName from wf_Model wm wh
 SQL1=select wf.* from wf_^^ModelCode^^ wf where EntGid = __ENTGID__ and  FlowGid = ##FlowGid##
 
 ;显示本流程已审批审批人信息
-LoopSQL2=select a.*,decode(a.apptype,10,'发起人',20,'部门经理',30,'财务经理',35,'总经理/项目总监',40,'项目总经理',50,'资产经理',60,'区域总经理',70,'总部招商总监',100,'发起人确认') apptypetext  from wf_^^ModelCode^^_App a where FlowGid = ##FlowGid## and AppDate is not null order by AppDate,AppOrder
+LoopSQL2=select a.*,decode(a.apptype,10,'发起人',20,'部门经理',30,'财务经理',35,'总经理/项目总监',40,'项目总经理',50,'资产经理',60,'区域总经理',70,'总部招商总监',80,'区域总经理',100,'发起人确认') apptypetext  from wf_^^ModelCode^^_App a where FlowGid = ##FlowGid## and AppDate is not null order by AppDate,AppOrder
 LoopHDT2=Templates\WorkFlow\Form\^^ModelCode^^\Loopsql_AppPrint.hdt
 LoopVAR2=AppList
 

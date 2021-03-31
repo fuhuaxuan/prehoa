@@ -1,6 +1,6 @@
 <!--Js引入-->
-<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
-<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+
+
 <script language="javascript" src="##GetWebRootPath(/Scripts/JSCalendar.js)##"></script>
 <script>
   //检查是否重复
@@ -216,7 +216,7 @@
       <A Href="javascript:CheckSubmit('保存');void(0);" name="btn_1"><FONT class="IconSave">　&nbsp;</FONT> 保存 </A>
      |
       <A HREF="javascript:location.reload();void(0)"><FONT class="IconRefresh">　&nbsp;</FONT> 刷新</A>
-      
+
       <a HREF="##HDNet_AppName##/__ExplainModule?URL=Prl_Contract_List&UsrGid=<HDPrint Value=#UsrGid#>"><FONT class="IconBack">　&nbsp;</FONT> 返回列表</A>
     </TD>
   </TR>
@@ -248,8 +248,8 @@
     //提交时，提示
     if (!(confirm(sConfirm)))
       return false;
-    
-    //获取当前表单对象 
+
+    //获取当前表单对象
     var JqObj = $("form[name=frmDo]");
     //表单参数设定
     JqObj.attr({

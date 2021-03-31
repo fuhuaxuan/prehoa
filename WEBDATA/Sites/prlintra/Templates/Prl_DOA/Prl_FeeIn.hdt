@@ -1,6 +1,6 @@
 <!--Js引入-->
-<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
-<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+
+
 
 <HDIF EqualNot(<HDPrint Value=#IsShow#>, yes)>
 <form name="frmDo" method="Post" action="">
@@ -36,7 +36,7 @@
       <option value=''>--请选择--</option>
       <script language="javascript">
         var date=new Date;
-        var year=date.getFullYear(); 
+        var year=date.getFullYear();
         document.write('<option value="'+year+'" selected>'+year+'</option>');
         document.write('<option value="'+(year+1)+'">'+(year+1)+'</option>');
       </script>
@@ -116,8 +116,8 @@ function CheckSubmit(){
   if (!JQcheck("JQMust")){
     return false;
   }
-  
-  //获取当前表单对象 
+
+  //获取当前表单对象
   var JqObj = $("form[name=frmDo]");
   //表单参数设定
   JqObj.attr({
@@ -204,7 +204,7 @@ function CheckSubmit(){
   //提交时，提示
   if (!(confirm('您确认要导入数据吗？导入后，数据将不可更改！')))
     return false;
-  //获取当前表单对象 
+  //获取当前表单对象
   var JqObj = $("form[name=frmList]");
   //表单参数设定
   JqObj.attr({

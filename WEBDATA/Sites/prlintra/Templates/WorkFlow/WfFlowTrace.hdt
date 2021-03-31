@@ -1,7 +1,7 @@
 <script language="JavaScript" src="##GetWebRootPath(/Scripts/Common.js)##"></Script>
 <script language="javascript" src="##GetWebRootPath(/Scripts/DataInterface.js)##"></script>
 <script language="JavaScript" src="##GetWebRootPath(/Scripts/Ajax/json.js)##"></Script>
-<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
+
 <script src="##GetWebRootPath(/Scripts/jquery/svg.js)##"></script>
 
 <form name="frmDataInterface_1" method="Post" action="">
@@ -114,7 +114,7 @@
   </tr>
   <tr>
   <td colspan=7>
-  <iframe id="frmFlow" style="width:100%;" height="300" FRAMEBORDER=0 SCROLLING=auto src="##HDNet_AppName##/WorkFlowGraphi?UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Input#>&modelgid=<HDPrint Value=#modelgid#>&flowgid=<HDPrint Value=#flowgid#>&ShowType=1"></iframe> 
+  <iframe id="frmFlow" style="width:100%;" height="300" FRAMEBORDER=0 SCROLLING=auto src="##HDNet_AppName##/WorkFlowGraphi?UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Input#>&modelgid=<HDPrint Value=#modelgid#>&flowgid=<HDPrint Value=#flowgid#>&ShowType=1"></iframe>
   <script language="javascript">
     if (SVG.supported) {
       $("iframe#frmFlow").attr("src","##HDNet_AppName##/__ExplainModule?Url=workflowmap&UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Input#>&modelgid=<HDPrint Value=#modelgid#>&flowGid=<HDPrint Value=#flowgid#>");
@@ -158,7 +158,7 @@
 
    <!-- 有权限修改执行者的才能够展示此部分 -->
     <td class=newtd3 style="display:<HDPrint value=#IsDisplay2# Replace=#None#>" title="[<HDPrint Value=#execcode#>]<HDPrint Value=#execname# Replace=#DBField2Input#>">
-       
+
        <input name =taskGid_1 type=hidden value="<HDPrint Value=#taskGid#>">
        <input type=hidden name="ExecUsrGid_<HDPrint Value=#TaskGid# Replace=#DBField2Input#>" style="width:100%" value="<HDPrint Value=#execgid# Replace=#DBField2Input#>" maxlength=5>
        <input type=hidden name="ExecUsrCode_<HDPrint Value=#TaskGid# Replace=#DBField2Input#>" style="width:100%" value="<HDPrint Value=#execcode# Replace=#DBField2Input#>" maxlength=5>
@@ -205,7 +205,7 @@
   function Abolish(sflowgid,smodelgid)
   {
     if (confirm('该操作不能还原，您确定要作废该流程？')) window.open('##HDNet_AppName##/__ExplainModule?UsrGid=<HDPrint Value=#UsrGid# Replace=#DBField2Input#>&url=WFFlowSetState&stat=5&flowgid='+sflowgid+'&modelgid='+smodelgid);
-  
+
   }
 //-->
 </SCRIPT>
@@ -222,7 +222,7 @@
 
 
   function CallBackFunApp(sUsrGid, sUsrCode, sUsrName)
-  { 
+  {
     Obj_Man1.value = sUsrGid;
     Obj_Man2.value = sUsrCode;
     Obj_Man3.value = sUsrName;
@@ -353,7 +353,7 @@ function GetENameDI(str1)
     frmDataInterface_2.DataInterface_CountSql.value = 'select count(*) from (select gid, code, name from v_usr v where entgid = \'<HDPrint Value=#EntGid#>\' and sortid = 1 and gid in (select ExecGid from v_wf_task where entgid = \'<HDPrint value=#EntGid#>\' and modelgid = \'<HDPrint value=#ModelGid#>\' and flowgid = \'<HDPrint value=#FlowGid#>\') union select gid, code, name from v_usr v where entgid = \'<HDPrint Value=#EntGid#>\' and sortid = 1 and not exists (select 1 from v_usr v where entgid = \'<HDPrint Value=#EntGid#>\' and sortid = 1 and gid in (select ExecGid from v_wf_task where entgid = \'<HDPrint value=#EntGid#>\' and modelgid = \'<HDPrint value=#ModelGid#>\' and flowgid = \'<HDPrint value=#FlowGid#>\'))) where 1 = 1 ';
   }
   //当是固定组织时，选择范围也为固定组织,当固定组织的人都离职时，选择范围变成全体用户
-  else 
+  else
   {
     frmDataInterface_2.DataInterface_Sql.value = 'select gid,code,name from (select Gid, Code, Name from V_USR v where EntGid=\'<HDPrint Value=#EntGid#>\' and SortID = 1 and exists (select 1 from v_org_usr where EntGid=\'<HDPrint Value=#EntGid#>\' and usrgid = v.gid and orggid in (\''+str2+'\')) union select Gid, Code, Name from V_USR v where EntGid=\'<HDPrint Value=#EntGid#>\' and SortID = 1 and not exists (select 1 from V_USR v where EntGid=\'<HDPrint Value=#EntGid#>\' and SortID = 1 and exists (select 1 from v_org_usr where EntGid=\'<HDPrint Value=#EntGid#>\' and usrgid = v.gid and orggid in (\''+str2+'\')))) where 1=1';
     frmDataInterface_2.DataInterface_CountSql.value = 'select count(*) from (select Gid, Code, Name from V_USR v where EntGid=\'<HDPrint Value=#EntGid#>\' and SortID = 1 and exists (select 1 from v_org_usr where EntGid=\'<HDPrint Value=#EntGid#>\' and usrgid = v.gid and orggid in (\''+str2+'\')) union select Gid, Code, Name from V_USR v where EntGid=\'<HDPrint Value=#EntGid#>\' and SortID = 1 and not exists (select 1 from V_USR v where EntGid=\'<HDPrint Value=#EntGid#>\' and SortID = 1 and exists (select 1 from v_org_usr where EntGid=\'<HDPrint Value=#EntGid#>\' and usrgid = v.gid and orggid in (\''+str2+'\')))) where 1=1';
@@ -394,7 +394,7 @@ function check(str)
       return false;
     }
   }
-  else 
+  else
   {
     //当有多条记录时，只要一条不是抄送步骤就能保存
     var sIsMCF = '1'
@@ -430,7 +430,7 @@ function check(str)
     else sAfterstat='';
 
   if (!confirm ('您确定'+ sText +'此行记录吗?\n'+ sText +'后，此数据不能还原，请确认！')) return false;
-  
+
     var sParams = '&sFlowGid=<HDPrint Value=#FlowGid#>&sModelGid=<HDPrint Value=#modelgid#>&sGid='+sGid+'&sStat='+sStat+'&Afterstat='+ sAfterstat;
     http.open('POST', '##HDNet_AppName##/__ExplainAjax?Url=WFFLOWTRACE&UsrGid=<HDPrint Value=#UsrGid#>&OpAtype=2');
 

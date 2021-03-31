@@ -1,6 +1,6 @@
 <!--Js“˝»Î-->
-<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
-<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+
+
 <script language="javascript" src="##GetWebRootPath(/Scripts/JSCalendar.js)##"></script>
 <SCRIPT>
   var arrComList = [];//<option value="">--«Î—°‘Ò--</option>';

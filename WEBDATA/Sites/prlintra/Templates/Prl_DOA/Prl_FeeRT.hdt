@@ -1,6 +1,6 @@
 <!--Js引入-->
-<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
-<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+
+
 <script language="javascript" src="##GetWebRootPath(/Scripts/DateControl.js)##"></script>
 <script language="javascript">
 //定义全局变量，定位控件所处位置
@@ -110,8 +110,8 @@
     //提交时，提示
     if (!(confirm(sConfirm)))
       return false;
-    
-    //获取当前表单对象 
+
+    //获取当前表单对象
     var JqObj = $("form[name=frmDo]");
     //表单参数设定
     JqObj.attr({

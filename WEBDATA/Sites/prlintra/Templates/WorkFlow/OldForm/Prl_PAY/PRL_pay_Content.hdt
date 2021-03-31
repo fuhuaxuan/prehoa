@@ -1,6 +1,6 @@
 <!-- JQuery函数引入 -->
-<script language="javascript" src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
-<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+
+
 
 <HDPrint Value=#applist# Replace=#None#>
  <table cellspacing="1">
@@ -45,7 +45,7 @@
 </tr>
 <tr>
   <td class="Newtd2">项目名称：</td>
-  <td class="Newtd3" colspan="5"><HDPrint Value=#acgonename#> - <HDPrint Value=#acgtwoname#>  <font style="display: <HDPrint Value=#acgotherdis# Replace=#None#>"> - <HDPrint Value=#acgothertext#></font>；付款单DOA信息: <HDPrint Value=#doacode#> 
+  <td class="Newtd3" colspan="5"><HDPrint Value=#acgonename#> - <HDPrint Value=#acgtwoname#>  <font style="display: <HDPrint Value=#acgotherdis# Replace=#None#>"> - <HDPrint Value=#acgothertext#></font>；付款单DOA信息: <HDPrint Value=#doacode#>
   </td>
 </tr>
 
@@ -65,7 +65,7 @@
       $span.show();
     }
   </script>
-  
+
   </td>
   <td class="Newtd2">要求支付方式 </td>
   <td class="Newtd3" colspan="3"><HDPrint Value=#payway#></td></tr>
@@ -116,7 +116,7 @@
   <td class="Newtd2">支付日期：</td>
   <td class="Newtd3"><HDPrint Value=#paydate#></td>
 </tr>
-  
+
 <tr valign="top">
   <td class="newtd2">附件</td>
   <td class="newtd3" colspan="5">

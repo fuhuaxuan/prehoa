@@ -1,6 +1,6 @@
 <!-- JQuery函数引入 -->
-<script language="javascript" src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
-<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+
+
 <div id="tb_Email1" style="display:none">
 <table border="0" style="width:500px;">
 <tr><td>您好 :</td></tr>

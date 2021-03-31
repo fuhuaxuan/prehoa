@@ -1,6 +1,6 @@
 <!--版本号：2014年3月份（此行不允许删除）-->
-<script src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
-<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+
+
 <script language="JavaScript">
  //AddtionalSQL，将数据存入数据库
  //&OpAtype=2
@@ -14,7 +14,7 @@ function UpdateMallStat(str)
   {
     if (http.readyState == 4)
        {
-          if(http.status == 200) 
+          if(http.status == 200)
         {
           try
           {
@@ -51,7 +51,7 @@ function UpdateMallStat(str)
       <HDIF EqualNot(<HDPrint Value=#Mallstat# Replace=#none#>, 100)>
         <HDIF Equal(<HDPrint Value=#stat# Replace=#none#>, 30,已完成)>
           <HDIF Equal(<HDPrint Value=#UsrGid# Replace=#none#>, <HDPrint Value=#CWUsrGid# Replace=#None#>)>
-            <A HREF="javascript:void(0)" onclick="UpdateMallStat()"><FONT class="IconDefault">　&nbsp;</FONT> 发送到mall自动生成合同</A>　
+            <A HREF="javascript:void(0)" onclick="UpdateMallStat()"><FONT class="IconDefault">　&nbsp;</FONT> 发送到mall自动生成合同</A>
           </HDIF>
         </HDIF>
       </HDIF>

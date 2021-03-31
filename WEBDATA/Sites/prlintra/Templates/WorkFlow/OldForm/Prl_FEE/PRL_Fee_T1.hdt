@@ -1,8 +1,8 @@
 <script language="JavaScript"   src="##GetWebRootPath(/Scripts/Ajax/json.js)##"></Script>
 <script language="JavaScript" src="##GetWebRootPath(/Scripts/Common.js)##"></Script>
 <!-- JQuery函数引入 -->
-<script language="javascript" src="##GetWebRootPath(/Scripts/jquery/jquery-1.x.js)##"></script>
-<script language="javascript" src="##GetWebRootPath(/Scripts/JQCommon.js)##"></script>
+
+
 
 <form name="frmDo" method="post">
   <h3 class="TitleBar" >生成申请审批表</h3>
